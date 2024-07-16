@@ -13,7 +13,7 @@ public class SteamLobby : MonoBehaviour
 
     private const string HostAdressKey = "HostAdressKey";
 
-    private MyNetworkManager networkManager;
+    private NetworkManager networkManager;
 
 
     public static CSteamID LobbyId {get; private set; }
@@ -21,8 +21,8 @@ public class SteamLobby : MonoBehaviour
 
     private void Start()
     {
-        networkManager = GetComponent<MyNetworkManager>();
-        if(!MyNetworkManager.Initialized) return; 
+        networkManager = GetComponent<NetworkManager>();
+        if(!NetworkManager.Initialized) return; 
 
         lobbyCreated = Callback<LobbyCreated_t>.Create(onLobbyCreated);
         gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
