@@ -20,15 +20,15 @@ using Steamworks;
 // It handles the basics of starting up and shutting down the SteamAPI for use.
 //
 [DisallowMultipleComponent]
-public class SteamManager : MonoBehaviour {
+public class MyNetworkManager : MonoBehaviour {
 #if !DISABLESTEAMWORKS
 	protected static bool s_EverInitialized = false;
 
-	protected static SteamManager s_instance;
-	protected static SteamManager Instance {
+	protected static MyNetworkManager s_instance;
+	protected static MyNetworkManager Instance {
 		get {
 			if (s_instance == null) {
-				return new GameObject("SteamManager").AddComponent<SteamManager>();
+				return new GameObject("SteamManager").AddComponent<MyNetworkManager>();
 			}
 			else {
 				return s_instance;
