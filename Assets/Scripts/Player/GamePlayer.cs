@@ -1,4 +1,5 @@
 using Mirror;
+using Steamworks;
 using System;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class GamePlayer : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Player " + NetworkClient.connection.connectionId + " has joined on Lobby " + SteamLobby.LobbyId);
+        Debug.Log("Player " + SteamUser.GetSteamID() + " has joined on Lobby " + SteamLobby.LobbyId);
     }
 
     // Update is called once per frame
