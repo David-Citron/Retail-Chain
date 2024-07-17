@@ -5,7 +5,8 @@ using UnityEngine;
 public class SteamLobby : MonoBehaviour
 {
 
-    [SerializeField] private GameObject buttons = null;
+    [SerializeField]
+    private GameObject buttons = null;
 
     protected Callback<LobbyCreated_t> lobbyCreated;
     protected Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
@@ -15,14 +16,13 @@ public class SteamLobby : MonoBehaviour
 
     private NetworkManager networkManager;
 
-
     public static CSteamID LobbyId {get; private set; }
-
 
     private void Start()
     {
         networkManager = GetComponent<NetworkManager>();
-        if(!NetworkManager.Initialized) return; 
+
+        if(!SteamManager.Initialized) return;
 
         lobbyCreated = Callback<LobbyCreated_t>.Create(onLobbyCreated);
         gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
