@@ -6,6 +6,8 @@ using UnityEngine;
 public class GamePlayer : NetworkBehaviour
 {
 
+    private CSteamID steamID;
+
     private int level;
     private int experience;
 
@@ -20,7 +22,6 @@ public class GamePlayer : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isServer && isLocalPlayer) RpcSendHello();
     }
 
     private void FixedUpdate()
@@ -32,11 +33,5 @@ public class GamePlayer : NetworkBehaviour
     void CmdPlayerJoin(string steamId)
     {
         Debug.Log("Player with ID: " + steamId + " has joined the lobby");
-    }
-
-    [ClientRpc]
-    void RpcSendHello()
-    {
-        Debug.Log("Hello everybody!!!");
     }
 }
