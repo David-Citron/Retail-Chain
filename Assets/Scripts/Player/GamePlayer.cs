@@ -12,6 +12,8 @@ public class GamePlayer : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!isClient) return;
+        if (!isLocalPlayer) return;
         CmdPlayerJoin(SteamUser.GetSteamID().ToString());
     }
 
