@@ -12,7 +12,7 @@ public class GamePlayer : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Player " + SteamUser.GetSteamID() + " has joined on Lobby " + SteamLobby.LobbyId);
+        CmdPlayerJoin(SteamUser.GetSteamID().ToString());
     }
 
     // Update is called once per frame
@@ -24,5 +24,11 @@ public class GamePlayer : NetworkBehaviour
     private void FixedUpdate()
     {
         
+    }
+
+    [Command]
+    void CmdPlayerJoin(string steamId)
+    {
+        Debug.Log("Player with ID: " + steamId + " has joined the lobby");
     }
 }
