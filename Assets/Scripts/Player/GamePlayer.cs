@@ -12,15 +12,15 @@ public class GamePlayer : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (!isClient) return;
         if (!isLocalPlayer) return;
+        if (!isClient) return;
         CmdPlayerJoin(SteamUser.GetSteamID().ToString());
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (isServer && isLocalPlayer) RpcSendHello();
     }
 
     private void FixedUpdate()
@@ -32,5 +32,11 @@ public class GamePlayer : NetworkBehaviour
     void CmdPlayerJoin(string steamId)
     {
         Debug.Log("Player with ID: " + steamId + " has joined the lobby");
+    }
+
+    [ClientRpc]
+    void RpcSendHello()
+    {
+        Debug.Log("Hello everybody!!!");
     }
 }
