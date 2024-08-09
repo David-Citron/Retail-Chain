@@ -20,13 +20,12 @@ public class GamePlayer : NetworkBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {   
-        if (isLocalPlayer) steamID = SteamUser.GetSteamID();
-
+    {
         playerManager = (PlayerManager) FindAnyObjectByType(typeof(PlayerManager));
         if(playerManager == null) return;
 
         playerManager.AddGamePlayer(this);
+        if (isLocalPlayer) steamID = SteamUser.GetSteamID();
     }
 
     // Update is called once per frame
