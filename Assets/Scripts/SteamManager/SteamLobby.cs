@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class SteamLobby : MonoBehaviour
 {
 
-    [SerializeField]
-    private GameObject buttons = null;
+    [SerializeField] private GameObject mainMenuPanel = null;
+    [SerializeField] private GameObject lobbyPanel = null;
 
 
     protected Callback<LobbyCreated_t> lobbyCreated;
@@ -18,11 +18,8 @@ public class SteamLobby : MonoBehaviour
 
     private NetworkManager networkManager;
 
-    [SerializeField]
-    private PlayerManager playerManager;
-
-    [SerializeField]
-    private LayoutManager layoutManager;
+    [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private LayoutManager layoutManager;
 
     public static CSteamID LobbyId {get; private set; }
 
@@ -39,7 +36,8 @@ public class SteamLobby : MonoBehaviour
 
     public void HostLobby()
     {
-        buttons.SetActive(false);
+        mainMenuPanel.SetActive(false);
+        lobbyPanel.SetActive(true);
         Debug.Log("Started hosting a lobby");
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, networkManager.maxConnections);
     }
@@ -48,7 +46,8 @@ public class SteamLobby : MonoBehaviour
     {
         if(callback.m_eResult != EResult.k_EResultOK)
         {
-            buttons.SetActive(true);
+            mainMenuPanel.SetActive(true);
+            lobbyPanel.SetActive(false);
             return;
         }
 
@@ -73,6 +72,7 @@ public class SteamLobby : MonoBehaviour
         networkManager.networkAddress = hostAddress;
         networkManager.StartClient();
 
-        buttons.SetActive(false);
+        mainMenuPanel.SetActive(false);
+        lobbyPanel.SetActive(true);
     }
 }
