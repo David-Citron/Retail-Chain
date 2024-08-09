@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class GamePlayer : NetworkBehaviour
 {
     [SyncVar(hook = nameof(OnSteamIDChanged))]
-    private ulong steamID;
+    [SerializeField] private ulong steamID;
 
     [SerializeField] private TMP_Text username = null;
     [SerializeField] private RawImage profilePicture = null;

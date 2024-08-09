@@ -5,8 +5,7 @@ public class Account : MonoBehaviour
 {
 
     private ulong steamId;
-    [SerializeField]
-    private string username;
+    [SerializeField] private string username;
     private RawImage profilePicture;
 
     private int accountLevel;
