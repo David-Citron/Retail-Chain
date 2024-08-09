@@ -20,8 +20,6 @@ public class GamePlayer : NetworkBehaviour
 
     void Start()
     {
-        if (isLocalPlayer) CmdSetSteamID((ulong) SteamUser.GetSteamID());
-
         playerManager = (PlayerManager) FindAnyObjectByType(typeof(PlayerManager));
         if (playerManager == null)
         {
@@ -30,6 +28,7 @@ public class GamePlayer : NetworkBehaviour
         }
 
         playerManager.AddGamePlayer(this);
+        if (isLocalPlayer) CmdSetSteamID((ulong) SteamUser.GetSteamID());
     }
 
     // Update is called once per frame
