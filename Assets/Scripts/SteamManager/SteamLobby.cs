@@ -1,12 +1,14 @@
 using Mirror;
 using Steamworks;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SteamLobby : MonoBehaviour
 {
 
     [SerializeField]
     private GameObject buttons = null;
+
 
     protected Callback<LobbyCreated_t> lobbyCreated;
     protected Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
@@ -15,6 +17,12 @@ public class SteamLobby : MonoBehaviour
     private const string HostAdressKey = "HostAdressKey";
 
     private NetworkManager networkManager;
+
+    [SerializeField]
+    private PlayerManager playerManager;
+
+    [SerializeField]
+    private LayoutManager layoutManager;
 
     public static CSteamID LobbyId {get; private set; }
 
@@ -32,7 +40,7 @@ public class SteamLobby : MonoBehaviour
     public void HostLobby()
     {
         buttons.SetActive(false);
-
+        Debug.Log("Started hosting a lobby");
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, networkManager.maxConnections);
     }
 
@@ -59,6 +67,7 @@ public class SteamLobby : MonoBehaviour
     private void OnLobbyEntered(LobbyEnter_t callback)
     {
         if (NetworkServer.active) return;
+        
 
         string hostAddress = SteamMatchmaking.GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), HostAdressKey);
         networkManager.networkAddress = hostAddress;
