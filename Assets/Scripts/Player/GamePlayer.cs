@@ -1,14 +1,16 @@
 using Mirror;
 using Steamworks;
-using System;
+using TMPro;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 public class GamePlayer : NetworkBehaviour
 {
-    [SyncVar]
+    [SyncVar(hook = nameof(SetSteamID))]
     private CSteamID steamID;
+
+    [SerializeField] private TMP_Text username = null;
+    [SerializeField] private RawImage profilePicture = null;
 
     private PlayerManager playerManager;
 
@@ -19,10 +21,10 @@ public class GamePlayer : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {   
+        if (isLocalPlayer) steamID = SteamUser.GetSteamID();
+
         playerManager = (PlayerManager) FindAnyObjectByType(typeof(PlayerManager));
         if(playerManager == null) return;
-
-        if (isLocalPlayer) steamID = SteamUser.GetSteamID();
 
         playerManager.AddGamePlayer(this);
     }
@@ -35,6 +37,12 @@ public class GamePlayer : NetworkBehaviour
     private void FixedUpdate()
     {
         
+    }
+
+    public void SetSteamID(CSteamID oldSteamId, CSteamID newSteamId)
+    {
+        username.text = GetSteamUsername();
+        profilePicture.texture = GetSteamProfilePicture();
     }
 
     [Command]
@@ -51,8 +59,6 @@ public class GamePlayer : NetworkBehaviour
 
     public Texture2D GetSteamProfilePicture()
     {
-
-
         Debug.Log("Loading img texture for: " + steamID);
 
         Texture2D texture = null;
@@ -72,5 +78,19 @@ public class GamePlayer : NetworkBehaviour
         }
   
         return texture;
+    }
+
+    public void SetProfilePicture(RawImage image)
+    {
+        profilePicture = image;
+        if (!isLocalPlayer) return;
+        image.texture = GetSteamProfilePicture();
+    }
+
+    public void SetUsername(TMP_Text text)
+    {
+        username = text;
+        if (!isLocalPlayer) return;
+        text.text = GetSteamUsername();
     }
 }

@@ -33,8 +33,8 @@ public class PlayerManager : MonoBehaviour
 
     public void AddGamePlayer(GamePlayer gamePlayer)
     {
-        profilePictures[gamePlayers.Count].texture = gamePlayer.GetSteamProfilePicture();
-        userNames[gamePlayers.Count].text = gamePlayer.GetSteamUsername();
+        gamePlayer.SetProfilePicture(profilePictures[gamePlayers.Count]);
+        gamePlayer.SetUsername(userNames[gamePlayers.Count]);
 
         gamePlayers.Add(gamePlayer);
     }
