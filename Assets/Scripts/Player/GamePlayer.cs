@@ -19,7 +19,7 @@ public class GamePlayer : NetworkBehaviour
 
     void Start()
     {
-        syncDirection = (isLocalPlayer && isServer) || (!isLocalPlayer && !isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
+        syncDirection = (isLocalPlayer && isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
         Debug.Log("Start method SUCCESSFULLY called!!!");
 
         playerManager = (PlayerManager) FindAnyObjectByType(typeof(PlayerManager));
@@ -29,8 +29,8 @@ public class GamePlayer : NetworkBehaviour
             return;
         }
 
-        playerManager.AddGamePlayer(this);
         if (isLocalPlayer) steamID = SteamUser.GetSteamID().m_SteamID;//CmdSetSteamId((ulong) SteamUser.GetSteamID());
+        playerManager.AddGamePlayer(this);
     }
 
     // Update is called once per frame
