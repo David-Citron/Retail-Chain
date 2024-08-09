@@ -7,7 +7,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 public class GamePlayer : NetworkBehaviour
 {
-    [SyncVar(hook = nameof(SetSteamID))]
+    [SyncVar(hook = nameof(OnSteamIDChanged))]
     private ulong steamID;
 
     [SerializeField] private TMP_Text username = null;
@@ -20,12 +20,7 @@ public class GamePlayer : NetworkBehaviour
 
     void Start()
     {
-        if (isLocalPlayer)
-        {
-            ulong oldSteamID = steamID;
-            steamID = (ulong) SteamUser.GetSteamID();
-            SetSteamID(oldSteamID, steamID); // Manually trigger the hook
-        }
+        if (isLocalPlayer) CmdSetSteamID((ulong) SteamUser.GetSteamID());
 
         playerManager = (PlayerManager) FindAnyObjectByType(typeof(PlayerManager));
         if (playerManager == null)
@@ -47,7 +42,13 @@ public class GamePlayer : NetworkBehaviour
         
     }
 
-    public void SetSteamID(ulong oldSteamId, ulong newSteamId)
+    [Command]
+    private void CmdSetSteamID(ulong id)
+    {
+        steamID = id;  // This will trigger the hook on all clients
+    }
+
+    public void OnSteamIDChanged(ulong oldSteamId, ulong newSteamId)
     {
         Debug.Log("SteamID change: From " + oldSteamId + " to " + newSteamId);
 
