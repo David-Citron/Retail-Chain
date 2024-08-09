@@ -18,11 +18,12 @@ public class GamePlayer : NetworkBehaviour
     private int level;
     private int experience;
 
-    [SyncVar]
-    [SerializeField] public int connectionId;
+    [SerializeField] public int connectionId = -1;
 
     void Start()
     {
+        if (isServer) connectionId = connectionToClient.connectionId;
+
         syncDirection = (isLocalPlayer && isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
         
         playerManager = (PlayerManager) FindAnyObjectByType(typeof(PlayerManager));
@@ -35,7 +36,6 @@ public class GamePlayer : NetworkBehaviour
         if (isLocalPlayer)
         {
             steamID = SteamUser.GetSteamID().m_SteamID;
-            connectionId = NetworkClient.connection.connectionId;
         }
         playerManager.AddGamePlayer(this);
     }
