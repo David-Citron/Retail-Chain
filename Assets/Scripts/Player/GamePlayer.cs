@@ -18,9 +18,7 @@ public class GamePlayer : NetworkBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        if (!isClient) return;
-        
+    {   
         playerManager = (PlayerManager) FindAnyObjectByType(typeof(PlayerManager));
         if(playerManager == null) return;
 
