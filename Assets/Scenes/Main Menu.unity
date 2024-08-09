@@ -3287,7 +3287,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc9e0c9144d43c4782875e1509e3a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttons: {fileID: 435131776}
+  mainMenuPanel: {fileID: 435131776}
+  lobbyPanel: {fileID: 432341057}
   playerManager: {fileID: 2064521716}
   layoutManager: {fileID: 391426608}
 --- !u!1660057539 &9223372036854775807
