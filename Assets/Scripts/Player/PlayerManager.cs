@@ -35,13 +35,17 @@ public class PlayerManager : MonoBehaviour
 
     public void UpdatePlayerList()
     {
+        Debug.Log("Updating player list started");
         for (int i = 0; i < gamePlayers.Count; i++)
         {
             if (gamePlayers[i] == null)
             {
+                Debug.LogWarning("Player " + i + " was not found");
                 userNames[i].text = "Player " + (i + 1);
                 profilePictures[i].texture = Texture2D.whiteTexture;
             }
+            else Debug.Log("Player " + i + " was found successfully");
         }
+        Debug.Log("Updating player list ended");
     }
 }

@@ -20,7 +20,6 @@ public class GamePlayer : NetworkBehaviour
     void Start()
     {
         syncDirection = (isLocalPlayer && isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
-        Debug.Log("Start method SUCCESSFULLY called!!!");
 
         playerManager = (PlayerManager) FindAnyObjectByType(typeof(PlayerManager));
         if (playerManager == null)
@@ -44,32 +43,14 @@ public class GamePlayer : NetworkBehaviour
         
     }
 
-    /*[Command]
-    void CmdSetSteamId (ulong steamID)
-    {
-        this.steamID = steamID;
-    }*/
-
    public void OnSteamIDChanged(ulong oldSteamId, ulong newSteamId)
     {
-        Debug.Log("SteamID change: From " + oldSteamId + " to " + newSteamId);
-
-
         if(username == null || profilePicture == null) { return; }
-
 
         CSteamID newCSteamID = new CSteamID(newSteamId);
         username.text = GetSteamUsername(newCSteamID);
         profilePicture.texture = GetSteamProfilePicture(newCSteamID);
-        Debug.Log("Changed username & profile picture for " + newCSteamID);
     }
-
-    [Command]
-    void CmdPlayerJoin(string steamId)
-    {
-        Debug.Log("Player with ID: " + steamId + " has joined the lobby");
-    }
-
 
     public string GetSteamUsername(CSteamID newSteamId)
     {

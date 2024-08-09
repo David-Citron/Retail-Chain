@@ -5,15 +5,9 @@ using UnityEngine.UI;
 
 public class SteamLobby : MonoBehaviour
 {
-
-    [SerializeField] private GameObject mainMenuPanel = null;
-    [SerializeField] private GameObject lobbyPanel = null;
-
-
     protected Callback<LobbyCreated_t> lobbyCreated;
     protected Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
     protected Callback<LobbyEnter_t> lobbyEntered;
-    protected Callback<SteamNetConnectionStatusChangedCallback_t> connectionStatusChanged;
 
     private const string HostAdressKey = "HostAdressKey";
 
@@ -33,13 +27,12 @@ public class SteamLobby : MonoBehaviour
         lobbyCreated = Callback<LobbyCreated_t>.Create(onLobbyCreated);
         gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
         lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
-        connectionStatusChanged = Callback<SteamNetConnectionStatusChangedCallback_t>.Create(OnConnectionStatusChanged);
     }
 
     public void HostLobby()
     {
-        mainMenuPanel.SetActive(false);
-        lobbyPanel.SetActive(true);
+        /*mainMenuPanel.SetActive(false);
+        lobbyPanel.SetActive(true);*/
         Debug.Log("Started hosting a lobby");
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, networkManager.maxConnections);
     }
@@ -48,8 +41,9 @@ public class SteamLobby : MonoBehaviour
     {
         if(callback.m_eResult != EResult.k_EResultOK)
         {
-            mainMenuPanel.SetActive(true);
-            lobbyPanel.SetActive(false);
+            /*mainMenuPanel.SetActive(true);
+            lobbyPanel.SetActive(false);*/
+            Debug.LogError("Lobby was not created!");
             return;
         }
 
@@ -74,21 +68,7 @@ public class SteamLobby : MonoBehaviour
         networkManager.networkAddress = hostAddress;
         networkManager.StartClient();
 
-        mainMenuPanel.SetActive(false);
-        lobbyPanel.SetActive(true);
-    }
-
-    private void OnConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t callback)
-    {
-        Debug.LogWarning("OnConnectionStatusChanged: " + callback.m_info.m_eState);
-        if (callback.m_info.m_eState == ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_Connecting) return;
-        if (callback.m_info.m_eState == ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_FindingRoute) return;
-        if (callback.m_info.m_eState == ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_Connected) return;
-        ClientDisconnected();
-    }
-
-    private void ClientDisconnected()
-    {
-        playerManager.UpdatePlayerList();
+        /*mainMenuPanel.SetActive(false);
+        lobbyPanel.SetActive(true);*/
     }
 }

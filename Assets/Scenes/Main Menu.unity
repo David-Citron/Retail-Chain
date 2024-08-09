@@ -768,6 +768,7 @@ MonoBehaviour:
   defaultButtonsGroup: {fileID: 1410068281}
   playButtonsGroup: {fileID: 299270600}
   lobby: {fileID: 432341057}
+  mainMenu: {fileID: 435131776}
 --- !u!224 &391426609
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1188,6 +1189,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 499627842}
   m_CullTransparentMesh: 1
+--- !u!1 &657868463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 657868465}
+  - component: {fileID: 657868466}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &657868465
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657868463}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &657868466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657868463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 017af6318b3dcb94dace6fc13b2407dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layoutManager: {fileID: 391426608}
+  steamLobby: {fileID: 9028935440016645517}
+  account: {fileID: 7337739315433878580}
+  playerManager: {fileID: 2064521716}
 --- !u!1 &679185122
 GameObject:
   m_ObjectHideFlags: 0
@@ -3228,8 +3277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfc9e0c9144d43c4782875e1509e3a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuPanel: {fileID: 435131776}
-  lobbyPanel: {fileID: 432341057}
   playerManager: {fileID: 2064521716}
   layoutManager: {fileID: 391426608}
 --- !u!114 &9028935440016645518
@@ -3286,8 +3333,9 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
-  - {fileID: 9028935440016645516}
   - {fileID: 753517266}
   - {fileID: 1626408377}
   - {fileID: 391426609}
   - {fileID: 2064521717}
+  - {fileID: 9028935440016645516}
+  - {fileID: 657868465}
