@@ -75,4 +75,11 @@ public class SteamLobby : MonoBehaviour
         mainMenuPanel.SetActive(false);
         lobbyPanel.SetActive(true);
     }
+
+    private void OnLobbyExited(LobbyKicked_t callback)
+    {
+        Debug.LogWarning("Player kicked from the server!");
+        lobbyPanel.SetActive(false);
+        mainMenuPanel.SetActive(true);
+    }
 }
