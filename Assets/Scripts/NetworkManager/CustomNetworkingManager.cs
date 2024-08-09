@@ -27,9 +27,7 @@ public class CustomNetworkingManager : NetworkManager
     {
         base.OnClientDisconnect();
         Debug.LogWarning("Client disconnected");
-        playerManager.UpdatePlayerList();
-        StopClient();
-        layoutManager.ShowMainMenu();
+        if (!isNetworkActive) layoutManager.ShowMainMenu();
     }
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
@@ -37,6 +35,6 @@ public class CustomNetworkingManager : NetworkManager
         base.OnServerDisconnect(conn);
         Debug.LogWarning("Server disconnected");
         if (!isNetworkActive) layoutManager.ShowMainMenu();
-        playerManager.UpdatePlayerList();
+        playerManager.PlayerDisconnected(conn.connectionId);
     }
 }

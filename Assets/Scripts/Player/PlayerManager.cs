@@ -33,19 +33,16 @@ public class PlayerManager : MonoBehaviour
         gamePlayers.Add(gamePlayer);
     }
 
-    public void UpdatePlayerList()
+    public void PlayerDisconnected(int connectionId)
     {
-        Debug.Log("Updating player list started");
         for (int i = 0; i < gamePlayers.Count; i++)
         {
-            if (gamePlayers[i].gameObject == null)
+            if (gamePlayers[i].connectionToServer.connectionId == connectionId)
             {
-                Debug.LogWarning("Player " + i + " was not found");
+                Debug.LogWarning("Player " + i + " was removed");
                 userNames[i].text = "Player " + (i + 1);
                 profilePictures[i].texture = Texture2D.whiteTexture;
             }
-            else Debug.Log("Player " + i + " was found successfully");
         }
-        Debug.Log("Updating player list ended");
     }
 }
