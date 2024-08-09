@@ -38,7 +38,7 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("Updating player list started");
         for (int i = 0; i < gamePlayers.Count; i++)
         {
-            if (gamePlayers[i] == null)
+            if (gamePlayers[i].gameObject == null)
             {
                 Debug.LogWarning("Player " + i + " was not found");
                 userNames[i].text = "Player " + (i + 1);
