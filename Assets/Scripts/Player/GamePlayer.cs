@@ -13,13 +13,11 @@ public class GamePlayer : NetworkBehaviour
     [SerializeField] private TMP_Text username = null;
     [SerializeField] private RawImage profilePicture = null;
 
-    private PlayerManager playerManager;
+    [SerializeField] private PlayerManager playerManager;
 
     private int level;
     private int experience;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         if (isLocalPlayer) steamID = (ulong) SteamUser.GetSteamID();
