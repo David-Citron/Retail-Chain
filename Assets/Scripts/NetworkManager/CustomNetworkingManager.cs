@@ -8,6 +8,12 @@ public class CustomNetworkingManager : NetworkManager
     public override void OnClientDisconnect()
     {
         base.OnClientDisconnect();
-        Debug.Log("Client disconnected");
+        Debug.LogWarning("Client disconnected");
+    }
+
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    {
+        base.OnServerDisconnect(conn);
+        Debug.LogWarning("Server disconnected");
     }
 }
