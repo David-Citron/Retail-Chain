@@ -18,7 +18,8 @@ public class GamePlayer : NetworkBehaviour
     private int level;
     private int experience;
 
-    [SerializeField] public int connectionId { get; private set; }
+    [SyncVar]
+    [SerializeField] public int connectionId;
 
     void Start()
     {
