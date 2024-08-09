@@ -20,7 +20,12 @@ public class GamePlayer : NetworkBehaviour
 
     void Start()
     {
-        if (isLocalPlayer) steamID = (ulong) SteamUser.GetSteamID();
+        if (isLocalPlayer)
+        {
+            ulong oldSteamID = steamID;
+            steamID = (ulong) SteamUser.GetSteamID();
+            SetSteamID(oldSteamID, steamID); // Manually trigger the hook
+        }
 
         playerManager = (PlayerManager) FindAnyObjectByType(typeof(PlayerManager));
         if (playerManager == null)
