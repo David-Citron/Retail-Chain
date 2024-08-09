@@ -29,7 +29,7 @@ public class GamePlayer : NetworkBehaviour
         }
 
         playerManager.AddGamePlayer(this);
-        if (isLocalPlayer) steamID = (ulong) SteamUser.GetSteamID();
+        if (isLocalPlayer) CmdSetSteamId((ulong) SteamUser.GetSteamID());
     }
 
     // Update is called once per frame
@@ -41,6 +41,12 @@ public class GamePlayer : NetworkBehaviour
     private void FixedUpdate()
     {
         
+    }
+
+    [Command]
+    void CmdSetSteamId (ulong steamID)
+    {
+        this.steamID = steamID;
     }
 
    public void OnSteamIDChanged(ulong oldSteamId, ulong newSteamId)
