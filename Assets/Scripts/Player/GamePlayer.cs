@@ -3,6 +3,7 @@ using Steamworks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 public class GamePlayer : NetworkBehaviour
 {
@@ -21,6 +22,8 @@ public class GamePlayer : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (isLocalPlayer) steamID = (ulong) SteamUser.GetSteamID();
+
         playerManager = (PlayerManager) FindAnyObjectByType(typeof(PlayerManager));
         if (playerManager == null)
         {
@@ -29,7 +32,6 @@ public class GamePlayer : NetworkBehaviour
         }
 
         playerManager.AddGamePlayer(this);
-        if (isLocalPlayer) steamID = (ulong) SteamUser.GetSteamID();
     }
 
     // Update is called once per frame
@@ -44,10 +46,16 @@ public class GamePlayer : NetworkBehaviour
 
     public void SetSteamID(ulong oldSteamId, ulong newSteamId)
     {
-        CSteamID newCSteamID = new CSteamID(newSteamId);
         Debug.Log("SteamID change: From " + oldSteamId + " to " + newSteamId);
+
+
+        if(username == null || profilePicture == null) { return; }
+
+
+        CSteamID newCSteamID = new CSteamID(newSteamId);
         username.text = GetSteamUsername(newCSteamID);
         profilePicture.texture = GetSteamProfilePicture(newCSteamID);
+        Debug.Log("Changed username & profile picture for " + newCSteamID);
     }
 
     [Command]
@@ -89,11 +97,13 @@ public class GamePlayer : NetworkBehaviour
     {
         Debug.Log("Profile picture object set for " + steamID);
         profilePicture = image;
+        image.texture = GetSteamProfilePicture(new CSteamID(steamID));
     }
 
     public void SetUsername(TMP_Text text)
     {
         Debug.Log("Username object set for " + steamID);
         username = text;
+        text.text = GetSteamUsername(new CSteamID(steamID));
     }
 }
