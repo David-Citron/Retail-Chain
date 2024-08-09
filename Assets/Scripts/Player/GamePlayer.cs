@@ -22,7 +22,11 @@ public class GamePlayer : NetworkBehaviour
     void Start()
     {
         playerManager = (PlayerManager) FindAnyObjectByType(typeof(PlayerManager));
-        if(playerManager == null) return;
+        if (playerManager == null)
+        {
+            Debug.LogWarning("PlayerManager is null");
+            return;
+        }
 
         playerManager.AddGamePlayer(this);
         if (isLocalPlayer) steamID = SteamUser.GetSteamID();
@@ -40,6 +44,7 @@ public class GamePlayer : NetworkBehaviour
 
     public void SetSteamID(CSteamID oldSteamId, CSteamID newSteamId)
     {
+        Debug.Log("SteamID change: From " + oldSteamId + " to " + newSteamId);
         username.text = GetSteamUsername();
         profilePicture.texture = GetSteamProfilePicture();
     }
