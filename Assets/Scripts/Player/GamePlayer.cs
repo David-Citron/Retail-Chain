@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class GamePlayer : NetworkBehaviour
 {
     [SyncVar(hook = nameof(SetSteamID))]
-    private CSteamID steamID;
+    private ulong steamID;
 
     [SerializeField] private TMP_Text username = null;
     [SerializeField] private RawImage profilePicture = null;
@@ -29,7 +29,7 @@ public class GamePlayer : NetworkBehaviour
         }
 
         playerManager.AddGamePlayer(this);
-        if (isLocalPlayer) steamID = SteamUser.GetSteamID();
+        if (isLocalPlayer) steamID = (ulong) SteamUser.GetSteamID();
     }
 
     // Update is called once per frame
@@ -42,11 +42,12 @@ public class GamePlayer : NetworkBehaviour
         
     }
 
-    public void SetSteamID(CSteamID oldSteamId, CSteamID newSteamId)
+    public void SetSteamID(ulong oldSteamId, ulong newSteamId)
     {
+        CSteamID newCSteamID = new CSteamID(newSteamId);
         Debug.Log("SteamID change: From " + oldSteamId + " to " + newSteamId);
-        username.text = GetSteamUsername();
-        profilePicture.texture = GetSteamProfilePicture();
+        username.text = GetSteamUsername(newCSteamID);
+        profilePicture.texture = GetSteamProfilePicture(newCSteamID);
     }
 
     [Command]
@@ -56,17 +57,17 @@ public class GamePlayer : NetworkBehaviour
     }
 
 
-    public string GetSteamUsername()
+    public string GetSteamUsername(CSteamID newSteamId)
     {
-        return isLocalPlayer ? SteamFriends.GetPersonaName() : SteamFriends.GetFriendPersonaName(steamID);
+        return isLocalPlayer ? SteamFriends.GetPersonaName() : SteamFriends.GetFriendPersonaName(newSteamId);
     }
 
-    public Texture2D GetSteamProfilePicture()
+    public Texture2D GetSteamProfilePicture(CSteamID newSteamId)
     {
-        Debug.Log("Loading img texture for: " + steamID);
+        Debug.Log("Loading img texture for: " + newSteamId);
 
         Texture2D texture = null;
-        int avatarInt = SteamFriends.GetLargeFriendAvatar(steamID);
+        int avatarInt = SteamFriends.GetLargeFriendAvatar(newSteamId);
         if(avatarInt == -1) {
             Debug.LogWarning("Failed to load Steam profile picture, using default.");
             return texture;
@@ -86,15 +87,13 @@ public class GamePlayer : NetworkBehaviour
 
     public void SetProfilePicture(RawImage image)
     {
+        Debug.Log("Profile picture object set for " + steamID);
         profilePicture = image;
-        if (!isLocalPlayer) return;
-        image.texture = GetSteamProfilePicture();
     }
 
     public void SetUsername(TMP_Text text)
     {
+        Debug.Log("Username object set for " + steamID);
         username = text;
-        if (!isLocalPlayer) return;
-        text.text = GetSteamUsername();
     }
 }
