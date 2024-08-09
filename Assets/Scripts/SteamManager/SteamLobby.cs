@@ -13,6 +13,7 @@ public class SteamLobby : MonoBehaviour
     protected Callback<LobbyCreated_t> lobbyCreated;
     protected Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
     protected Callback<LobbyEnter_t> lobbyEntered;
+    protected Callback<SteamNetConnectionStatusChangedCallback_t> connectionStatusChanged;
 
     private const string HostAdressKey = "HostAdressKey";
 
@@ -32,6 +33,7 @@ public class SteamLobby : MonoBehaviour
         lobbyCreated = Callback<LobbyCreated_t>.Create(onLobbyCreated);
         gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
         lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
+        connectionStatusChanged = Callback<SteamNetConnectionStatusChangedCallback_t>.Create(OnConnectionStatusChanged);
     }
 
     public void HostLobby()
@@ -74,5 +76,18 @@ public class SteamLobby : MonoBehaviour
 
         mainMenuPanel.SetActive(false);
         lobbyPanel.SetActive(true);
+    }
+
+    private void OnConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t callback)
+    {
+        if (callback.m_info.m_eState == ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_Connecting) return;
+        if (callback.m_info.m_eState == ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_FindingRoute) return;
+        if (callback.m_info.m_eState == ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_Connected) return;
+        ClientDisconnected();
+    }
+
+    private void ClientDisconnected()
+    {
+        playerManager.UpdatePlayerList();
     }
 }

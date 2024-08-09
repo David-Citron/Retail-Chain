@@ -7,17 +7,11 @@ using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour 
 {
+    [SerializeField] public Account account;
 
-    [SerializeField]
-    public Account account;
-
-    public List<GamePlayer> gamePlayers = new List<GamePlayer>();
-
-    [SerializeField]
-    public List<TMP_Text> userNames = new List<TMP_Text>();
-
-    [SerializeField]
-    public List<RawImage> profilePictures = new List<RawImage>();
+    [SerializeField] public List<GamePlayer> gamePlayers = new List<GamePlayer>();
+    [SerializeField] public List<TMP_Text> userNames = new List<TMP_Text>();
+    [SerializeField] public List<RawImage> profilePictures = new List<RawImage>();
 
     // Start is called before the first frame update
     void Start()
@@ -37,5 +31,17 @@ public class PlayerManager : MonoBehaviour
         gamePlayer.SetUsername(userNames[gamePlayers.Count]);
 
         gamePlayers.Add(gamePlayer);
+    }
+
+    public void UpdatePlayerList()
+    {
+        for (int i = 0; i < gamePlayers.Count; i++)
+        {
+            if (gamePlayers[i] == null)
+            {
+                userNames[i].text = "Player " + (i + 1);
+                profilePictures[i].texture = Texture2D.whiteTexture;
+            }
+        }
     }
 }
