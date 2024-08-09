@@ -13,7 +13,6 @@ public class SteamLobby : MonoBehaviour
     protected Callback<LobbyCreated_t> lobbyCreated;
     protected Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
     protected Callback<LobbyEnter_t> lobbyEntered;
-    protected Callback<LobbyKicked_t> lobbyKicked;
 
     private const string HostAdressKey = "HostAdressKey";
 
@@ -33,7 +32,6 @@ public class SteamLobby : MonoBehaviour
         lobbyCreated = Callback<LobbyCreated_t>.Create(onLobbyCreated);
         gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
         lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
-        lobbyKicked = Callback<LobbyKicked_t>.Create(OnLobbyExited);
     }
 
     public void HostLobby()
@@ -76,12 +74,5 @@ public class SteamLobby : MonoBehaviour
 
         mainMenuPanel.SetActive(false);
         lobbyPanel.SetActive(true);
-    }
-
-    private void OnLobbyExited(LobbyKicked_t callback)
-    {
-        Debug.LogWarning("Player kicked from the server!");
-        lobbyPanel.SetActive(false);
-        mainMenuPanel.SetActive(true);
     }
 }
