@@ -29,16 +29,7 @@ public class GamePlayer : NetworkBehaviour
         }
 
         playerManager.AddGamePlayer(this);
-        //if (isLocalPlayer) CmdSetSteamID((ulong) SteamUser.GetSteamID());
         if (isLocalPlayer) steamID = (ulong) SteamUser.GetSteamID();
-    }
-
-    public override void OnStartClient()
-    {
-        Debug.Log("OnStartClient method SUCCESSFULLY called!!!");
-        Debug.Log("On Start Client Steam ID = " + steamID);
-        GetSteamProfilePicture(new CSteamID(steamID));
-        GetSteamUsername(new CSteamID(steamID));
     }
 
     // Update is called once per frame
@@ -51,12 +42,6 @@ public class GamePlayer : NetworkBehaviour
     {
         
     }
-
-    /*[Command]
-    private void CmdSetSteamID(ulong id)
-    {
-        steamID = id;  // This will trigger the hook on all clients
-    }*/
 
    public void OnSteamIDChanged(ulong oldSteamId, ulong newSteamId)
     {
