@@ -80,6 +80,7 @@ public class SteamLobby : MonoBehaviour
 
     private void OnConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t callback)
     {
+        Debug.LogWarning("OnConnectionStatusChanged: " + callback.m_info.m_eState);
         if (callback.m_info.m_eState == ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_Connecting) return;
         if (callback.m_info.m_eState == ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_FindingRoute) return;
         if (callback.m_info.m_eState == ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_Connected) return;
