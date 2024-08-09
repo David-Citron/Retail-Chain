@@ -1,4 +1,5 @@
 using Mirror;
+using Org.BouncyCastle.Security;
 using Steamworks;
 using TMPro;
 using UnityEngine;
@@ -17,10 +18,12 @@ public class GamePlayer : NetworkBehaviour
     private int level;
     private int experience;
 
+    [SerializeField] public int connectionId { get; private set; }
+
     void Start()
     {
         syncDirection = (isLocalPlayer && isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
-
+        
         playerManager = (PlayerManager) FindAnyObjectByType(typeof(PlayerManager));
         if (playerManager == null)
         {
@@ -28,7 +31,11 @@ public class GamePlayer : NetworkBehaviour
             return;
         }
 
-        if (isLocalPlayer) steamID = SteamUser.GetSteamID().m_SteamID;//CmdSetSteamId((ulong) SteamUser.GetSteamID());
+        if (isLocalPlayer)
+        {
+            steamID = SteamUser.GetSteamID().m_SteamID;
+            connectionId = connectionToServer.connectionId;
+        }
         playerManager.AddGamePlayer(this);
     }
 

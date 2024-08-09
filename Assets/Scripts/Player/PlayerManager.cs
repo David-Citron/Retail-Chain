@@ -37,7 +37,7 @@ public class PlayerManager : MonoBehaviour
     {
         for (int i = 0; i < gamePlayers.Count; i++)
         {
-            if (gamePlayers[i].connectionToServer.connectionId == connectionId)
+            if (gamePlayers[i].connectionId == connectionId)
             {
                 Debug.LogWarning("Player " + i + " was removed");
                 userNames[i].text = "Player " + (i + 1);
