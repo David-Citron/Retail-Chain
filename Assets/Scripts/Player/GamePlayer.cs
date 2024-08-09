@@ -34,7 +34,7 @@ public class GamePlayer : NetworkBehaviour
         if (isLocalPlayer)
         {
             steamID = SteamUser.GetSteamID().m_SteamID;
-            connectionId = connectionToServer.connectionId;
+            connectionId = NetworkClient.connection.connectionId;
         }
         playerManager.AddGamePlayer(this);
     }
