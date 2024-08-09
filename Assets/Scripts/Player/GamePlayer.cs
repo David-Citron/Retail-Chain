@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class GamePlayer : NetworkBehaviour
 {
-
+    [SyncVar]
     private CSteamID steamID;
 
     private PlayerManager playerManager;
