@@ -8,16 +8,19 @@ using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour 
 {
-    [SerializeField] public Account account;
-
     [SerializeField] public List<GamePlayer> gamePlayers = new List<GamePlayer>();
     [SerializeField] public List<TMP_Text> userNames = new List<TMP_Text>();
     [SerializeField] public List<RawImage> profilePictures = new List<RawImage>();
 
+    [SerializeField] public Account account;
+
+    private GameManager gameManager;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameManager = GameManager.Instance;
     }
 
     // Update is called once per frame
@@ -45,10 +48,12 @@ public class PlayerManager : MonoBehaviour
     {
         for (int i = 0; i < gamePlayers.Count; i++)
         {
-            if (gamePlayers[i].connectionId != connectionId) { continue; }
+            GamePlayer gamePlayer = gamePlayers[i];
+            if (gamePlayer.connectionId != connectionId) continue;
+            if (gamePlayer.isLocalPlayer && gamePlayer.isServer) gameManager.steamLobby.LeaveLobby();
 
             Debug.LogWarning("Player " + i + " was removed");
-            gamePlayers.Remove(gamePlayers[i]);
+            gamePlayers.Remove(gamePlayer);
 
             userNames[i].text = "Player " + (i + 1);
             profilePictures[i].texture = Texture2D.whiteTexture;

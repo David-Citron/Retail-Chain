@@ -35,6 +35,7 @@ public class CustomNetworkingManager : NetworkManager
     {
         base.OnServerDisconnect(conn);
         Debug.LogWarning("Server disconnected");
+
         if (!isNetworkActive) layoutManager.ShowMainMenu();
         playerManager.PlayerDisconnected(conn.connectionId);
     }
