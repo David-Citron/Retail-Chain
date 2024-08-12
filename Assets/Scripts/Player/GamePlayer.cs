@@ -20,6 +20,8 @@ public class GamePlayer : NetworkBehaviour
 
     [SerializeField] public int connectionId = -1;
 
+    protected Callback<AvatarImageLoaded_t> avatarImageLoaded;
+
     void Start()
     {
         if (isServer) connectionId = connectionToClient.connectionId;
@@ -37,7 +39,9 @@ public class GamePlayer : NetworkBehaviour
         {
             steamID = SteamUser.GetSteamID().m_SteamID;
         }
+
         playerManager.AddGamePlayer(this);
+        avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
     }
 
     // Update is called once per frame
@@ -63,6 +67,12 @@ public class GamePlayer : NetworkBehaviour
     public string GetSteamUsername(CSteamID newSteamId)
     {
         return isLocalPlayer ? SteamFriends.GetPersonaName() : SteamFriends.GetFriendPersonaName(newSteamId);
+    }
+
+    private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
+    {
+        if(callback.m_steamID.m_SteamID != steamID) return;
+        profilePicture.texture = GetSteamProfilePicture(callback.m_steamID);
     }
 
     public Texture2D GetSteamProfilePicture(CSteamID newSteamId)
