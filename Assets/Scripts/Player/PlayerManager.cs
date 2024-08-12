@@ -45,13 +45,13 @@ public class PlayerManager : MonoBehaviour
     {
         for (int i = 0; i < gamePlayers.Count; i++)
         {
-            if (gamePlayers[i].connectionId == connectionId)
-            {
-                Debug.LogWarning("Player " + i + " was removed");
-                userNames[i].text = "Player " + (i + 1);
-                profilePictures[i].texture = Texture2D.whiteTexture;
-                gamePlayers.Remove(gamePlayers[i]);
-            }
+            if (gamePlayers[i].connectionId != connectionId) { continue; }
+
+            Debug.LogWarning("Player " + i + " was removed");
+            gamePlayers.Remove(gamePlayers[i]);
+
+            userNames[i].text = "Player " + (i + 1);
+            profilePictures[i].texture = Texture2D.whiteTexture;
         }
     }
 }

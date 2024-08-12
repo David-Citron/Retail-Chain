@@ -64,4 +64,9 @@ public class SteamLobby : MonoBehaviour
         networkManager.networkAddress = hostAddress;
         networkManager.StartClient();
     }
+
+    public void LeaveLobby()
+    {
+        SteamMatchmaking.LeaveLobby(LobbyId);
+    }
 }
