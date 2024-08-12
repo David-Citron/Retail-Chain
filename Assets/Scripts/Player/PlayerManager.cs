@@ -1,6 +1,7 @@
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,6 +43,7 @@ public class PlayerManager : MonoBehaviour
                 Debug.LogWarning("Player " + i + " was removed");
                 userNames[i].text = "Player " + (i + 1);
                 profilePictures[i].texture = Texture2D.whiteTexture;
+                gamePlayers.Remove(gamePlayers[i]);
             }
         }
     }
