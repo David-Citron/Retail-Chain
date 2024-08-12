@@ -150,6 +150,8 @@ public class GamePlayer : NetworkBehaviour
 
     public void InitializeReadyButton(Button button, bool authority)
     {
+        if (!isLocalPlayer && !authority) return;
+
         if (isLocalPlayer && authority)
         {
             button.interactable = true;
