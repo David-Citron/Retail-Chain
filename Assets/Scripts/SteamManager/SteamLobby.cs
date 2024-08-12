@@ -43,12 +43,10 @@ public class SteamLobby : MonoBehaviour
             return;
         }
 
-        LobbyId = new CSteamID(callback.m_ulSteamIDLobby);
-
         networkManager.StartHost();
         playerManager.Reset();
 
-        SteamMatchmaking.SetLobbyData(LobbyId, HostAdressKey, SteamUser.GetSteamID().ToString());
+        SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), HostAdressKey, SteamUser.GetSteamID().ToString());
     }
 
     private void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback)
