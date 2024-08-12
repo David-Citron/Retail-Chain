@@ -42,7 +42,7 @@ public class PlayerManager : MonoBehaviour
 
         gamePlayer.SetProfilePicture(GetProfilePictures()[index]);
         gamePlayer.SetUsername(GetUsernames()[index]);
-        gamePlayer.SetReadyStatus(GetReadyButtons()[index], GetReadyTextButtons()[index]);
+        gamePlayer.SetReadyStatus(GetReadyButtons()[index], GetReadyTextButtons()[index], false);
 
         for (int i = 0; i < GetReadyButtons().Count; i++)
         {
