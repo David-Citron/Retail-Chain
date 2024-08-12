@@ -99,21 +99,24 @@ public class GamePlayer : NetworkBehaviour
         byte[] imageReceived = new byte[width * height * 4];
         if (SteamUtils.GetImageRGBA(avatarInt, imageReceived, (int)(width * height * 4)))
         {
-            Debug.Log("imageReceived = " + BitConverter.ToString(imageReceived));
             byte[] image = new byte[width * height * 4];
-            int nextByte = 0;
+            int saveTo;
+            int loadFrom = 0;
+            int offset = imageReceived.Length;
             for (int i = 0; i < (int)height; i++)
             {
+                offset-=(int)width * 4;
+                saveTo = offset; 
                 for (int j = 0; j < (int)width; j++)
                 {
                     for (int k = 0; k < 4; k++)
                     {
-                        image[nextByte] = imageReceived[nextByte];
-                        nextByte++;
+                        image[saveTo] = imageReceived[loadFrom];
+                        saveTo++;
+                        loadFrom++;
                     }
                 }
             }
-            Debug.Log("image = " + BitConverter.ToString(image));
             texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false);
             texture.LoadRawTextureData(image);
             texture.Apply();
