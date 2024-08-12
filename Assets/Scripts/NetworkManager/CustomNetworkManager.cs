@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class CustomNetworkingManager : NetworkManager
+public class CustomNetworkManager : NetworkManager
 {
     private GameManager gameManager;
     private LayoutManager layoutManager;
@@ -27,7 +25,6 @@ public class CustomNetworkingManager : NetworkManager
     {
         base.OnClientDisconnect();
         Debug.LogWarning("Client disconnected");
-        layoutManager.ShowMainMenu();
         gameManager.steamLobby.LeaveLobby();
     }
 

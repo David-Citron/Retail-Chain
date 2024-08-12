@@ -2,9 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class LayoutManager : MonoBehaviour
 {
+
+
+
+    [SerializeField] public List<TMP_Text> userNames = new List<TMP_Text>();
+    [SerializeField] public List<RawImage> profilePictures = new List<RawImage>();
+
+    [SerializeField] public List<Button> readyButtons = new List<Button>();
+    [SerializeField] public List<TMP_Text> readyTextButtons = new List<TMP_Text>();
+
+    [SerializeField] public Button leaveButton;
+
     [SerializeField] private GameObject defaultButtonsGroup;
     [SerializeField] private GameObject playButtonsGroup;
     [SerializeField] private GameObject lobby;

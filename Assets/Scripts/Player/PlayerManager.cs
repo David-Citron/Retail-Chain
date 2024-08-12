@@ -1,7 +1,4 @@
-using Mirror;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,8 +6,6 @@ using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour 
 {
     [SerializeField] public List<GamePlayer> gamePlayers = new List<GamePlayer>();
-    [SerializeField] public List<TMP_Text> userNames = new List<TMP_Text>();
-    [SerializeField] public List<RawImage> profilePictures = new List<RawImage>();
 
     [SerializeField] public Account account;
 
@@ -29,17 +24,34 @@ public class PlayerManager : MonoBehaviour
         
     }
 
+    public void ChangeReadyStatus(GamePlayer gamePlayer)
+    {
+        gamePlayer.ChangeReadyStatus();
+    }
+
     public void Reset()
     {
         gamePlayers.Clear();
-        userNames.ForEach(userName => userName.text = "Player " + (userNames.IndexOf(userName) + 1));
-        profilePictures.ForEach(picture => picture.texture = Texture2D.whiteTexture);
+        GetUsernames().ForEach(userName => userName.text = "Player " + (GetUsernames().IndexOf(userName) + 1));
+        GetProfilePictures().ForEach(picture => picture.texture = Texture2D.whiteTexture);
     }
 
     public void AddGamePlayer(GamePlayer gamePlayer)
     {
-        gamePlayer.SetProfilePicture(profilePictures[gamePlayers.Count]);
-        gamePlayer.SetUsername(userNames[gamePlayers.Count]);
+        var index = gamePlayers.Count;
+
+        gamePlayer.SetProfilePicture(GetProfilePictures()[index]);
+        gamePlayer.SetUsername(GetUsernames()[index]);
+        gamePlayer.SetReadyStatus(GetReadyButtons()[index], GetReadyTextButtons()[index]);
+
+        for (int i = 0; i < GetReadyButtons().Count; i++)
+        {
+            var currentButton = GetReadyButtons()[i];
+
+            gamePlayer.InitializeReadyButton(currentButton, currentButton == GetReadyButtons()[index]);
+        }
+
+        gamePlayer.InitializeLeaveButton(GetLayoutManager().leaveButton);
 
         gamePlayers.Add(gamePlayer);
     }
@@ -55,8 +67,14 @@ public class PlayerManager : MonoBehaviour
             Debug.LogWarning("Player " + i + " was removed");
             gamePlayers.Remove(gamePlayer);
 
-            userNames[i].text = "Player " + (i + 1);
-            profilePictures[i].texture = Texture2D.whiteTexture;
+            GetUsernames()[i].text = "Player " + (i + 1);
+            GetProfilePictures()[i].texture = Texture2D.whiteTexture;
         }
     }
+    public LayoutManager GetLayoutManager() => gameManager.layoutManager;
+    private List<TMP_Text> GetUsernames() => GetLayoutManager().userNames;
+    private List<RawImage> GetProfilePictures() => GetLayoutManager().profilePictures;
+    private List<TMP_Text> GetReadyTextButtons() => GetLayoutManager().readyTextButtons;
+    private List<Button> GetReadyButtons() => GetLayoutManager().readyButtons;
+    
 }

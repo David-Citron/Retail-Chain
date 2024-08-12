@@ -1,3 +1,4 @@
+using Edgegap;
 using Mirror;
 using Steamworks;
 using UnityEngine;
@@ -43,10 +44,12 @@ public class SteamLobby : MonoBehaviour
             return;
         }
 
+        LobbyId = new CSteamID(callback.m_ulSteamIDLobby);
+
         networkManager.StartHost();
         playerManager.Reset();
 
-        SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), HostAdressKey, SteamUser.GetSteamID().ToString());
+        SteamMatchmaking.SetLobbyData(LobbyId, HostAdressKey, SteamUser.GetSteamID().ToString());
     }
 
     private void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback)
@@ -61,14 +64,15 @@ public class SteamLobby : MonoBehaviour
         CSteamID lobbyId = new CSteamID(callback.m_ulSteamIDLobby);
         LobbyId = lobbyId;
 
-        string hostAddress = SteamMatchmaking.GetLobbyData(lobbyId, HostAdressKey);
+        string hostAddress = SteamMatchmaking.GetLobbyData(LobbyId, HostAdressKey);
         networkManager.networkAddress = hostAddress;
         networkManager.StartClient();
     }
 
     public void LeaveLobby()
     {
-        Debug.LogWarning("Leaving lobby " + LobbyId);
+        Debug.Log("Leaving lobby " + LobbyId);
         SteamMatchmaking.LeaveLobby(LobbyId);
+        layoutManager.ShowMainMenu();
     }
 }
