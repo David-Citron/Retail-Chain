@@ -12,15 +12,16 @@ public class GamePlayer : NetworkBehaviour
     private ulong steamID;
 
 
-    private Button readyButton = null;
-    private TMP_Text ready = null;
-
     private TMP_Text username = null;
     private RawImage profilePicture = null;
 
     private PlayerManager playerManager;
 
+    [SyncVar(hook = nameof(OnReadyStatusChanged))]
     private bool isReady = false;
+
+    private Button readyButton = null;
+    private TMP_Text readyText = null;
 
     private int level;
     private int experience;
@@ -64,7 +65,7 @@ public class GamePlayer : NetworkBehaviour
 
    public void OnSteamIDChanged(ulong oldSteamId, ulong newSteamId)
     {
-        if(username == null || profilePicture == null) { return; }
+        if(username == null || profilePicture == null) return; 
 
         CSteamID newCSteamID = new CSteamID(newSteamId);
         username.text = GetSteamUsername(newCSteamID);
@@ -162,18 +163,23 @@ public class GamePlayer : NetworkBehaviour
         button.interactable = false;
     }
 
-    public void SetReadyStatus(Button button, TMP_Text text)
-    {
-        ready = text;
-        readyButton = button;
-
-        text.text = isReady ? "READY" : "NOT READY";
-        text.color = isReady ? Color.green : Color.red;
-    }
-
     public void ChangeReadyStatus()
     {
         isReady = !isReady;
-        SetReadyStatus(readyButton, ready);
+        SetReadyStatus(readyButton, readyText, isReady);
+    }
+
+    public void OnReadyStatusChanged(bool oldValue, bool newValue)
+    {
+        SetReadyStatus(readyButton, readyText, newValue);
+    }
+
+    public void SetReadyStatus(Button button, TMP_Text text, bool status)
+    {
+        readyText = text;
+        readyButton = button;
+
+        text.text = status ? "READY" : "NOT READY";
+        text.color = status ? Color.green : Color.red;
     }
 }
