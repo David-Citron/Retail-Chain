@@ -26,6 +26,11 @@ public class PlayerManager : MonoBehaviour
         
     }
 
+    public void Reset()
+    {
+        gamePlayers.Clear();
+    }
+
     public void AddGamePlayer(GamePlayer gamePlayer)
     {
         gamePlayer.SetProfilePicture(profilePictures[gamePlayers.Count]);

@@ -31,8 +31,6 @@ public class SteamLobby : MonoBehaviour
 
     public void HostLobby()
     {
-        /*mainMenuPanel.SetActive(false);
-        lobbyPanel.SetActive(true);*/
         Debug.Log("Started hosting a lobby");
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, networkManager.maxConnections);
     }
@@ -41,8 +39,6 @@ public class SteamLobby : MonoBehaviour
     {
         if(callback.m_eResult != EResult.k_EResultOK)
         {
-            /*mainMenuPanel.SetActive(true);
-            lobbyPanel.SetActive(false);*/
             Debug.LogError("Lobby was not created!");
             return;
         }
@@ -50,6 +46,7 @@ public class SteamLobby : MonoBehaviour
         LobbyId = new CSteamID(callback.m_ulSteamIDLobby);
 
         networkManager.StartHost();
+        playerManager.Reset();
 
         SteamMatchmaking.SetLobbyData(LobbyId, HostAdressKey, SteamUser.GetSteamID().ToString());
     }
@@ -62,13 +59,9 @@ public class SteamLobby : MonoBehaviour
     private void OnLobbyEntered(LobbyEnter_t callback)
     {
         if (NetworkServer.active) return;
-        
 
         string hostAddress = SteamMatchmaking.GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), HostAdressKey);
         networkManager.networkAddress = hostAddress;
         networkManager.StartClient();
-
-        /*mainMenuPanel.SetActive(false);
-        lobbyPanel.SetActive(true);*/
     }
 }
