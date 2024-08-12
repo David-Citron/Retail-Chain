@@ -29,6 +29,8 @@ public class PlayerManager : MonoBehaviour
     public void Reset()
     {
         gamePlayers.Clear();
+        userNames.ForEach(userName => userName.text = "Player " + (userNames.IndexOf(userName) + 1));
+        profilePictures.ForEach(picture => picture.texture = Texture2D.whiteTexture);
     }
 
     public void AddGamePlayer(GamePlayer gamePlayer)
