@@ -60,13 +60,18 @@ public class SteamLobby : MonoBehaviour
     {
         if (NetworkServer.active) return;
 
-        string hostAddress = SteamMatchmaking.GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), HostAdressKey);
+        CSteamID lobbyId = new CSteamID(callback.m_ulSteamIDLobby);
+
+        Debug.LogWarning(lobbyId);
+
+        string hostAddress = SteamMatchmaking.GetLobbyData(lobbyId, HostAdressKey);
         networkManager.networkAddress = hostAddress;
         networkManager.StartClient();
     }
 
     public void LeaveLobby()
     {
+        Debug.LogWarning("Leaving lobby " + LobbyId);
         SteamMatchmaking.LeaveLobby(LobbyId);
     }
 }
