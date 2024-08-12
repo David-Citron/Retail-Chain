@@ -19,15 +19,24 @@ public class SteamLobby : MonoBehaviour
 
     public static CSteamID LobbyId {get; private set; }
 
+    private bool steamIsInitialized;
+
     private void Start()
     {
         networkManager = GetComponent<NetworkManager>();
 
-        if(!SteamManager.Initialized) return;
+        if(!SteamIsInitialized()) return;
 
         lobbyCreated = Callback<LobbyCreated_t>.Create(onLobbyCreated);
         gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
         lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
+    }
+
+    private bool SteamIsInitialized()
+    {
+        steamIsInitialized = SteamManager.Initialized;
+        if (!steamIsInitialized) layoutManager.ShowSteamNotInitializedNotification();
+        return steamIsInitialized;
     }
 
     public void HostLobby()

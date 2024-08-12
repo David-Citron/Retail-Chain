@@ -21,6 +21,7 @@ public class LayoutManager : MonoBehaviour
     [SerializeField] private GameObject playButtonsGroup;
     [SerializeField] private GameObject lobby;
     [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject steamNotInitializedNotification;
 
     void Start()
     {
@@ -54,7 +55,12 @@ public class LayoutManager : MonoBehaviour
 
     public void ExitGame()
     {
+        Debug.Log("Quit game");
         Application.Quit();
     }
 
+    public void ShowSteamNotInitializedNotification()
+    {
+        steamNotInitializedNotification.SetActive(true);
+    }
 }
