@@ -61,8 +61,7 @@ public class SteamLobby : MonoBehaviour
         if (NetworkServer.active) return;
 
         CSteamID lobbyId = new CSteamID(callback.m_ulSteamIDLobby);
-
-        Debug.LogWarning(lobbyId);
+        LobbyId = lobbyId;
 
         string hostAddress = SteamMatchmaking.GetLobbyData(lobbyId, HostAdressKey);
         networkManager.networkAddress = hostAddress;
