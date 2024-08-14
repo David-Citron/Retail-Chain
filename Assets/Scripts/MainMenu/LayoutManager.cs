@@ -23,6 +23,8 @@ public class LayoutManager : MonoBehaviour
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject steamNotInitializedNotification;
 
+    [SerializeField] private TMP_Text notificationText;
+
     void Start()
     {
         defaultButtonsGroup.SetActive(true);
@@ -62,5 +64,28 @@ public class LayoutManager : MonoBehaviour
     public void ShowSteamNotInitializedNotification()
     {
         steamNotInitializedNotification.SetActive(true);
+    }
+
+    
+
+
+    public void SendNotification(string text, int time)
+    {
+        SendColoredNotification(text, Color.white, time);
+    }
+
+    public void SendColoredNotification(string text, Color color, int time)
+    {
+        StartCoroutine(SendEnumaratorNotification(text, color, time));
+    }
+
+    public IEnumerator SendEnumaratorNotification(string text, Color color, int time)
+    {
+        Debug.Log("New notification: " + text + " for " + time);
+        notificationText.text = text;
+        notificationText.color = color;
+        yield return new WaitForSecondsRealtime(time);
+        notificationText.text = "";
+        notificationText.color = Color.white;
     }
 }

@@ -56,7 +56,13 @@ public class PlayerManager : MonoBehaviour
         gamePlayers.Add(gamePlayer);
     }
 
-    public void PlayerDisconnected(int connectionId)
+    /**
+     * 
+     * returns gameplayer object that left.
+     *
+     *
+     */
+    public GamePlayer PlayerDisconnected(int connectionId)
     {
         for (int i = 0; i < gamePlayers.Count; i++)
         {
@@ -69,7 +75,21 @@ public class PlayerManager : MonoBehaviour
 
             GetUsernames()[i].text = "Player " + (i + 1);
             GetProfilePictures()[i].texture = Texture2D.whiteTexture;
+            return gamePlayer;
         }
+        return null;
+    }
+
+    public GamePlayer GetGamePlayerByConnId(int connId)
+    {
+
+        for (int i = 0; i < gamePlayers.Count; i++)
+        {
+            GamePlayer gamePlayer = gamePlayers[i];
+            if (gamePlayer.connectionId != connId) continue;
+            return gamePlayer;
+        }
+        return null;
     }
     public LayoutManager GetLayoutManager() => gameManager.layoutManager;
     private List<TMP_Text> GetUsernames() => GetLayoutManager().userNames;

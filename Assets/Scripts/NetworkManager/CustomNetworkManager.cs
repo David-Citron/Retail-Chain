@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using Steamworks;
 
 public class CustomNetworkManager : NetworkManager
 {
@@ -19,6 +20,8 @@ public class CustomNetworkManager : NetworkManager
     {
         base.OnClientConnect();
         layoutManager.ShowLobby();
+        gameManager.layoutManager.SendColoredNotification("Welcome to RetailChain.", Color.green, 5);
+        Debug.LogWarning("Client connect.");
     }
 
     public override void OnClientDisconnect()
@@ -26,6 +29,7 @@ public class CustomNetworkManager : NetworkManager
         base.OnClientDisconnect();
         Debug.LogWarning("Client disconnected");
         gameManager.steamLobby.LeaveLobby();
+        gameManager.layoutManager.SendColoredNotification("Host has disconnected. You were kicked.", Color.red, 5);
     }
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
@@ -34,6 +38,8 @@ public class CustomNetworkManager : NetworkManager
         Debug.LogWarning("Server disconnected");
 
         if (!isNetworkActive) layoutManager.ShowMainMenu();
-        playerManager.PlayerDisconnected(conn.connectionId);
+        var gamePlayer = playerManager.PlayerDisconnected(conn.connectionId);
+        if (gamePlayer == null) return;
+        gameManager.layoutManager.SendColoredNotification(gamePlayer.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " has disconnected.", Color.red, 5);
     }
 }

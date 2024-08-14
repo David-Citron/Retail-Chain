@@ -70,6 +70,7 @@ public class GamePlayer : NetworkBehaviour
         CSteamID newCSteamID = new CSteamID(newSteamId);
         username.text = GetSteamUsername(newCSteamID);
         profilePicture.texture = GetSteamProfilePicture(newCSteamID);
+        GameManager.Instance.layoutManager.SendNotification("New bitch there " + username.text + ".", 5);
     }
 
     public string GetSteamUsername(CSteamID newSteamId)
@@ -148,6 +149,8 @@ public class GamePlayer : NetworkBehaviour
             Debug.Log(isServer + " " + isClient);
             if (isServer && isClient) GameManager.Instance.networkManager.StopHost();
             else GameManager.Instance.networkManager.StopClient();
+            
+
             playerManager.GetLayoutManager().ShowMainMenu();
         });
     }
@@ -185,4 +188,6 @@ public class GamePlayer : NetworkBehaviour
         text.text = status ? "READY" : "NOT READY";
         text.color = status ? Color.green : Color.red;
     }
+
+    public ulong GetSteamId() => steamID;
 }
