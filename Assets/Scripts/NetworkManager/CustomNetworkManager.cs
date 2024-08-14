@@ -29,7 +29,6 @@ public class CustomNetworkManager : NetworkManager
         base.OnClientDisconnect();
         Debug.LogWarning("Client disconnected");
         gameManager.steamLobby.LeaveLobby();
-        gameManager.layoutManager.SendColoredNotification("Host has disconnected. You were kicked.", Color.red, 5);
     }
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
@@ -40,6 +39,9 @@ public class CustomNetworkManager : NetworkManager
         if (!isNetworkActive) layoutManager.ShowMainMenu();
         var gamePlayer = playerManager.PlayerDisconnected(conn.connectionId);
         if (gamePlayer == null) return;
-        gameManager.layoutManager.SendColoredNotification(gamePlayer.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " has disconnected.", Color.red, 5);
+
+        string userName = gamePlayer.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId()));
+        if (gamePlayer.isServer && gamePlayer.isClient) gameManager.layoutManager.SendColoredNotification(userName + " has disconnected. You were kicked from the Lobby because he was host.", Color.red, 5);
+        else gameManager.layoutManager.SendColoredNotification(userName + " has disconnected.", Color.red, 5);
     }
 }
