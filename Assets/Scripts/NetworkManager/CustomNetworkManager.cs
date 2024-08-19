@@ -41,7 +41,7 @@ public class CustomNetworkManager : NetworkManager
         if (gamePlayer == null) return;
 
         string userName = gamePlayer.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId()));
-        if (gamePlayer.isServer && gamePlayer.isClient) gameManager.layoutManager.SendColoredNotification(userName + " has disconnected. You were kicked from the Lobby because he was host.", Color.red, 5);
+        if (!gamePlayer.isServer) gameManager.layoutManager.SendColoredNotification(userName + " has disconnected. You were kicked from the Lobby because he was host.", Color.red, 5);
         else gameManager.layoutManager.SendColoredNotification(userName + " has disconnected.", Color.red, 5);
     }
 }
