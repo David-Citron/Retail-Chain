@@ -72,16 +72,6 @@ public class GamePlayer : NetworkBehaviour
         
     }
 
-   public void OnSteamIDChanged(ulong oldSteamId, ulong newSteamId)
-    {
-        if(usernameText == null || profilePicture == null) return; 
-
-        CSteamID newCSteamID = new CSteamID(newSteamId);
-        usernameText.text = GetSteamUsername(newCSteamID);
-        profilePicture.texture = GetSteamProfilePicture(newCSteamID);
-        GameManager.Instance.layoutManager.SendNotification("New bitch there " + usernameText.text + ".", 5);
-    }
-
     public string GetSteamUsername(CSteamID newSteamId)
     {
         return isLocalPlayer ? SteamFriends.GetPersonaName() : SteamFriends.GetFriendPersonaName(newSteamId);
@@ -157,6 +147,16 @@ public class GamePlayer : NetworkBehaviour
         text.text = GetSteamUsername(new CSteamID(steamID));
     }
 
+    public void OnSteamIDChanged(ulong oldSteamId, ulong newSteamId)
+    {
+        if (usernameText == null || profilePicture == null) return;
+
+        CSteamID newCSteamID = new CSteamID(newSteamId);
+        usernameText.text = GetSteamUsername(newCSteamID);
+        profilePicture.texture = GetSteamProfilePicture(newCSteamID);
+        GameManager.Instance.layoutManager.SendNotification("New bitch there " + usernameText.text + ".", 5);
+    }
+
     public void InitializeLeaveButton(Button button)
     {
         button.interactable = true;
@@ -206,15 +206,15 @@ public class GamePlayer : NetworkBehaviour
         });
     }
 
+
     public void SetPlayeRole(PlayerRole newRole)
     {
         playerRole = newRole;
-        playerRoleText.text = newRole.ToString();
     }
 
     public void OnChangePlayerRole(PlayerRole oldValue, PlayerRole newValue)
     {
-        playerRole = playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop;
+        playerRoleText.text = newValue.ToString();
     }
 
     public void ChangeReadyStatus()
