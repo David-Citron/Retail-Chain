@@ -241,7 +241,7 @@ public class GamePlayer : NetworkBehaviour
 
     public void SetReadyStatus(Button button, TMP_Text text, bool status)
     {
-        if(isServer && isLocalPlayer) CheckReadyStatus();
+        CheckReadyStatus();
 
         if (readyText != text) readyText = text;
         if(readyButton != button) readyButton = button;
@@ -256,8 +256,11 @@ public class GamePlayer : NetworkBehaviour
         var oppositePlayer = playerManager.GetOppositePlayer(this);
         if (!oppositePlayer.isReady) return;
 
-        //StartGame();
-        Debug.Log("GAME STARTED WOHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+        if (isServer)
+        {
+            //StartGame();
+            Debug.Log("GAME STARTED WOHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+        }
     }
 
     public ulong GetSteamId() => steamID;
