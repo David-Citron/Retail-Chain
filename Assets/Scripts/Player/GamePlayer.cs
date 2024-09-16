@@ -135,7 +135,7 @@ public class GamePlayer : NetworkBehaviour
         image.texture = GetSteamProfilePicture(new CSteamID(steamID));
     }
 
-    public void SetPlayerRole(TMP_Text text)
+    public void SetPlayerRoleText(TMP_Text text)
     {
         playerRoleText = text;
         text.text = playerRole.ToString();
@@ -204,6 +204,9 @@ public class GamePlayer : NetworkBehaviour
             var oppositePlayer = playerManager.GetOppositePlayer(this);
             oppositePlayer.SetPlayeRole(playerRole);
             SetPlayeRole(playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
+
+            Debug.Log(oppositePlayer.GetSteamUsername(new CSteamID(oppositePlayer.GetSteamId())) + "¨(opposite player) was set to " + oppositePlayer.playerRole.ToString());
+            Debug.Log(GetSteamUsername(new CSteamID(GetSteamId())) + " was set to " + playerRole.ToString());
         });
     }
 
@@ -211,6 +214,7 @@ public class GamePlayer : NetworkBehaviour
     public void SetPlayeRole(PlayerRole newRole)
     {
         playerRole = newRole;
+        playerRoleText.text = newRole.ToString();
     }
 
     public void OnChangePlayerRole(PlayerRole oldValue, PlayerRole newValue)
@@ -232,8 +236,8 @@ public class GamePlayer : NetworkBehaviour
 
     public void SetReadyStatus(Button button, TMP_Text text, bool status)
     {
-        readyText = text;
-        readyButton = button;
+        if(readyText != text) readyText = text;
+        if(readyButton != button) readyButton = button;
 
         text.text = status ? "READY" : "NOT READY";
         text.color = status ? Color.green : Color.red;
