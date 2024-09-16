@@ -26,6 +26,10 @@ public class PlayerManager : MonoBehaviour
 
     public GamePlayer GetOppositePlayer(GamePlayer player)
     {
+        if (gamePlayers.Count < 2) return null;
+
+        Debug.Log("Index: " + gamePlayers.IndexOf(player));
+
         return gamePlayers.IndexOf(player) == 0 ? gamePlayers[1] : gamePlayers[0];
     }
 
