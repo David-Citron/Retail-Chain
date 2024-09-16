@@ -11,6 +11,7 @@ public class GamePlayer : NetworkBehaviour
     [SyncVar(hook = nameof(OnSteamIDChanged))]
     private ulong steamID;
 
+    [SyncVar(hook = nameof(OnChangePlayerRole))]
     private PlayerRole playerRole;
     private TMP_Text playerRoleText = null;
 
@@ -200,9 +201,20 @@ public class GamePlayer : NetworkBehaviour
             }
 
             var oppositePlayer = playerManager.GetOppositePlayer(this);
-            oppositePlayer.playerRole = this.playerRole;
-            playerRole = oppositePlayer.playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop;
+            oppositePlayer.SetPlayeRole(oppositePlayer.playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
+            SetPlayeRole(playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
         });
+    }
+
+    public void SetPlayeRole(PlayerRole newRole)
+    {
+        playerRole = newRole;
+        playerRoleText.text = newRole.ToString();
+    }
+
+    public void OnChangePlayerRole(PlayerRole oldValue, PlayerRole newValue)
+    {
+        playerRole = playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop;
     }
 
     public void ChangeReadyStatus()
