@@ -252,15 +252,20 @@ public class GamePlayer : NetworkBehaviour
 
     public void CheckReadyStatus()
     {
+        if (!isServer) return;
+
+
         if (!isReady) return;
         var oppositePlayer = playerManager.GetOppositePlayer(this);
         if (!oppositePlayer.isReady) return;
 
-        if (isServer)
-        {
-            //StartGame();
-            Debug.Log("GAME STARTED WOHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-        }
+        if (!isLocalPlayer) oppositePlayer.StartGame();
+        else StartGame();
+    }
+
+    public void StartGame()
+    {
+         Debug.Log("GAME STARTED WOHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
     }
 
     public ulong GetSteamId() => steamID;
