@@ -214,6 +214,7 @@ public class GamePlayer : NetworkBehaviour
 
     public void OnChangePlayerRole(PlayerRole oldValue, PlayerRole newValue)
     {
+        if (playerRoleText == null) return;
         playerRoleText.text = newValue.ToString();
     }
 
