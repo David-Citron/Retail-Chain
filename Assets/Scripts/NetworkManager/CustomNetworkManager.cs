@@ -19,7 +19,10 @@ public class CustomNetworkManager : NetworkManager
     public override void OnClientConnect()
     {
         base.OnClientConnect();
+
+        playerManager.Reset();
         layoutManager.ShowLobby();
+
         gameManager.layoutManager.SendColoredNotification("Welcome to RetailChain.", Color.green, 5);
         Debug.LogWarning("Client connect.");
     }
@@ -37,11 +40,5 @@ public class CustomNetworkManager : NetworkManager
         Debug.LogWarning("Server disconnected");
 
         if (!isNetworkActive) layoutManager.ShowMainMenu();
-        var gamePlayer = playerManager.PlayerDisconnected(conn.connectionId);
-        if (gamePlayer == null) return;
-
-        string userName = gamePlayer.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId()));
-        if (!gamePlayer.isServer) gameManager.layoutManager.SendColoredNotification(userName + " has disconnected. You were kicked from the Lobby because he was host.", Color.red, 5);
-        else gameManager.layoutManager.SendColoredNotification(userName + " has disconnected.", Color.red, 5);
     }
 }

@@ -56,7 +56,6 @@ public class SteamLobby : MonoBehaviour
         LobbyId = new CSteamID(callback.m_ulSteamIDLobby);
 
         networkManager.StartHost();
-        playerManager.Reset();
 
         SteamMatchmaking.SetLobbyData(LobbyId, HostAdressKey, SteamUser.GetSteamID().ToString());
     }
