@@ -13,6 +13,7 @@ public class GamePlayer : NetworkBehaviour
 
     [SyncVar(hook = nameof(OnChangePlayerRole))]
     private PlayerRole playerRole;
+
     private TMP_Text playerRoleText = null;
 
     private TMP_Text usernameText = null;
@@ -40,7 +41,7 @@ public class GamePlayer : NetworkBehaviour
             connectionId = connectionToClient.connectionId;
         }
 
-        if (isServer && isLocalPlayer) playerRole = PlayerRole.Shop;
+        if (isServer && isLocalPlayer || !isServer && !isLocalPlayer) playerRole = PlayerRole.Shop;
         else playerRole = PlayerRole.Factory;
 
         syncDirection = (isLocalPlayer && isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
@@ -201,7 +202,7 @@ public class GamePlayer : NetworkBehaviour
             }
 
             var oppositePlayer = playerManager.GetOppositePlayer(this);
-            oppositePlayer.SetPlayeRole(oppositePlayer.playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
+            oppositePlayer.SetPlayeRole(playerRole);
             SetPlayeRole(playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
         });
     }
