@@ -15,7 +15,10 @@ public class LayoutManager : MonoBehaviour
     [SerializeField] public List<Button> readyButtons = new List<Button>();
     [SerializeField] public List<TMP_Text> readyTextButtons = new List<TMP_Text>();
 
+    [SerializeField] public List<TMP_Text> roleTexts = new List<TMP_Text>();
+
     [SerializeField] public Button leaveButton;
+    [SerializeField] public Button swapButton;
 
     [SerializeField] private GameObject defaultButtonsGroup;
     [SerializeField] private GameObject playButtonsGroup;
@@ -65,9 +68,6 @@ public class LayoutManager : MonoBehaviour
     {
         steamNotInitializedNotification.SetActive(true);
     }
-
-    
-
 
     public void SendNotification(string text, int time)
     {

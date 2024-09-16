@@ -24,6 +24,11 @@ public class PlayerManager : MonoBehaviour
         
     }
 
+    public GamePlayer GetOppositePlayer(GamePlayer player)
+    {
+        return gamePlayers.IndexOf(player) == 0 ? gamePlayers[1] : gamePlayers[0];
+    }
+
     public void ChangeReadyStatus(GamePlayer gamePlayer)
     {
         gamePlayer.ChangeReadyStatus();
@@ -43,6 +48,7 @@ public class PlayerManager : MonoBehaviour
         gamePlayer.SetProfilePicture(GetProfilePictures()[index]);
         gamePlayer.SetUsername(GetUsernames()[index]);
         gamePlayer.SetReadyStatus(GetReadyButtons()[index], GetReadyTextButtons()[index], false);
+        gamePlayer.SetPlayerRole(GetRolesTexts()[index]);
 
         for (int i = 0; i < GetReadyButtons().Count; i++)
         {
@@ -50,6 +56,8 @@ public class PlayerManager : MonoBehaviour
 
             gamePlayer.InitializeReadyButton(currentButton, currentButton == GetReadyButtons()[index]);
         }
+
+        gamePlayer.InitializeRoleSwapButton(GetLayoutManager().swapButton);
 
         gamePlayer.InitializeLeaveButton(GetLayoutManager().leaveButton);
 
@@ -96,5 +104,7 @@ public class PlayerManager : MonoBehaviour
     private List<RawImage> GetProfilePictures() => GetLayoutManager().profilePictures;
     private List<TMP_Text> GetReadyTextButtons() => GetLayoutManager().readyTextButtons;
     private List<Button> GetReadyButtons() => GetLayoutManager().readyButtons;
-    
+    private List<TMP_Text> GetRolesTexts() => GetLayoutManager().roleTexts;
+
+
 }

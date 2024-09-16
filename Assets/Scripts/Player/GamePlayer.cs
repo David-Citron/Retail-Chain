@@ -11,8 +11,10 @@ public class GamePlayer : NetworkBehaviour
     [SyncVar(hook = nameof(OnSteamIDChanged))]
     private ulong steamID;
 
+    private PlayerRole playerRole;
+    private TMP_Text playerRoleText = null;
 
-    private TMP_Text username = null;
+    private TMP_Text usernameText = null;
     private RawImage profilePicture = null;
 
     private PlayerManager playerManager;
@@ -32,7 +34,12 @@ public class GamePlayer : NetworkBehaviour
 
     void Start()
     {
-        if (isServer) connectionId = connectionToClient.connectionId;
+        if (isServer)
+        {
+            connectionId = connectionToClient.connectionId;
+            playerRole = PlayerRole.Shop;
+        }
+        else playerRole = PlayerRole.Factory;
 
         syncDirection = (isLocalPlayer && isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
         
@@ -65,12 +72,12 @@ public class GamePlayer : NetworkBehaviour
 
    public void OnSteamIDChanged(ulong oldSteamId, ulong newSteamId)
     {
-        if(username == null || profilePicture == null) return; 
+        if(usernameText == null || profilePicture == null) return; 
 
         CSteamID newCSteamID = new CSteamID(newSteamId);
-        username.text = GetSteamUsername(newCSteamID);
+        usernameText.text = GetSteamUsername(newCSteamID);
         profilePicture.texture = GetSteamProfilePicture(newCSteamID);
-        GameManager.Instance.layoutManager.SendNotification("New bitch there " + username.text + ".", 5);
+        GameManager.Instance.layoutManager.SendNotification("New bitch there " + usernameText.text + ".", 5);
     }
 
     public string GetSteamUsername(CSteamID newSteamId)
@@ -118,6 +125,7 @@ public class GamePlayer : NetworkBehaviour
                     }
                 }
             }
+
             texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false);
             texture.LoadRawTextureData(image);
             texture.Apply();
@@ -134,10 +142,16 @@ public class GamePlayer : NetworkBehaviour
         image.texture = GetSteamProfilePicture(new CSteamID(steamID));
     }
 
+    public void SetPlayerRole(TMP_Text text)
+    {
+        playerRoleText = text;
+        text.text = playerRole.ToString();
+    }
+
     public void SetUsername(TMP_Text text)
     {
         Debug.Log("Username object set for " + steamID);
-        username = text;
+        usernameText = text;
         text.text = GetSteamUsername(new CSteamID(steamID));
     }
 
@@ -167,6 +181,27 @@ public class GamePlayer : NetworkBehaviour
         }
 
         button.interactable = false;
+    }
+
+    public void InitializeRoleSwapButton(Button button)
+    {
+        if (!isServer) {
+            button.gameObject.SetActive(false);
+            return;
+        }
+
+        button.onClick.AddListener(() =>
+        {
+            if (playerManager.gamePlayers.Count == 1)
+            {
+                playerManager.GetLayoutManager().SendColoredNotification("Second player is required!", Color.red, 3);
+                return;
+            }
+
+            var oppositePlayer = playerManager.GetOppositePlayer(this);
+            oppositePlayer.playerRole = this.playerRole;
+            playerRole = oppositePlayer.playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop;
+        });
     }
 
     public void ChangeReadyStatus()
