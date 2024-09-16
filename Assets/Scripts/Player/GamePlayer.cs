@@ -155,7 +155,7 @@ public class GamePlayer : NetworkBehaviour
         CSteamID newCSteamID = new CSteamID(newSteamId);
         usernameText.text = GetSteamUsername(newCSteamID);
         profilePicture.texture = GetSteamProfilePicture(newCSteamID);
-        GameManager.Instance.layoutManager.SendNotification("New bitch there " + usernameText.text + ".", 5);
+        GameManager.Instance.layoutManager.SendNotification("Player " + usernameText.text + " has joined your Lobby.", 5);
     }
 
     public void InitializeLeaveButton(Button button)
@@ -202,11 +202,7 @@ public class GamePlayer : NetworkBehaviour
                 playerManager.GetLayoutManager().SendColoredNotification("Second player is required!", Color.red, 3);
                 return;
             }
-            /*
-            var oppositePlayer = playerManager.GetOppositePlayer(this);
-            oppositePlayer.SetPlayeRole(playerRole);
-            SetPlayeRole(playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
-            */
+
             RpcShowUpdatedRoles();
         });
     }
@@ -217,7 +213,6 @@ public class GamePlayer : NetworkBehaviour
         var oppositePlayer = playerManager.GetOppositePlayer(this);
         oppositePlayer.SetPlayeRole(playerRole);
         SetPlayeRole(playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
-        Debug.Log("fadolhgasfhhsahfsdajflasjfhlasghfojsahgfjhsgadkfhasdgikfgkasjdhgfksaghfkosaghfsahilf");
     }
    
 
@@ -246,11 +241,23 @@ public class GamePlayer : NetworkBehaviour
 
     public void SetReadyStatus(Button button, TMP_Text text, bool status)
     {
-        if(readyText != text) readyText = text;
+        if(isServer && isLocalPlayer) CheckReadyStatus();
+
+        if (readyText != text) readyText = text;
         if(readyButton != button) readyButton = button;
 
         text.text = status ? "READY" : "NOT READY";
         text.color = status ? Color.green : Color.red;
+    }
+
+    public void CheckReadyStatus()
+    {
+        if (!isReady) return;
+        var oppositePlayer = playerManager.GetOppositePlayer(this);
+        if (!oppositePlayer.isReady) return;
+
+        //StartGame();
+        Debug.Log("GAME STARTED WOHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
     }
 
     public ulong GetSteamId() => steamID;
