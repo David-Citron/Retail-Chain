@@ -207,11 +207,19 @@ public class GamePlayer : NetworkBehaviour
             oppositePlayer.SetPlayeRole(playerRole);
             SetPlayeRole(playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
 
+            RpcShowUpdatedRoles();
+
             Debug.Log(oppositePlayer.GetSteamUsername(new CSteamID(oppositePlayer.GetSteamId())) + " (opposite player) was set to " + oppositePlayer.playerRole.ToString());
             Debug.Log(GetSteamUsername(new CSteamID(GetSteamId())) + " was set to " + playerRole.ToString());
         });
     }
 
+    [ClientRpc]
+    public void RpcShowUpdatedRoles()
+    {
+        Debug.Log("fadolhgasfhhsahfsdajflasjfhlasghfojsahgfjhsgadkfhasdgikfgkasjdhgfksaghfkosaghfsahilf");
+    }
+   
 
     public void SetPlayeRole(PlayerRole newRole)
     {
