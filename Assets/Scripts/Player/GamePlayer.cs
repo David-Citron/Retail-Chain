@@ -193,6 +193,8 @@ public class GamePlayer : NetworkBehaviour
             return;
         }
 
+        if (!isLocalPlayer) return;
+
         button.onClick.AddListener(() =>
         {
             if (playerManager.gamePlayers.Count == 1)
