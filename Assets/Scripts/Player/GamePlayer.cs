@@ -202,21 +202,21 @@ public class GamePlayer : NetworkBehaviour
                 playerManager.GetLayoutManager().SendColoredNotification("Second player is required!", Color.red, 3);
                 return;
             }
-
+            /*
             var oppositePlayer = playerManager.GetOppositePlayer(this);
             oppositePlayer.SetPlayeRole(playerRole);
             SetPlayeRole(playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
-
+            */
             RpcShowUpdatedRoles();
-
-            Debug.Log(oppositePlayer.GetSteamUsername(new CSteamID(oppositePlayer.GetSteamId())) + " (opposite player) was set to " + oppositePlayer.playerRole.ToString());
-            Debug.Log(GetSteamUsername(new CSteamID(GetSteamId())) + " was set to " + playerRole.ToString());
         });
     }
 
     [ClientRpc]
     public void RpcShowUpdatedRoles()
     {
+        var oppositePlayer = playerManager.GetOppositePlayer(this);
+        oppositePlayer.SetPlayeRole(playerRole);
+        SetPlayeRole(playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
         Debug.Log("fadolhgasfhhsahfsdajflasjfhlasghfojsahgfjhsgadkfhasdgikfgkasjdhgfksaghfkosaghfsahilf");
     }
    
