@@ -37,8 +37,9 @@ public class GamePlayer : NetworkBehaviour
         if (isServer)
         {
             connectionId = connectionToClient.connectionId;
-            playerRole = PlayerRole.Shop;
         }
+
+        if (isServer && isLocalPlayer) playerRole = PlayerRole.Shop;
         else playerRole = PlayerRole.Factory;
 
         syncDirection = (isLocalPlayer && isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
