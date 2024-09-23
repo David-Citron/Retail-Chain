@@ -102,16 +102,18 @@ public class LayoutManager : MonoBehaviour
         if (!gamePlayer.isLocalPlayer) return;
 
         for (int i = 0; i < readyButtons.Count; i++)
-        {     
+        {
             var button = readyButtons[i];
-            if (index == i && gamePlayer.isLocalPlayer)
+
+            if(index != i)
             {
-                button.interactable = true;
-                button.onClick.AddListener(() => gamePlayer.ChangeReadyStatus());
-                return;
+                button.interactable = false;
+                continue;
             }
 
-            button.interactable = false;
+            if (!gamePlayer.isLocalPlayer) continue;
+            button.interactable = true;
+            button.onClick.AddListener(() => gamePlayer.ChangeReadyStatus());
         }
     }
 
