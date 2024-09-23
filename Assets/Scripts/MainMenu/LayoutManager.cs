@@ -101,15 +101,18 @@ public class LayoutManager : MonoBehaviour
     {
         if (!gamePlayer.isLocalPlayer) return;
 
-        var button = readyButtons[index];
-        if (gamePlayer.isLocalPlayer)
-        {
-            button.interactable = true;
-            button.onClick.AddListener(() => gamePlayer.ChangeReadyStatus());
-            return;
-        }
+        for (int i = 0; i < readyButtons.Count; i++)
+        {     
+            var button = readyButtons[index];
+            if (index == i && gamePlayer.isLocalPlayer)
+            {
+                button.interactable = true;
+                button.onClick.AddListener(() => gamePlayer.ChangeReadyStatus());
+                return;
+            }
 
-        button.interactable = false;
+            button.interactable = false;
+        }
     }
 
     public void InitializeRoleSwapButton(GamePlayer gamePlayer)
