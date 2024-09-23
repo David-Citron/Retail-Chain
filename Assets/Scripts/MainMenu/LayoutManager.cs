@@ -103,7 +103,7 @@ public class LayoutManager : MonoBehaviour
 
         for (int i = 0; i < readyButtons.Count; i++)
         {     
-            var button = readyButtons[index];
+            var button = readyButtons[i];
             if (index == i && gamePlayer.isLocalPlayer)
             {
                 button.interactable = true;
