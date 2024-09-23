@@ -141,6 +141,11 @@ public class LayoutManager : MonoBehaviour
         });
     }
 
+    public void ChangeActive(GameObject button)
+    {
+        button.SetActive(!button.activeInHierarchy);
+    }
+
     public void BackToMainMenu(GameObject current)
     {
         defaultButtonsGroup.SetActive(true);
