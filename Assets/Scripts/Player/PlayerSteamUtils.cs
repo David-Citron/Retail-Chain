@@ -6,18 +6,16 @@ public class PlayerSteamUtils : MonoBehaviour {
 
     protected static CSteamID localPlayerSteamId;
     protected Callback<AvatarImageLoaded_t> avatarImageLoaded;
-    private static LayoutManager layoutManager;
 
     private void Start()
     {
         avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
-        layoutManager = GameManager.Instance.layoutManager;
     }
 
     public static void OnAvatarImageLoaded(AvatarImageLoaded_t callback) {
         if (callback.m_steamID.m_SteamID != localPlayerSteamId.m_SteamID) return;
-        if (layoutManager == null) return;
-        layoutManager.UpdatePlayer(callback.m_steamID);
+        if (GameManager.Instance.layoutManager == null) return;
+        GameManager.Instance.layoutManager.UpdatePlayer(callback.m_steamID);
     }
 
     public static string GetSteamUsername(CSteamID steamId)

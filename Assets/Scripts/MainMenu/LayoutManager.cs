@@ -111,7 +111,6 @@ public class LayoutManager : MonoBehaviour
                 continue;
             }
 
-            if (!gamePlayer.isLocalPlayer) continue;
             button.interactable = true;
             button.onClick.AddListener(() => gamePlayer.ChangeReadyStatus());
         }
@@ -140,11 +139,6 @@ public class LayoutManager : MonoBehaviour
 
             gamePlayer.RpcShowUpdatedRoles();
         });
-    }
-
-    public void ChangeActive(GameObject button)
-    {
-        button.SetActive(!button.activeInHierarchy);
     }
 
     public void BackToMainMenu(GameObject current)
