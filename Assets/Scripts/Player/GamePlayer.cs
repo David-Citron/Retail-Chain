@@ -257,6 +257,7 @@ public class GamePlayer : NetworkBehaviour
         if (!isReady) return;
 
         var oppositePlayer = playerManager.GetOppositePlayer(this);
+        if(oppositePlayer == null) return;
         if (!oppositePlayer.isReady) return;
 
         if (!isLocalPlayer) oppositePlayer.StartGame();
