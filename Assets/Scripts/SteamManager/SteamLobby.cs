@@ -23,6 +23,8 @@ public class SteamLobby : MonoBehaviour
 
     private void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
+
         networkManager = GetComponent<NetworkManager>();
 
         if(!SteamIsInitialized()) return;

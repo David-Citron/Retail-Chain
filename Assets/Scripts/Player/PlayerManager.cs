@@ -1,3 +1,4 @@
+using Steamworks;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
         gameManager = GameManager.Instance;
     }
 
@@ -28,9 +30,22 @@ public class PlayerManager : MonoBehaviour
     {
         if (gamePlayers.Count < 2) return null;
 
-        Debug.Log("Index: " + gamePlayers.IndexOf(player));
-
         return gamePlayers.IndexOf(player) == 0 ? gamePlayers[1] : gamePlayers[0];
+    }
+
+    public GamePlayer GetPlayer(CSteamID id)
+    {
+        var index = GetPlayerIndex(id);
+        return index == -1 ? null : gamePlayers[index];
+    }
+
+    public int GetPlayerIndex(CSteamID id)
+    {
+        for (int i = 0; i < gamePlayers.Count; i++)
+        {
+            if (gamePlayers[i].GetSteamId() == id.m_SteamID) return i;
+        }
+        return -1;
     }
 
     public void ChangeReadyStatus(GamePlayer gamePlayer)
@@ -47,25 +62,10 @@ public class PlayerManager : MonoBehaviour
 
     public void AddGamePlayer(GamePlayer gamePlayer)
     {
-        var index = gamePlayers.Count;
-
-        gamePlayer.SetProfilePicture(GetProfilePictures()[index]);
-        gamePlayer.SetUsername(GetUsernames()[index]);
-        gamePlayer.SetReadyStatus(GetReadyButtons()[index], GetReadyTextButtons()[index], false);
-        gamePlayer.SetPlayerRoleText(GetRolesTexts()[index]);
-
-        for (int i = 0; i < GetReadyButtons().Count; i++)
-        {
-            var currentButton = GetReadyButtons()[i];
-
-            gamePlayer.InitializeReadyButton(currentButton, currentButton == GetReadyButtons()[index]);
-        }
-
-        gamePlayer.InitializeRoleSwapButton(GetLayoutManager().swapButton);
-
-        gamePlayer.InitializeLeaveButton(GetLayoutManager().leaveButton);
+        if (GetLayoutManager() == null) return;
 
         gamePlayers.Add(gamePlayer);
+        GetLayoutManager().UpdatePlayer(new CSteamID(gamePlayer.GetSteamId()));
     }
 
     /**
@@ -103,6 +103,7 @@ public class PlayerManager : MonoBehaviour
         }
         return null;
     }
+
     public LayoutManager GetLayoutManager() => gameManager.layoutManager;
     private List<TMP_Text> GetUsernames() => GetLayoutManager().userNames;
     private List<RawImage> GetProfilePictures() => GetLayoutManager().profilePictures;
