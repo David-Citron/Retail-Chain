@@ -254,8 +254,8 @@ public class GamePlayer : NetworkBehaviour
     {
         if (!isServer) return;
 
-
         if (!isReady) return;
+
         var oppositePlayer = playerManager.GetOppositePlayer(this);
         if (!oppositePlayer.isReady) return;
 
@@ -265,7 +265,9 @@ public class GamePlayer : NetworkBehaviour
 
     public void StartGame()
     {
-         Debug.Log("GAME STARTED WOHOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+        NetworkManager.singleton.ServerChangeScene("Level1");
+
+        Debug.Log("GAME STARTED WOHO");
     }
 
     public ulong GetSteamId() => steamID;
