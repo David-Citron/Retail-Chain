@@ -30,6 +30,7 @@ public class CustomNetworkManager : NetworkManager
     public override void OnClientDisconnect()
     {
         base.OnClientDisconnect();
+        ServerChangeScene("MainMenu");
         Debug.LogWarning("Client disconnected");
         gameManager.steamLobby.LeaveLobby();
     }
