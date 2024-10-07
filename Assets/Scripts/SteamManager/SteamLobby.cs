@@ -1,5 +1,6 @@
 using Mirror;
 using Steamworks;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -86,8 +87,7 @@ public class SteamLobby : MonoBehaviour
         var scene = SceneManager.GetActiveScene();
         if (scene.buildIndex != 0)
         {
-            SceneManager.UnloadSceneAsync(scene);
-            SceneManager.LoadScene(0);
+            NetworkManager.singleton.ServerChangeScene("MainMenu");
         }
 
         layoutManager.ShowMainMenu();
