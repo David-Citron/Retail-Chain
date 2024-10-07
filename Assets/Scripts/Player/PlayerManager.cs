@@ -76,20 +76,19 @@ public class PlayerManager : MonoBehaviour
      */
     public GamePlayer PlayerDisconnected(int connectionId)
     {
-        for (int i = 0; i < gamePlayers.Count; i++)
-        {
-            GamePlayer gamePlayer = gamePlayers[i];
-            if (gamePlayer.connectionId != connectionId) continue;
-            if (gamePlayer.isLocalPlayer && gamePlayer.isServer) gameManager.steamLobby.LeaveLobby();
+        GamePlayer gamePlayer = GetGamePlayerByConnId(connectionId);
+        if(gamePlayer == null) return null;
 
-            Debug.LogWarning("Player " + i + " was removed");
-            gamePlayers.Remove(gamePlayer);
+        if (gamePlayer.isLocalPlayer && gamePlayer.isServer) gameManager.steamLobby.LeaveLobby();
 
-            GetUsernames()[i].text = "Player " + (i + 1);
-            GetProfilePictures()[i].texture = Texture2D.whiteTexture;
-            return gamePlayer;
-        }
-        return null;
+        Debug.LogWarning("Player " + PlayerSteamUtils.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " was removed");
+        gamePlayers.Remove(gamePlayer);
+
+        int index = gamePlayers.IndexOf(gamePlayer);
+
+        GetUsernames()[index].text = "Player " + (index + 1);
+        GetProfilePictures()[index].texture = Texture2D.whiteTexture;
+        return gamePlayer;
     }
 
     public GamePlayer GetGamePlayerByConnId(int connId)
@@ -107,9 +106,6 @@ public class PlayerManager : MonoBehaviour
     public LayoutManager GetLayoutManager() => gameManager.layoutManager;
     private List<TMP_Text> GetUsernames() => GetLayoutManager().userNames;
     private List<RawImage> GetProfilePictures() => GetLayoutManager().profilePictures;
-    private List<TMP_Text> GetReadyTextButtons() => GetLayoutManager().readyTextButtons;
-    private List<Button> GetReadyButtons() => GetLayoutManager().readyButtons;
-    private List<TMP_Text> GetRolesTexts() => GetLayoutManager().roleTexts;
 
 
 }
