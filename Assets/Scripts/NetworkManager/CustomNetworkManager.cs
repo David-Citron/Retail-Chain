@@ -1,6 +1,6 @@
 using UnityEngine;
 using Mirror;
-using Steamworks;
+using UnityEngine.SceneManagement;
 
 public class CustomNetworkManager : NetworkManager
 {
@@ -30,6 +30,7 @@ public class CustomNetworkManager : NetworkManager
     public override void OnClientDisconnect()
     {
         base.OnClientDisconnect();
+        SceneManager.LoadScene(0);
         Debug.LogWarning("Client disconnected");
         gameManager.steamLobby.LeaveLobby();
     }
@@ -37,7 +38,6 @@ public class CustomNetworkManager : NetworkManager
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
         base.OnServerDisconnect(conn);
-        ServerChangeScene("MainMenu");
         Debug.LogWarning("Server disconnected");
 
         if (!isNetworkActive) layoutManager.ShowMainMenu();
