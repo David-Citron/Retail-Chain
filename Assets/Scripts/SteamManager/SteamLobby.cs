@@ -1,9 +1,7 @@
-using Edgegap;
 using Mirror;
 using Steamworks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class SteamLobby : MonoBehaviour
 {
@@ -85,7 +83,13 @@ public class SteamLobby : MonoBehaviour
         Debug.Log("Leaving lobby " + LobbyId);
         SteamMatchmaking.LeaveLobby(LobbyId);
 
-        if(SceneManager.GetActiveScene().buildIndex != 0) SceneManager.LoadScene(0);
+        var scene = SceneManager.GetActiveScene();
+        if (scene.buildIndex != 0)
+        {
+            SceneManager.UnloadSceneAsync(scene);
+            SceneManager.LoadScene(0);
+        }
+
         layoutManager.ShowMainMenu();
     }
 }
