@@ -82,12 +82,14 @@ public class PlayerManager : MonoBehaviour
         if (gamePlayer.isLocalPlayer && gamePlayer.isServer) gameManager.steamLobby.LeaveLobby();
 
         Debug.LogWarning("Player " + PlayerSteamUtils.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " was removed");
-        gamePlayers.Remove(gamePlayer);
+
 
         int index = gamePlayers.IndexOf(gamePlayer);
 
         GetUsernames()[index].text = "Player " + (index + 1);
-        GetProfilePictures()[index].texture = Texture2D.whiteTexture;
+        GetProfilePictures()[index].texture = Texture2D.whiteTexture;  
+        
+        gamePlayers.Remove(gamePlayer);
         return gamePlayer;
     }
 
