@@ -67,30 +67,22 @@ public class PlayerManager : MonoBehaviour
         gamePlayers.Add(gamePlayer);
         GetLayoutManager().UpdatePlayer(new CSteamID(gamePlayer.GetSteamId()));
     }
-
-    /**
-     * 
-     * returns gameplayer object that left.
-     *
-     *
-     */
-    public GamePlayer PlayerDisconnected(int connectionId)
+    public void PlayerDisconnected(int connectionId)
     {
         GamePlayer gamePlayer = GetGamePlayerByConnId(connectionId);
-        if(gamePlayer == null) return null;
+        if(gamePlayer == null) return;
 
         if (gamePlayer.isLocalPlayer && gamePlayer.isServer) gameManager.steamLobby.LeaveLobby();
 
-        Debug.LogWarning("Player " + PlayerSteamUtils.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " was removed");
+        Debug.Log("Player " + PlayerSteamUtils.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " was removed");
 
 
         int index = gamePlayers.IndexOf(gamePlayer);
 
         GetUsernames()[index].text = "Player " + (index + 1);
-        GetProfilePictures()[index].texture = Texture2D.whiteTexture;  
+        GetProfilePictures()[index].texture = Texture2D.whiteTexture;
         
         gamePlayers.Remove(gamePlayer);
-        return gamePlayer;
     }
 
     public GamePlayer GetGamePlayerByConnId(int connId)
