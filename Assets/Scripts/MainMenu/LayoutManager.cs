@@ -153,7 +153,7 @@ public class LayoutManager : MonoBehaviour
     }
 
     public void ShowLobby()
-    { 
+    {
         lobby.SetActive(true);
         mainMenu.SetActive(false);
     }

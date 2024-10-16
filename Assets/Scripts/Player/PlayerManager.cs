@@ -56,6 +56,8 @@ public class PlayerManager : MonoBehaviour
     public void Reset()
     {
         gamePlayers.Clear();
+
+        if (GetLayoutManager() == null) return;
         GetUsernames().ForEach(userName => userName.text = "Player " + (GetUsernames().IndexOf(userName) + 1));
         GetProfilePictures().ForEach(picture => picture.texture = Texture2D.whiteTexture);
     }
