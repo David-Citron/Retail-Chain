@@ -57,17 +57,17 @@ public class PlayerManager : MonoBehaviour
     {
         gamePlayers.Clear();
 
-        if (GetLayoutManager() == null) return;
+        if (LayoutManager.instance == null) return;
         GetUsernames().ForEach(userName => userName.text = "Player " + (GetUsernames().IndexOf(userName) + 1));
         GetProfilePictures().ForEach(picture => picture.texture = Texture2D.whiteTexture);
     }
 
     public void AddGamePlayer(GamePlayer gamePlayer)
     {
-        if (GetLayoutManager() == null) return;
+        if (LayoutManager.instance == null) return;
 
         gamePlayers.Add(gamePlayer);
-        GetLayoutManager().UpdatePlayer(new CSteamID(gamePlayer.GetSteamId()));
+        LayoutManager.instance.UpdatePlayer(new CSteamID(gamePlayer.GetSteamId()));
     }
     public void PlayerDisconnected(int connectionId)
     {
@@ -99,9 +99,8 @@ public class PlayerManager : MonoBehaviour
         return null;
     }
 
-    public LayoutManager GetLayoutManager() => gameManager.layoutManager;
-    private List<TMP_Text> GetUsernames() => GetLayoutManager().userNames;
-    private List<RawImage> GetProfilePictures() => GetLayoutManager().profilePictures;
+    private List<TMP_Text> GetUsernames() => LayoutManager.instance.userNames;
+    private List<RawImage> GetProfilePictures() => LayoutManager.instance.profilePictures;
 
 
 }

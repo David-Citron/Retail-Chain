@@ -8,6 +8,8 @@ using Steamworks;
 public class LayoutManager : MonoBehaviour
 {
 
+    public static LayoutManager instance;
+
     [SerializeField] public List<TMP_Text> userNames = new List<TMP_Text>();
     [SerializeField] public List<RawImage> profilePictures = new List<RawImage>();
 
@@ -29,6 +31,7 @@ public class LayoutManager : MonoBehaviour
 
     void Start()
     {
+        instance = this;
         defaultButtonsGroup.SetActive(true);
         playButtonsGroup.SetActive(false);
         lobby.SetActive(false);
@@ -133,7 +136,7 @@ public class LayoutManager : MonoBehaviour
         {
             if (playerManager.gamePlayers.Count == 1)
             {
-                playerManager.GetLayoutManager().SendColoredNotification("Second player is required!", Color.red, 3);
+                SendColoredNotification("Second player is required!", Color.red, 3);
                 return;
             }
 

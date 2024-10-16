@@ -17914,7 +17914,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerManager: {fileID: 2064521716}
-  layoutManager: {fileID: 391426608}
 --- !u!114 &9028935440016645518
 MonoBehaviour:
   m_ObjectHideFlags: 0

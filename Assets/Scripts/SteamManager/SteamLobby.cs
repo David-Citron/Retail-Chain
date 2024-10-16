@@ -15,7 +15,6 @@ public class SteamLobby : MonoBehaviour
     private NetworkManager networkManager;
 
     [SerializeField] private PlayerManager playerManager;
-    [SerializeField] private LayoutManager layoutManager;
 
     public static CSteamID LobbyId {get; private set; }
 
@@ -37,7 +36,7 @@ public class SteamLobby : MonoBehaviour
     private bool SteamIsInitialized()
     {
         steamIsInitialized = SteamManager.Initialized;
-        if (!steamIsInitialized) layoutManager.ShowSteamNotInitializedNotification();
+        if (!steamIsInitialized) LayoutManager.instance.ShowSteamNotInitializedNotification();
         return steamIsInitialized;
     }
 
@@ -84,14 +83,14 @@ public class SteamLobby : MonoBehaviour
         Debug.Log("Leaving lobby " + LobbyId);
         SteamMatchmaking.LeaveLobby(LobbyId);
 
-        var scene = SceneManager.GetActiveScene();
-        if (scene.buildIndex != 0)
+        if (SceneManager.GetActiveScene().buildIndex != 0)
         {
             SceneManager.LoadScene(0);
         }
 
 
-        if (layoutManager == null) return;
-        layoutManager.ShowMainMenu();
+        if (LayoutManager.instance == null) return;
+        LayoutManager.instance.ShowMainMenu();
+        Debug.Log("Lobby left succesfully");
     }
 }

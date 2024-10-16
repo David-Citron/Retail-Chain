@@ -98,7 +98,7 @@ public class GamePlayer : NetworkBehaviour
     {
         if (playerManager.gamePlayers.Count <= 1)
         {
-            playerManager.GetLayoutManager().SendColoredNotification("Second player is required!", Color.red, 3);
+            LayoutManager.instance.SendColoredNotification("Second player is required!", Color.red, 3);
             return;
         }
 
