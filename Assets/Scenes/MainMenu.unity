@@ -6000,8 +6000,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scene: 0
   networkManager: {fileID: 9028935440016645518}
-  layoutManager: {fileID: 391426608}
-  steamLobby: {fileID: 9028935440016645517}
   account: {fileID: 7337739315433878580}
   playerManager: {fileID: 2064521716}
 --- !u!1 &679185122

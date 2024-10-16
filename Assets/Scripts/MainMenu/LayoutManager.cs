@@ -62,6 +62,7 @@ public class LayoutManager : MonoBehaviour
 
     public void InicializeHostButton()
     {
+        if (hostButton == null) return;
         hostButton.onClick.AddListener(() =>
         {
             SteamLobby.instance.HostLobby();

@@ -4,14 +4,12 @@ using Mirror;
 public class CustomNetworkManager : NetworkManager
 {
     private GameManager gameManager;
-    private LayoutManager layoutManager;
     private PlayerManager playerManager;
 
     public override void Start()
     {
         base.Start();
         gameManager = GameManager.Instance;
-        layoutManager = gameManager.layoutManager;
         playerManager = gameManager.playerManager;
     }
 
@@ -20,9 +18,11 @@ public class CustomNetworkManager : NetworkManager
         base.OnClientConnect();
 
         playerManager.Reset();
-        layoutManager.ShowLobby();
-
-        gameManager.layoutManager.SendColoredNotification("Welcome to RetailChain.", Color.green, 5);
+        if(LayoutManager.instance != null)
+        {
+            LayoutManager.instance.ShowLobby();
+            LayoutManager.instance.SendColoredNotification("Welcome to RetailChain.", Color.green, 5);
+        }
         Debug.LogWarning("Client connect.");
     }
 
@@ -31,7 +31,7 @@ public class CustomNetworkManager : NetworkManager
         base.OnClientDisconnect();
 
         Debug.LogWarning("Client disconnected");
-        gameManager.steamLobby.LeaveLobby();
+        SteamLobby.instance.LeaveLobby();
     }
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
@@ -41,6 +41,6 @@ public class CustomNetworkManager : NetworkManager
 
         playerManager.PlayerDisconnected(conn.connectionId);
 
-        if (!isNetworkActive) layoutManager.ShowMainMenu();
+        if (!isNetworkActive) LayoutManager.instance.ShowMainMenu();
     }
 }

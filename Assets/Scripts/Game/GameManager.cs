@@ -10,8 +10,6 @@ public class GameManager : MonoBehaviour
     public Scene scene;
 
     public CustomNetworkManager networkManager;
-    public LayoutManager layoutManager;
-    public SteamLobby steamLobby;
     public Account account;
     public PlayerManager playerManager;
 
@@ -20,7 +18,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
 
         if (SceneManager.GetActiveScene().buildIndex != 0) return;
-        layoutManager.InicializeHostButton();
+        LayoutManager.instance.InicializeHostButton();
     }
 
     public void SetScene(Scene newScene)

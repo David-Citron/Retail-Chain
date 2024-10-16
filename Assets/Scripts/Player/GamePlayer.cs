@@ -67,8 +67,8 @@ public class GamePlayer : NetworkBehaviour
     public void OnSteamIDChanged(ulong oldSteamId, ulong newSteamId)
     {
         CSteamID newCSteamID = new CSteamID(newSteamId);
-        if (GameManager.Instance.layoutManager == null) return;
-        GameManager.Instance.layoutManager.UpdatePlayer(newCSteamID);
+        if (LayoutManager.instance == null) return;
+        LayoutManager.instance.UpdatePlayer(newCSteamID);
     }
 
 
@@ -84,14 +84,14 @@ public class GamePlayer : NetworkBehaviour
     public void SetPlayeRole(PlayerRole newRole)
     {
         playerRole = newRole;
-        if (GameManager.Instance.layoutManager == null) return;
-        GameManager.Instance.layoutManager.UpdateRoleText(new CSteamID(steamID));
+        if (LayoutManager.instance == null) return;
+        LayoutManager.instance.UpdateRoleText(new CSteamID(steamID));
     }
 
     public void OnChangePlayerRole(PlayerRole oldValue, PlayerRole newValue)
     {
-        if (GameManager.Instance.layoutManager == null) return;
-        GameManager.Instance.layoutManager.UpdateRoleText(new CSteamID(steamID));
+        if (LayoutManager.instance == null) return;
+        LayoutManager.instance.UpdateRoleText(new CSteamID(steamID));
     }
 
     public void ChangeReadyStatus()
@@ -114,8 +114,8 @@ public class GamePlayer : NetworkBehaviour
     private void UpdateReadyStatus()
     {
         CheckReadyStatus();
-        if (GameManager.Instance.layoutManager == null) return;
-        GameManager.Instance.layoutManager.UpdateReadyStatus(new CSteamID(steamID));
+        if (LayoutManager.instance == null) return;
+        LayoutManager.instance.UpdateReadyStatus(new CSteamID(steamID));
     }
 
     public void CheckReadyStatus()
