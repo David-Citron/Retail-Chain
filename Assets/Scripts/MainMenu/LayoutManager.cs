@@ -128,6 +128,7 @@ public class LayoutManager : MonoBehaviour
             }
 
             button.interactable = true;
+            button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() => gamePlayer.ChangeReadyStatus());
         }
     }
@@ -145,6 +146,7 @@ public class LayoutManager : MonoBehaviour
         var playerManager = GameManager.Instance.playerManager;
         if (playerManager == null) return;
 
+        swapButton.onClick.RemoveAllListeners();
         swapButton.onClick.AddListener(() =>
         {
             if (playerManager.gamePlayers.Count == 1)
