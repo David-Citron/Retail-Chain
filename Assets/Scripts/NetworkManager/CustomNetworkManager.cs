@@ -38,6 +38,7 @@ public class CustomNetworkManager : NetworkManager
     {
         base.OnServerDisconnect(conn);
         Debug.LogWarning("Server disconnected");
+        SteamLobby.instance.LeaveLobby();
 
         playerManager.PlayerDisconnected(conn.connectionId);
 

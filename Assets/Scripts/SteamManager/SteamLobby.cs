@@ -97,7 +97,6 @@ public class SteamLobby : MonoBehaviour
             SceneManager.LoadScene(0);
         }
 
-
         if (LayoutManager.instance == null) return;
         LayoutManager.instance.ShowMainMenu();
         Debug.Log("Lobby left succesfully");
