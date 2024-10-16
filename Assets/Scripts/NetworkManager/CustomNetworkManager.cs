@@ -1,6 +1,5 @@
 using UnityEngine;
 using Mirror;
-using UnityEngine.SceneManagement;
 
 public class CustomNetworkManager : NetworkManager
 {

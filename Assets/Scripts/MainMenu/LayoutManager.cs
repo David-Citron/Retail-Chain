@@ -20,6 +20,7 @@ public class LayoutManager : MonoBehaviour
 
     [SerializeField] public Button leaveButton;
     [SerializeField] public Button swapButton;
+    [SerializeField] public Button hostButton;
 
     [SerializeField] private GameObject defaultButtonsGroup;
     [SerializeField] private GameObject playButtonsGroup;
@@ -57,6 +58,14 @@ public class LayoutManager : MonoBehaviour
         InitializeRoleSwapButton(gamePlayer);
 
         SendNotification("Player " + username + " has joined your Lobby.", 5);
+    }
+
+    public void InicializeHostButton()
+    {
+        hostButton.onClick.AddListener(() =>
+        {
+            SteamLobby.instance.HostLobby();
+        });
     }
 
     public void UpdateRoleText(CSteamID id)

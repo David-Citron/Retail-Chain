@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour 
 {
+    public static PlayerManager instance;
+
     [SerializeField] public List<GamePlayer> gamePlayers = new List<GamePlayer>();
 
     [SerializeField] public Account account;
@@ -16,6 +18,14 @@ public class PlayerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(instance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        instance = this;
+
         DontDestroyOnLoad(this.gameObject);
         gameManager = GameManager.Instance;
     }

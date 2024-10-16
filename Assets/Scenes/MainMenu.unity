@@ -4216,6 +4216,7 @@ MonoBehaviour:
   - {fileID: 992413868}
   leaveButton: {fileID: 1224906808}
   swapButton: {fileID: 1570952203}
+  hostButton: {fileID: 1399494372}
   defaultButtonsGroup: {fileID: 1410068281}
   playButtonsGroup: {fileID: 299270600}
   lobby: {fileID: 432341057}

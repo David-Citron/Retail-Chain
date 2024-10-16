@@ -1,11 +1,13 @@
 using Mirror;
 using Steamworks;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SteamLobby : MonoBehaviour
 {
+
+    public static SteamLobby instance;
+
     protected Callback<LobbyCreated_t> lobbyCreated;
     protected Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
     protected Callback<LobbyEnter_t> lobbyEntered;
@@ -22,6 +24,13 @@ public class SteamLobby : MonoBehaviour
 
     private void Start()
     {
+        if(instance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        instance = this;
         DontDestroyOnLoad(this.gameObject);
 
         networkManager = GetComponent<NetworkManager>();
