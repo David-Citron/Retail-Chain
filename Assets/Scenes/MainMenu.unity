@@ -17935,7 +17935,7 @@ MonoBehaviour:
   autoStartServerBuild: 0
   autoConnectClientBuild: 0
   offlineScene: Assets/Scenes/MainMenu.unity
-  onlineScene: 
+  onlineScene: Assets/Scenes/MainMenu.unity
   transport: {fileID: 1665854161018938355}
   networkAddress: localhost
   maxConnections: 2

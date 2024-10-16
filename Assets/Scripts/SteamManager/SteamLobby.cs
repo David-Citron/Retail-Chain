@@ -87,9 +87,11 @@ public class SteamLobby : MonoBehaviour
         var scene = SceneManager.GetActiveScene();
         if (scene.buildIndex != 0)
         {
-            NetworkManager.singleton.ServerChangeScene("MainMenu");
+            SceneManager.UnloadSceneAsync("Scene1", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+            SceneManager.LoadSceneAsync(0).allowSceneActivation = true;
         }
 
+        if (layoutManager == null) return;
         layoutManager.ShowMainMenu();
     }
 }
