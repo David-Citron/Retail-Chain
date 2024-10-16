@@ -63,6 +63,8 @@ public class LayoutManager : MonoBehaviour
     public void InicializeHostButton()
     {
         if (hostButton == null) return;
+        hostButton.interactable = true;
+        hostButton.onClick.RemoveAllListeners();
         hostButton.onClick.AddListener(() =>
         {
             SteamLobby.instance.HostLobby();
@@ -100,6 +102,7 @@ public class LayoutManager : MonoBehaviour
 
     public void InitializeLeaveButton(GamePlayer gamePlayer)
     {
+        leaveButton.onClick.RemoveAllListeners();
         leaveButton.interactable = true;
         leaveButton.onClick.AddListener(() =>
         {

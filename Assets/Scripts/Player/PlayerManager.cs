@@ -84,7 +84,7 @@ public class PlayerManager : MonoBehaviour
         GamePlayer gamePlayer = GetGamePlayerByConnId(connectionId);
         if(gamePlayer == null) return;
 
-        if (gamePlayer.isLocalPlayer && gamePlayer.isServer) SteamLobby.instance.LeaveLobby();
+        //if (gamePlayer.isLocalPlayer && gamePlayer.isServer) SteamLobby.instance.LeaveLobby();
 
         Debug.Log("Player " + PlayerSteamUtils.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " was removed");
 
