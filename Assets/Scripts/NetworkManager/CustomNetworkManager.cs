@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using UnityEngine.SceneManagement;
 
 public class CustomNetworkManager : NetworkManager
 {
@@ -39,6 +40,9 @@ public class CustomNetworkManager : NetworkManager
         base.OnServerDisconnect(conn);
 
         PlayerManager.instance.PlayerDisconnected(conn.connectionId);
+
+        if (SceneManager.GetActiveScene().buildIndex == 0) return;
         StopServer();
+        SteamLobby.instance.LeaveLobby();
     }
 }
