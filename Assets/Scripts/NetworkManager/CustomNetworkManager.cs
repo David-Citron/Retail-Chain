@@ -44,5 +44,6 @@ public class CustomNetworkManager : NetworkManager
         if (SceneManager.GetActiveScene().buildIndex == 0) return;
         StopServer();
         SteamLobby.instance.LeaveLobby();
+        StopClient();
     }
 }

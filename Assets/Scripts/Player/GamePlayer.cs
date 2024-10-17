@@ -32,11 +32,8 @@ public class GamePlayer : NetworkBehaviour
 
         syncDirection = (isLocalPlayer && isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
         
-        if (PlayerManager.instance == null)
-        {
-            Debug.LogWarning("PlayerManager is null");
-            return;
-        }
+        if (PlayerManager.instance == null) return;
+        
 
         if (isLocalPlayer)
         {

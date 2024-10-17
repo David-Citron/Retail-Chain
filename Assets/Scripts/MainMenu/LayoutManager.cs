@@ -41,19 +41,11 @@ public class LayoutManager : MonoBehaviour
     public void UpdatePlayer(CSteamID id)
     {
         var index = PlayerManager.instance.GetPlayerIndex(id);
-        if (index == -1)
-        {
-            Debug.LogWarning("Index -1");
-            return;
-        }
-
+        if (index == -1) return;
+        
         var gamePlayer = PlayerManager.instance.gamePlayers[index];
-        if (gamePlayer == null)
-        {
-            Debug.LogWarning("GamePlayer null");
-            return;
-        }
-
+        if (gamePlayer == null) return;
+        
         var username = PlayerSteamUtils.GetSteamUsername(id);
 
         profilePictures[index].texture = PlayerSteamUtils.GetSteamProfilePicture(id);

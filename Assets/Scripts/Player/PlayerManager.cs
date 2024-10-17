@@ -74,14 +74,10 @@ public class PlayerManager : MonoBehaviour
 
     public void AddGamePlayer(GamePlayer gamePlayer)
     {
-        Debug.LogWarning("GamePlayer Add");
         gamePlayers.Add(gamePlayer);
 
-        if (LayoutManager.instance == null)
-        {
-            Debug.LogWarning("Layout manager is null");
-            return;
-        }
+        if (LayoutManager.instance == null) return;
+        
 
         LayoutManager.instance.UpdatePlayer(new CSteamID(gamePlayer.GetSteamId()));
     }
