@@ -13,29 +13,30 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnClientConnect()
     {
+        Debug.LogWarning("Client connect.");
         base.OnClientConnect();
 
         PlayerManager.instance.Reset();
+
         if(LayoutManager.instance != null)
         {
             LayoutManager.instance.ShowLobby();
             LayoutManager.instance.SendColoredNotification("Welcome to RetailChain.", Color.green, 5);
         }
-        Debug.LogWarning("Client connect.");
     }
 
     public override void OnClientDisconnect()
     {
+        Debug.LogWarning("Client disconnected");
         base.OnClientDisconnect();
 
-        Debug.LogWarning("Client disconnected");
         SteamLobby.instance.LeaveLobby();
     }
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        base.OnServerDisconnect(conn);
         Debug.LogWarning("Server disconnected");
+        base.OnServerDisconnect(conn);
 
         PlayerManager.instance.PlayerDisconnected(conn.connectionId);
     }

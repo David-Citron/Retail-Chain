@@ -50,7 +50,8 @@ public class PlayerManager : MonoBehaviour
     {
         for (int i = 0; i < gamePlayers.Count; i++)
         {
-            if (gamePlayers[i].GetSteamId() == id.m_SteamID) return i;
+            if (gamePlayers[i].GetSteamId() != id.m_SteamID) continue;
+            return i;
         }
 
         return -1;
@@ -89,17 +90,15 @@ public class PlayerManager : MonoBehaviour
         GamePlayer gamePlayer = GetGamePlayerByConnId(connectionId);
         if(gamePlayer == null) return;
 
-        //if (gamePlayer.isLocalPlayer && gamePlayer.isServer) SteamLobby.instance.LeaveLobby();
-
-        Debug.Log("Player " + PlayerSteamUtils.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " was removed");
-
+        Debug.Log("Player " + PlayerSteamUtils.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " has disconnected.");
 
         int index = gamePlayers.IndexOf(gamePlayer);
+        gamePlayers.Remove(gamePlayer);
+
+        if (LayoutManager.instance == null) return;
 
         GetUsernames()[index].text = "Player " + (index + 1);
         GetProfilePictures()[index].texture = Texture2D.whiteTexture;
-        
-        gamePlayers.Remove(gamePlayer);
     }
 
     public GamePlayer GetGamePlayerByConnId(int connId)
