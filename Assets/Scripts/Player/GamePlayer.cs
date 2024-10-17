@@ -120,10 +120,11 @@ public class GamePlayer : NetworkBehaviour
         if(oppositePlayer == null) return;
         if (!oppositePlayer.isReady) return;
 
+        Debug.Log("Trying to change scene:");
         NetworkManager.singleton.ServerChangeScene("Level1");
-        /*
+        
         if (!isLocalPlayer) oppositePlayer.StartGame();
-        else StartGame();*/
+        else StartGame();
     }
 
     public void StartGame()
