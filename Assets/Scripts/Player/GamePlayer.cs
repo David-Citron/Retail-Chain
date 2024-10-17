@@ -106,23 +106,18 @@ public class GamePlayer : NetworkBehaviour
 
     private void UpdateReadyStatus()
     {
-        CheckReadyStatus();
-        if (LayoutManager.instance == null) return;
-        LayoutManager.instance.UpdateReadyStatus(new CSteamID(steamID));
-    }
+        if (LayoutManager.instance != null) LayoutManager.instance.UpdateReadyStatus(new CSteamID(steamID));
 
-    public void CheckReadyStatus()
-    {
         if (!isServer) return;
         if (!isReady) return;
 
         var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this);
-        if(oppositePlayer == null) return;
+        if (oppositePlayer == null) return;
         if (!oppositePlayer.isReady) return;
 
         Debug.Log("Trying to change scene:");
         NetworkManager.singleton.ServerChangeScene("Level1");
-        
+
         if (!isLocalPlayer) oppositePlayer.StartGame();
         else StartGame();
     }
