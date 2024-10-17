@@ -26,6 +26,7 @@ public class GamePlayer : NetworkBehaviour
 
     void Start()
     {
+        DontDestroyOnLoad(this);
         if (isServer)
         {
             connectionId = connectionToClient.connectionId;

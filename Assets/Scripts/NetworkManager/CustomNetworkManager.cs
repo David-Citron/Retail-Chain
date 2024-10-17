@@ -4,20 +4,18 @@ using Mirror;
 public class CustomNetworkManager : NetworkManager
 {
     private GameManager gameManager;
-    private PlayerManager playerManager;
 
     public override void Start()
     {
         base.Start();
         gameManager = GameManager.Instance;
-        playerManager = gameManager.playerManager;
     }
 
     public override void OnClientConnect()
     {
         base.OnClientConnect();
 
-        playerManager.Reset();
+        PlayerManager.instance.Reset();
         if(LayoutManager.instance != null)
         {
             LayoutManager.instance.ShowLobby();
@@ -39,6 +37,6 @@ public class CustomNetworkManager : NetworkManager
         base.OnServerDisconnect(conn);
         Debug.LogWarning("Server disconnected");
 
-        playerManager.PlayerDisconnected(conn.connectionId);
+        PlayerManager.instance.PlayerDisconnected(conn.connectionId);
     }
 }

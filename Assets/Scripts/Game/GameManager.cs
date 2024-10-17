@@ -9,10 +9,6 @@ public class GameManager : MonoBehaviour
 
     public Scene scene;
 
-    public CustomNetworkManager networkManager;
-    public Account account;
-    public PlayerManager playerManager;
-
     private void Start()
     {
         Instance = this;

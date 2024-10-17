@@ -40,14 +40,14 @@ public class LayoutManager : MonoBehaviour
 
     public void UpdatePlayer(CSteamID id)
     {
-        var index = GameManager.Instance.playerManager.GetPlayerIndex(id);
+        var index = PlayerManager.instance.GetPlayerIndex(id);
         if (index == -1)
         {
             Debug.LogWarning("Index -1");
             return;
         }
 
-        var gamePlayer = GameManager.Instance.playerManager.gamePlayers[index];
+        var gamePlayer = PlayerManager.instance.gamePlayers[index];
         if (gamePlayer == null)
         {
             Debug.LogWarning("GamePlayer null");
@@ -81,9 +81,9 @@ public class LayoutManager : MonoBehaviour
 
     public void UpdateRoleText(CSteamID id)
     {
-        var index = GameManager.Instance.playerManager.GetPlayerIndex(id);
+        var index = PlayerManager.instance.GetPlayerIndex(id);
         if (index == -1) return;
-        var gamePlayer = GameManager.Instance.playerManager.gamePlayers[index];
+        var gamePlayer = PlayerManager.instance.gamePlayers[index];
         if (gamePlayer == null) return;
 
         UpdateRoleText(gamePlayer, index);
@@ -97,10 +97,10 @@ public class LayoutManager : MonoBehaviour
 
     public void UpdateReadyStatus(CSteamID id)
     {
-        var index = GameManager.Instance.playerManager.GetPlayerIndex(id);
+        var index = PlayerManager.instance.GetPlayerIndex(id);
         if (index == -1) return;
 
-        var gamePlayer = GameManager.Instance.playerManager.gamePlayers[index];
+        var gamePlayer = PlayerManager.instance.gamePlayers[index];
         if (gamePlayer == null) return;
 
         var text = readyTextButtons[index];
@@ -114,8 +114,8 @@ public class LayoutManager : MonoBehaviour
         leaveButton.interactable = true;
         leaveButton.onClick.AddListener(() =>
         {
-            if (gamePlayer.isServer && gamePlayer.isClient) GameManager.Instance.networkManager.StopHost();
-            else GameManager.Instance.networkManager.StopClient();
+            if (gamePlayer.isServer && gamePlayer.isClient) CustomNetworkManager.singleton.StopHost();
+            else CustomNetworkManager.singleton.StopClient();
 
             ShowMainMenu();
         });
@@ -151,7 +151,7 @@ public class LayoutManager : MonoBehaviour
 
         if (!gamePlayer.isLocalPlayer) return;
 
-        var playerManager = GameManager.Instance.playerManager;
+        var playerManager = PlayerManager.instance;
         if (playerManager == null) return;
 
         swapButton.onClick.RemoveAllListeners();
