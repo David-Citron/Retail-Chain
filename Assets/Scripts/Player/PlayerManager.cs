@@ -12,12 +12,12 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] public Account account;
 
-    private GameManager gameManager;
-
 
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
+
         if(instance != null)
         {
             Destroy(this.gameObject);
@@ -25,9 +25,6 @@ public class PlayerManager : MonoBehaviour
         }
 
         instance = this;
-
-        DontDestroyOnLoad(this.gameObject);
-        gameManager = GameManager.Instance;
     }
 
     // Update is called once per frame

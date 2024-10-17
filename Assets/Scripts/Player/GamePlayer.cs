@@ -1,12 +1,6 @@
 using Mirror;
-using Org.BouncyCastle.Security;
 using Steamworks;
-using System;
-using System.Threading.Tasks;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GamePlayer : NetworkBehaviour
 {
@@ -27,6 +21,7 @@ public class GamePlayer : NetworkBehaviour
     void Start()
     {
         DontDestroyOnLoad(this);
+
         if (isServer)
         {
             connectionId = connectionToClient.connectionId;
