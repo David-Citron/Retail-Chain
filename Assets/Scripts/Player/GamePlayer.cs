@@ -129,14 +129,13 @@ public class GamePlayer : NetworkBehaviour
         if(oppositePlayer == null) return;
         if (!oppositePlayer.isReady) return;
 
+        NetworkManager.singleton.ServerChangeScene("Level1");
         if (!isLocalPlayer) oppositePlayer.StartGame();
         else StartGame();
     }
 
     public void StartGame()
     {
-        NetworkManager.singleton.ServerChangeScene("Level1");
-
         Debug.Log("GAME STARTED WOHO");
     }
 
