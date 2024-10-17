@@ -113,19 +113,17 @@ public class GamePlayer : NetworkBehaviour
 
     public void CheckReadyStatus()
     {
-       
         if (!isServer) return;
-
         if (!isReady) return;
 
         var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this);
         if(oppositePlayer == null) return;
         if (!oppositePlayer.isReady) return;
 
-        if(isLocalPlayer && isServer) NetworkManager.singleton.ServerChangeScene("Level1");
-
+        NetworkManager.singleton.ServerChangeScene("Level1");
+        /*
         if (!isLocalPlayer) oppositePlayer.StartGame();
-        else StartGame();
+        else StartGame();*/
     }
 
     public void StartGame()
