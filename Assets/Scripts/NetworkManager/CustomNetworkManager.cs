@@ -39,5 +39,6 @@ public class CustomNetworkManager : NetworkManager
         base.OnServerDisconnect(conn);
 
         PlayerManager.instance.PlayerDisconnected(conn.connectionId);
+        StopServer();
     }
 }
