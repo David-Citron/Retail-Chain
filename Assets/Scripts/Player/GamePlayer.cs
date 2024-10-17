@@ -16,8 +16,6 @@ public class GamePlayer : NetworkBehaviour
     [SyncVar(hook = nameof(OnChangePlayerRole))]
     public PlayerRole playerRole;
 
-    private PlayerManager playerManager;
-
     [SyncVar(hook = nameof(OnReadyStatusChanged))]
     public bool isReady = false;
 
@@ -38,8 +36,7 @@ public class GamePlayer : NetworkBehaviour
 
         syncDirection = (isLocalPlayer && isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
         
-        playerManager = (PlayerManager) FindAnyObjectByType(typeof(PlayerManager));
-        if (playerManager == null)
+        if (PlayerManager.instance == null)
         {
             Debug.LogWarning("PlayerManager is null");
             return;
@@ -50,7 +47,7 @@ public class GamePlayer : NetworkBehaviour
             steamID = SteamUser.GetSteamID().m_SteamID;
         }
 
-        playerManager.AddGamePlayer(this);
+        PlayerManager.instance.AddGamePlayer(this);
     }
 
     // Update is called once per frame
@@ -75,7 +72,7 @@ public class GamePlayer : NetworkBehaviour
     [ClientRpc]
     public void RpcShowUpdatedRoles()
     {
-        var oppositePlayer = playerManager.GetOppositePlayer(this);
+        var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this);
         oppositePlayer.SetPlayeRole(playerRole);
         SetPlayeRole(playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
     }
@@ -96,7 +93,7 @@ public class GamePlayer : NetworkBehaviour
 
     public void ChangeReadyStatus()
     {
-        if (playerManager.gamePlayers.Count <= 1)
+        if (PlayerManager.instance.gamePlayers.Count <= 1)
         {
             LayoutManager.instance.SendColoredNotification("Second player is required!", Color.red, 3);
             return;
@@ -125,7 +122,7 @@ public class GamePlayer : NetworkBehaviour
 
         if (!isReady) return;
 
-        var oppositePlayer = playerManager.GetOppositePlayer(this);
+        var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this);
         if(oppositePlayer == null) return;
         if (!oppositePlayer.isReady) return;
 

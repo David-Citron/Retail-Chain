@@ -37,7 +37,7 @@ public class SteamLobby : MonoBehaviour
 
         if(!SteamIsInitialized()) return;
 
-        lobbyCreated = Callback<LobbyCreated_t>.Create(onLobbyCreated);
+        lobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
         gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
         lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
     }
@@ -55,7 +55,7 @@ public class SteamLobby : MonoBehaviour
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, networkManager.maxConnections);
     }
 
-    private void onLobbyCreated(LobbyCreated_t callback)
+    private void OnLobbyCreated(LobbyCreated_t callback)
     {
         if(callback.m_eResult != EResult.k_EResultOK)
         {

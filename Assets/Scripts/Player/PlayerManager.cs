@@ -55,6 +55,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (gamePlayers[i].GetSteamId() == id.m_SteamID) return i;
         }
+
         return -1;
     }
 
@@ -74,11 +75,18 @@ public class PlayerManager : MonoBehaviour
 
     public void AddGamePlayer(GamePlayer gamePlayer)
     {
-        if (LayoutManager.instance == null) return;
-
+        Debug.LogWarning("GamePlayer Add");
         gamePlayers.Add(gamePlayer);
+
+        if (LayoutManager.instance == null)
+        {
+            Debug.LogWarning("Layout manager is null");
+            return;
+        }
+
         LayoutManager.instance.UpdatePlayer(new CSteamID(gamePlayer.GetSteamId()));
     }
+
     public void PlayerDisconnected(int connectionId)
     {
         GamePlayer gamePlayer = GetGamePlayerByConnId(connectionId);
