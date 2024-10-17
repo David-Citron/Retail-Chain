@@ -96,11 +96,14 @@ public class GamePlayer : NetworkBehaviour
         }
 
         isReady = !isReady;
+
+        Debug.Log("CALLING LOCAL CHANGE");
         UpdateReadyStatus();
     }
 
     public void OnReadyStatusChanged(bool oldValue, bool newValue)
     {
+        Debug.Log("CALLING CHANGE");
         UpdateReadyStatus();
     }
 
