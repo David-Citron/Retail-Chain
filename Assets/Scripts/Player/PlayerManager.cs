@@ -1,3 +1,4 @@
+using Mirror;
 using Steamworks;
 using System.Collections.Generic;
 using TMPro;
@@ -91,6 +92,8 @@ public class PlayerManager : MonoBehaviour
         if(gamePlayer == null) return;
 
         Debug.Log("Player " + PlayerSteamUtils.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " has disconnected.");
+
+        NetworkManager.singleton.StopHost();
 
         int index = gamePlayers.IndexOf(gamePlayer);
         gamePlayers.Remove(gamePlayer);

@@ -96,14 +96,10 @@ public class GamePlayer : NetworkBehaviour
         }
 
         isReady = !isReady;
-
-        Debug.Log("CALLING LOCAL CHANGE");
-        UpdateReadyStatus();
     }
 
     public void OnReadyStatusChanged(bool oldValue, bool newValue)
     {
-        Debug.Log("CALLING CHANGE");
         UpdateReadyStatus();
     }
 
@@ -118,7 +114,6 @@ public class GamePlayer : NetworkBehaviour
         if (oppositePlayer == null) return;
         if (!oppositePlayer.isReady) return;
 
-        Debug.Log("Trying to change scene:");
         NetworkManager.singleton.ServerChangeScene("Level1");
 
         if (!isLocalPlayer) oppositePlayer.StartGame();
