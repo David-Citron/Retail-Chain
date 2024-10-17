@@ -122,7 +122,8 @@ public class GamePlayer : NetworkBehaviour
         if(oppositePlayer == null) return;
         if (!oppositePlayer.isReady) return;
 
-        NetworkManager.singleton.ServerChangeScene("Level1");
+        if(isLocalPlayer && isServer) NetworkManager.singleton.ServerChangeScene("Level1");
+
         if (!isLocalPlayer) oppositePlayer.StartGame();
         else StartGame();
     }
