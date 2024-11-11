@@ -1,5 +1,6 @@
 using Mirror;
 using Steamworks;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,7 +13,13 @@ public class SteamLobby : MonoBehaviour
     protected Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
     protected Callback<LobbyEnter_t> lobbyEntered;
 
-    private const string HostAdressKey = "HostAdressKey";
+    protected Callback<LobbyMatchList_t> lobbyList;
+    protected Callback<LobbyDataUpdate_t> lobbyDataUpdate;
+
+    public List<CSteamID> lobbyIds = new List<CSteamID>();
+
+
+    public const string HostCSteamIDKey = "HostCSteamID";
 
     private NetworkManager networkManager;
 
@@ -40,6 +47,9 @@ public class SteamLobby : MonoBehaviour
         lobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
         gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
         lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
+
+        lobbyList = Callback<LobbyMatchList_t>.Create(OnGetLobbyList);
+        lobbyDataUpdate = Callback<LobbyDataUpdate_t>.Create(OnGetLobbyData);
     }
 
     private bool SteamIsInitialized()
@@ -55,6 +65,11 @@ public class SteamLobby : MonoBehaviour
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, networkManager.maxConnections);
     }
 
+    public void JoinLobby(CSteamID steamID)
+    {
+        SteamMatchmaking.JoinLobby(steamID);
+    }
+
     private void OnLobbyCreated(LobbyCreated_t callback)
     {
         if(callback.m_eResult != EResult.k_EResultOK)
@@ -67,7 +82,7 @@ public class SteamLobby : MonoBehaviour
 
         networkManager.StartHost();
 
-        SteamMatchmaking.SetLobbyData(LobbyId, HostAdressKey, SteamUser.GetSteamID().ToString());
+        SteamMatchmaking.SetLobbyData(LobbyId, HostCSteamIDKey, SteamUser.GetSteamID().ToString());
     }
 
     private void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback)
@@ -82,7 +97,7 @@ public class SteamLobby : MonoBehaviour
         CSteamID lobbyId = new CSteamID(callback.m_ulSteamIDLobby);
         LobbyId = lobbyId;
 
-        string hostAddress = SteamMatchmaking.GetLobbyData(LobbyId, HostAdressKey);
+        string hostAddress = SteamMatchmaking.GetLobbyData(LobbyId, HostCSteamIDKey);
         networkManager.networkAddress = hostAddress;
         networkManager.StartClient();
     }
@@ -99,5 +114,30 @@ public class SteamLobby : MonoBehaviour
 
         if (LayoutManager.instance == null) return;
         LayoutManager.instance.ShowMainMenu();
+    }
+
+    public void GetLobbiesList()
+    {
+        if(lobbyIds.Count > 0) lobbyIds.Clear();
+        SteamMatchmaking.AddRequestLobbyListResultCountFilter(60);
+        SteamMatchmaking.RequestLobbyList();
+    }
+
+    void OnGetLobbyList(LobbyMatchList_t result)
+    {
+        if (LobbiesListManager.instance.listOfLobbies.Count > 0) LobbiesListManager.instance.DestroyLobbies();
+
+        for (int i = 0; i < result.m_nLobbiesMatching; i++)
+        {
+            CSteamID lobbyId = SteamMatchmaking.GetLobbyByIndex(i);
+            lobbyIds.Add(lobbyId);
+            SteamMatchmaking.RequestLobbyData(lobbyId);
+            Debug.Log(i);
+        }
+    }
+
+    void OnGetLobbyData(LobbyDataUpdate_t result)
+    {
+        LobbiesListManager.instance.DisplayLobbies(lobbyIds, result);
     }
 }

@@ -58,11 +58,6 @@ public class PlayerManager : MonoBehaviour
         return -1;
     }
 
-    public void ChangeReadyStatus(GamePlayer gamePlayer)
-    {
-        gamePlayer.ChangeReadyStatus();
-    }
-
     public void Reset()
     {
         gamePlayers.Clear();

@@ -21,9 +21,11 @@ public class LayoutManager : MonoBehaviour
     [SerializeField] public Button leaveButton;
     [SerializeField] public Button swapButton;
     [SerializeField] public Button hostButton;
+    [SerializeField] public Button joinButton;
+
+    [SerializeField] public GameObject lobbiesMenu;
 
     [SerializeField] private GameObject defaultButtonsGroup;
-    [SerializeField] private GameObject playButtonsGroup;
     [SerializeField] private GameObject lobby;
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject steamNotInitializedNotification;
@@ -34,10 +36,13 @@ public class LayoutManager : MonoBehaviour
     {
         instance = this;
         defaultButtonsGroup.SetActive(true);
-        playButtonsGroup.SetActive(false);
         lobby.SetActive(false);
     }
 
+    /// <summary>
+    /// Updates player's data (profile image, username) in MainMenu scene. Initialize buttons.
+    /// </summary>
+    /// <param name="id">CSteamID of player</param>
     public void UpdatePlayer(CSteamID id)
     {
         var index = PlayerManager.instance.GetPlayerIndex(id);
@@ -60,27 +65,53 @@ public class LayoutManager : MonoBehaviour
         SendNotification("Player " + username + " has joined your Lobby.", 5);
     }
 
+    /// <summary>
+    /// Adds listener to the host button to properly host lobby.
+    /// </summary>
     public void InicializeHostButton()
     {
-        if (hostButton == null) return;
-        hostButton.interactable = true;
-        hostButton.onClick.RemoveAllListeners();
-        hostButton.onClick.AddListener(() =>
+        if (hostButton != null) { 
+            hostButton.interactable = true;
+            hostButton.onClick.RemoveAllListeners();
+            hostButton.onClick.AddListener(() =>
+            {
+                SteamLobby.instance.HostLobby();
+            });
+        }
+
+        if(joinButton != null)
         {
-            SteamLobby.instance.HostLobby();
-        });
+            joinButton.interactable = true;
+            joinButton.onClick.RemoveAllListeners();
+            joinButton.onClick.AddListener(() =>
+            {
+                mainMenu.SetActive(false);
+                lobbiesMenu.SetActive(true);
+                SteamLobby.instance.GetLobbiesList();
+            });
+        }
     }
 
+    /// <summary>
+    /// Updates role text based on the given player's role.
+    /// </summary>
+    /// <param name="id">CSteamID of player</param>
     public void UpdateRoleText(CSteamID id)
     {
         var index = PlayerManager.instance.GetPlayerIndex(id);
         if (index == -1) return;
+
         var gamePlayer = PlayerManager.instance.gamePlayers[index];
         if (gamePlayer == null) return;
 
         UpdateRoleText(gamePlayer, index);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="gamePlayer"></param>
+    /// <param name="index"></param>
     public void UpdateRoleText(GamePlayer gamePlayer, int index)
     {
         var status = gamePlayer.isReady;
@@ -205,7 +236,6 @@ public class LayoutManager : MonoBehaviour
 
     public IEnumerator SendEnumaratorNotification(string text, Color color, int time)
     {
-        Debug.Log("New notification: " + text + " for " + time);
         notificationText.text = text;
         notificationText.color = color;
         yield return new WaitForSecondsRealtime(time);

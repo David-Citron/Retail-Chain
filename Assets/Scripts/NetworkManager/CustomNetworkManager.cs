@@ -1,6 +1,7 @@
 using UnityEngine;
 using Mirror;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class CustomNetworkManager : NetworkManager
 {
@@ -41,9 +42,8 @@ public class CustomNetworkManager : NetworkManager
 
         PlayerManager.instance.PlayerDisconnected(conn.connectionId);
 
-        if (SceneManager.GetActiveScene().buildIndex == 0) return;
-        StopServer();
-        SteamLobby.instance.LeaveLobby();
-        StopClient();
+        //This is being called only on Server side, so when the 2nd player leaves, we need to stop the server.
+        if (PlayerManager.instance.gamePlayers.Count == 0) return; //If the list is empty we do not want to StopHost - player is already stopped
+        StopHost();
     }
 }

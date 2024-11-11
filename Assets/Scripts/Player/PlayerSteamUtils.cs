@@ -12,6 +12,19 @@ public class PlayerSteamUtils : MonoBehaviour {
         avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
     }
 
+    public static CSteamID StringToCSteamID(string steamIdString)
+    {
+        if (ulong.TryParse(steamIdString, out ulong steamId))
+        {
+            return new CSteamID(steamId);
+        }
+        else
+        {
+            Debug.LogError("Invalid Steam ID format.");
+            return CSteamID.Nil;
+        }
+    }
+
     public static void OnAvatarImageLoaded(AvatarImageLoaded_t callback) {
         if (callback.m_steamID.m_SteamID != localPlayerSteamId.m_SteamID) return;
         if (LayoutManager.instance == null) return;
