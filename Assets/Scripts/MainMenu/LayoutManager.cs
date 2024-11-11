@@ -87,7 +87,7 @@ public class LayoutManager : MonoBehaviour
             {
                 mainMenu.SetActive(false);
                 lobbiesMenu.SetActive(true);
-                SteamLobby.instance.GetLobbiesList();
+                StartCoroutine(LobbiesListManager.instance.UpdateLobbyList());
             });
         }
     }
@@ -205,12 +205,14 @@ public class LayoutManager : MonoBehaviour
     {
         lobby.SetActive(true);
         mainMenu.SetActive(false);
+        lobbiesMenu.SetActive(false);
     }
 
     public void ShowMainMenu()
     {
-        lobby.SetActive(false);
         mainMenu.SetActive(true);
+        lobby.SetActive(false);
+        lobbiesMenu.SetActive(false);
     }
 
     public void ExitGame()

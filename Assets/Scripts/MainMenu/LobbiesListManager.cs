@@ -18,6 +18,15 @@ public class LobbiesListManager : MonoBehaviour
         if(instance == null) instance = this;
     }
 
+    public IEnumerator UpdateLobbyList()
+    {
+        if (!LayoutManager.instance.lobbiesMenu.activeSelf) yield break;
+
+        SteamLobby.instance.GetLobbiesList();
+        yield return new WaitForSecondsRealtime(3);
+        StartCoroutine(UpdateLobbyList());
+    }
+
     public void DisplayLobbies(List<CSteamID> lobbyIds, LobbyDataUpdate_t update)
     {
         for (int i = 0; i < lobbyIds.Count; i++)
