@@ -62,7 +62,7 @@ public class SteamLobby : MonoBehaviour
     public void HostLobby()
     {
         Debug.Log("Started hosting a lobby");
-        SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, networkManager.maxConnections);
+        SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, networkManager.maxConnections);
     }
 
     public void JoinLobby(CSteamID steamID)
