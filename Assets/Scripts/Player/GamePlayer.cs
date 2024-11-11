@@ -93,6 +93,7 @@ public class GamePlayer : NetworkBehaviour
         }
 
         isReady = !isReady;
+        UpdateReadyStatus();
     }
 
     public void OnReadyStatusChanged(bool oldValue, bool newValue)

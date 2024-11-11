@@ -120,12 +120,14 @@ public class LayoutManager : MonoBehaviour
 
     public void UpdateReadyStatus(CSteamID id)
     {
+        Debug.Log("Calling update for " + PlayerSteamUtils.GetSteamUsername(id));
         var index = PlayerManager.instance.GetPlayerIndex(id);
         if (index == -1) return;
 
         var gamePlayer = PlayerManager.instance.gamePlayers[index];
         if (gamePlayer == null) return;
 
+        Debug.Log("called update for " + PlayerSteamUtils.GetSteamUsername(id));
         var text = readyTextButtons[index];
         text.text = gamePlayer.isReady ? "READY" : "NOT READY";
         text.color = gamePlayer.isReady ? Color.green : Color.red;
