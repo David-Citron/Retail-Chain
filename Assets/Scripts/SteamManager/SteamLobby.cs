@@ -83,6 +83,7 @@ public class SteamLobby : MonoBehaviour
         networkManager.StartHost();
 
         SteamMatchmaking.SetLobbyData(LobbyId, HostCSteamIDKey, SteamUser.GetSteamID().ToString());
+        SteamMatchmaking.SetLobbyData(LobbyId, "game", "retailchain");
     }
 
     private void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback)
@@ -119,7 +120,7 @@ public class SteamLobby : MonoBehaviour
     public void GetLobbiesList()
     {
         if(lobbyIds.Count > 0) lobbyIds.Clear();
-        SteamMatchmaking.AddRequestLobbyListResultCountFilter(60);
+        SteamMatchmaking.AddRequestLobbyListStringFilter("game", "retailchain", ELobbyComparison.k_ELobbyComparisonEqual);
         SteamMatchmaking.RequestLobbyList();
     }
 
