@@ -11,6 +11,8 @@ public class LobbyDataEntry : MonoBehaviour
     public CSteamID lobbyId;
     public CSteamID hostId;
 
+    public string hostUsername;
+
     public RawImage profilePicture;
     public TMP_Text username;
     public Button joinButton;
@@ -31,7 +33,7 @@ public class LobbyDataEntry : MonoBehaviour
     {
         if (hostId == null) return;
         profilePicture.texture = PlayerSteamUtils.GetSteamProfilePicture(hostId);
-        username.text = PlayerSteamUtils.GetSteamUsername(hostId);
+        username.text = hostUsername;
 
         joinButton.interactable = true;
         joinButton.enabled = true;

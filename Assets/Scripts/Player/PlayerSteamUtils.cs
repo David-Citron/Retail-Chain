@@ -18,6 +18,7 @@ public class PlayerSteamUtils : MonoBehaviour {
         {
             return new CSteamID(steamId);
         }
+
         else
         {
             Debug.LogError("Invalid Steam ID format.");

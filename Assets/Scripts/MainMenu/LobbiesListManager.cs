@@ -24,15 +24,16 @@ public class LobbiesListManager : MonoBehaviour
         {
             if (lobbyIds[i].m_SteamID != update.m_ulSteamIDLobby) continue;
             var lobbyId = new CSteamID(lobbyIds[i].m_SteamID);
-            string data = SteamMatchmaking.GetLobbyData(lobbyId, SteamLobby.HostCSteamIDKey);
-            if (data.Equals("")) continue;
+
+            Debug.Log(lobbyId);
 
             GameObject createdItem = Instantiate(lobbyDataItemPrefab);
 
             var component = createdItem.GetComponent<LobbyDataEntry>();
 
             component.lobbyId = lobbyId;
-            component.hostId = PlayerSteamUtils.StringToCSteamID(data);
+            component.hostId = PlayerSteamUtils.StringToCSteamID(SteamMatchmaking.GetLobbyData(lobbyId, SteamLobby.HostCSteamIDKey));
+            component.hostUsername = SteamMatchmaking.GetLobbyData(lobbyId, "host-name");
             component.UpdateList();
 
             createdItem.transform.SetParent(lobbyListContent.transform);
