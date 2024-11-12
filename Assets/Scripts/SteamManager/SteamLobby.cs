@@ -120,10 +120,8 @@ public class SteamLobby : MonoBehaviour
 
     public void GetLobbiesList()
     {
-        Debug.Log(SteamMatchmaking.GetLobbyData(new CSteamID((ulong)76561198334475778), "game"));
         if(lobbyIds.Count > 0) lobbyIds.Clear();
         SteamMatchmaking.AddRequestLobbyListStringFilter("game", "retailchain", ELobbyComparison.k_ELobbyComparisonEqual);
-        //SteamMatchmaking.AddRequestLobbyListResultCountFilter(50);
         SteamMatchmaking.RequestLobbyList();
     }
 

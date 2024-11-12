@@ -188,6 +188,12 @@ public class LayoutManager : MonoBehaviour
                 return;
             }
 
+            if(gamePlayer.isReady || playerManager.GetOppositePlayer(gamePlayer).isReady)
+            {
+                SendColoredNotification("One of the player is already ready!", Color.red, 3);
+                return;
+            }
+
             gamePlayer.RpcShowUpdatedRoles();
         });
     }

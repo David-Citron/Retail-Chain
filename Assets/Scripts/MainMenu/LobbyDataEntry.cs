@@ -46,6 +46,7 @@ public class LobbyDataEntry : MonoBehaviour
 
     public void JoinLobby()
     {
+        LayoutManager.instance.ShowMainMenu();
         SteamLobby.instance.JoinLobby(lobbyId);
     }
 }
