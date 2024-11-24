@@ -18,25 +18,34 @@ public class LayoutManager : MonoBehaviour
 
     [SerializeField] public List<TMP_Text> roleTexts = new List<TMP_Text>();
 
-    [SerializeField] public Button leaveButton;
-    [SerializeField] public Button swapButton;
-    [SerializeField] public Button hostButton;
-    [SerializeField] public Button joinButton;
+    //Main Menu
+    [SerializeField] public Button createGameButton;
+    [SerializeField] public Button joinGameButton;
+    [SerializeField] public RawImage mainMenuProfilePicture;
+    [SerializeField] public TMP_Text mainMenuUsername;
 
+    //Lobby Menu
+    [SerializeField] public Button swapButton;
+    [SerializeField] public Button leaveButton;
+
+    [SerializeField] public TMP_Text notificationText;
+
+    [SerializeField] public GameObject mainMenu;
+    [SerializeField] public GameObject lobby;
     [SerializeField] public GameObject lobbiesMenu;
 
-    [SerializeField] private GameObject defaultButtonsGroup;
-    [SerializeField] private GameObject lobby;
-    [SerializeField] private GameObject mainMenu;
-    [SerializeField] private GameObject steamNotInitializedNotification;
+    [SerializeField] public GameObject steamNotInitializedNotification;
 
-    [SerializeField] private TMP_Text notificationText;
 
     void Start()
     {
         instance = this;
-        defaultButtonsGroup.SetActive(true);
-        lobby.SetActive(false);
+
+        ShowMainMenu();
+        InicializeMainMenuButtons();
+
+        if (!SteamManager.Initialized) return;
+        UpdateMainMenuProfilePicture(SteamUser.GetSteamID());
     }
 
     /// <summary>
@@ -68,28 +77,41 @@ public class LayoutManager : MonoBehaviour
     /// <summary>
     /// Adds listener to the host button to properly host lobby.
     /// </summary>
-    public void InicializeHostButton()
+    public void InicializeMainMenuButtons()
     {
-        if (hostButton != null) { 
-            hostButton.interactable = true;
-            hostButton.onClick.RemoveAllListeners();
-            hostButton.onClick.AddListener(() =>
+        if (createGameButton != null) {
+            createGameButton.interactable = true;
+            createGameButton.onClick.RemoveAllListeners();
+            createGameButton.onClick.AddListener(() =>
             {
                 SteamLobby.instance.HostLobby();
             });
         }
 
-        if(joinButton != null)
-        {
-            joinButton.interactable = true;
-            joinButton.onClick.RemoveAllListeners();
-            joinButton.onClick.AddListener(() =>
+        if(joinGameButton != null) {
+            joinGameButton.interactable = true;
+            joinGameButton.onClick.RemoveAllListeners();
+            joinGameButton.onClick.AddListener(() =>
             {
                 mainMenu.SetActive(false);
+                lobby.SetActive(false);
                 lobbiesMenu.SetActive(true);
                 StartCoroutine(LobbiesListManager.instance.UpdateLobbyList());
             });
         }
+    }
+
+    public void UpdateMainMenuProfilePicture(CSteamID id)
+    {
+        if(id == null)
+        {
+            Debug.LogWarning("id cannot be null");
+            return;
+        }
+
+        mainMenuProfilePicture.texture = PlayerSteamUtils.GetSteamProfilePicture(id);
+        mainMenuUsername.text = PlayerSteamUtils.GetSteamUsername(id);
+
     }
 
     /// <summary>
@@ -198,17 +220,6 @@ public class LayoutManager : MonoBehaviour
         });
     }
 
-    public void ChangeActive(GameObject button)
-    {
-        button.SetActive(!button.activeInHierarchy);
-    }
-
-    public void BackToMainMenu(GameObject current)
-    {
-        defaultButtonsGroup.SetActive(true);
-        current.SetActive(false);
-    }
-
     public void ShowLobby()
     {
         lobby.SetActive(true);
@@ -225,7 +236,6 @@ public class LayoutManager : MonoBehaviour
 
     public void ExitGame()
     {
-        Debug.Log("Quit game");
         Application.Quit();
     }
 

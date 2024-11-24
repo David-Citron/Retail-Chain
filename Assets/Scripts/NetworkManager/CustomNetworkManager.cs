@@ -5,12 +5,10 @@ using System.Collections;
 
 public class CustomNetworkManager : NetworkManager
 {
-    private GameManager gameManager;
 
     public override void Start()
     {
         base.Start();
-        gameManager = GameManager.Instance;
     }
 
     public override void OnClientConnect()

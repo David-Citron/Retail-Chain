@@ -52,6 +52,12 @@ public class LobbiesListManager : MonoBehaviour
         }
     }
 
+    public void StopDisplayingLobbies()
+    {
+        LayoutManager.instance.ShowMainMenu();
+        LayoutManager.instance.SendColoredNotification("There are no lobbies to join!", Color.red, 5);
+    }
+
     public void DestroyLobbies()
     {
         foreach (GameObject item in listOfLobbies)
