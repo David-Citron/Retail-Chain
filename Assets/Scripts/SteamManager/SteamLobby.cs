@@ -128,7 +128,6 @@ public class SteamLobby : MonoBehaviour
     void OnGetLobbyList(LobbyMatchList_t result)
     {
         if (LobbiesListManager.instance.listOfLobbies.Count > 0) LobbiesListManager.instance.DestroyLobbies();
-        else LobbiesListManager.instance.StopDisplayingLobbies();
 
         for (int i = 0; i < result.m_nLobbiesMatching; i++)
         {
