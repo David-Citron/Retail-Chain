@@ -10,14 +10,10 @@ public class LayoutManager : MonoBehaviour
 
     public static LayoutManager instance;
 
-    [SerializeField] public List<TMP_Text> userNames = new List<TMP_Text>();
-    [SerializeField] public List<RawImage> profilePictures = new List<RawImage>();
     [SerializeField] public List<GameObject> spawnPoints = new List<GameObject>();
 
     [SerializeField] public List<Button> readyButtons = new List<Button>();
     [SerializeField] public List<TMP_Text> readyTextButtons = new List<TMP_Text>();
-
-    [SerializeField] public List<TMP_Text> roleTexts = new List<TMP_Text>();
 
     //Main Menu
     [SerializeField] public Button createGameButton;
@@ -63,14 +59,8 @@ public class LayoutManager : MonoBehaviour
         
         var username = PlayerSteamUtils.GetSteamUsername(id);
 
-        profilePictures[index].texture = PlayerSteamUtils.GetSteamProfilePicture(id);
-        userNames[index].text = username;
-
-        UpdateRoleText(gamePlayer, index);
-
         InitializeLeaveButton(gamePlayer);
-        InitializeReadyButton(gamePlayer, index);
-        InitializeRoleSwapButton(gamePlayer);
+        //InitializeReadyButton(gamePlayer, index);
 
         SendNotification("Player " + username + " has joined your Lobby.", 5);
     }
@@ -113,47 +103,6 @@ public class LayoutManager : MonoBehaviour
         mainMenuProfilePicture.texture = PlayerSteamUtils.GetSteamProfilePicture(id);
         mainMenuUsername.text = PlayerSteamUtils.GetSteamUsername(id);
 
-    }
-
-    /// <summary>
-    /// Updates role text based on the given player's role.
-    /// </summary>
-    /// <param name="id">CSteamID of player</param>
-    public void UpdateRoleText(CSteamID id)
-    {
-        var index = PlayerManager.instance.GetPlayerIndex(id);
-        if (index == -1) return;
-
-        var gamePlayer = PlayerManager.instance.gamePlayers[index];
-        if (gamePlayer == null) return;
-
-        UpdateRoleText(gamePlayer, index);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="gamePlayer"></param>
-    /// <param name="index"></param>
-    public void UpdateRoleText(GamePlayer gamePlayer, int index)
-    {
-        var status = gamePlayer.isReady;
-        roleTexts[index].text = gamePlayer.playerRole.ToString();
-    }
-
-    public void UpdateReadyStatus(CSteamID id)
-    {
-        Debug.Log("Calling update for " + PlayerSteamUtils.GetSteamUsername(id));
-        var index = PlayerManager.instance.GetPlayerIndex(id);
-        if (index == -1) return;
-
-        var gamePlayer = PlayerManager.instance.gamePlayers[index];
-        if (gamePlayer == null) return;
-
-        Debug.Log("called update for " + PlayerSteamUtils.GetSteamUsername(id));
-        var text = readyTextButtons[index];
-        text.text = gamePlayer.isReady ? "READY" : "NOT READY";
-        text.color = gamePlayer.isReady ? Color.green : Color.red;
     }
 
     public void InitializeLeaveButton(GamePlayer gamePlayer)

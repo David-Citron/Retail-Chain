@@ -67,10 +67,6 @@ public class PlayerManager : MonoBehaviour
     public void Reset()
     {
         gamePlayers.Clear();
-
-        if (LayoutManager.instance == null) return;
-        GetUsernames().ForEach(userName => userName.text = "Player " + (GetUsernames().IndexOf(userName) + 1));
-        GetProfilePictures().ForEach(picture => picture.texture = Texture2D.whiteTexture);
     }
 
     public void AddGamePlayer(GamePlayer gamePlayer)
@@ -95,11 +91,6 @@ public class PlayerManager : MonoBehaviour
 
         int index = gamePlayers.IndexOf(gamePlayer);
         gamePlayers.Remove(gamePlayer);
-
-        if (LayoutManager.instance == null) return;
-
-        GetUsernames()[index].text = "Player " + (index + 1);
-        GetProfilePictures()[index].texture = Texture2D.whiteTexture;
     }
 
     public GamePlayer GetGamePlayerByConnId(int connId)
@@ -113,9 +104,4 @@ public class PlayerManager : MonoBehaviour
         }
         return null;
     }
-
-    private List<TMP_Text> GetUsernames() => LayoutManager.instance.userNames;
-    private List<RawImage> GetProfilePictures() => LayoutManager.instance.profilePictures;
-
-
 }

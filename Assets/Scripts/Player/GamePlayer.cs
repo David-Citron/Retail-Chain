@@ -21,6 +21,7 @@ public class GamePlayer : NetworkBehaviour
     [SerializeField] public int connectionId = -1;
 
     [SerializeField] private RawImage profilePictureImage;
+    [SerializeField] private RawImage ready, notReady;
     [SerializeField] private TMP_Text displayNameText;
     [SerializeField] private TMP_Text roleText;
 
@@ -69,6 +70,7 @@ public class GamePlayer : NetworkBehaviour
         profilePictureImage.texture = PlayerSteamUtils.GetSteamProfilePicture(user);
         displayNameText.text = PlayerSteamUtils.GetSteamUsername(user);
         roleText.text = (playerRole == PlayerRole.Factory) ? "Factory" : "Shop";
+        notReady.enabled = true;
     }
 
     public void OnSteamIDChanged(ulong oldSteamId, ulong newSteamId)
@@ -107,8 +109,6 @@ public class GamePlayer : NetworkBehaviour
             LayoutManager.instance.SendColoredNotification("Second player is required!", Color.red, 3);
             return;
         }
-
-        isReady = !isReady;
         UpdateReadyStatus();
     }
 
@@ -119,7 +119,16 @@ public class GamePlayer : NetworkBehaviour
 
     private void UpdateReadyStatus()
     {
-        if (LayoutManager.instance != null) LayoutManager.instance.UpdateReadyStatus(new CSteamID(steamID));
+        if (isReady)
+        {
+            notReady.enabled = false;
+            ready.enabled = true;
+        }
+        else
+        {
+            ready.enabled = false;
+            notReady.enabled = true;
+        }
 
         if (!isServer) return;
         if (!isReady) return;
