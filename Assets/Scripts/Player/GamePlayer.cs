@@ -44,10 +44,7 @@ public class GamePlayer : NetworkBehaviour
         }
 
         CSteamID user = new CSteamID(steamID);
-        Debug.Log("SteamID" + user);
-        profilePictureImage.texture = PlayerSteamUtils.GetSteamProfilePicture(user);
-        displayNameText.text = PlayerSteamUtils.GetSteamUsername(user);
-        roleText.text = (playerRole == PlayerRole.Factory) ? "Factory" : "Shop";
+        UpdateUserInfo(user);
 
         if (PlayerManager.instance == null) return;
         
@@ -65,11 +62,21 @@ public class GamePlayer : NetworkBehaviour
         
     }
 
+    public void UpdateUserInfo(CSteamID user)
+    {
+        if (user == CSteamID.Nil) return;
+        Debug.Log("SteamID" + user);
+        profilePictureImage.texture = PlayerSteamUtils.GetSteamProfilePicture(user);
+        displayNameText.text = PlayerSteamUtils.GetSteamUsername(user);
+        roleText.text = (playerRole == PlayerRole.Factory) ? "Factory" : "Shop";
+    }
+
     public void OnSteamIDChanged(ulong oldSteamId, ulong newSteamId)
     {
         CSteamID newCSteamID = new CSteamID(newSteamId);
-        if (LayoutManager.instance == null) return;
-        LayoutManager.instance.UpdatePlayer(newCSteamID);
+        UpdateUserInfo(newCSteamID);
+        /*if (LayoutManager.instance == null) return;
+        LayoutManager.instance.UpdatePlayer(newCSteamID);*/
     }
 
 
