@@ -12,6 +12,7 @@ public class LayoutManager : MonoBehaviour
 
     [SerializeField] public List<TMP_Text> userNames = new List<TMP_Text>();
     [SerializeField] public List<RawImage> profilePictures = new List<RawImage>();
+    [SerializeField] public List<GameObject> spawnPoints = new List<GameObject>();
 
     [SerializeField] public List<Button> readyButtons = new List<Button>();
     [SerializeField] public List<TMP_Text> readyTextButtons = new List<TMP_Text>();

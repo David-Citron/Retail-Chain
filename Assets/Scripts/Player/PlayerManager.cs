@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager instance;
 
     [SerializeField] public List<GamePlayer> gamePlayers = new List<GamePlayer>();
+    [SerializeField] private List<Transform> lobbySpawnPoints = new List<Transform>();
 
     [SerializeField] public Account account;
 
@@ -58,6 +59,11 @@ public class PlayerManager : MonoBehaviour
         return -1;
     }
 
+    public int GetPlayerIndex(GamePlayer gamePlayer)
+    {
+        return gamePlayers.IndexOf(gamePlayer);
+    }
+
     public void Reset()
     {
         gamePlayers.Clear();
@@ -72,7 +78,9 @@ public class PlayerManager : MonoBehaviour
         gamePlayers.Add(gamePlayer);
 
         if (LayoutManager.instance == null) return;
-        
+
+        gamePlayer.transform.position = lobbySpawnPoints[GetPlayerIndex(gamePlayer)].position;
+        gamePlayer.transform.rotation = lobbySpawnPoints[GetPlayerIndex(gamePlayer)].rotation;
 
         LayoutManager.instance.UpdatePlayer(new CSteamID(gamePlayer.GetSteamId()));
     }

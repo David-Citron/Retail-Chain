@@ -1,6 +1,8 @@
 using Mirror;
 using Steamworks;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GamePlayer : NetworkBehaviour
 {
@@ -18,6 +20,10 @@ public class GamePlayer : NetworkBehaviour
 
     [SerializeField] public int connectionId = -1;
 
+    [SerializeField] private RawImage profilePictureImage;
+    [SerializeField] private TMP_Text displayNameText;
+    [SerializeField] private TMP_Text roleText;
+
     void Start()
     {
         DontDestroyOnLoad(this);
@@ -31,15 +37,20 @@ public class GamePlayer : NetworkBehaviour
         else playerRole = PlayerRole.Factory;
 
         syncDirection = (isLocalPlayer && isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
-        
-        if (PlayerManager.instance == null) return;
-        
 
         if (isLocalPlayer)
         {
             steamID = SteamUser.GetSteamID().m_SteamID;
         }
 
+        CSteamID user = new CSteamID(steamID);
+        Debug.Log("SteamID" + user);
+        profilePictureImage.texture = PlayerSteamUtils.GetSteamProfilePicture(user);
+        displayNameText.text = PlayerSteamUtils.GetSteamUsername(user);
+        roleText.text = (playerRole == PlayerRole.Factory) ? "Factory" : "Shop";
+
+        if (PlayerManager.instance == null) return;
+        
         PlayerManager.instance.AddGamePlayer(this);
     }
 
@@ -74,14 +85,12 @@ public class GamePlayer : NetworkBehaviour
     public void SetPlayeRole(PlayerRole newRole)
     {
         playerRole = newRole;
-        if (LayoutManager.instance == null) return;
-        LayoutManager.instance.UpdateRoleText(new CSteamID(steamID));
+        roleText.text = (newRole == PlayerRole.Factory) ? "Factory" : "Shop";
     }
 
     public void OnChangePlayerRole(PlayerRole oldValue, PlayerRole newValue)
     {
-        if (LayoutManager.instance == null) return;
-        LayoutManager.instance.UpdateRoleText(new CSteamID(steamID));
+        roleText.text = (newValue == PlayerRole.Factory) ? "Factory" : "Shop";
     }
 
     public void ChangeReadyStatus()
