@@ -8,6 +8,9 @@ public class SteamLobby : MonoBehaviour
 {
 
     public static SteamLobby instance;
+    private NetworkManager networkManager;
+
+    private List<CSteamID> lobbyIds = new List<CSteamID>();
 
     protected Callback<LobbyCreated_t> lobbyCreated;
     protected Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
@@ -16,14 +19,7 @@ public class SteamLobby : MonoBehaviour
     protected Callback<LobbyMatchList_t> lobbyList;
     protected Callback<LobbyDataUpdate_t> lobbyDataUpdate;
 
-    public List<CSteamID> lobbyIds = new List<CSteamID>();
-
-
     public const string HostCSteamIDKey = "HostCSteamID";
-
-    private NetworkManager networkManager;
-
-    [SerializeField] private PlayerManager playerManager;
 
     public static CSteamID LobbyId {get; private set; }
 

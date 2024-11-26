@@ -4,15 +4,21 @@ public class PlayerMovement : MonoBehaviour
 {
 
     private CharacterController characterController;
+    private Animator animator;
 
-    public float moveSpeed = 5f;
-    public float rotationSpeed = 10f;
+    public float moveSpeed = 3f;
+    public float rotationSpeed = 5f;
     public Transform cameraTransform;
+
+
+    private bool walking;
 
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+
         if (cameraTransform == null)
         {
             cameraTransform = Camera.main.transform;
@@ -23,6 +29,15 @@ public class PlayerMovement : MonoBehaviour
     {
         float horizontal = Input.GetAxis("Horizontal"); // A/D or Left/Right
         float vertical = Input.GetAxis("Vertical"); // W/S or Up/Down
+
+        if (walking && horizontal == 0 && vertical == 0)
+        {
+            animator.SetBool("walking", false);
+            walking = false;
+        } else if(!walking && horizontal != 0 && vertical != 0) {
+            animator.SetBool("walking", true);
+            walking = true;
+        }
 
         Vector3 moveDirection = new Vector3(horizontal, 0, vertical).normalized;
 
@@ -36,8 +51,5 @@ public class PlayerMovement : MonoBehaviour
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             characterController.Move(moveDir.normalized * moveSpeed * Time.fixedDeltaTime);
         }
-
-        Vector3 gravity = new Vector3(0, -9.81f, 0);
-        characterController.Move(gravity * Time.fixedDeltaTime);
     }
 }
