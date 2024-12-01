@@ -116,7 +116,9 @@ public class SteamLobby : MonoBehaviour
 
     public void GetLobbiesList()
     {
-        if(lobbyIds.Count > 0) lobbyIds.Clear();
+        var anyLobbies = lobbyIds.Count > 0;
+        if (anyLobbies) lobbyIds.Clear();
+        LobbiesListManager.instance.UpdateNoLobbyInfo(anyLobbies);
         SteamMatchmaking.AddRequestLobbyListStringFilter("game", "retailchain", ELobbyComparison.k_ELobbyComparisonEqual);
         SteamMatchmaking.RequestLobbyList();
     }

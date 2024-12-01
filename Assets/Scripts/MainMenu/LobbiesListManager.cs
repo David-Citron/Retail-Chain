@@ -12,6 +12,7 @@ public class LobbiesListManager : MonoBehaviour
 
     public GameObject lobbyDataItemPrefab;
     public GameObject lobbyListContent;
+    public GameObject noLobbiesToJoin;
 
     private void Awake()
     {
@@ -52,10 +53,9 @@ public class LobbiesListManager : MonoBehaviour
         }
     }
 
-    public void StopDisplayingLobbies()
+    public void UpdateNoLobbyInfo(bool anyLobbies)
     {
-        LayoutManager.instance.ShowMainMenu();
-        LayoutManager.instance.SendColoredNotification("There are no lobbies to join!", Color.red, 5);
+        noLobbiesToJoin.SetActive(!anyLobbies);
     }
 
     public void DestroyLobbies()
