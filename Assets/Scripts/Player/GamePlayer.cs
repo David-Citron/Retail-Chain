@@ -102,34 +102,15 @@ public class GamePlayer : NetworkBehaviour
         roleText.text = (newValue == PlayerRole.Factory) ? "Factory" : "Shop";
     }
 
-    public void ChangeReadyStatus()
-    {
-        if (PlayerManager.instance.gamePlayers.Count <= 1)
-        {
-            LayoutManager.instance.SendColoredNotification("Second player is required!", Color.red, 3);
-            return;
-        }
-        UpdateReadyStatus();
-    }
-
     public void OnReadyStatusChanged(bool oldValue, bool newValue)
     {
         UpdateReadyStatus();
     }
 
-    private void UpdateReadyStatus()
+    public void UpdateReadyStatus()
     {
-        if (isReady)
-        {
-            notReady.enabled = false;
-            ready.enabled = true;
-        }
-        else
-        {
-            ready.enabled = false;
-            notReady.enabled = true;
-        }
-
+        isReady = !isReady;
+        UpdateReadyIcon();
         if (!isServer) return;
         if (!isReady) return;
 
@@ -141,6 +122,20 @@ public class GamePlayer : NetworkBehaviour
 
         if (!isLocalPlayer) oppositePlayer.StartGame();
         else StartGame();
+    }
+
+    private void UpdateReadyIcon()
+    {
+        if (isReady)
+        {
+            notReady.gameObject.SetActive(false);
+            ready.gameObject.SetActive(true);
+        }
+        else
+        {
+            notReady.gameObject.SetActive(true);
+            ready.gameObject.SetActive(false);
+        }
     }
 
     public void StartGame()

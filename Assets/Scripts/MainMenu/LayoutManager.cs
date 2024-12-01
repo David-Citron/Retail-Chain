@@ -127,18 +127,23 @@ public class LayoutManager : MonoBehaviour
         readyButton.interactable = true;
         readyButton.onClick.RemoveAllListeners();
         readyButton.onClick.AddListener(() => {
-            readyButton.enabled = false;
-            readyCancelButton.enabled = true;
-            gamePlayer.ChangeReadyStatus();
+            if(PlayerManager.instance.gamePlayers.Count <= 1)
+            {
+                SendColoredNotification("Both players are required to start the game!", Color.red, 3);
+                return;
+            }
+            readyButton.gameObject.SetActive(false);
+            readyCancelButton.gameObject.SetActive(true);
+            gamePlayer.UpdateReadyStatus();
             Debug.Log("WORKS");
         });
 
         readyCancelButton.interactable = true;
         readyCancelButton.onClick.RemoveAllListeners();
         readyCancelButton.onClick.AddListener(() => {
-            readyButton.enabled = true;
-            readyCancelButton.enabled = false;
-            gamePlayer.ChangeReadyStatus();
+            readyButton.gameObject.SetActive(true);
+            readyCancelButton.gameObject.SetActive(false);
+            gamePlayer.UpdateReadyStatus();
         });
     }
 
