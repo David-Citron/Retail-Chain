@@ -140,8 +140,6 @@ public class GamePlayer : NetworkBehaviour
         {
             notReady.gameObject.SetActive(true);
             ready.gameObject.SetActive(false);
-            ready.enabled = false;
-            notReady.enabled = true;
         }
     }
 

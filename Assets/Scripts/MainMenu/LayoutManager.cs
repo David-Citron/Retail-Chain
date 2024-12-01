@@ -89,6 +89,7 @@ public class LayoutManager : MonoBehaviour
                 mainMenu.SetActive(false);
                 lobby.SetActive(false);
                 lobbiesMenu.SetActive(true);
+                LobbiesListManager.instance.DestroyLobbies();
                 StartCoroutine(LobbiesListManager.instance.UpdateLobbyList());
             });
         }
