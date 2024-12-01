@@ -134,8 +134,7 @@ public class LayoutManager : MonoBehaviour
             }
             readyButton.gameObject.SetActive(false);
             readyCancelButton.gameObject.SetActive(true);
-            gamePlayer.UpdateReadyStatus();
-            Debug.Log("WORKS");
+            gamePlayer.ChangeReadyStatus();
         });
 
         readyCancelButton.interactable = true;
@@ -143,7 +142,7 @@ public class LayoutManager : MonoBehaviour
         readyCancelButton.onClick.AddListener(() => {
             readyButton.gameObject.SetActive(true);
             readyCancelButton.gameObject.SetActive(false);
-            gamePlayer.UpdateReadyStatus();
+            gamePlayer.ChangeReadyStatus();
         });
     }
 

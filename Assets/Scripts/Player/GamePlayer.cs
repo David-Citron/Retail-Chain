@@ -107,9 +107,14 @@ public class GamePlayer : NetworkBehaviour
         UpdateReadyStatus();
     }
 
-    public void UpdateReadyStatus()
+    public void ChangeReadyStatus()
     {
         isReady = !isReady;
+        UpdateReadyStatus();
+    }
+
+    public void UpdateReadyStatus()
+    {
         UpdateReadyIcon();
         if (!isServer) return;
         if (!isReady) return;
@@ -135,6 +140,8 @@ public class GamePlayer : NetworkBehaviour
         {
             notReady.gameObject.SetActive(true);
             ready.gameObject.SetActive(false);
+            ready.enabled = false;
+            notReady.enabled = true;
         }
     }
 
