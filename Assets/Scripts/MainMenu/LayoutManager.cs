@@ -149,12 +149,9 @@ public class LayoutManager : MonoBehaviour
 
     public void InitializeRoleSwapButton(GamePlayer gamePlayer)
     {
-        if (!gamePlayer.isServer)
-        {
-            swapButton.gameObject.SetActive(false);
-            return;
-        }
+        swapButton.gameObject.SetActive(gamePlayer.isServer);
 
+        if (!gamePlayer.isServer) return;
         if (!gamePlayer.isLocalPlayer) return;
 
         var playerManager = PlayerManager.instance;
