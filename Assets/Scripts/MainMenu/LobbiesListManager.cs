@@ -30,6 +30,8 @@ public class LobbiesListManager : MonoBehaviour
 
     public void DisplayLobbies(List<CSteamID> lobbyIds, LobbyDataUpdate_t update)
     {
+
+        if(noLobbiesToJoin.activeSelf) noLobbiesToJoin.SetActive(false);
         for (int i = 0; i < lobbyIds.Count; i++)
         {
             if (lobbyIds[i].m_SteamID != update.m_ulSteamIDLobby) continue;
@@ -65,6 +67,7 @@ public class LobbiesListManager : MonoBehaviour
             Destroy(item);
         }
         listOfLobbies.Clear();
+        noLobbiesToJoin.SetActive(true);
     }
 
 }
