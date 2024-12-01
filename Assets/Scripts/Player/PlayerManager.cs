@@ -1,8 +1,11 @@
 using Mirror;
 using Steamworks;
+using System;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour 
@@ -14,13 +17,13 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] public Account account;
 
-
     // Start is called before the first frame update
     void Start()
     {
-        DontDestroyOnLoad(this.gameObject);
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
-        if(instance != null)
+        if (instance != null)
         {
             Destroy(this.gameObject);
             return;
@@ -28,6 +31,11 @@ public class PlayerManager : MonoBehaviour
 
         instance = this;
     }
+
+    /*private void OnSceneLoaded(UnityEngine.SceneManagement.Scene arg0, LoadSceneMode arg1)
+    {
+        throw new NotImplementedException();
+    }*/
 
     // Update is called once per frame
     void Update()
@@ -103,5 +111,14 @@ public class PlayerManager : MonoBehaviour
             return gamePlayer;
         }
         return null;
+    }
+
+    void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    {
+        if (scene.buildIndex != 0) return;
+        GameObject spawnPoint1 = GameObject.Find("PlayerSpawnPoint1");
+        GameObject spawnPoint2 = GameObject.Find("PlayerSpawnPoint1");
+        lobbySpawnPoints.Add(spawnPoint1.transform);
+        lobbySpawnPoints.Add(spawnPoint2.transform);
     }
 }
