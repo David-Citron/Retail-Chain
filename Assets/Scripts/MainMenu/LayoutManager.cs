@@ -12,8 +12,12 @@ public class LayoutManager : MonoBehaviour
 
     [SerializeField] public List<GameObject> spawnPoints = new List<GameObject>();
 
-    [SerializeField] public List<Button> readyButtons = new List<Button>();
-    [SerializeField] public List<TMP_Text> readyTextButtons = new List<TMP_Text>();
+    //Menus
+    [SerializeField] public GameObject mainMenu;
+    [SerializeField] public GameObject lobby;
+    [SerializeField] public GameObject lobbiesMenu;
+    [SerializeField] public GameObject settingsMenu;
+
 
     //Main Menu
     [SerializeField] public Button createGameButton;
@@ -24,13 +28,10 @@ public class LayoutManager : MonoBehaviour
     //Lobby Menu
     [SerializeField] public Button swapButton;
     [SerializeField] public Button leaveButton;
+    [SerializeField] public Button readyButton;
+    [SerializeField] public Button readyCancelButton;
 
     [SerializeField] public TMP_Text notificationText;
-
-    [SerializeField] public GameObject mainMenu;
-    [SerializeField] public GameObject lobby;
-    [SerializeField] public GameObject lobbiesMenu;
-
     [SerializeField] public GameObject steamNotInitializedNotification;
 
 
@@ -60,7 +61,8 @@ public class LayoutManager : MonoBehaviour
         var username = PlayerSteamUtils.GetSteamUsername(id);
 
         InitializeLeaveButton(gamePlayer);
-        //InitializeReadyButton(gamePlayer, index);
+        InitializeReadyButtons(gamePlayer);
+        InitializeRoleSwapButton(gamePlayer);
 
         SendNotification("Player " + username + " has joined your Lobby.", 5);
     }
@@ -118,24 +120,26 @@ public class LayoutManager : MonoBehaviour
         });
     }
 
-    public void InitializeReadyButton(GamePlayer gamePlayer, int index)
+    public void InitializeReadyButtons(GamePlayer gamePlayer)
     {
         if (!gamePlayer.isLocalPlayer) return;
 
-        for (int i = 0; i < readyButtons.Count; i++)
-        {
-            var button = readyButtons[i];
+        readyButton.interactable = true;
+        readyButton.onClick.RemoveAllListeners();
+        readyButton.onClick.AddListener(() => {
+            readyButton.enabled = false;
+            readyCancelButton.enabled = true;
+            gamePlayer.ChangeReadyStatus();
+            Debug.Log("WORKS");
+        });
 
-            if(index != i)
-            {
-                button.interactable = false;
-                continue;
-            }
-
-            button.interactable = true;
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => gamePlayer.ChangeReadyStatus());
-        }
+        readyCancelButton.interactable = true;
+        readyCancelButton.onClick.RemoveAllListeners();
+        readyCancelButton.onClick.AddListener(() => {
+            readyButton.enabled = true;
+            readyCancelButton.enabled = false;
+            gamePlayer.ChangeReadyStatus();
+        });
     }
 
     public void InitializeRoleSwapButton(GamePlayer gamePlayer)
@@ -182,6 +186,15 @@ public class LayoutManager : MonoBehaviour
         mainMenu.SetActive(true);
         lobby.SetActive(false);
         lobbiesMenu.SetActive(false);
+        settingsMenu.SetActive(false);
+    }
+
+    public void ShowSettings()
+    {
+        settingsMenu.SetActive(true);
+        mainMenu.SetActive(false);
+        lobby.SetActive(false);
+        lobbiesMenu.SetActive(false);
     }
 
     public void ExitGame()
@@ -206,10 +219,12 @@ public class LayoutManager : MonoBehaviour
 
     public IEnumerator SendEnumaratorNotification(string text, Color color, int time)
     {
+        notificationText.enabled = true;
         notificationText.text = text;
         notificationText.color = color;
         yield return new WaitForSecondsRealtime(time);
         notificationText.text = "";
         notificationText.color = Color.white;
+        notificationText.enabled = false;
     }
 }
