@@ -5,6 +5,7 @@ using System.Collections;
 
 public class CustomNetworkManager : NetworkManager
 {
+    int stopHost = -1;
 
     public override void Start()
     {
@@ -35,13 +36,36 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        Debug.LogWarning("Server disconnected");
+        Debug.LogWarning("Server callback OnServerDisconnect, connId: " + conn.connectionId);
         base.OnServerDisconnect(conn);
 
-        PlayerManager.instance.PlayerDisconnected(conn.connectionId);
+        if (PlayerManager.instance.gamePlayers.Count == 0) return;
 
-        //This is being called only on Server side, so when the 2nd player leaves, we need to stop the server.
-        if (PlayerManager.instance.gamePlayers.Count == 0) return; //If the list is empty we do not want to StopHost - player is already stopped
-        StopHost();
+        PlayerManager.instance.PlayerDisconnected(conn.connectionId); // Remove player from PlayerManager
+
+        // Handle Lobby disconnect - Stop hosting once the host leaves
+        if (PlayerManager.instance.gamePlayers.Count == 0 && SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            if (conn.connectionId == stopHost) return;
+            Debug.LogWarning("All players have left the lobby - Stopping Host");
+            stopHost = conn.connectionId;
+            StopHost();
+            return;
+        }
+        // Handle In-game disconnect - Stop host once any player leaves
+        if (PlayerManager.instance.gamePlayers.Count == 1 && SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            if (conn.connectionId == stopHost) return;
+            Debug.LogWarning("One player left the lobby - Stopping Host");
+            stopHost = conn.connectionId;
+            StopHost();
+            return;
+        }
+    }
+
+    public override void OnStartHost()
+    {
+        stopHost = -1;
+        base.OnStartHost();
     }
 }
