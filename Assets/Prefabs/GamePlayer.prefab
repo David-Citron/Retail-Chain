@@ -735,14 +735,18 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  connectionId: -1
   playerRole: 0
   isReady: 0
-  connectionId: -1
+  player: {fileID: 5590279859071227611}
   profilePictureImage: {fileID: 4945835094688652624}
   ready: {fileID: 1654289197700772078}
   notReady: {fileID: 7858632121398811240}
   displayNameText: {fileID: 5105763292973986451}
   roleText: {fileID: 6770054416579775500}
+  bodyMaterials:
+  - {fileID: -2577155411437146681, guid: d83479e5d06951740820cddceb7de7ea, type: 3}
+  - {fileID: 588604462753738540, guid: d83479e5d06951740820cddceb7de7ea, type: 3}
 --- !u!1001 &3722725859504638465
 PrefabInstance:
   m_ObjectHideFlags: 0

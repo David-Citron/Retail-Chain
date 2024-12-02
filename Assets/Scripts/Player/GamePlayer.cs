@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class GamePlayer : NetworkBehaviour
 {
+
+
+    [SerializeField] public int connectionId = -1;
+
     [SyncVar(hook = nameof(OnSteamIDChanged))]
     private ulong steamID;
 
@@ -15,34 +19,19 @@ public class GamePlayer : NetworkBehaviour
     [SyncVar(hook = nameof(OnReadyStatusChanged))]
     public bool isReady = false;
 
-    private int level;
-    private int experience;
-
-    [SerializeField] public int connectionId = -1;
+    public GameObject player;
 
     [SerializeField] private RawImage profilePictureImage;
     [SerializeField] private RawImage ready, notReady;
     [SerializeField] private TMP_Text displayNameText;
     [SerializeField] private TMP_Text roleText;
+    public Material[] bodyMaterials;
 
     void Start()
     {
         DontDestroyOnLoad(this);
 
-        if (isServer)
-        {
-            connectionId = connectionToClient.connectionId;
-        }
-
-        if (isServer && isLocalPlayer || !isServer && !isLocalPlayer) playerRole = PlayerRole.Shop;
-        else playerRole = PlayerRole.Factory;
-
-        syncDirection = (isLocalPlayer && isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
-
-        if (isLocalPlayer)
-        {
-            steamID = SteamUser.GetSteamID().m_SteamID;
-        }
+        UpdatePlayer();
 
         CSteamID user = new CSteamID(steamID);
         UpdateUserInfo(user);
@@ -77,8 +66,6 @@ public class GamePlayer : NetworkBehaviour
     {
         CSteamID newCSteamID = new CSteamID(newSteamId);
         UpdateUserInfo(newCSteamID);
-        /*if (LayoutManager.instance == null) return;
-        LayoutManager.instance.UpdatePlayer(newCSteamID);*/
     }
 
 
@@ -89,17 +76,17 @@ public class GamePlayer : NetworkBehaviour
         oppositePlayer.SetPlayeRole(playerRole);
         SetPlayeRole(playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
     }
-   
+
 
     public void SetPlayeRole(PlayerRole newRole)
     {
         playerRole = newRole;
-        roleText.text = (newRole == PlayerRole.Factory) ? "Factory" : "Shop";
+        UpdateRoleData();
     }
 
     public void OnChangePlayerRole(PlayerRole oldValue, PlayerRole newValue)
     {
-        roleText.text = (newValue == PlayerRole.Factory) ? "Factory" : "Shop";
+        UpdateRoleData();
     }
 
     public void OnReadyStatusChanged(bool oldValue, bool newValue)
@@ -146,6 +133,39 @@ public class GamePlayer : NetworkBehaviour
     public void StartGame()
     {
         Debug.Log("GAME STARTED WOHO");
+    }
+
+    public void UpdatePlayer()
+    {
+        if (isServer) connectionId = connectionToClient.connectionId;
+        syncDirection = (isLocalPlayer && isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
+
+        if (isLocalPlayer) steamID = SteamUser.GetSteamID().m_SteamID;
+        
+        GamePlayer secondPlayer = PlayerManager.instance.GetOppositePlayer(this);
+        if (secondPlayer == null)
+        {
+            SetPlayeRole(PlayerRole.Shop);
+            return;
+        }
+
+        if (secondPlayer.playerRole == PlayerRole.Shop) SetPlayeRole(PlayerRole.Factory);
+        else SetPlayeRole(PlayerRole.Shop);
+    }
+
+    private void UpdateRoleData()
+    {
+        roleText.text = (playerRole == PlayerRole.Factory) ? "Factory" : "Shop";
+
+        Color newColor = playerRole == PlayerRole.Shop ? Color.blue : Color.red;
+
+        Transform playerBody = player.transform.Find("Player Body");
+
+        if (playerBody != null)
+        {
+            Renderer renderer = playerBody.GetComponent<Renderer>();
+            if (renderer != null) renderer.material = bodyMaterials[playerRole == PlayerRole.Shop ? 0 : 1];
+        }
     }
 
     public ulong GetSteamId() => steamID;
