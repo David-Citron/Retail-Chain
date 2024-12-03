@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("walking", false);
             walking = false;
         }
-        else if (!walking && horizontal != 0 && vertical != 0)
+        else if (!walking && (horizontal != 0 || vertical != 0))
         {
             animator.SetBool("walking", true);
             walking = true;
