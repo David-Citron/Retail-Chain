@@ -9,7 +9,6 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     public float rotationSpeed = 5f;
 
-
     private bool walking;
 
 
@@ -17,6 +16,12 @@ public class PlayerMovement : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform childTransform = transform.GetChild(i);
+            childTransform.rotation = Quaternion.Euler(new Vector3(childTransform.rotation.eulerAngles.x, 90, childTransform.rotation.eulerAngles.z));
+        }
     }
 
     void FixedUpdate()
@@ -28,7 +33,9 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetBool("walking", false);
             walking = false;
-        } else if(!walking && horizontal != 0 && vertical != 0) {
+        }
+        else if (!walking && horizontal != 0 && vertical != 0)
+        {
             animator.SetBool("walking", true);
             walking = true;
         }
