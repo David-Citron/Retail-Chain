@@ -43,13 +43,11 @@ public class GamePlayer : NetworkBehaviour
         
         PlayerManager.instance.AddGamePlayer(this);
 
-        GamePlayer secondPlayer = PlayerManager.instance.GetOppositePlayer(this);
+        if (!isLocalPlayer) return;
 
+        GamePlayer secondPlayer = PlayerManager.instance.GetOppositePlayer(this);
         if (secondPlayer == null) SetPlayeRole(PlayerRole.Shop);
-        else {
-            if (secondPlayer.playerRole == PlayerRole.Shop) SetPlayeRole(PlayerRole.Factory);
-            else SetPlayeRole(PlayerRole.Shop);
-        }
+        else SetPlayeRole(secondPlayer.playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
     }
 
     // Update is called once per frame
