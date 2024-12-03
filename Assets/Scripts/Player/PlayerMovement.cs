@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
 
+        //Rotate player 90° on Y axis to face correct direction
         for (int i = 0; i < transform.childCount; i++)
         {
             Transform childTransform = transform.GetChild(i);
