@@ -31,7 +31,10 @@ public class GamePlayer : NetworkBehaviour
     {
         DontDestroyOnLoad(this);
 
-        UpdatePlayer();
+        if (isServer) connectionId = connectionToClient.connectionId;
+        syncDirection = (isLocalPlayer && isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
+
+        if (isLocalPlayer) steamID = SteamUser.GetSteamID().m_SteamID;
 
         CSteamID user = new CSteamID(steamID);
         UpdateUserInfo(user);
@@ -39,6 +42,14 @@ public class GamePlayer : NetworkBehaviour
         if (PlayerManager.instance == null) return;
         
         PlayerManager.instance.AddGamePlayer(this);
+
+        GamePlayer secondPlayer = PlayerManager.instance.GetOppositePlayer(this);
+
+        if (secondPlayer == null) SetPlayeRole(PlayerRole.Shop);
+        else {
+            if (secondPlayer.playerRole == PlayerRole.Shop) SetPlayeRole(PlayerRole.Factory);
+            else SetPlayeRole(PlayerRole.Shop);
+        }
     }
 
     // Update is called once per frame
@@ -135,36 +146,19 @@ public class GamePlayer : NetworkBehaviour
         Debug.Log("GAME STARTED WOHO");
     }
 
-    public void UpdatePlayer()
-    {
-        if (isServer) connectionId = connectionToClient.connectionId;
-        syncDirection = (isLocalPlayer && isServer) ? SyncDirection.ServerToClient : SyncDirection.ClientToServer;
-
-        if (isLocalPlayer) steamID = SteamUser.GetSteamID().m_SteamID;
-        
-        GamePlayer secondPlayer = PlayerManager.instance.GetOppositePlayer(this);
-        if (secondPlayer == null)
-        {
-            SetPlayeRole(PlayerRole.Shop);
-            return;
-        }
-
-        if (secondPlayer.playerRole == PlayerRole.Shop) SetPlayeRole(PlayerRole.Factory);
-        else SetPlayeRole(PlayerRole.Shop);
-    }
-
     private void UpdateRoleData()
     {
-        roleText.text = (playerRole == PlayerRole.Factory) ? "Factory" : "Shop";
+        Material material = bodyMaterials[playerRole == PlayerRole.Shop ? 0 : 1];
 
-        Color newColor = playerRole == PlayerRole.Shop ? Color.blue : Color.red;
+        roleText.text = (playerRole == PlayerRole.Factory) ? "Factory" : "Shop";
+        roleText.color = material.color;
 
         Transform playerBody = player.transform.Find("Player Body");
 
         if (playerBody != null)
         {
             Renderer renderer = playerBody.GetComponent<Renderer>();
-            if (renderer != null) renderer.material = bodyMaterials[playerRole == PlayerRole.Shop ? 0 : 1];
+            if (renderer != null) renderer.material = material;
         }
     }
 
