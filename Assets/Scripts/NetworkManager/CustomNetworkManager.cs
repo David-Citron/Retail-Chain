@@ -45,7 +45,10 @@ public class CustomNetworkManager : NetworkManager
         if (PlayerManager.instance.gamePlayers.Count == 0) return;
 
         PlayerManager.instance.PlayerDisconnected(conn.connectionId); // Remove player from PlayerManager
-        LayoutManager.Instance().IfPresent(layoutManager => layoutManager.kickButton.gameObject.SetActive(false));
+        LayoutManager.Instance().IfPresent(layoutManager => {
+            layoutManager.kickButton.gameObject.SetActive(false);
+            layoutManager.swapButton.gameObject.SetActive(false);
+        });
 
         // Handle Lobby disconnect - Stop hosting once the host leaves
         if (PlayerManager.instance.gamePlayers.Count == 0 && SceneManager.GetActiveScene().buildIndex == 0)

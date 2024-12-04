@@ -41,7 +41,7 @@ public class GamePlayer : NetworkBehaviour
 
         if (PlayerManager.instance != null) PlayerManager.instance.AddGamePlayer(this);
 
-        InicializeKickButton();
+        InicializeButtons();
 
         if (!isLocalPlayer) return;
         LayoutManager.Instance().IfPresent(layoutManager => layoutManager.HideLoadingScreen());
@@ -151,7 +151,10 @@ public class GamePlayer : NetworkBehaviour
         }
     }
 
-    private void InicializeKickButton()
+    /// <summary>
+    /// Inicialize buttons in lobby (kick & swap roles)
+    /// </summary>
+    private void InicializeButtons()
     {
         LayoutManager.Instance().IfPresent(layoutManager =>
         {
@@ -165,6 +168,24 @@ public class GamePlayer : NetworkBehaviour
                 kickButton.onClick.AddListener(() =>
                 {
                     CustomNetworkManager.instance.KickPlayer(connectionId);
+                });
+            }
+
+            var swapButton = layoutManager.swapButton;
+            swapButton.gameObject.SetActive(isServer && !isLocalPlayer);
+            if (isServer)
+            {
+                swapButton.interactable = true;
+                swapButton.onClick.RemoveAllListeners();
+                swapButton.onClick.AddListener(() =>
+                {
+                    if (isReady || PlayerManager.instance.GetOppositePlayer(this).GetValueOrDefault().isReady)
+                    {
+                        LayoutManager.Instance().IfPresent(layoutManager => layoutManager.SendColoredNotification("One of the player is already ready!", Color.red, 3));
+                        return;
+                    }
+
+                    RpcShowUpdatedRoles();
                 });
             }
         });

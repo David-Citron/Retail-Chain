@@ -26,7 +26,7 @@ public class LayoutManager : MonoBehaviour
     [SerializeField] private TMP_Text mainMenuUsername;
 
     //Lobby Menu
-    [SerializeField] private Button swapButton;
+    [SerializeField] public Button swapButton;
     [SerializeField] private Button leaveButton;
     [SerializeField] private Button readyButton;
     [SerializeField] private Button readyCancelButton;
@@ -63,7 +63,6 @@ public class LayoutManager : MonoBehaviour
 
             InitializeLeaveButton(gamePlayer);
             InitializeReadyButtons(gamePlayer);
-            InitializeRoleSwapButton(gamePlayer);
 
             SendNotification("Player " + username + " has joined your Lobby.", 5);
         });
@@ -146,35 +145,6 @@ public class LayoutManager : MonoBehaviour
             readyButton.gameObject.SetActive(true);
             readyCancelButton.gameObject.SetActive(false);
             gamePlayer.ChangeReadyStatus();
-        });
-    }
-
-    public void InitializeRoleSwapButton(GamePlayer gamePlayer)
-    {
-        swapButton.gameObject.SetActive(gamePlayer.isServer);
-
-        if (!gamePlayer.isServer) return;
-        if (!gamePlayer.isLocalPlayer) return;
-
-        var playerManager = PlayerManager.instance;
-        if (playerManager == null) return;
-
-        swapButton.onClick.RemoveAllListeners();
-        swapButton.onClick.AddListener(() =>
-        {
-            if (playerManager.gamePlayers.Count == 1)
-            {
-                SendColoredNotification("Second player is required!", Color.red, 3);
-                return;
-            }
-
-            if(gamePlayer.isReady || playerManager.GetOppositePlayer(gamePlayer).GetValueOrDefault().isReady)
-            {
-                SendColoredNotification("One of the player is already ready!", Color.red, 3);
-                return;
-            }
-
-            gamePlayer.RpcShowUpdatedRoles();
         });
     }
 
