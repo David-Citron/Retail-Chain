@@ -47,12 +47,13 @@ public class PlayerManager : MonoBehaviour
     {
         gamePlayers.Add(gamePlayer);
 
-        if (LayoutManager.instance == null) return;
+        LayoutManager.Instance().IfPresent(layoutManager =>
+        {
+            gamePlayer.transform.position = lobbySpawnPoints[GetPlayerIndex(gamePlayer)].position;
+            gamePlayer.transform.rotation = lobbySpawnPoints[GetPlayerIndex(gamePlayer)].rotation;
 
-        gamePlayer.transform.position = lobbySpawnPoints[GetPlayerIndex(gamePlayer)].position;
-        gamePlayer.transform.rotation = lobbySpawnPoints[GetPlayerIndex(gamePlayer)].rotation;
-
-        LayoutManager.instance.UpdatePlayer(new CSteamID(gamePlayer.GetSteamId()));
+            layoutManager.UpdatePlayer(new CSteamID(gamePlayer.GetSteamId()));
+        });
     }
 
     public void PlayerDisconnected(int connectionId)

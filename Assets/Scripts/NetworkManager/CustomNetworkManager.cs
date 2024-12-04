@@ -22,11 +22,11 @@ public class CustomNetworkManager : NetworkManager
 
         PlayerManager.instance.Reset();
 
-        if(LayoutManager.instance != null)
+        LayoutManager.Instance().IfPresent(layoutManager =>
         {
-            LayoutManager.instance.ShowLobby();
-            LayoutManager.instance.SendColoredNotification("Welcome to RetailChain.", Color.green, 5);
-        }
+            layoutManager.ShowLobby();
+            layoutManager.SendColoredNotification("Welcome to RetailChain.", Color.green, 5);
+        });
     }
 
     public override void OnClientDisconnect()
@@ -45,10 +45,7 @@ public class CustomNetworkManager : NetworkManager
         if (PlayerManager.instance.gamePlayers.Count == 0) return;
 
         PlayerManager.instance.PlayerDisconnected(conn.connectionId); // Remove player from PlayerManager
-        if(LayoutManager.instance != null)
-        {
-            LayoutManager.instance.kickButton.gameObject.SetActive(false);
-        }
+        LayoutManager.Instance().IfPresent(layoutManager => layoutManager.kickButton.gameObject.SetActive(false));
 
         // Handle Lobby disconnect - Stop hosting once the host leaves
         if (PlayerManager.instance.gamePlayers.Count == 0 && SceneManager.GetActiveScene().buildIndex == 0)

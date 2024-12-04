@@ -1,5 +1,6 @@
 using Mirror;
 using Steamworks;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -51,7 +52,7 @@ public class SteamLobby : MonoBehaviour
     private bool SteamIsInitialized()
     {
         steamIsInitialized = SteamManager.Initialized;
-        if (!steamIsInitialized) LayoutManager.instance.ShowSteamNotInitializedNotification();
+        if (!steamIsInitialized) LayoutManager.Instance().GetValueOrDefault().ShowSteamNotInitializedNotification();
         return steamIsInitialized;
     }
 
@@ -110,8 +111,7 @@ public class SteamLobby : MonoBehaviour
             SceneManager.LoadScene(0);
         }
 
-        if (LayoutManager.instance == null) return;
-        LayoutManager.instance.ShowMainMenu();
+        LayoutManager.Instance().IfPresent(layoutManager => layoutManager.ShowMainMenu());
     }
 
     public void GetLobbiesList()
@@ -130,7 +130,6 @@ public class SteamLobby : MonoBehaviour
             CSteamID lobbyId = SteamMatchmaking.GetLobbyByIndex(i);
             lobbyIds.Add(lobbyId);
             SteamMatchmaking.RequestLobbyData(lobbyId);
-            Debug.Log(i);
         }
     }
 

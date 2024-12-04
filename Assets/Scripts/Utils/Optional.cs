@@ -28,7 +28,7 @@ public class Optional<T>
             return;
         }
 
-        action.Invoke(this.value);
+        action(this.value);
     }
 
     public T GetValueOrDefault() => value;

@@ -8,7 +8,7 @@ using Steamworks;
 public class LayoutManager : MonoBehaviour
 {
 
-    public static LayoutManager instance;
+    private static LayoutManager instance;
 
     [SerializeField] private List<GameObject> spawnPoints = new List<GameObject>();
 
@@ -254,5 +254,10 @@ public class LayoutManager : MonoBehaviour
             Destroy(activeLoadingScreen);
             activeLoadingScreen = null;
         }
+    }
+
+    public static Optional<LayoutManager> Instance()
+    {
+        return instance == null ? Optional<LayoutManager>.Empty() : Optional<LayoutManager>.Of(instance);
     }
 }

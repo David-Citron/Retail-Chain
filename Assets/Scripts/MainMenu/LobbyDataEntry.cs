@@ -33,18 +33,13 @@ public class LobbyDataEntry : MonoBehaviour
         profilePicture.texture = PlayerSteamUtils.GetSteamProfilePicture(hostId);
         username.text = hostUsername;
 
-        joinButton.interactable = true;
         joinButton.enabled = true;
         joinButton.onClick.RemoveAllListeners();
         joinButton.onClick.AddListener(() =>
         {
-            JoinLobby();
+            Debug.Log("Attempting to join new lobby.");
+            LayoutManager.Instance().IfPresent(layoutManager => layoutManager.ShowLoadingScreen());
+            SteamLobby.instance.JoinLobby(lobbyId);
         });
-    }
-
-    public void JoinLobby()
-    {
-        LayoutManager.instance.ShowLoadingScreen();
-        SteamLobby.instance.JoinLobby(lobbyId);
     }
 }

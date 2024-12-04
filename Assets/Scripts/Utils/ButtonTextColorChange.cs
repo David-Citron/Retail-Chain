@@ -1,38 +1,48 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
 
 public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    public Button button;
-    public TMP_Text buttonText;
+    [SerializeField]
+    private TMP_Text buttonText;
 
-    public Color normalColor = Color.white;
-    public Color highlightedColor;
+    private Color normalColor = Color.white;
+    private Color highlightedColor;
 
-    public double elapsedTime => throw new System.NotImplementedException();
+    public bool pressed = false;
 
-    void Start() {
+    void Start()
+    {
         Color gammaColor = new Color(49f / 255f, 54f / 255f, 56f / 255f, 1f);
         highlightedColor = gammaColor.linear;
     }
 
-    void Update() { }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        buttonText.color = highlightedColor;
-    }
-
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (pressed) return;
         buttonText.color = highlightedColor;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (pressed) return;
         buttonText.color = normalColor;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (pressed) return;
+        pressed = true;
+        buttonText.color = highlightedColor;
+        PlayerManager.instance.StartCoroutine(UpdateButton());
+    }
+
+    private IEnumerator UpdateButton()
+    {
+        yield return new WaitForSecondsRealtime(.5f);
+        buttonText.color = normalColor;
+        pressed = false;
     }
 }

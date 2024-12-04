@@ -21,7 +21,7 @@ public class LobbiesListManager : MonoBehaviour
 
     public IEnumerator UpdateLobbyList()
     {
-        if (!LayoutManager.instance.lobbiesMenu.activeSelf) yield break;
+        if (!LayoutManager.Instance().GetValueOrDefault().lobbiesMenu.activeSelf) yield break; //If Lobbies List menu is disabled, then list should not be updated
 
         SteamLobby.instance.GetLobbiesList();
         yield return new WaitForSecondsRealtime(3);
@@ -36,8 +36,6 @@ public class LobbiesListManager : MonoBehaviour
         {
             if (lobbyIds[i].m_SteamID != update.m_ulSteamIDLobby) continue;
             var lobbyId = new CSteamID(lobbyIds[i].m_SteamID);
-
-            Debug.Log(lobbyId);
 
             GameObject createdItem = Instantiate(lobbyDataItemPrefab);
 

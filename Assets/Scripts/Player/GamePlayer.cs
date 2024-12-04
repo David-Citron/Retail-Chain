@@ -37,29 +37,19 @@ public class GamePlayer : NetworkBehaviour
 
         if (isLocalPlayer) steamID = SteamUser.GetSteamID().m_SteamID;
 
-        UpdateUserInfo(new CSteamID(steamID));
+        UpdateUserInfo(new CSteamID(steamID)); //Updates username, profile picture.
 
         if (PlayerManager.instance != null) PlayerManager.instance.AddGamePlayer(this);
 
-        var kickButton = LayoutManager.instance.kickButton;
-
-        kickButton.gameObject.SetActive(isServer && !isLocalPlayer);
-        if (isServer)
-        {
-            kickButton.interactable = true;
-            kickButton.onClick.RemoveAllListeners();
-            kickButton.onClick.AddListener(() =>
-            {
-                CustomNetworkManager.instance.KickPlayer(connectionId);
-            });
-        }
+        InicializeKickButton();
 
         if (!isLocalPlayer) return;
-        LayoutManager.instance.HideLoadingScreen();
+        LayoutManager.Instance().IfPresent(layoutManager => layoutManager.HideLoadingScreen());
+
+        //If there is no second player, the PlayerRole is set to Shop, otherwise it depends on the role of the opposite player.
         PlayerManager.instance.GetOppositePlayer(this).IfPresentOrElse(secondPlayer =>
-        {
-            SetPlayeRole(secondPlayer.playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
-        }, () => SetPlayeRole(PlayerRole.Shop));
+        SetPlayeRole(secondPlayer.playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop),
+        () => SetPlayeRole(PlayerRole.Shop));
     }
 
     // Update is called once per frame
@@ -160,5 +150,25 @@ public class GamePlayer : NetworkBehaviour
             if (renderer != null) renderer.material = material;
         }
     }
+
+    private void InicializeKickButton()
+    {
+        LayoutManager.Instance().IfPresent(layoutManager =>
+        {
+            var kickButton = layoutManager.kickButton;
+
+            kickButton.gameObject.SetActive(isServer && !isLocalPlayer);
+            if (isServer)
+            {
+                kickButton.interactable = true;
+                kickButton.onClick.RemoveAllListeners();
+                kickButton.onClick.AddListener(() =>
+                {
+                    CustomNetworkManager.instance.KickPlayer(connectionId);
+                });
+            }
+        });
+    }
+
     public ulong GetSteamId() => steamID;
 }
