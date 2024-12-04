@@ -57,16 +57,16 @@ public class LayoutManager : MonoBehaviour
     public void UpdatePlayer(CSteamID id)
     {
         if (id == CSteamID.Nil) return;
-        GamePlayer gamePlayer = PlayerManager.instance.GetPlayer(id);
-        if (gamePlayer == null) return;
-        
-        var username = PlayerSteamUtils.GetSteamUsername(id);
+        PlayerManager.instance.GetPlayer(id).IfPresent(gamePlayer =>
+        {
+            var username = PlayerSteamUtils.GetSteamUsername(id);
 
-        InitializeLeaveButton(gamePlayer);
-        InitializeReadyButtons(gamePlayer);
-        InitializeRoleSwapButton(gamePlayer);
+            InitializeLeaveButton(gamePlayer);
+            InitializeReadyButtons(gamePlayer);
+            InitializeRoleSwapButton(gamePlayer);
 
-        SendNotification("Player " + username + " has joined your Lobby.", 5);
+            SendNotification("Player " + username + " has joined your Lobby.", 5);
+        });
     }
 
     /// <summary>
@@ -168,7 +168,7 @@ public class LayoutManager : MonoBehaviour
                 return;
             }
 
-            if(gamePlayer.isReady || playerManager.GetOppositePlayer(gamePlayer).isReady)
+            if(gamePlayer.isReady || playerManager.GetOppositePlayer(gamePlayer).GetValueOrDefault().isReady)
             {
                 SendColoredNotification("One of the player is already ready!", Color.red, 3);
                 return;

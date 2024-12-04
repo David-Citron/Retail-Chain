@@ -1,4 +1,5 @@
 using Steamworks;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -37,36 +38,6 @@ public class PlayerManager : MonoBehaviour
     {
         
     }
-
-    public GamePlayer GetOppositePlayer(GamePlayer player)
-    {
-        if (gamePlayers.Count < 2) return null;
-
-        return gamePlayers.IndexOf(player) == 0 ? gamePlayers[1] : gamePlayers[0];
-    }
-
-    public GamePlayer GetPlayer(CSteamID id)
-    {
-        var index = GetPlayerIndex(id);
-        return index == -1 ? null : gamePlayers[index];
-    }
-
-    public int GetPlayerIndex(CSteamID id)
-    {
-        for (int i = 0; i < gamePlayers.Count; i++)
-        {
-            if (gamePlayers[i].GetSteamId() != id.m_SteamID) continue;
-            return i;
-        }
-
-        return -1;
-    }
-
-    public int GetPlayerIndex(GamePlayer gamePlayer)
-    {
-        return gamePlayers.IndexOf(gamePlayer);
-    }
-
     public void Reset()
     {
         gamePlayers.Clear();
@@ -86,23 +57,53 @@ public class PlayerManager : MonoBehaviour
 
     public void PlayerDisconnected(int connectionId)
     {
-        GamePlayer gamePlayer = GetGamePlayerByConnId(connectionId);
-        if(gamePlayer == null) return;
+        GetGamePlayerByConnId(connectionId).IfPresent(gamePlayer =>
+        {
+            GetOppositePlayer(gamePlayer).IfPresent(oppositePlayer => oppositePlayer.ChangeReadyStatus());
 
-        Debug.Log("Player " + PlayerSteamUtils.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " has disconnected.");
-        gamePlayers.Remove(gamePlayer);
+            Debug.Log("Player " + PlayerSteamUtils.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " has disconnected.");
+            gamePlayers.Remove(gamePlayer);
+        });
     }
 
-    public GamePlayer GetGamePlayerByConnId(int connId)
+    public Optional<GamePlayer> GetOppositePlayer(GamePlayer player)
+    {
+        if (gamePlayers.Count < 2) return Optional<GamePlayer>.Empty();
+        return Optional<GamePlayer>.Of(gamePlayers[gamePlayers.IndexOf(player) == 0 ? 1 : 0]);
+    }
+
+    public Optional<GamePlayer> GetPlayer(CSteamID id)
+    {
+        var index = GetPlayerIndex(id);
+        return index == -1 ? Optional<GamePlayer>.Empty() : Optional<GamePlayer>.Of(gamePlayers[index]);
+    }
+
+    public int GetPlayerIndex(CSteamID id)
+    {
+        for (int i = 0; i < gamePlayers.Count; i++)
+        {
+            if (gamePlayers[i].GetSteamId() != id.m_SteamID) continue;
+            return i;
+        }
+
+        return -1;
+    }
+
+    public int GetPlayerIndex(GamePlayer gamePlayer)
+    {
+        return gamePlayers.IndexOf(gamePlayer);
+    }
+
+    public Optional<GamePlayer> GetGamePlayerByConnId(int connId)
     {
 
         for (int i = 0; i < gamePlayers.Count; i++)
         {
             GamePlayer gamePlayer = gamePlayers[i];
             if (gamePlayer.connectionId != connId) continue;
-            return gamePlayer;
+            return Optional<GamePlayer>.Of(gamePlayer);
         }
-        return null;
+        return Optional<GamePlayer>.Empty();
     }
 
     void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)

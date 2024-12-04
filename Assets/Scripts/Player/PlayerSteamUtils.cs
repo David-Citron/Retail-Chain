@@ -16,9 +16,11 @@ public class PlayerSteamUtils : MonoBehaviour {
 
     void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
     {
+        Debug.LogError("Called!!");
+        if (callback.m_steamID != localPlayerSteamId) return;
         if (LayoutManager.instance == null) return;
         var layoutManager = LayoutManager.instance;
-        Debug.LogError("Called!!");
+        Debug.LogError("updated!!");
         if (layoutManager.lobby.activeSelf) layoutManager.UpdatePlayer(callback.m_steamID);
         if (layoutManager.mainMenu.activeSelf) layoutManager.UpdateMainMenuProfilePicture(callback.m_steamID);
     }

@@ -56,9 +56,10 @@ public class GamePlayer : NetworkBehaviour
 
         if (!isLocalPlayer) return;
         LayoutManager.instance.HideLoadingScreen();
-        GamePlayer secondPlayer = PlayerManager.instance.GetOppositePlayer(this);
-        if (secondPlayer == null) SetPlayeRole(PlayerRole.Shop);
-        else SetPlayeRole(secondPlayer.playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
+        PlayerManager.instance.GetOppositePlayer(this).IfPresentOrElse(secondPlayer =>
+        {
+            SetPlayeRole(secondPlayer.playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
+        }, () => SetPlayeRole(PlayerRole.Shop));
     }
 
     // Update is called once per frame
@@ -75,7 +76,6 @@ public class GamePlayer : NetworkBehaviour
     public void UpdateUserInfo(CSteamID user)
     {
         if (user == CSteamID.Nil) return;
-        Debug.Log("SteamID" + user);
         profilePictureImage.texture = PlayerSteamUtils.GetSteamProfilePicture(user);
         displayNameText.text = PlayerSteamUtils.GetSteamUsername(user);
         notReady.enabled = true;
@@ -90,9 +90,11 @@ public class GamePlayer : NetworkBehaviour
     [ClientRpc]
     public void RpcShowUpdatedRoles()
     {
-        var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this);
-        oppositePlayer.SetPlayeRole(playerRole);
-        SetPlayeRole(playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
+        PlayerManager.instance.GetOppositePlayer(this).IfPresent(oppositePlayer =>
+        {   
+            oppositePlayer.SetPlayeRole(playerRole);
+            SetPlayeRole(playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);
+        });
     }
 
     public void SetPlayeRole(PlayerRole newRole)
@@ -123,9 +125,9 @@ public class GamePlayer : NetworkBehaviour
         if (!isServer) return;
         if (!isReady) return;
 
-        var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this);
-        if (oppositePlayer == null) return;
-        if (!oppositePlayer.isReady) return;
+        
+        var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this).GetValueOrDefault();
+        if (oppositePlayer == null || !oppositePlayer.isReady) return;
 
         NetworkManager.singleton.ServerChangeScene("Level1");
 
