@@ -1,3 +1,4 @@
+using Edgegap;
 using Steamworks;
 using UnityEngine;
 
@@ -5,10 +6,21 @@ public class PlayerSteamUtils : MonoBehaviour {
 
 
     protected static CSteamID localPlayerSteamId;
+    protected Callback<AvatarImageLoaded_t> avatarImageLoaded;
 
     private void Start()
     {
+        avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
         localPlayerSteamId = SteamUser.GetSteamID();
+    }
+
+    void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
+    {
+        if (LayoutManager.instance == null) return;
+        var layoutManager = LayoutManager.instance;
+        Debug.LogError("Called!!");
+        if (layoutManager.lobby.activeSelf) layoutManager.UpdatePlayer(callback.m_steamID);
+        if (layoutManager.mainMenu.activeSelf) layoutManager.UpdateMainMenuProfilePicture(callback.m_steamID);
     }
 
     public static CSteamID StringToCSteamID(string steamIdString)

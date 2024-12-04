@@ -13,8 +13,8 @@ public class LayoutManager : MonoBehaviour
     [SerializeField] private List<GameObject> spawnPoints = new List<GameObject>();
 
     //Menus
-    [SerializeField] private GameObject mainMenu;
-    [SerializeField] private GameObject lobby;
+    [SerializeField] public GameObject mainMenu;
+    [SerializeField] public GameObject lobby;
     [SerializeField] public GameObject lobbiesMenu;
     [SerializeField] private GameObject settingsMenu;
 
@@ -39,12 +39,9 @@ public class LayoutManager : MonoBehaviour
     [SerializeField] private GameObject loadingScreenPrefab;
     private GameObject activeLoadingScreen;
 
-    protected Callback<AvatarImageLoaded_t> avatarImageLoaded;
-
     void Start()
     {
         instance = this;
-        avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
 
         ShowMainMenu();
         InicializeMainMenuButtons();
@@ -233,13 +230,6 @@ public class LayoutManager : MonoBehaviour
         notificationText.text = "";
         notificationText.color = Color.white;
         notificationText.enabled = false;
-    }
-
-    public void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
-    {
-        Debug.LogError("Called!!");
-        if (lobby.activeSelf) UpdatePlayer(callback.m_steamID);
-        if (mainMenu.activeSelf) UpdateMainMenuProfilePicture(callback.m_steamID);
     }
 
     /// <summary>
