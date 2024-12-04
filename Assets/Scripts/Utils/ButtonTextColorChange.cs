@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 using System.Collections;
 
-public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IPointerDownHandler
 {
     [SerializeField]
     private TMP_Text buttonText;
@@ -54,5 +54,10 @@ public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPoint
         yield return new WaitForSecondsRealtime(.5f);
         ChangeColor(normalColor);
         pressed = false;
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        ChangeColor(normalColor);
     }
 }
