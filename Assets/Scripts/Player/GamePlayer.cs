@@ -30,6 +30,7 @@ public class GamePlayer : NetworkBehaviour
     {
         DontDestroyOnLoad(this);
 
+        if (isLocalPlayer) steamID = SteamUser.GetSteamID().m_SteamID;
         if (isServer) connectionId = connectionToClient.connectionId;
         if (isServer && isLocalPlayer || !isServer && !isLocalPlayer) syncDirection = SyncDirection.ServerToClient;
         else syncDirection = SyncDirection.ClientToServer;
@@ -40,7 +41,21 @@ public class GamePlayer : NetworkBehaviour
 
         if (PlayerManager.instance != null) PlayerManager.instance.AddGamePlayer(this);
 
+        var kickButton = LayoutManager.instance.kickButton;
+
+        kickButton.gameObject.SetActive(isServer && !isLocalPlayer);
+        if (isServer)
+        {
+            kickButton.interactable = true;
+            kickButton.onClick.RemoveAllListeners();
+            kickButton.onClick.AddListener(() =>
+            {
+                CustomNetworkManager.instance.KickPlayer(connectionId);
+            });
+        }
+
         if (!isLocalPlayer) return;
+        LayoutManager.instance.HideLoadingScreen();
         GamePlayer secondPlayer = PlayerManager.instance.GetOppositePlayer(this);
         if (secondPlayer == null) SetPlayeRole(PlayerRole.Shop);
         else SetPlayeRole(secondPlayer.playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop);

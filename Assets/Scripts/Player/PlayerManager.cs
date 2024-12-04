@@ -89,10 +89,7 @@ public class PlayerManager : MonoBehaviour
         GamePlayer gamePlayer = GetGamePlayerByConnId(connectionId);
         if(gamePlayer == null) return;
 
-
         Debug.Log("Player " + PlayerSteamUtils.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " has disconnected.");
-
-        int index = gamePlayers.IndexOf(gamePlayer);
         gamePlayers.Remove(gamePlayer);
     }
 

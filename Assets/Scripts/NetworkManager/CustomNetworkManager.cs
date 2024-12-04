@@ -5,10 +5,13 @@ using System.Collections;
 
 public class CustomNetworkManager : NetworkManager
 {
+
+    public static CustomNetworkManager instance;
     int stopHost = -1;
 
     public override void Start()
     {
+        instance = this;
         base.Start();
     }
 
@@ -42,6 +45,10 @@ public class CustomNetworkManager : NetworkManager
         if (PlayerManager.instance.gamePlayers.Count == 0) return;
 
         PlayerManager.instance.PlayerDisconnected(conn.connectionId); // Remove player from PlayerManager
+        if(LayoutManager.instance != null)
+        {
+            LayoutManager.instance.kickButton.gameObject.SetActive(false);
+        }
 
         // Handle Lobby disconnect - Stop hosting once the host leaves
         if (PlayerManager.instance.gamePlayers.Count == 0 && SceneManager.GetActiveScene().buildIndex == 0)
@@ -61,6 +68,15 @@ public class CustomNetworkManager : NetworkManager
             StopHost();
             return;
         }
+    }
+
+    public void KickPlayer(int connectionId)
+    {
+        if(NetworkServer.connections.TryGetValue(connectionId, out NetworkConnectionToClient connection))
+        {
+            connection.Disconnect();
+        }
+        Debug.Log("kicked " + connection);
     }
 
     public override void OnStartHost()

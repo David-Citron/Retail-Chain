@@ -30,8 +30,9 @@ public class PlayerSteamUtils : MonoBehaviour {
     public static void OnAvatarImageLoaded(AvatarImageLoaded_t callback) {
         if (callback.m_steamID.m_SteamID != localPlayerSteamId.m_SteamID) return;
         if (LayoutManager.instance == null) return;
-        if(LayoutManager.instance.lobby.activeSelf) LayoutManager.instance.UpdatePlayer(callback.m_steamID);
-        if(LayoutManager.instance.mainMenu.activeSelf) LayoutManager.instance.UpdateMainMenuProfilePicture(callback.m_steamID);
+        Debug.Log("Updating profile picture");
+        if (LayoutManager.instance.lobby.activeSelf) LayoutManager.instance.UpdatePlayer(callback.m_steamID);
+        if (LayoutManager.instance.mainMenu.activeSelf) LayoutManager.instance.UpdateMainMenuProfilePicture(callback.m_steamID);
     }
 
     public static string GetSteamUsername(CSteamID steamId)

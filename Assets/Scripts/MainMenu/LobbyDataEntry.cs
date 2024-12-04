@@ -1,6 +1,4 @@
 using Steamworks;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -46,7 +44,7 @@ public class LobbyDataEntry : MonoBehaviour
 
     public void JoinLobby()
     {
-        LayoutManager.instance.ShowMainMenu();
+        LayoutManager.instance.ShowLoadingScreen();
         SteamLobby.instance.JoinLobby(lobbyId);
     }
 }

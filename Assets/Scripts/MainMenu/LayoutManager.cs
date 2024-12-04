@@ -10,29 +10,35 @@ public class LayoutManager : MonoBehaviour
 
     public static LayoutManager instance;
 
-    [SerializeField] public List<GameObject> spawnPoints = new List<GameObject>();
+    [SerializeField] private List<GameObject> spawnPoints = new List<GameObject>();
 
     //Menus
     [SerializeField] public GameObject mainMenu;
     [SerializeField] public GameObject lobby;
     [SerializeField] public GameObject lobbiesMenu;
-    [SerializeField] public GameObject settingsMenu;
+    [SerializeField] private GameObject settingsMenu;
 
 
     //Main Menu
-    [SerializeField] public Button createGameButton;
-    [SerializeField] public Button joinGameButton;
-    [SerializeField] public RawImage mainMenuProfilePicture;
-    [SerializeField] public TMP_Text mainMenuUsername;
+    [SerializeField] private Button createGameButton;
+    [SerializeField] private Button joinGameButton;
+    [SerializeField] private RawImage mainMenuProfilePicture;
+    [SerializeField] private TMP_Text mainMenuUsername;
 
     //Lobby Menu
-    [SerializeField] public Button swapButton;
-    [SerializeField] public Button leaveButton;
-    [SerializeField] public Button readyButton;
-    [SerializeField] public Button readyCancelButton;
+    [SerializeField] private Button swapButton;
+    [SerializeField] private Button leaveButton;
+    [SerializeField] private Button readyButton;
+    [SerializeField] private Button readyCancelButton;
+    [SerializeField] public Button kickButton;
 
-    [SerializeField] public TMP_Text notificationText;
-    [SerializeField] public GameObject steamNotInitializedNotification;
+    [SerializeField] private TMP_Text notificationText;
+    [SerializeField] private GameObject steamNotInitializedNotification;
+
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private GameObject loadingScreenPrefab;
+    private GameObject activeLoadingScreen;
+
 
 
     void Start()
@@ -52,10 +58,8 @@ public class LayoutManager : MonoBehaviour
     /// <param name="id">CSteamID of player</param>
     public void UpdatePlayer(CSteamID id)
     {
-        var index = PlayerManager.instance.GetPlayerIndex(id);
-        if (index == -1) return;
-        
-        var gamePlayer = PlayerManager.instance.gamePlayers[index];
+        if (id == CSteamID.Nil) return;
+        GamePlayer gamePlayer = PlayerManager.instance.GetPlayer(id);
         if (gamePlayer == null) return;
         
         var username = PlayerSteamUtils.GetSteamUsername(id);
@@ -228,5 +232,32 @@ public class LayoutManager : MonoBehaviour
         notificationText.text = "";
         notificationText.color = Color.white;
         notificationText.enabled = false;
+    }
+
+    /// <summary>
+    /// Spawns the loading screen.
+    /// </summary>
+    public void ShowLoadingScreen()
+    {
+        Debug.Log("showing");
+        if (activeLoadingScreen != null || loadingScreenPrefab == null) return;
+
+            Debug.Log("SHOWED");
+        activeLoadingScreen = Instantiate(loadingScreenPrefab);
+       
+        activeLoadingScreen.transform.SetParent(canvas.transform, false);
+
+    }
+
+    /// <summary>
+    /// Destroys the loading screen.
+    /// </summary>
+    public void HideLoadingScreen()
+    {
+        if (activeLoadingScreen != null)
+        {
+            Destroy(activeLoadingScreen);
+            activeLoadingScreen = null;
+        }
     }
 }
