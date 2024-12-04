@@ -170,7 +170,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 771c973e27833ea4990cf8e15c675605, type: 3}
+  m_Texture: {fileID: 2800000, guid: be0b5554f88d1354795833d9523a7068, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -242,7 +242,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 48972a38536187041a1e2e8e6e956f4d, type: 3}
+  m_Texture: {fileID: 2800000, guid: 009da190477d6094ba1f342869cdf036, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -586,7 +586,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 717f9495fcf6b734c97f43636e7a368b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5ccd81b79845a8b4b8eb1ca22ed0a576, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
