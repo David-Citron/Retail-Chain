@@ -10,8 +10,9 @@ public class PlayerSteamUtils : MonoBehaviour {
 
     private void Start()
     {
-        avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
+        if (!SteamManager.Initialized) return;
         localPlayerSteamId = SteamUser.GetSteamID();
+        avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
     }
 
     void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
