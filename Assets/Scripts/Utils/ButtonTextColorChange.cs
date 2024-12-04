@@ -22,27 +22,37 @@ public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPoint
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (pressed) return;
-        buttonText.color = highlightedColor;
+        ChangeColor(highlightedColor);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (pressed) return;
-        buttonText.color = normalColor;
+        ChangeColor(normalColor);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (pressed) return;
+        if (pressed)
+        {
+            Debug.LogError("Returned.");
+            return;
+        }
         pressed = true;
-        buttonText.color = highlightedColor;
+        ChangeColor(highlightedColor);
         PlayerManager.instance.StartCoroutine(UpdateButton());
+    }
+
+    private void ChangeColor(Color color)
+    {
+        if (buttonText == null) return;
+        buttonText.color = color;
     }
 
     private IEnumerator UpdateButton()
     {
         yield return new WaitForSecondsRealtime(.5f);
-        buttonText.color = normalColor;
+        ChangeColor(normalColor);
         pressed = false;
     }
 }

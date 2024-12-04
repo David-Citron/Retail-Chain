@@ -37,7 +37,7 @@ public class LobbyDataEntry : MonoBehaviour
         joinButton.onClick.RemoveAllListeners();
         joinButton.onClick.AddListener(() =>
         {
-            Debug.Log("Attempting to join new lobby.");
+            Debug.LogError("Attempting to join new lobby.");
             LayoutManager.Instance().IfPresent(layoutManager => layoutManager.ShowLoadingScreen());
             SteamLobby.instance.JoinLobby(lobbyId);
         });
