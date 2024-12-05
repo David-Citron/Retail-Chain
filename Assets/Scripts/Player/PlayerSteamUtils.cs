@@ -17,8 +17,8 @@ public class PlayerSteamUtils : MonoBehaviour {
 
     void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
     {
-        Debug.LogError("Called!!");
         if (callback.m_steamID != localPlayerSteamId) return;
+        Debug.LogError("Called!!");
 
         LayoutManager.Instance().IfPresent(layoutManager =>
         {
