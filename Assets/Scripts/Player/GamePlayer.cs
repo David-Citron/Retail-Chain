@@ -114,7 +114,6 @@ public class GamePlayer : NetworkBehaviour
         UpdateReadyIcon();
         if (!isServer) return;
         if (!isReady) return;
-
         
         var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this).GetValueOrDefault();
         if (oppositePlayer == null || !oppositePlayer.isReady) return;
@@ -127,6 +126,11 @@ public class GamePlayer : NetworkBehaviour
 
     private void UpdateReadyIcon()
     {
+        LayoutManager.Instance().IfPresent(layoutManager =>
+        {
+            layoutManager.readyButton.gameObject.SetActive(!isReady);
+            layoutManager.readyCancelButton.gameObject.SetActive(isReady);
+        });
         notReady.gameObject.SetActive(!isReady);
         ready.gameObject.SetActive(isReady);
     }

@@ -35,6 +35,7 @@ public class CustomNetworkManager : NetworkManager
         base.OnClientDisconnect();
 
         SteamLobby.instance.LeaveLobby();
+        LayoutManager.Instance().IfPresent(layoutManager => layoutManager.HideLoadingScreen());
     }
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)

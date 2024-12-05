@@ -28,8 +28,8 @@ public class LayoutManager : MonoBehaviour
     //Lobby Menu
     [SerializeField] public Button swapButton;
     [SerializeField] private Button leaveButton;
-    [SerializeField] private Button readyButton;
-    [SerializeField] private Button readyCancelButton;
+    [SerializeField] public Button readyButton;
+    [SerializeField] public Button readyCancelButton;
     [SerializeField] public Button kickButton;
 
     [SerializeField] private TMP_Text notificationText;
@@ -134,17 +134,12 @@ public class LayoutManager : MonoBehaviour
                 SendColoredNotification("Both players are required to start the game!", Color.red, 3);
                 return;
             }
-
-            readyButton.gameObject.SetActive(false);
-            readyCancelButton.gameObject.SetActive(true);
             gamePlayer.ChangeReadyStatus();
         });
 
         readyCancelButton.interactable = true;
         readyCancelButton.onClick.RemoveAllListeners();
         readyCancelButton.onClick.AddListener(() => {
-            readyButton.gameObject.SetActive(true);
-            readyCancelButton.gameObject.SetActive(false);
             gamePlayer.ChangeReadyStatus();
         });
     }
