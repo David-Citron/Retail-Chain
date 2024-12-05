@@ -60,7 +60,9 @@ public class PlayerManager : MonoBehaviour
     {
         GetGamePlayerByConnId(connectionId).IfPresent(gamePlayer =>
         {
-            GetOppositePlayer(gamePlayer).IfPresent(oppositePlayer => oppositePlayer.ChangeReadyStatus());
+            GetOppositePlayer(gamePlayer).IfPresent(oppositePlayer => {
+                    if(oppositePlayer.isReady) oppositePlayer.ChangeReadyStatus();
+                });
 
             Debug.Log("Player " + PlayerSteamUtils.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " has disconnected.");
             gamePlayers.Remove(gamePlayer);

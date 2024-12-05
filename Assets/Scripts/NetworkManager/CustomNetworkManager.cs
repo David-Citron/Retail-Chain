@@ -76,7 +76,6 @@ public class CustomNetworkManager : NetworkManager
         {
             connection.Disconnect();
         }
-        Debug.Log("kicked " + connection);
     }
 
     public override void OnStartHost()

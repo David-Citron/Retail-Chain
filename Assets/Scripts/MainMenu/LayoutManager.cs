@@ -134,6 +134,7 @@ public class LayoutManager : MonoBehaviour
                 SendColoredNotification("Both players are required to start the game!", Color.red, 3);
                 return;
             }
+
             readyButton.gameObject.SetActive(false);
             readyCancelButton.gameObject.SetActive(true);
             gamePlayer.ChangeReadyStatus();

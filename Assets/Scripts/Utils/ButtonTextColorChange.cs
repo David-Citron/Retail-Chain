@@ -2,11 +2,13 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
 using System.Collections;
+using UnityEngine.UI;
 
-public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IPointerDownHandler
+public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField]
     private TMP_Text buttonText;
+    private Button button;
 
     private Color normalColor = Color.white;
     private Color highlightedColor;
@@ -15,6 +17,7 @@ public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPoint
 
     void Start()
     {
+        button = GetComponent<Button>();
         Color gammaColor = new Color(49f / 255f, 54f / 255f, 56f / 255f, 1f);
         highlightedColor = gammaColor.linear;
     }
@@ -33,11 +36,7 @@ public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPoint
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (pressed)
-        {
-            Debug.LogError("Returned.");
-            return;
-        }
+        if (pressed) return;
         pressed = true;
         ChangeColor(highlightedColor);
         PlayerManager.instance.StartCoroutine(UpdateButton());
@@ -51,7 +50,7 @@ public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPoint
 
     private IEnumerator UpdateButton()
     {
-        yield return new WaitForSecondsRealtime(.5f);
+        yield return new WaitForSecondsRealtime(.2f);
         ChangeColor(normalColor);
         pressed = false;
     }
