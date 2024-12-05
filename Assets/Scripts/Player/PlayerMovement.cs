@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
 
-        //Rotate player 90° on Y axis to face correct direction
+        //Rotate player 90? on Y axis to face correct direction
         for (int i = 0; i < transform.childCount; i++)
         {
             Transform childTransform = transform.GetChild(i);
@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetBool("walking", false);
             walking = false;
+            return;
         }
         else if (!walking && (horizontal != 0 || vertical != 0))
         {
