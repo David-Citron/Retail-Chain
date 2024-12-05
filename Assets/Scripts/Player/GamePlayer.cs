@@ -21,8 +21,8 @@ public class GamePlayer : NetworkBehaviour
     public GameObject player;
 
     [SerializeField] private RawImage profilePictureImage;
-    [SerializeField] private RawImage ready, notReady;
     [SerializeField] private TMP_Text displayNameText;
+    [SerializeField] private GameObject ready;
     [SerializeField] private TMP_Text roleText;
     public Material[] bodyMaterials;
 
@@ -68,7 +68,7 @@ public class GamePlayer : NetworkBehaviour
         if (user == CSteamID.Nil) return;
         profilePictureImage.texture = PlayerSteamUtils.GetSteamProfilePicture(user);
         displayNameText.text = PlayerSteamUtils.GetSteamUsername(user);
-        notReady.enabled = true;
+        ready.SetActive(false);
     }
 
     public void OnSteamIDChanged(ulong oldSteamId, ulong newSteamId)
@@ -131,8 +131,7 @@ public class GamePlayer : NetworkBehaviour
             layoutManager.readyButton.gameObject.SetActive(!isReady);
             layoutManager.readyCancelButton.gameObject.SetActive(isReady);
         });
-        notReady.gameObject.SetActive(!isReady);
-        ready.gameObject.SetActive(isReady);
+        ready.SetActive(isReady);
     }
 
     public void StartGame()

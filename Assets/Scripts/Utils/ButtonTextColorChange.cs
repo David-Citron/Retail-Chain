@@ -4,59 +4,70 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using UnityEngine.UI;
 
-public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+[RequireComponent(typeof(Shadow))]
+public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IPointerDownHandler, ISelectHandler
 {
-    [SerializeField]
     private TMP_Text buttonText;
     private Button button;
+    private Shadow shadow;
 
     private Color normalColor = Color.white;
-    private Color highlightedColor;
-
-    public bool pressed = false;
+    private Color32 highlightedColor = new Color32(49, 54, 56, 255);
+    private Color32 shadowColor = new Color32(188, 188, 188, 255);
 
     void Start()
     {
+        buttonText = transform.GetComponentInChildren<TMP_Text>();
         button = GetComponent<Button>();
-        Color gammaColor = new Color(49f / 255f, 54f / 255f, 56f / 255f, 1f);
-        highlightedColor = gammaColor.linear;
+        shadow = GetComponent<Shadow>();
+
+        shadow.effectDistance = new Vector2(10, -10);
+        shadow.effectColor = shadowColor;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (pressed) return;
         ChangeColor(highlightedColor);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (pressed) return;
         ChangeColor(normalColor);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (pressed) return;
-        pressed = true;
         ChangeColor(highlightedColor);
         PlayerManager.instance.StartCoroutine(UpdateButton());
     }
 
     private void ChangeColor(Color color)
     {
-        if (buttonText == null) return;
-        buttonText.color = color;
+        if (buttonText != null) buttonText.color = color;
+        if (shadow != null) shadow.effectColor = color == normalColor ? shadowColor : highlightedColor;
     }
 
     private IEnumerator UpdateButton()
     {
         yield return new WaitForSecondsRealtime(.2f);
         ChangeColor(normalColor);
-        pressed = false;
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        ChangeColor(normalColor);
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        PlayerManager.instance.StartCoroutine(DeselectAfterFrame());
+    }
+
+
+    private IEnumerator DeselectAfterFrame()
+    {
+        yield return null;
+        EventSystem.current.SetSelectedGameObject(null);
         ChangeColor(normalColor);
     }
 }

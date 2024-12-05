@@ -32,6 +32,11 @@ public class LayoutManager : MonoBehaviour
     [SerializeField] public Button readyCancelButton;
     [SerializeField] public Button kickButton;
 
+
+    [SerializeField] private Button publicLobbyType;
+    [SerializeField] private Button privateLobbyType;
+
+
     [SerializeField] private TMP_Text notificationText;
     [SerializeField] private GameObject steamNotInitializedNotification;
 
@@ -63,6 +68,7 @@ public class LayoutManager : MonoBehaviour
 
             InitializeLeaveButton(gamePlayer);
             InitializeReadyButtons(gamePlayer);
+            InitializeLobbyTypeButtons(gamePlayer);
 
             SendNotification("Player " + username + " has joined your Lobby.", 5);
         });
@@ -71,7 +77,7 @@ public class LayoutManager : MonoBehaviour
     /// <summary>
     /// Adds listener to the host button to properly host lobby.
     /// </summary>
-    public void InicializeMainMenuButtons()
+    private void InicializeMainMenuButtons()
     {
         if (createGameButton != null) {
             createGameButton.interactable = true;
@@ -79,6 +85,7 @@ public class LayoutManager : MonoBehaviour
             createGameButton.onClick.AddListener(() =>
             {
                 SteamLobby.instance.HostLobby();
+                ShowLoadingScreen();
             });
         }
 
@@ -109,7 +116,7 @@ public class LayoutManager : MonoBehaviour
 
     }
 
-    public void InitializeLeaveButton(GamePlayer gamePlayer)
+    private void InitializeLeaveButton(GamePlayer gamePlayer)
     {
         leaveButton.onClick.RemoveAllListeners();
         leaveButton.interactable = true;
@@ -122,7 +129,7 @@ public class LayoutManager : MonoBehaviour
         });
     }
 
-    public void InitializeReadyButtons(GamePlayer gamePlayer)
+    private void InitializeReadyButtons(GamePlayer gamePlayer)
     {
         if (!gamePlayer.isLocalPlayer) return;
 
@@ -141,6 +148,27 @@ public class LayoutManager : MonoBehaviour
         readyCancelButton.onClick.RemoveAllListeners();
         readyCancelButton.onClick.AddListener(() => {
             gamePlayer.ChangeReadyStatus();
+        });
+    }
+
+    private void InitializeLobbyTypeButtons(GamePlayer gamePlayer)
+    {
+        if(!gamePlayer.isServer || !gamePlayer.isLocalPlayer) return;
+
+        publicLobbyType.gameObject.SetActive(true);
+        publicLobbyType.interactable = true;
+        publicLobbyType.onClick.RemoveAllListeners();
+        publicLobbyType.onClick.AddListener(() =>
+        {
+            SteamLobby.instance.ChangeLobbyType(ELobbyType.k_ELobbyTypePublic);
+        });
+
+        privateLobbyType.gameObject.SetActive(true);
+        privateLobbyType.interactable = true;
+        privateLobbyType.onClick.RemoveAllListeners();
+        privateLobbyType.onClick.AddListener(() =>
+        {
+            SteamLobby.instance.ChangeLobbyType(ELobbyType.k_ELobbyTypePrivate);
         });
     }
 
