@@ -23,6 +23,9 @@ public class SteamLobby : MonoBehaviour
     public const string HostCSteamIDKey = "HostCSteamID";
 
     public static CSteamID LobbyId {get; private set; }
+    public static ELobbyType lobbyType { get; private set; }
+
+    private const ELobbyType defaultLobbyType = ELobbyType.k_ELobbyTypePublic;
 
     private bool steamIsInitialized;
 
@@ -59,7 +62,8 @@ public class SteamLobby : MonoBehaviour
     public void HostLobby()
     {
         Debug.Log("Started hosting a lobby");
-        SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, networkManager.maxConnections);
+        SteamMatchmaking.CreateLobby(defaultLobbyType, networkManager.maxConnections);
+        lobbyType = defaultLobbyType;
     }
 
     public void JoinLobby(CSteamID steamID)
@@ -136,5 +140,18 @@ public class SteamLobby : MonoBehaviour
     void OnGetLobbyData(LobbyDataUpdate_t result)
     {
         LobbiesListManager.instance.DisplayLobbies(lobbyIds, result);
+    }
+
+    void ChangeLobbyType(ELobbyType eLobbyType)
+    {
+        bool status = SteamMatchmaking.SetLobbyType(LobbyId, eLobbyType);
+        if (status)
+        {
+            lobbyType = eLobbyType;
+            Debug.LogWarning("Lobby type changed! New lobby type is: " + lobbyType);
+        }else
+        {
+            Debug.LogError("Lobby type was NOT changed! Lobby still remains with type: " + lobbyType);
+        }
     }
 }
