@@ -1,5 +1,6 @@
 using Mirror;
 using Steamworks;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,7 +25,10 @@ public class GamePlayer : NetworkBehaviour
     [SerializeField] private TMP_Text displayNameText;
     [SerializeField] private GameObject ready;
     [SerializeField] private TMP_Text roleText;
-    public Material[] bodyMaterials;
+    [SerializeField] private Material[] bodyMaterials;
+    [SerializeField] private RawImage lobbyLeaderCrown;
+    [SerializeField] private Button kickButton;
+
 
     void Start()
     {
@@ -138,6 +142,7 @@ public class GamePlayer : NetworkBehaviour
     {
         Debug.Log("GAME STARTED WOHO");
     }
+
     private void UpdateRoleData()
     {
         Material material = bodyMaterials[playerRole == PlayerRole.Shop ? 0 : 1];
@@ -192,6 +197,9 @@ public class GamePlayer : NetworkBehaviour
                 });
             }
         });
+
+        lobbyLeaderCrown.gameObject.SetActive(isServer && isLocalPlayer || isServer && !isLocalPlayer);
+        kickButton.gameObject.SetActive(isServer && !isLocalPlayer);
     }
 
     public ulong GetSteamId() => steamID;
