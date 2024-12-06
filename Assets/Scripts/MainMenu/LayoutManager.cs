@@ -30,8 +30,6 @@ public class LayoutManager : MonoBehaviour
     [SerializeField] private Button leaveButton;
     [SerializeField] public Button readyButton;
     [SerializeField] public Button readyCancelButton;
-    [SerializeField] public Button kickButton;
-
 
     [SerializeField] private Button publicLobbyType;
     [SerializeField] private Button privateLobbyType;

@@ -164,24 +164,25 @@ public class GamePlayer : NetworkBehaviour
     /// </summary>
     private void InicializeButtons()
     {
+        lobbyLeaderCrown.gameObject.SetActive(isServer && isLocalPlayer || !isServer && !isLocalPlayer);
+        kickButton.gameObject.SetActive(isServer && !isLocalPlayer);
+        if (isServer && !isLocalPlayer)
+        {
+            Debug.Log("setting: " + kickButton.name);
+            kickButton.interactable = true;
+            kickButton.onClick.RemoveAllListeners();
+            kickButton.onClick.AddListener(() =>
+            {
+                CustomNetworkManager.instance.KickPlayer(connectionId);
+                Debug.Log("Kicking " + connectionId);
+            });
+        }
+
         LayoutManager.Instance().IfPresent(layoutManager =>
         {
-            var kickButton = layoutManager.kickButton;
-
-            kickButton.gameObject.SetActive(isServer && !isLocalPlayer);
-            if (isServer)
-            {
-                kickButton.interactable = true;
-                kickButton.onClick.RemoveAllListeners();
-                kickButton.onClick.AddListener(() =>
-                {
-                    CustomNetworkManager.instance.KickPlayer(connectionId);
-                });
-            }
-
             var swapButton = layoutManager.swapButton;
             swapButton.gameObject.SetActive(isServer && !isLocalPlayer);
-            if (isServer)
+            if (isServer && !isLocalPlayer)
             {
                 swapButton.interactable = true;
                 swapButton.onClick.RemoveAllListeners();
@@ -197,9 +198,6 @@ public class GamePlayer : NetworkBehaviour
                 });
             }
         });
-
-        lobbyLeaderCrown.gameObject.SetActive(isServer && isLocalPlayer || !isServer && !isLocalPlayer);
-        kickButton.gameObject.SetActive(isServer && !isLocalPlayer);
     }
 
     public ulong GetSteamId() => steamID;

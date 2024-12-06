@@ -47,7 +47,6 @@ public class CustomNetworkManager : NetworkManager
 
         PlayerManager.instance.PlayerDisconnected(conn.connectionId); // Remove player from PlayerManager
         LayoutManager.Instance().IfPresent(layoutManager => {
-            layoutManager.kickButton.gameObject.SetActive(false);
             layoutManager.swapButton.gameObject.SetActive(false);
         });
 
