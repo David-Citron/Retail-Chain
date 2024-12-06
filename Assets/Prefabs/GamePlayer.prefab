@@ -11,14 +11,16 @@ GameObject:
   - component: {fileID: 7999981468196407076}
   - component: {fileID: 1558488765242566}
   - component: {fileID: 3737026267496449007}
+  - component: {fileID: 3508013568914075340}
   - component: {fileID: 1913109260545187335}
+  - component: {fileID: 5324696511511567429}
   m_Layer: 5
   m_Name: Kick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7999981468196407076
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27,7 +29,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 256386338212471909}
   m_LocalRotation: {x: -0, y: -0, z: 1, w: -0}
-  m_LocalPosition: {x: 0, y: 0, z: -14.899999}
+  m_LocalPosition: {x: 0, y: 0, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -76,6 +78,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3508013568914075340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256386338212471909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7c8a767e8a03c341b6593705f2086ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1913109260545187335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +135,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5324696511511567429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256386338212471909}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &499353867173807329
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,8 +181,8 @@ RectTransform:
   m_LocalScale: {x: 0.019999998, y: 0.02, z: 0.019999998}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1340162188738341767}
   - {fileID: 2303769043651920918}
+  - {fileID: 1340162188738341767}
   - {fileID: 5643709690875504068}
   - {fileID: 7999981468196407076}
   m_Father: {fileID: 3588356880072185300}
@@ -180,7 +209,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 1
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -378,7 +407,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5643709690875504068
 RectTransform:
   m_ObjectHideFlags: 0
@@ -735,7 +764,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2751662264158398301
 RectTransform:
   m_ObjectHideFlags: 0
@@ -885,6 +914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5464609351489627812}
+  readyButtonAnimator: {fileID: 4884592720568400081}
 --- !u!1 &8860557073595784361
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,6 +926,7 @@ GameObject:
   - component: {fileID: 6424040632304751389}
   - component: {fileID: 408478433448756720}
   - component: {fileID: 8926583090757208028}
+  - component: {fileID: 4884592720568400081}
   m_Layer: 5
   m_Name: Ready
   m_TagString: Untagged
@@ -957,6 +988,27 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!95 &4884592720568400081
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8860557073595784361}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6b148c47d574cca47b418ad732c92df6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &3722725859504638465
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -53,6 +53,7 @@ public class PlayerManager : MonoBehaviour
             gamePlayer.transform.rotation = lobbySpawnPoints[GetPlayerIndex(gamePlayer)].rotation;
 
             layoutManager.UpdatePlayer(new CSteamID(gamePlayer.GetSteamId()));
+            GetOppositePlayer(gamePlayer).IfPresent(lobbyLeader => layoutManager.UpdateInvitePlayerButton(lobbyLeader));
         });
     }
 
@@ -67,6 +68,8 @@ public class PlayerManager : MonoBehaviour
             Debug.Log("Player " + PlayerSteamUtils.GetSteamUsername(new CSteamID(gamePlayer.GetSteamId())) + " has disconnected.");
             gamePlayers.Remove(gamePlayer);
         });
+
+        if(gamePlayers.Count != 0) LayoutManager.Instance().IfPresent(layoutManager => layoutManager.UpdateInvitePlayerButton(gamePlayers[0]));
     }
 
     public Optional<GamePlayer> GetOppositePlayer(GamePlayer player)

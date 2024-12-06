@@ -1,6 +1,5 @@
 using Mirror;
 using Steamworks;
-using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -116,6 +115,7 @@ public class GamePlayer : NetworkBehaviour
     public void UpdateReadyStatus()
     {
         UpdateReadyIcon();
+
         if (!isServer) return;
         if (!isReady) return;
         
@@ -135,7 +135,9 @@ public class GamePlayer : NetworkBehaviour
             layoutManager.readyButton.gameObject.SetActive(!isReady);
             layoutManager.readyCancelButton.gameObject.SetActive(isReady);
         });
+
         ready.SetActive(isReady);
+        if(isReady) GetComponent<PlayerAnimationHandler>().playReadyAnimation();
     }
 
     public void StartGame()
@@ -165,16 +167,15 @@ public class GamePlayer : NetworkBehaviour
     private void InicializeButtons()
     {
         lobbyLeaderCrown.gameObject.SetActive(isServer && isLocalPlayer || !isServer && !isLocalPlayer);
+
         kickButton.gameObject.SetActive(isServer && !isLocalPlayer);
         if (isServer && !isLocalPlayer)
         {
-            Debug.Log("setting: " + kickButton.name);
             kickButton.interactable = true;
             kickButton.onClick.RemoveAllListeners();
             kickButton.onClick.AddListener(() =>
             {
                 CustomNetworkManager.instance.KickPlayer(connectionId);
-                Debug.Log("Kicking " + connectionId);
             });
         }
 

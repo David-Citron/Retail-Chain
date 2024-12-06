@@ -33,6 +33,7 @@ public class LayoutManager : MonoBehaviour
 
     [SerializeField] private Button publicLobbyType;
     [SerializeField] private Button privateLobbyType;
+    [SerializeField] private Button inviteFriend;
 
 
     [SerializeField] private TMP_Text notificationText;
@@ -67,6 +68,7 @@ public class LayoutManager : MonoBehaviour
             InitializeLeaveButton(gamePlayer);
             InitializeReadyButtons(gamePlayer);
             InitializeLobbyTypeButtons(gamePlayer);
+            UpdateInvitePlayerButton(gamePlayer);
 
             SendNotification("Player " + username + " has joined your Lobby.", 5);
         });
@@ -151,7 +153,9 @@ public class LayoutManager : MonoBehaviour
 
     private void InitializeLobbyTypeButtons(GamePlayer gamePlayer)
     {
-        if(!gamePlayer.isServer || !gamePlayer.isLocalPlayer) return;
+        if(!gamePlayer.isServer && !gamePlayer.isLocalPlayer) return;
+
+     
 
         publicLobbyType.gameObject.SetActive(true);
         publicLobbyType.interactable = true;
@@ -167,6 +171,19 @@ public class LayoutManager : MonoBehaviour
         privateLobbyType.onClick.AddListener(() =>
         {
             SteamLobby.instance.ChangeLobbyType(ELobbyType.k_ELobbyTypePrivate);
+        });
+    }
+
+    public void UpdateInvitePlayerButton(GamePlayer gamePlayer)
+    {
+        if(!gamePlayer.isServer && !gamePlayer.isLocalPlayer) return;
+
+        inviteFriend.gameObject.SetActive(PlayerManager.instance.gamePlayers.Count == 1);
+        inviteFriend.interactable = true;
+        inviteFriend.onClick.RemoveAllListeners();
+        inviteFriend.onClick.AddListener(() =>
+        {
+            SteamFriends.ActivateGameOverlayInviteDialog(SteamLobby.LobbyId);
         });
     }
 
