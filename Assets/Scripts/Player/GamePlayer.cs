@@ -198,7 +198,7 @@ public class GamePlayer : NetworkBehaviour
             }
         });
 
-        lobbyLeaderCrown.gameObject.SetActive(isServer && isLocalPlayer || isServer && !isLocalPlayer);
+        lobbyLeaderCrown.gameObject.SetActive(isServer && isLocalPlayer || !isServer && !isLocalPlayer);
         kickButton.gameObject.SetActive(isServer && !isLocalPlayer);
     }
 
