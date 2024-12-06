@@ -130,14 +130,15 @@ public class GamePlayer : NetworkBehaviour
 
     private void UpdateReadyIcon()
     {
+        ready.SetActive(isReady);
+        if(isReady) GetComponent<PlayerAnimationHandler>().playReadyAnimation();
+
+        if (!isLocalPlayer) return;
         LayoutManager.Instance().IfPresent(layoutManager =>
         {
             layoutManager.readyButton.gameObject.SetActive(!isReady);
             layoutManager.readyCancelButton.gameObject.SetActive(isReady);
         });
-
-        ready.SetActive(isReady);
-        if(isReady) GetComponent<PlayerAnimationHandler>().playReadyAnimation();
     }
 
     public void StartGame()
