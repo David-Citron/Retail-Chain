@@ -183,7 +183,8 @@ public class LayoutManager : MonoBehaviour
         inviteFriend.onClick.RemoveAllListeners();
         inviteFriend.onClick.AddListener(() =>
         {
-            SteamFriends.ActivateGameOverlayInviteDialog(SteamLobby.LobbyId);
+            SteamFriends.ActivateGameOverlay("friends");
+            SteamFriends.ActivateGameOverlayRemotePlayTogetherInviteDialog(SteamLobby.LobbyId);
         });
     }
 

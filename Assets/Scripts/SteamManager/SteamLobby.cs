@@ -53,6 +53,7 @@ public class SteamLobby : MonoBehaviour
 
     private bool SteamIsInitialized()
     {
+        SteamAPI.Init();
         steamIsInitialized = SteamManager.Initialized;
         if (!steamIsInitialized) LayoutManager.Instance().GetValueOrDefault().ShowSteamNotInitializedNotification();
         return steamIsInitialized;
