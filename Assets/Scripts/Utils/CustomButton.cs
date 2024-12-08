@@ -5,7 +5,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Shadow))]
-public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IPointerDownHandler, ISelectHandler
+public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IPointerDownHandler, ISelectHandler
 {
     private TMP_Text buttonText;
     private Button button;
@@ -38,19 +38,12 @@ public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPoint
     public void OnPointerClick(PointerEventData eventData)
     {
         ChangeColor(highlightedColor);
-        PlayerManager.instance.StartCoroutine(UpdateButton());
     }
 
     private void ChangeColor(Color color)
     {
         if (buttonText != null) buttonText.color = color;
         if (shadow != null) shadow.effectColor = color == normalColor ? shadowColor : highlightedColor;
-    }
-
-    private IEnumerator UpdateButton()
-    {
-        yield return new WaitForSecondsRealtime(.2f);
-        ChangeColor(normalColor);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -66,7 +59,7 @@ public class ButtonTextColorChange : MonoBehaviour, IPointerEnterHandler, IPoint
 
     private IEnumerator DeselectAfterFrame()
     {
-        yield return null;
+        yield return new WaitForEndOfFrame();
         EventSystem.current.SetSelectedGameObject(null);
         ChangeColor(normalColor);
     }

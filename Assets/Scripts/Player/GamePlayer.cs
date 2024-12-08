@@ -51,8 +51,7 @@ public class GamePlayer : NetworkBehaviour
 
         //If there is no second player, the PlayerRole is set to Shop, otherwise it depends on the role of the opposite player.
         PlayerManager.instance.GetOppositePlayer(this).IfPresentOrElse(secondPlayer =>
-        SetPlayeRole(secondPlayer.playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop),
-        () => SetPlayeRole(PlayerRole.Shop));
+        SetPlayeRole(secondPlayer.playerRole == PlayerRole.Shop ? PlayerRole.Factory : PlayerRole.Shop), () => SetPlayeRole(PlayerRole.Shop));
     }
 
     // Update is called once per frame
