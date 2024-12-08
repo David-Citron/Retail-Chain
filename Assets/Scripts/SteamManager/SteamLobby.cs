@@ -83,7 +83,6 @@ public class SteamLobby : MonoBehaviour
         networkManager.StartHost();
 
         SteamMatchmaking.SetLobbyData(LobbyId, HostCSteamIDKey, SteamUser.GetSteamID().ToString());
-        SteamMatchmaking.SetLobbyData(LobbyId, "host-name", PlayerSteamUtils.GetSteamUsername(SteamUser.GetSteamID()));
         SteamMatchmaking.SetLobbyData(LobbyId, "game", "retailchain");
     }
 
@@ -143,6 +142,7 @@ public class SteamLobby : MonoBehaviour
 
     public void ChangeLobbyType(ELobbyType eLobbyType)
     {
+        if (lobbyType == eLobbyType) return;
         bool status = SteamMatchmaking.SetLobbyType(LobbyId, eLobbyType);
         if (status)
         {

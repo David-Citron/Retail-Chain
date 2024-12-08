@@ -62,7 +62,7 @@ public class GamePlayer : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        
+
     }
 
     public void UpdateUserInfo(CSteamID user)

@@ -15,16 +15,16 @@ public class PlayerSteamUtils : MonoBehaviour {
         avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
     }
 
-    void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
+    private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
     {
-        if (callback.m_steamID != localPlayerSteamId) return;
-        Debug.LogError("Called!!");
-
         LayoutManager.Instance().IfPresent(layoutManager =>
         {
-            if (layoutManager.lobby.activeSelf) layoutManager.UpdatePlayer(callback.m_steamID);
             if (layoutManager.mainMenu.activeSelf) layoutManager.UpdateMainMenuProfilePicture(callback.m_steamID);
         });
+
+
+        PlayerManager.instance.gamePlayers.ForEach(gamePlayer => gamePlayer.UpdateUserInfo(callback.m_steamID));
+        LobbiesListManager.instance.listOfLobbies.ForEach(lobbyEntry => lobbyEntry.GetComponent<LobbyDataEntry>().UpdateList());
     }
 
     public static CSteamID StringToCSteamID(string steamIdString)

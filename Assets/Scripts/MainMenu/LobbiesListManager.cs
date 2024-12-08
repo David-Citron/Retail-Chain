@@ -43,7 +43,6 @@ public class LobbiesListManager : MonoBehaviour
 
             component.lobbyId = lobbyId;
             component.hostId = PlayerSteamUtils.StringToCSteamID(SteamMatchmaking.GetLobbyData(lobbyId, SteamLobby.HostCSteamIDKey));
-            component.hostUsername = SteamMatchmaking.GetLobbyData(lobbyId, "host-name");
             component.UpdateList();
 
             createdItem.transform.SetParent(lobbyListContent.transform);

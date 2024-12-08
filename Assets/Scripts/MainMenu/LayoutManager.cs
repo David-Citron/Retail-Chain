@@ -31,8 +31,7 @@ public class LayoutManager : MonoBehaviour
     [SerializeField] public Button readyButton;
     [SerializeField] public Button readyCancelButton;
 
-    [SerializeField] private Button publicLobbyType;
-    [SerializeField] private Button privateLobbyType;
+    [SerializeField] private Button lobbyType;
     [SerializeField] private Button inviteFriend;
 
 
@@ -113,7 +112,6 @@ public class LayoutManager : MonoBehaviour
 
         mainMenuProfilePicture.texture = PlayerSteamUtils.GetSteamProfilePicture(id);
         mainMenuUsername.text = PlayerSteamUtils.GetSteamUsername(id);
-
     }
 
     private void InitializeLeaveButton(GamePlayer gamePlayer)
@@ -157,20 +155,14 @@ public class LayoutManager : MonoBehaviour
 
      
 
-        publicLobbyType.gameObject.SetActive(true);
-        publicLobbyType.interactable = true;
-        publicLobbyType.onClick.RemoveAllListeners();
-        publicLobbyType.onClick.AddListener(() =>
+        lobbyType.gameObject.SetActive(true);
+        lobbyType.interactable = true;
+        lobbyType.onClick.RemoveAllListeners();
+        lobbyType.onClick.AddListener(() =>
         {
-            SteamLobby.instance.ChangeLobbyType(ELobbyType.k_ELobbyTypePublic);
-        });
-
-        privateLobbyType.gameObject.SetActive(true);
-        privateLobbyType.interactable = true;
-        privateLobbyType.onClick.RemoveAllListeners();
-        privateLobbyType.onClick.AddListener(() =>
-        {
-            SteamLobby.instance.ChangeLobbyType(ELobbyType.k_ELobbyTypePrivate);
+            ELobbyType current = SteamLobby.lobbyType;
+            SteamLobby.instance.ChangeLobbyType(current == ELobbyType.k_ELobbyTypePublic ? ELobbyType.k_ELobbyTypePrivate : ELobbyType.k_ELobbyTypePublic);
+            lobbyType.GetComponentInChildren<TMP_Text>().text = "Lobby type: " + (current == ELobbyType.k_ELobbyTypePublic ? "PRIVATE" : "PUBLIC");
         });
     }
 

@@ -9,8 +9,6 @@ public class LobbyDataEntry : MonoBehaviour
     public CSteamID lobbyId;
     public CSteamID hostId;
 
-    public string hostUsername;
-
     public RawImage profilePicture;
     public TMP_Text username;
     public Button joinButton;
@@ -31,13 +29,12 @@ public class LobbyDataEntry : MonoBehaviour
     {
         if (hostId == null) return;
         profilePicture.texture = PlayerSteamUtils.GetSteamProfilePicture(hostId);
-        username.text = hostUsername;
+        username.text = PlayerSteamUtils.GetSteamUsername(hostId);
 
         joinButton.enabled = true;
         joinButton.onClick.RemoveAllListeners();
         joinButton.onClick.AddListener(() =>
         {
-            Debug.LogError("Attempting to join new lobby.");
             LayoutManager.Instance().IfPresent(layoutManager => layoutManager.ShowLoadingScreen());
             SteamLobby.instance.JoinLobby(lobbyId);
         });
