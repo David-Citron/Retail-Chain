@@ -23,8 +23,8 @@ public class SteamLobby : MonoBehaviour
     public const string HostCSteamIDKey = "HostCSteamID";
 
     public static CSteamID LobbyId {get; private set; }
-    public static ELobbyType lobbyType { get; private set; } = ELobbyType.k_ELobbyTypePublic;
-
+    public static ELobbyType lobbyType { get; private set; }
+    public const ELobbyType DEFAULT_LOBBY_TYPE = ELobbyType.k_ELobbyTypePublic;
 
     private bool steamIsInitialized;
 
@@ -62,6 +62,7 @@ public class SteamLobby : MonoBehaviour
     public void HostLobby()
     {
         Debug.Log("Started hosting a lobby");
+        lobbyType = DEFAULT_LOBBY_TYPE;
         SteamMatchmaking.CreateLobby(lobbyType, networkManager.maxConnections);
     }
 
