@@ -147,11 +147,12 @@ public class LayoutManager : MonoBehaviour
 
     private void InitializeLobbyTypeButtons(GamePlayer gamePlayer)
     {
-        if(!gamePlayer.isServer || !gamePlayer.isLocalPlayer) return;
+        lobbyType.gameObject.SetActive(gamePlayer.isServer);
+
+        if (!gamePlayer.isServer && !gamePlayer.isLocalPlayer) return;
 
         lobbyType.GetComponentInChildren<TMP_Text>().text = "Lobby type: " + (SteamLobby.lobbyType == ELobbyType.k_ELobbyTypePublic ? "PUBLIC" : "PRIVATE");
 
-        lobbyType.gameObject.SetActive(true);
         lobbyType.interactable = true;
         lobbyType.onClick.RemoveAllListeners();
         lobbyType.onClick.AddListener(() =>
