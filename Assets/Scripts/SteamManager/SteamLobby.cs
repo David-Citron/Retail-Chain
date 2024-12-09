@@ -9,6 +9,12 @@ public class SteamLobby : MonoBehaviour
 {
 
     public static SteamLobby instance;
+    public static CSteamID LobbyId { get; private set; }
+    public static ELobbyType lobbyType { get; private set; }
+
+    public const ELobbyType DEFAULT_LOBBY_TYPE = ELobbyType.k_ELobbyTypePublic;
+    public const string HostCSteamIDKey = "HostCSteamID";
+
     private NetworkManager networkManager;
 
     private List<CSteamID> lobbyIds = new List<CSteamID>();
@@ -19,12 +25,6 @@ public class SteamLobby : MonoBehaviour
 
     protected Callback<LobbyMatchList_t> lobbyList;
     protected Callback<LobbyDataUpdate_t> lobbyDataUpdate;
-
-    public const string HostCSteamIDKey = "HostCSteamID";
-
-    public static CSteamID LobbyId {get; private set; }
-    public static ELobbyType lobbyType { get; private set; }
-    public const ELobbyType DEFAULT_LOBBY_TYPE = ELobbyType.k_ELobbyTypePublic;
 
     private bool steamIsInitialized;
 
