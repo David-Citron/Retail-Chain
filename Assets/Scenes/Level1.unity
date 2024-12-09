@@ -708,6 +708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   username: {fileID: 1440478607}
   profilePicture: {fileID: 102256337}
+  balance: {fileID: 2078376578}
 --- !u!4 &1509877517
 Transform:
   m_ObjectHideFlags: 0

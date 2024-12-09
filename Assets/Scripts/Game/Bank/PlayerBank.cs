@@ -1,18 +1,41 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerBank : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    private int balance;
+
+    void Start() {}
+
+    void Update() {}
+
+
+    /// <summary>
+    /// Adds balance to player's bank.
+    /// </summary>
+    /// <param name="amount">Amount to be added</param>
+    public void AddBalance(int amount)
     {
-        
+        balance += amount;
+        UpdateMenu();
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Removes balance from player's bank.
+    /// </summary>
+    /// <param name="amount">Amount to be removed</param>
+    /// <returns>true if it was successful, otherwise false</returns>
+    public bool RemoveBalance(int amount)
     {
-        
+        if (balance < amount) return false;
+        balance -= amount;
+        UpdateMenu();
+        return true;
+    }
+
+
+    private void UpdateMenu()
+    {
+        GameLayoutManager.Instance().IfPresent(layout => layout.UpdateBalance(balance));
     }
 }

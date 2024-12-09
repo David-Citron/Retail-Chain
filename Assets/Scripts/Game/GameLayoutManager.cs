@@ -11,6 +11,9 @@ public class GameLayoutManager : MonoBehaviour
     [SerializeField] private TMP_Text username;
     [SerializeField] private RawImage profilePicture;
 
+
+    [SerializeField] private TMP_Text balance;
+
     void Start()
     {
         instance = this;
@@ -32,7 +35,7 @@ public class GameLayoutManager : MonoBehaviour
 
     public void UpdateBalance(int amount)
     {
-
+        balance.text = amount.ToString();
     }
 
     public static Optional<GameLayoutManager> Instance() => instance == null ? Optional<GameLayoutManager>.Empty() : Optional<GameLayoutManager>.Of(instance);

@@ -18,7 +18,9 @@ public class GamePlayer : NetworkBehaviour
     [SyncVar(hook = nameof(OnReadyStatusChanged))]
     public bool isReady = false;
 
-    public GameObject player;
+    public PlayerBank bankAccount;
+
+    public GameObject player; //GamePlayer's prefab.
 
     [SerializeField] private RawImage profilePictureImage;
     [SerializeField] private TMP_Text displayNameText;
@@ -27,7 +29,6 @@ public class GamePlayer : NetworkBehaviour
     [SerializeField] private Material[] bodyMaterials;
     [SerializeField] private RawImage lobbyLeaderCrown;
     [SerializeField] private Button kickButton;
-
 
     void Start()
     {
@@ -147,6 +148,7 @@ public class GamePlayer : NetworkBehaviour
 
     public void StartGame()
     {
+        bankAccount = new PlayerBank();
         Debug.Log("GAME STARTED WOHO");
     }
 
