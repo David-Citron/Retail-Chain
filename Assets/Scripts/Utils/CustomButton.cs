@@ -5,7 +5,10 @@ using System.Collections;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Shadow))]
-public class CustomButton : Selectable
+public class CustomButton : MonoBehaviour,
+        IPointerDownHandler, IPointerUpHandler,
+        IPointerEnterHandler, IPointerExitHandler,
+        ISelectHandler
 {
     private TMP_Text buttonText;
     private Button button;
@@ -17,23 +20,36 @@ public class CustomButton : Selectable
     private Color32 shadowColor = new Color32(188, 188, 188, 255);
     private Color32 highlightedColorShadow = new Color32(33, 37, 39, 255);
 
-    protected override void Start()
+    private bool isPointerInside { get; set; }
+    private bool isPointerDown { get; set; }
+
+    void Start()
     {
-        base.Start();
         buttonText = transform.GetComponentInChildren<TMP_Text>();
         button = GetComponent<Button>();
         shadow = GetComponent<Shadow>();
 
         shadow.effectDistance = new Vector2(10, -10);
         shadow.effectColor = shadowColor;
-
-        transition = Transition.None;
     }
 
-    protected override void DoStateTransition(SelectionState state, bool instant)
+    protected enum SelectionState
     {
-        base.DoStateTransition(state, instant);
+        Normal, Highlighted
+    }
 
+    protected SelectionState currentSelectionState
+    {
+        get
+        {
+            if (isPointerDown) return SelectionState.Normal;
+            if (isPointerInside) return SelectionState.Highlighted;
+            return SelectionState.Normal;
+        }
+    }
+
+    protected void DoStateTransition(SelectionState state)
+    {
         switch (state)
         {
             case SelectionState.Highlighted:
@@ -45,17 +61,46 @@ public class CustomButton : Selectable
         }
     }
 
-    public override void OnSelect(BaseEventData eventData)
-    {
-        base.OnSelect(eventData);
-        PlayerManager.instance.StartCoroutine(DeselectAfterFrame());
-    }
-
     private void ChangeColor(Color color)
     {
         if (buttonText != null) buttonText.color = color;
         if (shadow != null) shadow.effectColor = color == normalColor ? shadowColor : highlightedColorShadow;
     }
+
+    public virtual void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+
+        isPointerDown = true;
+        DoStateTransition(currentSelectionState);
+    }
+
+    public virtual void OnPointerUp(PointerEventData eventData)
+    {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+
+        isPointerDown = false;
+        DoStateTransition(currentSelectionState);
+    }
+
+    public virtual void OnPointerEnter(PointerEventData eventData)
+    {
+        isPointerInside = true;
+        DoStateTransition(currentSelectionState);
+    }
+    public virtual void OnPointerExit(PointerEventData eventData)
+    {
+        isPointerInside = false;
+        DoStateTransition(currentSelectionState);
+    }
+
+    public virtual void OnSelect(BaseEventData eventData)
+    {
+        PlayerManager.instance.StartCoroutine(DeselectAfterFrame());
+    }
+
     private IEnumerator DeselectAfterFrame()
     {
         yield return new WaitForEndOfFrame();

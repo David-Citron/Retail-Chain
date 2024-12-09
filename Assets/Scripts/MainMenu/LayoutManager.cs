@@ -62,14 +62,10 @@ public class LayoutManager : MonoBehaviour
         if (id == CSteamID.Nil) return;
         PlayerManager.instance.GetPlayer(id).IfPresent(gamePlayer =>
         {
-            var username = PlayerSteamUtils.GetSteamUsername(id);
-
             InitializeLeaveButton(gamePlayer);
             InitializeReadyButtons(gamePlayer);
             InitializeLobbyTypeButtons(gamePlayer);
             UpdateInvitePlayerButton(gamePlayer);
-
-            SendNotification("Player " + username + " has joined your Lobby.", 5);
         });
     }
 
@@ -258,8 +254,5 @@ public class LayoutManager : MonoBehaviour
         }
     }
 
-    public static Optional<LayoutManager> Instance()
-    {
-        return instance == null ? Optional<LayoutManager>.Empty() : Optional<LayoutManager>.Of(instance);
-    }
+    public static Optional<LayoutManager> Instance() => instance == null ? Optional<LayoutManager>.Empty() : Optional<LayoutManager>.Of(instance);
 }

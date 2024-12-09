@@ -84,6 +84,16 @@ public class PlayerManager : MonoBehaviour
         return index == -1 ? Optional<GamePlayer>.Empty() : Optional<GamePlayer>.Of(gamePlayers[index]);
     }
 
+    public Optional<GamePlayer> GetLobbyLeader() {
+        var steamId = SteamMatchmaking.GetLobbyOwner(SteamLobby.LobbyId);
+        foreach (var gamePlayer in gamePlayers)
+        {
+            if (gamePlayer.GetSteamId() != steamId.m_SteamID) continue;
+            return Optional<GamePlayer>.Of(gamePlayer);
+        }
+        return Optional<GamePlayer>.Empty();
+    }
+
     public int GetPlayerIndex(CSteamID id)
     {
         for (int i = 0; i < gamePlayers.Count; i++)
