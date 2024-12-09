@@ -153,8 +153,6 @@ public class LayoutManager : MonoBehaviour
     {
         if(!gamePlayer.isServer || !gamePlayer.isLocalPlayer) return;
 
-        Debug.LogError("Lobby type initialized as " + SteamLobby.lobbyType);
-
         lobbyType.GetComponentInChildren<TMP_Text>().text = "Lobby type: " + (SteamLobby.lobbyType == ELobbyType.k_ELobbyTypePublic ? "PUBLIC" : "PRIVATE");
 
         lobbyType.gameObject.SetActive(true);
