@@ -657,7 +657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9607843}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -891,6 +891,7 @@ MonoBehaviour:
   connectionId: -1
   playerRole: 0
   isReady: 0
+  bankAccount: {fileID: 0}
   player: {fileID: 5590279859071227611}
   profilePictureImage: {fileID: 4945835094688652624}
   displayNameText: {fileID: 5105763292973986451}

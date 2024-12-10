@@ -1,0 +1,659 @@
+fileFormatVersion: 2
+guid: e67bde125feb5a543b0312b289c10b70
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Assembly Table
+    second: {fileID: 2100000, guid: c3d7fc4fb7a8d834384feb4629e30d2d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Barrell Primary
+    second: {fileID: 2100000, guid: 1205303c77414594f9ad9c47d8ee1ca0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Barrell Secondary
+    second: {fileID: 2100000, guid: eb710af33e3bda044b5c4b77c83e847e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Barrell Top
+    second: {fileID: 2100000, guid: b1f5708fa78f35b41bcd8a08f6d9ef35, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book Cover 1
+    second: {fileID: 2100000, guid: 6154489a2feaff040b999652664a898f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book Cover 2
+    second: {fileID: 2100000, guid: 45b5a627dc8a6d24980ceebf31183a81, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book Cover 3
+    second: {fileID: 2100000, guid: ab1d8c89e86cbf1498371bdd1881a830, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book Cover Title
+    second: {fileID: 2100000, guid: b0f4dde05ab021d4aa82c9c833760fa8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Book Pages
+    second: {fileID: 2100000, guid: 426c4473ccb06d54a9dae1c231de6af3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bottle 1 Primary
+    second: {fileID: 2100000, guid: a0e5c2b1af3eb4f468534efdc000fe2f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bottle 1 Secondary
+    second: {fileID: 2100000, guid: c2e8db33f0c776546af3591d34296572, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bottle 2 Primary
+    second: {fileID: 2100000, guid: ee37912222835bd449eab6cf7a935d50, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bottle 2 Secondary
+    second: {fileID: 2100000, guid: f6aac4c4ae05d9849845928784dbce53, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Box Primary
+    second: {fileID: 2100000, guid: 31f103bf8322bba47bb023c4d8f59abd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Box Tape Primary
+    second: {fileID: 2100000, guid: afbb95bc440149b42a07b10390a8a103, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Box Tape Secondary
+    second: {fileID: 2100000, guid: c6d2ba79ef20fa64098d0ae56413d2df, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Coffee Cup Primary
+    second: {fileID: 2100000, guid: 7ae7e6add53a8e0419fbee8d20bd65a9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Coffee Cup Secondary
+    second: {fileID: 2100000, guid: 94ac4572647bf7343a2ea5600bc7f019, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Display
+    second: {fileID: 2100000, guid: 955fbfe344476af4083dcba675eb0f68, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glue Canister Cap
+    second: {fileID: 2100000, guid: 3f996efd712484145a27dc01ba394678, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glue Canister Primary
+    second: {fileID: 2100000, guid: 4105c3880bfb3094585da1837e83b62b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glue Canister Secondary
+    second: {fileID: 2100000, guid: 9ce8942b9e981e544bfa51ffb0ad6ac5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glue Dispenser
+    second: {fileID: 2100000, guid: 0339bc97800bc384480b111dc04a3360, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glue Dispenser Primary
+    second: {fileID: 2100000, guid: a38c2c616ab5a0c41bbb87e5be7c1a6f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glue Dispenser Secondary
+    second: {fileID: 2100000, guid: b7ae4f7981f9f49408328e92c3ecfcba, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glue Dispenser Tank
+    second: {fileID: 2100000, guid: f644a219f03c1b1408b84687ee658941, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Item Slot
+    second: {fileID: 2100000, guid: 9dbadc219c2ddf544a5b27694d699c25, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Item Slot.001
+    second: {fileID: 2100000, guid: 8975ce41f1218e2458cfaa7bb08415ce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby Doors
+    second: {fileID: 2100000, guid: 6333c24e07065814aa276db4765420e0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby Doors 2
+    second: {fileID: 2100000, guid: 301ea7a99717f974c9bc0fc7a6c8bf5c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby Doors Handle
+    second: {fileID: 2100000, guid: 2e2251ddbdb38d24b80b33568129edce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby Doors Handle Case
+    second: {fileID: 2100000, guid: c3fbee298abd15f469e7e0ac71d4dd5c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby Exit Sign
+    second: {fileID: 2100000, guid: 9058bbdcfda01ec47a99a53f96bf7727, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby Exit Sign Background
+    second: {fileID: 2100000, guid: 8ce446da8a52e0a4793db862e4c94de5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby Flower Leaves
+    second: {fileID: 2100000, guid: c83246994d043f548a3b9378feb7262a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby Flower Pot
+    second: {fileID: 2100000, guid: e0e41cc9dbd9b944c8b0f5277f12f1ad, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby Flower Pot Dirt
+    second: {fileID: 2100000, guid: ce362cb77bb62954990d4061f8fcdc10, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby Flower Trunk
+    second: {fileID: 2100000, guid: 148c2418540030c4e82241fadc6812ca, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby Wet Floor Sign Primary
+    second: {fileID: 2100000, guid: f39a6683b104b454990eff286aa42280, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby Wet Floor Sign Secondary
+    second: {fileID: 2100000, guid: 0f1a7ee5e2fd4f1468ce97a4ab5556c0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby floor
+    second: {fileID: 2100000, guid: 41912c8bd16387e4fb043398759bff3c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby floor 2
+    second: {fileID: 2100000, guid: 4c51d10509d1cb243a5a75d5e68dd7de, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby walls
+    second: {fileID: 2100000, guid: 4eb4e61ab2e5b344ebd741d99fd65fe8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby walls 2
+    second: {fileID: 2100000, guid: 5a17ce78cfe14634197a6d04c4126545, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lobby walls 3
+    second: {fileID: 2100000, guid: b72bb40ff78c4bc45af65e31a860cb8e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Log Primary
+    second: {fileID: 2100000, guid: 80c2290322c3fbd4f9b1faac1b1736af, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Log Secondary
+    second: {fileID: 2100000, guid: fc83a4fcb384c3143b5d72c232083839, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Packaging Table
+    second: {fileID: 2100000, guid: 551f95ba828b59544b93232378f2cca8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Paper Stack 1
+    second: {fileID: 2100000, guid: 5380ee7a94a3d5746b73ec3fb475a71b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Paper Stack 2
+    second: {fileID: 2100000, guid: 7b777c7fa718bf44899248b9e2d01a3d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Paper Stack 3
+    second: {fileID: 2100000, guid: a6fb99894edaa3c4db01ac0e09466376, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Paper Stack 4
+    second: {fileID: 2100000, guid: fed8487ca4a998a46b98c627e3c40e47, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Player Body 1
+    second: {fileID: 2100000, guid: 995ab60c31f0c8049be555cc16ddee2d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Player Body 2
+    second: {fileID: 2100000, guid: 592e028d65d65394089a1d779974062a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Player Hands
+    second: {fileID: 2100000, guid: 66f1e62e964a96f44bce573aaa84d801, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Player Head
+    second: {fileID: 2100000, guid: b460895a9f928244081eebd600577078, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Player Sunglassess
+    second: {fileID: 2100000, guid: fe173feae22678b44a2946de80276c88, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Printer
+    second: {fileID: 2100000, guid: cd1add03a6d5e6f4aa5b17e671bd074a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Printer Buttons
+    second: {fileID: 2100000, guid: 83d11c34b7c31a6458d8ba2be1750e78, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Printer Buttons 2
+    second: {fileID: 2100000, guid: 0c0594ccf28210546ac1e2ca97ab903b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Printer Buttons 3
+    second: {fileID: 2100000, guid: df5a601331e6ef347b2350b65e7eaa9c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Printer Buttons 4
+    second: {fileID: 2100000, guid: 62b8bb298d6e2c643a77bbf0cb5eb242, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Printer Cover 1
+    second: {fileID: 2100000, guid: 93d26a4c351a4d448b8ef3a995342bca, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Printer Display
+    second: {fileID: 2100000, guid: f936274022c86b64faf3b90e59dcc59d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Printer Drawer
+    second: {fileID: 2100000, guid: d79d4f8be897ee747bb20af7ec001796, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Printer Drawer Handle
+    second: {fileID: 2100000, guid: b5d49072200fb044dacca0da2882cbd5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Printer Hole
+    second: {fileID: 2100000, guid: 5537fefeb09db274c894fd255845d7c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Printer Paper Loading
+    second: {fileID: 2100000, guid: fcf835056939f244d83349f7c2a9be04, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Printer Secondary
+    second: {fileID: 2100000, guid: dd830f9d9abad6147a1032b623808972, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Printer Top
+    second: {fileID: 2100000, guid: 04d38ab0e09057043ae7e0081e9f8f77, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Printer Top Detached Part
+    second: {fileID: 2100000, guid: 66b3196cc2a23f44e8d902adf819aa4b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Robot Body
+    second: {fileID: 2100000, guid: 3fe938d097e047646a3650ea2212e2a2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Robot Camera
+    second: {fileID: 2100000, guid: b899c1b446f9bea4f823bb1efc65d932, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Robot Camera Edge
+    second: {fileID: 2100000, guid: 507d8e387cc68d7499a73cb40516a24f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Robot Camera Lens
+    second: {fileID: 2100000, guid: 68aa002c41a562d4f838e698de0a6fa2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Robot Camera Lens Cover
+    second: {fileID: 2100000, guid: 7be232e10132f1a45903147c2f019305, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Robot Head
+    second: {fileID: 2100000, guid: 3ac910d0419df55409761d40bf91939f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Robot Head Secondary
+    second: {fileID: 2100000, guid: debb9c039dd1f1e42adcbce6c51e1040, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Screen Primary
+    second: {fileID: 2100000, guid: cb9a2f814d709f649803163dbc39eabd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Screen Secondary
+    second: {fileID: 2100000, guid: b940d27d70b56f0439ec7d2cd99f0602, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Storage Rack
+    second: {fileID: 2100000, guid: aeec0f1fe1a52d945889dc2dd6fe5ecb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Storage Rack Secondary
+    second: {fileID: 2100000, guid: ae6d233ae56832847a4941d12607837b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sunglassess.001
+    second: {fileID: 2100000, guid: e140d154f56fe2648a1b6a9d29ddd1fa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Trash
+    second: {fileID: 2100000, guid: 6a6b8eaade57da34382bc54a749c4604, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Trash bin
+    second: {fileID: 2100000, guid: bed611dd4f8c2344899b20b022cee89c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Trash bin wood
+    second: {fileID: 2100000, guid: 234edaaf7da71f94c92afc9a6f4c5c86, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Credit Card Terminal
+    second: {fileID: 2100000, guid: bf67272e59da518418f6671536fe8864, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Credit Card Terminal Cover
+    second: {fileID: 2100000, guid: befd6401b539a0045b4337954739fa15, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Dispenser
+    second: {fileID: 2100000, guid: b85afd8cfa44a2647872dbbe258d3e28, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Edge
+    second: {fileID: 2100000, guid: da38b2d15cf318540806bae181c7772e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Money Input
+    second: {fileID: 2100000, guid: 0bc144211fa7d4d4bb997c23c4610258, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Money Input Hole
+    second: {fileID: 2100000, guid: d8404d3b005b818438ccafec355b9c60, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Money Input Secondary
+    second: {fileID: 2100000, guid: c119371715c495a4da2123e5870d6ce4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Option 1
+    second: {fileID: 2100000, guid: f8c2ab436fa33b24aa9c4e8b053f86b1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Option 2
+    second: {fileID: 2100000, guid: 53428903831822a4b95b6f62d2109481, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Option 3
+    second: {fileID: 2100000, guid: 99b601dca01c70a468b81b1d225a9d18, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Option 4
+    second: {fileID: 2100000, guid: 1abb80b29ee94724a82316e405e1a4da, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Option 5
+    second: {fileID: 2100000, guid: 638f6e6ad1172ca46a70a46aea8dc597, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Option 6
+    second: {fileID: 2100000, guid: 74688b095f34cae4dbae18605783cee5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Option 7
+    second: {fileID: 2100000, guid: 0bda6e25df3f87348a3ff4069fa55d35, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Option 8
+    second: {fileID: 2100000, guid: d56b418388249464ab34b9b30a749deb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Option Button
+    second: {fileID: 2100000, guid: 3a7bb0a5ab666f4448c09f8421205416, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Primary
+    second: {fileID: 2100000, guid: 68d141c414b3c2f40bb54a2e92e78a11, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vending Machine Secondary
+    second: {fileID: 2100000, guid: bc668cdb3a45888408b385bf1418d8d8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Windows
+    second: {fileID: 2100000, guid: 5c5d5b748055dfb4b97f1ef325c26d81, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood Cutter
+    second: {fileID: 2100000, guid: 6fb9074ddf22a6448a1ea64865d6cf6b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood Cutter 2
+    second: {fileID: 2100000, guid: 743bcf7a47fc2ab449a3de6586bb9813, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood Cutter Saw
+    second: {fileID: 2100000, guid: dc12e50ed05630d439d4f550196758e0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood Cutter Saw 1
+    second: {fileID: 2100000, guid: 72601ecddac82a349a70ae3180e331bb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood Cutter Saw 2
+    second: {fileID: 2100000, guid: bff5ab32f562d774299529fbf15c02e9, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
