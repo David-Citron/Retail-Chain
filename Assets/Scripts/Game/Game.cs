@@ -5,7 +5,6 @@ public class Game : MonoBehaviour
 {
 
     private static Game instance;
-    private GameState gameState;
 
     void Start()
     {
@@ -16,20 +15,6 @@ public class Game : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public void setGameState(GameState newState)
-    {
-        if (gameState == newState) return;
-
-        gameState = newState;
-
-        switch(gameState)
-        {
-            case GameState.Ending:
-                NetworkManager.singleton.ServerChangeScene("MainMenu");
-                break;
-        }
     }
 
     public static Optional<Game> Instance() => Optional<Game>.Of(instance);
