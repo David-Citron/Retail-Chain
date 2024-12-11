@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,7 +6,7 @@ public class PlayerPickUpHandler: MonoBehaviour
 {
     private Animator animator;
 
-    private List<GameObject> itemsInRange = new List<GameObject>();
+    [SerializeField] private List<GameObject> itemsInRange = new List<GameObject>();
     [SerializeField] private List<GameObject> itemsInInventory = new List<GameObject>();
 
     private void Start()
@@ -43,29 +44,21 @@ public class PlayerPickUpHandler: MonoBehaviour
         itemsInRange.Remove(other.gameObject);
     }
 
-    private void PickUp (ItemType item)
+    private void PickUp(ItemType item)
     {
+        Debug.Log(item);
         animator.SetBool("holding", true);
-        switch (item)
+
+        for (int i = 0; i < itemsInInventory.Count; i++)
         {
-            case ItemType.Package:
-                for (int i = 0; i < itemsInInventory.Count; i++)
-                {
-                    if (i == 0)itemsInInventory[i].SetActive(true);
-                    else itemsInInventory[i].SetActive(false);
-                }
-                break;
+            if (i == (int) item) itemsInInventory[i].SetActive(true);
+            else itemsInInventory[i].SetActive(false);
         }
     }
 
-    private void PickUp (GameObject itemGameObject)
+    private void PickUp(GameObject itemGameObject)
     {
-        switch(itemGameObject.tag)
-        {
-            case "ItemPackage":
-                PickUp(ItemType.Package);
-                break;
-        }
+        PickUp((ItemType) Enum.Parse(typeof(ItemType), itemGameObject.tag.Replace("Item", "")));
         Destroy(itemGameObject);
     }
 }

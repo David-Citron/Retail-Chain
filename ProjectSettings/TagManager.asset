@@ -9,8 +9,8 @@ TagManager:
   - ItemPaper
   - ItemEmptyBook
   - ItemBook
-  - ItemGlueBarrell
-  - ItemGlueTube
+  - ItemGlueCanister
+  - ItemGlueBarrel
   layers:
   - Default
   - TransparentFX
