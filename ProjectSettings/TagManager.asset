@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - ItemPackage
+  - ItemWood
+  - ItemPaper
+  - ItemEmptyBook
+  - ItemBook
+  - ItemGlueBarrell
+  - ItemGlueTube
   layers:
   - Default
   - TransparentFX

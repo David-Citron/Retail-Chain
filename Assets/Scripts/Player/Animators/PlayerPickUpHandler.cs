@@ -1,71 +1,71 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerPickUpHandler: MonoBehaviour
 {
-    // The point where picked items will be held
-    public Transform holdPoint;
+    private Animator animator;
 
-    // Layer mask for items the player can pick up
-    public LayerMask pickupLayer;
+    private List<GameObject> itemsInRange = new List<GameObject>();
+    [SerializeField] private List<GameObject> itemsInInventory = new List<GameObject>();
 
-    // Current item being held
-    private GameObject heldItem;
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+        itemsInRange.Clear();
+    }
 
-    void FixedUpdate()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (heldItem == null)
+            if (itemsInRange.Count == 0) return;
+            GameObject nearestItem = itemsInRange[0];
+            float nearestItemDistance = Vector3.Distance(transform.position, nearestItem.transform.position);
+            for (int i = 0; i < itemsInRange.Count; i++)
             {
-                // Attempt to pick up an item
-                TryPickupItem();
+                float currentItemDistance = Vector3.Distance(transform.position, itemsInRange[i].transform.position);
+                if (currentItemDistance > nearestItemDistance) break;
+                nearestItemDistance = currentItemDistance;
+                nearestItem = itemsInRange[i];
             }
-            else
-            {
-                // Drop the currently held item
-                DropItem();
-            }
+            PickUp(nearestItem);
         }
     }
 
-    private void TryPickupItem()
+    private void OnTriggerEnter(Collider other)
     {
-        // Raycast to find an item in front of the player
-        Ray ray = new Ray(transform.position, transform.forward);
-        RaycastHit hit;
+        itemsInRange.Add(other.gameObject);
+        // Debug.Log("New item reachable: " + other.gameObject.name);
+    }
 
-        Debug.Log("Called");
+    private void OnTriggerExit(Collider other)
+    {
+        itemsInRange.Remove(other.gameObject);
+    }
 
-        if (Physics.Raycast(ray, out hit, 2f, pickupLayer))
+    private void PickUp (ItemType item)
+    {
+        animator.SetBool("holding", true);
+        switch (item)
         {
-            // Check if the hit object has a rigidbody
-            if (hit.collider.TryGetComponent<Rigidbody>(out Rigidbody rb))
-            {
-                // Set the held item
-                heldItem = hit.collider.gameObject;
-
-                // Disable physics and attach it to the hold point
-                rb.isKinematic = true;
-                heldItem.transform.position = holdPoint.position;
-                heldItem.transform.parent = holdPoint;
-            }
+            case ItemType.Package:
+                for (int i = 0; i < itemsInInventory.Count; i++)
+                {
+                    if (i == 0)itemsInInventory[i].SetActive(true);
+                    else itemsInInventory[i].SetActive(false);
+                }
+                break;
         }
     }
 
-    private void DropItem()
+    private void PickUp (GameObject itemGameObject)
     {
-        if (heldItem != null)
+        switch(itemGameObject.tag)
         {
-            // Detach and re-enable physics
-            Rigidbody rb = heldItem.GetComponent<Rigidbody>();
-            rb.isKinematic = false;
-            heldItem.transform.parent = null;
-
-            // Optional: Add a small force to the item
-            rb.AddForce(transform.forward * 2f, ForceMode.Impulse);
-
-            // Clear the held item
-            heldItem = null;
+            case "ItemPackage":
+                PickUp(ItemType.Package);
+                break;
         }
+        Destroy(itemGameObject);
     }
 }

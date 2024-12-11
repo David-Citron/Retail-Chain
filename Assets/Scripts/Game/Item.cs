@@ -17,3 +17,8 @@ public class Item : MonoBehaviour
         
     }
 }
+
+public enum ItemType
+{
+    Package, Wood, Paper, EmptyBooks, Books, GlueBarrell, GlueTube
+}

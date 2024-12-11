@@ -38,7 +38,7 @@ public class PlayerBank : MonoBehaviour
         int charges = (int) (balance * 0.025m);
 
 
-        if (!RemoveBalance(charges)) Game.Instance().IfPresent(game => game.setGameState(GameState.Ending));
+        //if (!RemoveBalance(charges)) Game.Instance().IfPresent(game => game.setGameState(GameState.Ending));
     }
 
     public int GetBalance() => balance;
