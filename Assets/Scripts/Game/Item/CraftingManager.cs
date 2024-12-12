@@ -17,4 +17,9 @@ public class CraftingManager : MonoBehaviour
     {
         return recipes.FindAll(recipe => recipe.inputs.Contains(itemType));
     }
+
+    public static CraftingRecipe FindRecipe(MachineType machineType, List<ItemType> itemTypes)
+    {
+        return recipes.Find(recipe => recipe.machineType == machineType && recipe.inputs.Equals(itemTypes));
+    }
 }

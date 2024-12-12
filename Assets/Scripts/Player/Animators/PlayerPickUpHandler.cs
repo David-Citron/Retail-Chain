@@ -35,6 +35,7 @@ public class PlayerPickUpHandler: MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (MachineManager.IsGameObjectInMachine(other.gameObject)) return;
         itemsInRange.Add(other.gameObject);
         // Debug.Log("New item reachable: " + other.gameObject.name);
     }

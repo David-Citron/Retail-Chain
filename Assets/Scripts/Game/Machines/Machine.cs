@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
 public abstract class Machine : MonoBehaviour, IMachine
 {
-
     protected MachineType machineType;
-    protected List<ItemType> currentItems = new List<ItemType>();
+    protected List<GameObject> currentItems = new List<GameObject>();
 
     [SerializeField] private GameObject resultPlace;
     [SerializeField] private GameObject[] inputPlaces;
+    [SerializeField] private Animator animator;
 
-    protected bool isReadyToPickUp;
+    protected MachineState machineState = MachineState.Idling;
 
     public Machine(MachineType machineType)
     {
@@ -26,10 +27,15 @@ public abstract class Machine : MonoBehaviour, IMachine
 
     void Update()
     {
-        
     }
 
-    protected void PutItem(GameObject input)
+    protected virtual void PickUp()
+    {
+        if (machineState != MachineState.ReadyToPickUp) return;
+        ChangeMachineState(MachineState.Idling);
+    }
+
+    protected virtual void PutItem(GameObject input)
     {
         if(!IsValid(ValueOf(input)))
         {
@@ -37,7 +43,51 @@ public abstract class Machine : MonoBehaviour, IMachine
             return;
         }
 
+        var craftingRecipe = CraftingManager.FindRecipe(machineType, GetCurrentItems());
+        if(craftingRecipe == null)
+        {
+            //Notify player that this input has no matching recipe.
+            return;
+        }
+
+        StartCoroutine(GetOutPut(craftingRecipe));
         //Place item into the machine.
+    }
+
+    protected IEnumerator GetOutPut(CraftingRecipe recipe)
+    {
+        ChangeMachineState(MachineState.Working);
+        yield return new WaitForSecondsRealtime(recipe.time);
+        var output = GetPrefab(recipe.output);
+        output.transform.position = resultPlace.transform.position;
+        ChangeMachineState(MachineState.ReadyToPickUp);
+    }
+
+
+    protected void ChangeMachineState(MachineState newState)
+    {
+        if (machineState == newState) return;
+        machineState = newState;
+
+        switch(machineState)
+        {
+            case MachineState.Working:
+                //Start animation
+                break;
+            case MachineState.ReadyToPickUp:
+                //Stop animation, there should be also some sparkles as a finish effect?
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Gets the prefab item based on the ItemType.
+    /// </summary>
+    /// <param name="type">The ItemType</param>
+    /// <returns>New gameobject</returns>
+    protected virtual GameObject GetPrefab(ItemType type)
+    {
+        return Resources.Load<GameObject>("Prefabs/" + type);
     }
 
     protected bool IsValid(ItemType input)
@@ -61,14 +111,22 @@ public abstract class Machine : MonoBehaviour, IMachine
         return true;
     }
 
+    public List<GameObject> GetCurrentGameObjects()
+    {
+        return currentItems;
+    }
+
+    protected List<ItemType> GetCurrentItems()
+    {
+        List<ItemType> list = new List<ItemType>();
+
+        GetCurrentGameObjects().ForEach(item => list.Add(ValueOf(item)));
+        return list;
+    }
+
     protected ItemType ValueOf(GameObject gameObject)
     {
         return (ItemType)Enum.Parse(typeof(ItemType), gameObject.tag.Replace("Item", ""));
-    }
-
-    public List<ItemType> GetCurrentItems()
-    {
-        return currentItems;
     }
 
     public MachineType GetMachineType()
@@ -81,13 +139,20 @@ public abstract class Machine : MonoBehaviour, IMachine
         return resultPlace;
     }
 
-    public bool IsReadyToPickUp()
+    public MachineState GetMachineState()
     {
-        return isReadyToPickUp;
+        return machineState;
     }
 
     public GameObject[] GetInputPlaces()
     {
         return inputPlaces;
     }
+}
+
+public enum MachineState
+{
+    Idling,
+    Working,
+    ReadyToPickUp,
 }

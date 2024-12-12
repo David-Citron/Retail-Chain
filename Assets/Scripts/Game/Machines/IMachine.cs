@@ -1,17 +1,16 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public interface IMachine
 {
 
+    List<GameObject> GetCurrentGameObjects();
+
     GameObject GetResultPlace();
     GameObject[] GetInputPlaces();
 
     MachineType GetMachineType();
-
-    List<ItemType> GetCurrentItems();
-    bool IsReadyToPickUp();
+    MachineState GetMachineState();
 }
 
 public enum MachineType
