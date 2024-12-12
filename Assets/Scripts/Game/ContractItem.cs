@@ -23,6 +23,7 @@ public class ContractItem
     /// </summary>
     public void ItemSubmitted()
     {
+        quantityRemaining--;
         if (quantityRemaining > 0) return;
         fulfilled = true;
     }
