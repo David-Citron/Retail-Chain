@@ -6,14 +6,16 @@ using UnityEngine;
 
 public abstract class Machine : MonoBehaviour, IMachine
 {
-    protected MachineType machineType;
     protected List<GameObject> currentItems = new List<GameObject>();
+
+    protected MachineType machineType;
+    protected MachineState machineState = MachineState.Idling;
 
     [SerializeField] private GameObject resultPlace;
     [SerializeField] private GameObject[] inputPlaces;
     [SerializeField] private Animator animator;
 
-    protected MachineState machineState = MachineState.Idling;
+    private int seconds;
 
     public Machine(MachineType machineType)
     {
@@ -49,7 +51,6 @@ public abstract class Machine : MonoBehaviour, IMachine
             //Notify player that this input has no matching recipe.
             return;
         }
-
         StartCoroutine(GetOutPut(craftingRecipe));
         //Place item into the machine.
     }
