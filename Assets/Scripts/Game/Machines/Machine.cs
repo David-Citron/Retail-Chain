@@ -15,7 +15,6 @@ public abstract class Machine : MonoBehaviour, IMachine
     [SerializeField] private GameObject[] inputPlaces;
     [SerializeField] private Animator animator;
 
-    private int seconds;
 
     public Machine(MachineType machineType)
     {
@@ -29,6 +28,7 @@ public abstract class Machine : MonoBehaviour, IMachine
 
     void Update()
     {
+        if (!Input.GetKeyDown(KeyCode.Space)) return;
     }
 
     protected virtual void PickUp()
@@ -154,6 +154,7 @@ public abstract class Machine : MonoBehaviour, IMachine
 public enum MachineState
 {
     Idling,
+    ReadyToWork,
     Working,
     ReadyToPickUp,
 }
