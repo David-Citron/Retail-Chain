@@ -7,9 +7,4 @@ public class CutterMachine : Machine
     {
 
     }
-
-    void Update()
-    {
-
-    }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -11,10 +10,12 @@ public abstract class Machine : MonoBehaviour, IMachine
     protected MachineType machineType;
     protected MachineState machineState = MachineState.Idling;
 
+    private ActionTimer actionTimer;
+    protected CraftingRecipe currentRecipe;
+
     [SerializeField] private GameObject resultPlace;
     [SerializeField] private GameObject[] inputPlaces;
     [SerializeField] private Animator animator;
-
 
     public Machine(MachineType machineType)
     {
@@ -23,17 +24,31 @@ public abstract class Machine : MonoBehaviour, IMachine
 
     void Start()
     {
-        
     }
 
-    void Update()
+    protected void Update()
     {
-        if (!Input.GetKeyDown(KeyCode.Space)) return;
+        //if (machineState != MachineState.Ready || !Input.GetKeyDown(KeyCode.Space) || actionTimer == null || currentRecipe == null) return;
+        if (!Input.GetKeyDown(KeyCode.Space) || actionTimer != null) return;
+
+        Debug.Log("Started.");
+        actionTimer = new ActionTimer(() => Input.GetKey(KeyCode.Space), () => {
+            ChangeMachineState(MachineState.Done);
+            Debug.Log("When done.");
+        },
+        () => {
+            actionTimer = null;
+            ChangeMachineState(MachineState.Ready);
+            Debug.Log("Failed.");
+        }, 10, 1).Run();
+
+        // var output = GetPrefab(currentRecipe.output);
+        // output.transform.position = resultPlace.transform.position;
     }
 
     protected virtual void PickUp()
     {
-        if (machineState != MachineState.ReadyToPickUp) return;
+        if (machineState != MachineState.Done) return;
         ChangeMachineState(MachineState.Idling);
     }
 
@@ -51,19 +66,10 @@ public abstract class Machine : MonoBehaviour, IMachine
             //Notify player that this input has no matching recipe.
             return;
         }
-        StartCoroutine(GetOutPut(craftingRecipe));
-        //Place item into the machine.
-    }
 
-    protected IEnumerator GetOutPut(CraftingRecipe recipe)
-    {
-        ChangeMachineState(MachineState.Working);
-        yield return new WaitForSecondsRealtime(recipe.time);
-        var output = GetPrefab(recipe.output);
-        output.transform.position = resultPlace.transform.position;
-        ChangeMachineState(MachineState.ReadyToPickUp);
+        currentRecipe = craftingRecipe;
+        ChangeMachineState(MachineState.Ready);
     }
-
 
     protected void ChangeMachineState(MachineState newState)
     {
@@ -72,10 +78,17 @@ public abstract class Machine : MonoBehaviour, IMachine
 
         switch(machineState)
         {
+            case MachineState.Ready:
+                //Show player that he can press "space" to create the result
+                break;
             case MachineState.Working:
                 //Start animation
                 break;
-            case MachineState.ReadyToPickUp:
+            case MachineState.Done:
+                currentRecipe = null;
+                actionTimer = null;
+
+                Debug.Log("Done.");
                 //Stop animation, there should be also some sparkles as a finish effect?
                 break;
         }
@@ -153,8 +166,8 @@ public abstract class Machine : MonoBehaviour, IMachine
 
 public enum MachineState
 {
-    Idling,
-    ReadyToWork,
-    Working,
-    ReadyToPickUp,
+    Idling, //No items inserted or just one of them
+    Ready, //Machine is ready to start the process
+    Working, //Working state
+    Done, //When the item is done - ready to pick up
 }

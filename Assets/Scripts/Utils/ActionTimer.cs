@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class ActionTimer : MonoBehaviour
+public class ActionTimer
 {
 
     private Func<bool> predicate;
@@ -32,7 +32,13 @@ public class ActionTimer : MonoBehaviour
     }
 
 
-    public IEnumerator Run()
+    public ActionTimer Run()
+    {
+        PlayerManager.instance.StartCoroutine(RunAction());
+        return this;
+    }
+
+    private IEnumerator RunAction()
     {
         while (passedTime < totalTime)
         {
