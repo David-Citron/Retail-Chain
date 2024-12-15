@@ -14,15 +14,20 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     private Vector3 movementInput;
 
+    private Vector3 forward, right;
+    private Vector3 moveDirection;
+    private float horizontal, vertical;
+
     private bool walking;
-
-
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
 
         rb.freezeRotation = true;
+
+        forward = transform.forward;
+        right = transform.right;
 
         //Rotate player 90? on Y axis to face correct direction
         for (int i = 0; i < transform.childCount; i++)
@@ -32,6 +37,67 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        horizontal = Input.GetAxis("Horizontal");
+        vertical = Input.GetAxis("Vertical");
+
+        RotatePlayer();
+    }
+
+    void FixedUpdate()
+    {
+        if (walking && horizontal == 0 && vertical == 0)
+        {
+            animator.SetBool("walking", false);
+            walking = false;
+            return;
+        }
+        else if (!walking && (horizontal != 0 || vertical != 0))
+        {
+            animator.SetBool("walking", true);
+            walking = true;
+        }
+
+        MovePlayer();
+    }
+
+    private void MovePlayer()
+    {
+        moveDirection = forward * vertical + right * horizontal;
+        rb.AddForce(moveDirection.normalized * speed * 10f, ForceMode.Force);
+    }
+
+    private void RotatePlayer()
+    {
+        movementInput = new Vector3(horizontal, 0f, vertical).normalized;
+
+        if (movementInput.magnitude >= 0.1f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(movementInput);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+    }
+
+    private Vector3 GetCameraRelativeDirection(float horizontal, float vertical)
+    {
+        // Get the camera's forward and right vectors
+        Vector3 cameraForward = Camera.main.transform.forward;
+        Vector3 cameraRight = Camera.main.transform.right;
+
+        // Flatten the y-component to prevent vertical movement
+        cameraForward.y = 0f;
+        cameraRight.y = 0f;
+
+        // Normalize the directions
+        cameraForward.Normalize();
+        cameraRight.Normalize();
+
+        // Calculate movement direction relative to the camera
+        return (cameraForward * vertical + cameraRight * horizontal);
+    }
+
+    /*
     void Update()
     {
         float horizontal = Input.GetAxis("Horizontal");
@@ -71,13 +137,13 @@ public class PlayerMovement : MonoBehaviour
 
             if (!IsObstructed(rb.position, nextPosition, out hitObject))
             {
-                rb.MovePosition(nextPosition);
+                rb.AddForce(nextPosition, ForceMode.Force);
                 return;
-            } 
+            }
 
             if (hitObject == null)
             {
-                rb.MovePosition(nextPosition);
+                rb.AddForce(nextPosition, ForceMode.Force);
                 return;
             }
 
@@ -89,7 +155,7 @@ public class PlayerMovement : MonoBehaviour
                 return;
             }
 
-            rb.MovePosition(nextPosition);
+            rb.AddForce(nextPosition, ForceMode.Force);
         } else currentSpeed = 0f; // If no input, reset speed
     }
 
@@ -121,5 +187,5 @@ public class PlayerMovement : MonoBehaviour
         }
 
         return isBlocked;
-    }
+    }*/
 }
