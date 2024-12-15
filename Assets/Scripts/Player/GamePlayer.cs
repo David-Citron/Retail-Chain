@@ -108,12 +108,14 @@ public class GamePlayer : NetworkBehaviour
 
     public void OnReadyStatusChanged(bool oldValue, bool newValue)
     {
+        if (isServer && isLocalPlayer) return;
         UpdateReadyStatus();
-        Debug.LogError("Called " + connectionId);
+        Debug.LogError("HOOK Called connId: " + connectionId);
     }
 
     public void ChangeReadyStatus()
     {
+        Debug.LogError("ChangeReadyStatus Called connId: " + connectionId);
         isReady = !isReady;
         UpdateReadyStatus();
     }
