@@ -109,6 +109,7 @@ public class GamePlayer : NetworkBehaviour
     public void OnReadyStatusChanged(bool oldValue, bool newValue)
     {
         UpdateReadyStatus();
+        Debug.LogError("Called " + connectionId);
     }
 
     public void ChangeReadyStatus()
@@ -123,10 +124,11 @@ public class GamePlayer : NetworkBehaviour
 
         if (!isServer) return;
         if (!isReady) return;
-        
+
         var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this).GetValueOrDefault();
         if (oppositePlayer == null || !oppositePlayer.isReady) return;
 
+        Debug.Log("Method trigerred - loading");
         NetworkManager.singleton.ServerChangeScene("Level1");
 
         if (!isLocalPlayer) oppositePlayer.StartGame();
@@ -148,7 +150,21 @@ public class GamePlayer : NetworkBehaviour
 
     public void StartGame()
     {
-        bankAccount = new PlayerBank();
+        GetComponentInChildren<Canvas>().gameObject.SetActive(false);
+
+        if(isLocalPlayer)
+        {
+            bankAccount = new PlayerBank();
+
+            player.AddComponent<PlayerPickUpHandler>();
+            player.AddComponent<PlayerMovement>();
+            player.transform.eulerAngles = new Vector3(0, 0, 0);
+            player.transform.position = Vector3.zero;
+        } else
+        {
+            player.gameObject.SetActive(false);
+        }
+
         Debug.Log("GAME STARTED WOHO");
     }
 

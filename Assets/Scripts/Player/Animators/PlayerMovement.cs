@@ -3,9 +3,9 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    public float speed = 1f;
-    public float rotationSpeed = 1f;
-    public float accelerationTime = 0.5f;
+    public float speed = 4f;
+    public float rotationSpeed = 8f;
+    public float accelerationTime = 6.5f;
     private float currentSpeed = 0f;
 
     public GameObject currentPlatform;
