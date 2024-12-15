@@ -28,7 +28,7 @@ public abstract class Machine : MonoBehaviour, IMachine
 
     protected void Update()
     {
-        //if (machineState != MachineState.Ready || !Input.GetKeyDown(KeyCode.Space) || actionTimer == null || currentRecipe == null) return;
+        //if (machineState != MachineState.Ready || !Input.GetKeyDown(KeyCode.Space) || actionTimer != null || currentRecipe == null) return;
         if (!Input.GetKeyDown(KeyCode.Space) || actionTimer != null) return;
 
         Debug.Log("Started.");
@@ -56,7 +56,7 @@ public abstract class Machine : MonoBehaviour, IMachine
     {
         if(!IsValid(ValueOf(input)))
         {
-            //Notify player that this input has no matching recipe.
+            //Notify player that this input has no matching recipe for this machine.
             return;
         }
 

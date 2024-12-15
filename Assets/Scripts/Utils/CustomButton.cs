@@ -33,6 +33,11 @@ public class CustomButton : MonoBehaviour,
         shadow.effectColor = shadowColor;
     }
 
+    private void OnDisable()
+    {
+        ChangeColor(normalColor);
+    }
+
     protected enum SelectionState
     {
         Normal, Highlighted
