@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class PlayerPickUpHandler: MonoBehaviour
 {
+
+    [SerializeField] private GameObject playerHands;
+    private GameObject holdingItem;
+
     private Animator animator;
 
-    [SerializeField] private List<GameObject> itemsInRange = new List<GameObject>();
-    [SerializeField] private List<GameObject> itemsInInventory = new List<GameObject>();
+    private List<GameObject> itemsInRange = new List<GameObject>();
 
     private void Start()
     {
@@ -29,7 +32,11 @@ public class PlayerPickUpHandler: MonoBehaviour
                 nearestItemDistance = currentItemDistance;
                 nearestItem = itemsInRange[i];
             }
+
             PickUp(nearestItem);
+        } else if(Input.GetKeyDown(KeyCode.Q))
+        {
+            DropHoldingItem();
         }
     }
 
@@ -37,7 +44,6 @@ public class PlayerPickUpHandler: MonoBehaviour
     {
         if (MachineManager.IsGameObjectInMachine(other.gameObject)) return;
         itemsInRange.Add(other.gameObject);
-        // Debug.Log("New item reachable: " + other.gameObject.name);
     }
 
     private void OnTriggerExit(Collider other)
@@ -45,21 +51,22 @@ public class PlayerPickUpHandler: MonoBehaviour
         itemsInRange.Remove(other.gameObject);
     }
 
-    private void PickUp(ItemType item)
-    {
-        Debug.Log(item);
-        animator.SetBool("holding", true);
-
-        for (int i = 0; i < itemsInInventory.Count; i++)
-        {
-            if (i == (int) item) itemsInInventory[i].SetActive(true);
-            else itemsInInventory[i].SetActive(false);
-        }
-    }
-
     private void PickUp(GameObject itemGameObject)
     {
-        PickUp((ItemType) Enum.Parse(typeof(ItemType), itemGameObject.tag.Replace("Item", "")));
-        Destroy(itemGameObject);
+        if (holdingItem != null) return;
+
+        animator.SetBool("holding", true);
+        itemGameObject.transform.SetParent(playerHands.transform);
+        itemGameObject.transform.localPosition = Vector3.zero;
+        holdingItem = itemGameObject;
+    }
+
+    private void DropHoldingItem()
+    {
+        if (holdingItem == null) return;
+
+        animator.SetBool("holding", false);
+        holdingItem.transform.SetParent(playerHands.transform);
+        holdingItem = null;
     }
 }
