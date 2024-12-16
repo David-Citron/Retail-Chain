@@ -3,7 +3,272 @@ guid: f6c72b72301bd3749b67d422544279a3
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BottleGreen1
+    second: {fileID: 2100000, guid: 1dbc14314ac66c84d871b248cbf9946a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BottleGreen2
+    second: {fileID: 2100000, guid: 9dbd20217b8d7404aa24febc9a67c7d7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BottleRed1
+    second: {fileID: 2100000, guid: 1fa0f7d054bc1594abf7fa53827bf318, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BottleRed2
+    second: {fileID: 2100000, guid: 4635a5b09f8ce6d41bb707e755845ff5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CoffeeCup1
+    second: {fileID: 2100000, guid: 064957d8b74ac2f418dbb3e175f4f171, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CoffeeCup2
+    second: {fileID: 2100000, guid: d66cb0dd1f1144d4682d98cb0c2b7404, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ExitSignBackground
+    second: {fileID: 2100000, guid: 448549afe8877e848b6de3ee29061357, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyDoor1
+    second: {fileID: 2100000, guid: 4afa517ce17524641bf6b75e970f851a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyDoor2
+    second: {fileID: 2100000, guid: bd5e73d0583de9e4eb12ec8f013c24df, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyDoorHandle1
+    second: {fileID: 2100000, guid: bbbe107b6b81c8a4ca0158cd9f841192, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyDoorHandle2
+    second: {fileID: 2100000, guid: 6dc197cb8a6aec9459219259bc38ad1e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyExitSign
+    second: {fileID: 2100000, guid: e2b84e958d9740949a1aa01198106ce6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyFloor1
+    second: {fileID: 2100000, guid: cdf9610471d86c840b8388295e842f98, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyFloor2
+    second: {fileID: 2100000, guid: 016b082bf1408c94c8354b0c29afa470, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyFlowerLeaves
+    second: {fileID: 2100000, guid: a2bc3869716e54948b53f7c01f36ddcf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyFlowerPot
+    second: {fileID: 2100000, guid: 8f61506be13aa5d4f84b84bcf75a773f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyFlowerPotDirt
+    second: {fileID: 2100000, guid: 4cb5c9e9b7af3f347b7604ab984f0fb6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyFlowerTrunk
+    second: {fileID: 2100000, guid: f781eeeadc8d88d40ba055802014a7a8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyRoof
+    second: {fileID: 2100000, guid: 334526758080e6f419929242ad21d888, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyWalls1
+    second: {fileID: 2100000, guid: 0c3376b8276412f41ac957bb8eef1cf2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyWalls2
+    second: {fileID: 2100000, guid: a0a4f426faf45c8418c867a5b2ffb142, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LobbyWalls3
+    second: {fileID: 2100000, guid: 9f40691aff879e0428734fb36b752797, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PlayerBody2
+    second: {fileID: 2100000, guid: 5d9d8ec5c240b3c45a11d01bb6e9671d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PlayerHands
+    second: {fileID: 2100000, guid: 61bd98fa00dbc734cb940b2db99ebd94, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PlayerHead
+    second: {fileID: 2100000, guid: 18ee8c7066466b24096fb52e938558a9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Screen1
+    second: {fileID: 2100000, guid: 47e41c98a0e6900468ea27c26822f3d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Screen2
+    second: {fileID: 2100000, guid: d5bf2a24b0df4e94fa34bf4cac982140, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sunglassess.001
+    second: {fileID: 2100000, guid: 0f5b7916dd1ee6045b8a3e4066044fd1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TrashBin1
+    second: {fileID: 2100000, guid: 03cd8275a6061ca4a878234d3d6e34be, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TrashBin2
+    second: {fileID: 2100000, guid: d690ea201f858ab498ffc777cd7e6db7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TrashBinPile
+    second: {fileID: 2100000, guid: 8fa13fef3104c3c489dd1c62a696482b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachine1
+    second: {fileID: 2100000, guid: 890260f083bd5214f9bc1f2df8f6146b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachine2
+    second: {fileID: 2100000, guid: 11dd3aa6bcc077d4e9d3760b3bade155, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineCreditCardTerminal1
+    second: {fileID: 2100000, guid: c49d3b07832ca7342952509cff517ef1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineCreditCardTerminal2
+    second: {fileID: 2100000, guid: 8a338ea399ae300459988ad3ed8a274b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineDispenser
+    second: {fileID: 2100000, guid: 63a9bd8c19e2c654784e38835d157388, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineGlow
+    second: {fileID: 2100000, guid: c8184bcadedcba54ea8815c32cdfb2eb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineMoneyInput
+    second: {fileID: 2100000, guid: ae2e1d474557c9b489d625ade2d79b55, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineMoneyInputHole
+    second: {fileID: 2100000, guid: 6e7c915e7a452dc41b9413016bff0e69, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineMoneyInputSecondary
+    second: {fileID: 2100000, guid: 71269bd9952a0674fa152150aa3c30bd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineOption1
+    second: {fileID: 2100000, guid: 3cf5d2ad63074c144a8dfa12f6141cbe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineOption2
+    second: {fileID: 2100000, guid: 1f5068d0ae3695e458a26ec0a3e413bc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineOption3
+    second: {fileID: 2100000, guid: 9a8ac186c1476e74f9eb666a50f2b7c9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineOption4
+    second: {fileID: 2100000, guid: e325f2757d8822e4f844eb541ec7531d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineOption5
+    second: {fileID: 2100000, guid: ae0090a1419a8804eb76fcf163cd8842, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineOption6
+    second: {fileID: 2100000, guid: 44ceafeecaef05d4f847f83b55c7ea7e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineOption7
+    second: {fileID: 2100000, guid: 6bea6283b7be94c418e4a0eea54457fd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineOption8
+    second: {fileID: 2100000, guid: f07c2bcd421e62f4b93743411d3b9298, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: VendingMachineOptionButton
+    second: {fileID: 2100000, guid: fbf63fc81337f234489456bfb93bad3a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WetFloorSign1
+    second: {fileID: 2100000, guid: 0a76b0a670cadf9488f263c7eab6ad43, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WetFloorSign2
+    second: {fileID: 2100000, guid: def8902ea40bc5a4c96a595e402f1c28, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WetFloorSignIcon
+    second: {fileID: 2100000, guid: 844cfe462a5d3ed41a43fdaf1dae8599, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Windows
+    second: {fileID: 2100000, guid: 3e617ea5c858cf64baf0865e0a26c700, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -1,14 +1,15 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LobbyAnimationHandler : MonoBehaviour
 {
 
-    [SerializeField] private Animator televisionAnimator;
+    [SerializeField] private List<Animator> animators;
 
     void Start()
     {
-        StartCoroutine(PlayTelevisionEffects());
+        StartCoroutine(PlayEffects());
     }
 
     // Update is called once per frame
@@ -18,10 +19,10 @@ public class LobbyAnimationHandler : MonoBehaviour
     }
 
 
-    private IEnumerator PlayTelevisionEffects()
+    private IEnumerator PlayEffects()
     {
         yield return new WaitForSecondsRealtime(Random.Range(10, 20));
-        televisionAnimator.SetTrigger("effect");
-        StartCoroutine(PlayTelevisionEffects());
+        animators.ForEach(animator => animator.SetTrigger("effect"));
+        StartCoroutine(PlayEffects());
     }
 }
