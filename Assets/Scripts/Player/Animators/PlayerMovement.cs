@@ -3,6 +3,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
+    public static bool freeze = false;
+
     public float speed = 4f;
     public float rotationSpeed = 8f;
 
@@ -15,7 +17,6 @@ public class PlayerMovement : MonoBehaviour
     private float horizontal, vertical;
 
     private bool walking;
-
 
     public Vector3 lastWallNormal;
 
@@ -39,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (freeze) return;
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
 
@@ -72,10 +74,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
-        //         moveDirection = forward * vertical + right * horizontal;
-        //         rb.AddForce(moveDirection.normalized * speed, ForceMode.VelocityChange);
-
-        // Base movement input
+        if (freeze) return;
         Vector3 inputDirection = new Vector3(horizontal, 0f, vertical).normalized;
 
         // If hitting a wall, project movement along the wall's plane
@@ -90,6 +89,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void RotatePlayer()
     {
+        if (freeze) return;
         movementInput = new Vector3(horizontal, 0f, vertical).normalized;
 
         if (movementInput.magnitude >= 0.1f)

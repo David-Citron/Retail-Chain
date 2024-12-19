@@ -11,6 +11,7 @@ TagManager:
   - ItemBook
   - ItemGlueCanister
   - ItemGlueBarrel
+  - ItemGlueTube
   layers:
   - Default
   - TransparentFX

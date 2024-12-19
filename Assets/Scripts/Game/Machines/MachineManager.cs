@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MachineManager : MonoBehaviour
@@ -21,6 +22,15 @@ public class MachineManager : MonoBehaviour
         
     }
 
+    public static bool IsAnyWorking()
+    {
+        bool result  = false;
+        Instance().IfPresent(machineManager =>
+        {
+            result = machineManager.machines.Any(machine => machine.GetMachineState() == MachineState.Working);
+        });
+        return result;
+    }
 
     public static bool IsGameObjectInMachine(GameObject gameObject)
     {

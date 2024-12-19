@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerAnimationHandler : MonoBehaviour
+public class LobbyAnimator : MonoBehaviour
 {
 
     [SerializeField] private Animator animator;

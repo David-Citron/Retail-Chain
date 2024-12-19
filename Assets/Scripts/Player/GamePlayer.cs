@@ -140,7 +140,7 @@ public class GamePlayer : NetworkBehaviour
     private void UpdateReadyIcon()
     {
         ready.SetActive(isReady);
-        if(isReady) GetComponent<PlayerAnimationHandler>().playReadyAnimation();
+        if(isReady) GetComponent<LobbyAnimator>().playReadyAnimation();
 
         if (!isLocalPlayer) return;
         LayoutManager.Instance().IfPresent(layoutManager =>
@@ -158,7 +158,7 @@ public class GamePlayer : NetworkBehaviour
         {
             bankAccount = new PlayerBank();
 
-            player.AddComponent<PlayerPickUpHandler>();
+            player.AddComponent<PlayerPickUp>();
             player.AddComponent<PlayerMovement>();
             player.transform.eulerAngles = new Vector3(0, 0, 0);
             player.transform.position = Vector3.zero;

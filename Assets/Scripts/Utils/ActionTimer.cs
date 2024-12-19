@@ -7,24 +7,24 @@ public class ActionTimer
 
     private Func<bool> predicate;
 
-    private int totalTime;
-    private int passedTime;
+    private float totalTime;
+    private float passedTime;
 
-    private readonly int howOften;
+    private readonly float howOften;
 
     private readonly Action whenDone;
     private readonly Action onFail;
     private bool ended;
 
 
-    public ActionTimer(Action whenDone, int totalTime, int howOften) : this(null, whenDone, totalTime, howOften)
+    public ActionTimer(Action whenDone, float totalTime, float howOften) : this(null, whenDone, totalTime, howOften)
     {}
 
-    public ActionTimer(Func<bool> predicate, Action whenDone, int totalTime, int howOften) :
+    public ActionTimer(Func<bool> predicate, Action whenDone, float totalTime, float howOften) :
         this(predicate, whenDone, null, totalTime, howOften)
     {}
 
-    public ActionTimer(Func<bool> predicate, Action whenDone, Action onFail, int totalTime, int howOften)
+    public ActionTimer(Func<bool> predicate, Action whenDone, Action onFail, float totalTime, float howOften)
     {
         this.predicate = predicate;
         this.totalTime = totalTime;

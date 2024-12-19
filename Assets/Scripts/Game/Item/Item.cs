@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Item : MonoBehaviour
@@ -16,15 +17,23 @@ public class Item : MonoBehaviour
     {
         
     }
+
+
+    public static Optional<ItemType> GetHoldingType(GameObject gameObject)
+    {
+        if (Enum.TryParse(gameObject == null ? "" : gameObject.tag.Replace("Item", ""), out ItemType itemType)) return Optional<ItemType>.Of(itemType);
+        else return Optional<ItemType>.Empty();
+    }
 }
 
 public enum ItemType
 {
+    None, // Default value.
     Package,
     GlueCanister,
     Wood,
     Paper,
     EmptyBooks,
     Books,
-    GlueBarrell,
+    GlueBarrel,
 }
