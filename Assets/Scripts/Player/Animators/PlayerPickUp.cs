@@ -62,6 +62,7 @@ public class PlayerPickUp : MonoBehaviour
     {
         StartCoroutine(PickUpItem(item));
     }
+
     private IEnumerator PickUpItem(GameObject itemGameObject)
     {
         if (holdingItem != null) yield break;
@@ -126,6 +127,7 @@ public class PlayerPickUp : MonoBehaviour
     }
 
     public static Optional<PlayerPickUp> Instance() => Optional<PlayerPickUp>.Of(instance);
+   
     public static Optional<Animator> PlayerAnimator()
     {
         Animator animator = null;

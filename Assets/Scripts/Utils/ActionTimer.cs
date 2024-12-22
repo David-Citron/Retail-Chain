@@ -8,28 +8,37 @@ public class ActionTimer
     private Func<bool> predicate;
 
     private float totalTime;
-    private float passedTime;
+    public float passedTime;
 
     private readonly float howOften;
 
-    private readonly Action whenDone;
+    private readonly Action onUpdate;
     private readonly Action onFail;
+    private readonly Action onComplete;
     private bool ended;
 
+    public ActionTimer(Action onUpdate, Action onComplete, float totalTime, float howOften) : this(null, onUpdate, onComplete, null, totalTime, howOften)
+    { }
 
-    public ActionTimer(Action whenDone, float totalTime, float howOften) : this(null, whenDone, totalTime, howOften)
+
+    public ActionTimer(Action onComplete, float totalTime, float howOften) : this(null, onComplete, totalTime, howOften)
     {}
 
-    public ActionTimer(Func<bool> predicate, Action whenDone, float totalTime, float howOften) :
-        this(predicate, whenDone, null, totalTime, howOften)
+    public ActionTimer(Func<bool> predicate, Action onComplete, float totalTime, float howOften) :
+    this(predicate, null, onComplete, null, totalTime, howOften)
+    { }
+
+    public ActionTimer(Func<bool> predicate, Action onComplete, Action onFail, float totalTime, float howOften) :
+        this(predicate, null, onComplete, onFail, totalTime, howOften)
     {}
 
-    public ActionTimer(Func<bool> predicate, Action whenDone, Action onFail, float totalTime, float howOften)
+    public ActionTimer(Func<bool> predicate, Action onUpdate, Action onComplete, Action onFail, float totalTime, float howOften)
     {
         this.predicate = predicate;
         this.totalTime = totalTime;
         this.howOften = howOften;
-        this.whenDone = whenDone;
+        this.onUpdate = onUpdate;
+        this.onComplete = onComplete;
         this.onFail = onFail;
     }
 
@@ -60,9 +69,10 @@ public class ActionTimer
 
             yield return new WaitForSecondsRealtime(howOften);
             passedTime += howOften;
+            onUpdate?.Invoke();
         }
-
+        
         ended = true;
-        whenDone?.Invoke();
+        onComplete?.Invoke();
     }
 }

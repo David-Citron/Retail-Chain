@@ -1,7 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public abstract class Machine : MonoBehaviour, IMachine
 {
@@ -41,9 +41,8 @@ public abstract class Machine : MonoBehaviour, IMachine
 
         PickUp(); // Check if the player wants to pickup the input or the result.
 
-        if (!Input.GetKeyDown(KeyCode.Space)) return;
-
-
+        if (!Input.GetKeyDown(KeyCode.Space))   return;
+        
         if(machineState != MachineState.Ready && currentItems.Count < inputPlaces.Length)
         {
             PlayerPickUp.Instance().IfPresent(handler =>
@@ -58,17 +57,22 @@ public abstract class Machine : MonoBehaviour, IMachine
         if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", 1)) return;
 
         ChangeMachineState(MachineState.Working);
-        actionTimer = new ActionTimer(() => Input.GetKey(KeyCode.Space), () => {
-            ChangeMachineState(MachineState.Done);
-        }, () => {
-            actionTimer = null;
-            ChangeMachineState(MachineState.Ready);
+
+        actionTimer = new ActionTimer(() => Input.GetKey(KeyCode.Space),
+            () => ChangeMachineState(MachineState.Done),
+            () => {
+                actionTimer = null;
+                ChangeMachineState(MachineState.Ready);
         }, currentRecipe.time, 1).Run();
+
     }
 
     protected virtual void PickUp()
     {
-        if (!Input.GetKeyDown(KeyCode.E)) return;
+        if (!Input.GetKeyDown(KeyCode.E))
+        {
+            return;
+        }
         
         if (machineState == MachineState.Done && resultItem != null)
         {
@@ -90,8 +94,7 @@ public abstract class Machine : MonoBehaviour, IMachine
         ItemType inputType = Item.GetHoldingType(input).GetValueOrDefault();
         if(!IsValid(inputType))
         {
-            Debug.LogError("invalid item");
-            //Notify player that this input has no matching recipe for this machine.
+            Hint.Create("INVALID ITEM", 3);
             return;
         }
 
@@ -100,18 +103,18 @@ public abstract class Machine : MonoBehaviour, IMachine
         handler.DropHoldingItem();
         currentItems.Add(input);
         PlaceItem(input, true);
-        
-        var craftingRecipe = CraftingManager.FindRecipe(GetMachineType(), GetCurrentItems());
+
+        var craftingRecipe = possibleRecipes.Find(recipe => recipe.machineType == machineType && CraftingManager.ContainsAllItems(recipe, GetCurrentItems()));
         if(craftingRecipe == null)
         {
-            Debug.LogError("no recipe");
-            //Notify player that this input has no matching recipe -- requires another item.
+            Hint.Create("NO RECIPE FOUND", 3);
             return;
         }
 
+        currentRecipe = craftingRecipe;
+
         Debug.LogError("ready");
         //Inform that its ready.
-        currentRecipe = craftingRecipe;
         ChangeMachineState(MachineState.Ready);
     }
 
@@ -126,16 +129,19 @@ public abstract class Machine : MonoBehaviour, IMachine
             PlayerPickUp.PlayerAnimator().IfPresent(animator => animator.SetBool("working", false));
         }
 
+        ShowHints();
+
         switch (machineState)
         {
             case MachineState.Ready:
                 if (currentItems.Count <= 0) ChangeMachineState(MachineState.Idling); // Check if something messed up and there is no items => change state back to Idling
-                //Show player that he can press "space" to create the result
+                CircleTimer.Stop();
                 break;
 
             case MachineState.Working:
                 PlayerPickUp.PlayerAnimator().IfPresent(animator => animator.SetBool("working", true));
                 PlayerMovement.freeze = true;
+                CircleTimer.Start(currentRecipe.time);
                 //Start animation
                 break;
 
@@ -165,19 +171,13 @@ public abstract class Machine : MonoBehaviour, IMachine
         return (GameObject) Instantiate(prefab);
     }
     
-
     protected bool IsValid(ItemType input)
     {
-        if (possibleRecipes.Count == 0)
-        {
-            Debug.LogError("no recipes");
-            return false;
-        }
-
+        if (possibleRecipes.Count == 0)  return false;
+        
         foreach (var recipe in possibleRecipes)
         {
             if (recipe.inputs.Contains(input)) continue;
-            Debug.LogError("here 2");
             return false;
         }
 
@@ -192,8 +192,6 @@ public abstract class Machine : MonoBehaviour, IMachine
                 if (!CraftingManager.ContainsAllItems(recipe, copy)) continue;
                 result = true;
             }
-
-            Debug.LogError("here 1");
             return result;
         }
 
@@ -216,6 +214,7 @@ public abstract class Machine : MonoBehaviour, IMachine
     {
         if (!other.CompareTag("Player")) return;
         isWithinTheRange = true;
+        ShowHints();
     }
 
     private void OnTriggerExit(Collider other)
@@ -229,6 +228,37 @@ public abstract class Machine : MonoBehaviour, IMachine
         List<ItemType> list = new List<ItemType>();
         GetCurrentGameObjects().ForEach(item => Item.GetHoldingType(item).IfPresent(itemType => list.Add(itemType)));
         return list;
+    }
+
+    protected void ShowHints()
+    {
+        StartCoroutine(ShowIHints());
+    }
+
+    protected virtual IEnumerator ShowIHints()
+    {
+        yield return new WaitForSecondsRealtime(.3f);
+        if(machineState == MachineState.Ready)
+        {
+            Hint.ShowWhile("HOLD " + HintText.GetHintButton(HintButton.SPACE), () => machineState == MachineState.Ready && isWithinTheRange && !Input.GetKey(KeyCode.Space));
+            yield break;
+        }
+
+
+        PlayerPickUp.Instance().IfPresent(handler => {
+            ItemType itemType = Item.GetHoldingType(handler.holdingItem).GetValueOrDefault();
+            if (itemType == ItemType.None)
+            {
+                if(machineState == MachineState.Done) Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => isWithinTheRange && machineState == MachineState.Done);
+                return;
+            }
+
+            if (machineState != MachineState.Idling) return;
+
+            bool anyRecipe = CraftingManager.HasRecipesInMachine(machineType, itemType);
+            if (anyRecipe) Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => itemType != ItemType.None && isWithinTheRange && anyRecipe && machineState == MachineState.Idling);
+            else Hint.ShowWhile("NO RECIPES FOUND", () => itemType != ItemType.None && isWithinTheRange && !anyRecipe && machineState == MachineState.Idling);
+        });
     }
 
     public List<GameObject> GetCurrentGameObjects() => currentItems;
