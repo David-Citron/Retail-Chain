@@ -94,7 +94,7 @@ public abstract class Machine : MonoBehaviour, IMachine
         ItemType inputType = Item.GetHoldingType(input).GetValueOrDefault();
         if(!IsValid(inputType))
         {
-            Hint.Create("INVALID ITEM", 3);
+            Hint.Create("INVALID ITEM", .5f);
             return;
         }
 
@@ -105,11 +105,7 @@ public abstract class Machine : MonoBehaviour, IMachine
         PlaceItem(input, true);
 
         var craftingRecipe = possibleRecipes.Find(recipe => recipe.machineType == machineType && CraftingManager.ContainsAllItems(recipe, GetCurrentItems()));
-        if(craftingRecipe == null)
-        {
-            Hint.Create("NO RECIPE FOUND", 3);
-            return;
-        }
+        if(craftingRecipe == null)  return;
 
         currentRecipe = craftingRecipe;
 
@@ -243,7 +239,8 @@ public abstract class Machine : MonoBehaviour, IMachine
     protected virtual IEnumerator ShowIHints()
     {
         PlayerPickUp.Instance().IfPresent(pickUp => pickUp.currentHint.stop = true);
-        yield return new WaitForSecondsRealtime(.3f);
+        yield return new WaitForSecondsRealtime(.15f);
+
         if(machineState == MachineState.Ready)
         {
             Hint.ShowWhile("HOLD " + HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && isWithinTheRange && !Input.GetKey(KeyCode.Space));
@@ -254,6 +251,7 @@ public abstract class Machine : MonoBehaviour, IMachine
 
         PlayerPickUp.Instance().IfPresent(handler => {
             ItemType itemType = Item.GetHoldingType(handler.holdingItem).GetValueOrDefault();
+
             if (itemType == ItemType.None)
             {
                 if(machineState == MachineState.Done) Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => isWithinTheRange && machineState == MachineState.Done);
@@ -263,6 +261,7 @@ public abstract class Machine : MonoBehaviour, IMachine
             if (machineState != MachineState.Idling) return;
 
             bool anyRecipe = CraftingManager.HasRecipesInMachine(machineType, itemType);
+
             if (anyRecipe) Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => itemType != ItemType.None && isWithinTheRange && anyRecipe && machineState == MachineState.Idling);
             else Hint.ShowWhile("NO RECIPES FOUND", () => itemType != ItemType.None && isWithinTheRange && !anyRecipe && machineState == MachineState.Idling);
         });

@@ -9,7 +9,7 @@ public class CraftingManager : MonoBehaviour
 
     void Awake()
     {
-        recipes.Add(new CraftingRecipe(MachineType.Printer, new List<ItemType>() { ItemType.EmptyBooks }, ItemType.Books, 8));
+        recipes.Add(new CraftingRecipe(MachineType.Printer, new List<ItemType>() { ItemType.EmptyBook }, ItemType.Book, 8));
         recipes.Add(new CraftingRecipe(MachineType.Cutter, new List<ItemType>() { ItemType.Wood}, ItemType.Paper, 7));
     }
 

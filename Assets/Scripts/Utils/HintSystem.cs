@@ -64,8 +64,8 @@ public class HintSystem : MonoBehaviour
                     ResetText(hint);
                     yield break;
                 }
-                yield return new WaitForSecondsRealtime(.2f);
-                passedTime += 0.2f;
+                yield return new WaitForSecondsRealtime(.1f);
+                passedTime += 0.1f;
             }
         }
 

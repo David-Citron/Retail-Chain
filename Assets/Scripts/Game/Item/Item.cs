@@ -33,7 +33,7 @@ public enum ItemType
     GlueCanister,
     Wood,
     Paper,
-    EmptyBooks,
-    Books,
+    EmptyBook,
+    Book,
     GlueBarrel,
 }
