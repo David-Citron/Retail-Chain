@@ -55,7 +55,7 @@ public class PlayerPickUp : MonoBehaviour
         if (holdingItem == null && !Machine.isWithinTheRange)
         {
             if (currentHint != null) currentHint.stop = true;
-            currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => holdingItem == null && itemsInRange.Count > 0);
+            currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => holdingItem == null && itemsInRange.Count > 0 && !Machine.isWithinTheRange);
         }
     }
 
@@ -73,12 +73,13 @@ public class PlayerPickUp : MonoBehaviour
     private IEnumerator PickUpItem(GameObject itemGameObject)
     {
         if (holdingItem != null) yield break;
+        holdingItem = itemGameObject;
+
         animator.SetBool("holding", true);
         if (currentHint != null) currentHint.stop = true;
         yield return new WaitForSecondsRealtime(.3f);
 
-        holdingItem = itemGameObject;
-        if(!Machine.isWithinTheRange) currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null);
+        if(!Machine.isWithinTheRange) currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null && !Machine.isWithinTheRange);
 
         UpdateHandsPosition();
 

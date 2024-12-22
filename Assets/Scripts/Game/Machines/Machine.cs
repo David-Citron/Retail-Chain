@@ -69,16 +69,13 @@ public abstract class Machine : MonoBehaviour, IMachine
 
     protected virtual void PickUp()
     {
-        if (!Input.GetKeyDown(KeyCode.E))
-        {
-            return;
-        }
+        if (!Input.GetKeyDown(KeyCode.E))return;
         
         if (machineState == MachineState.Done && resultItem != null)
         {
-            ChangeMachineState(MachineState.Idling);
             PlayerPickUp.Instance().IfPresent(handler => handler.PickUp(resultItem));
             resultItem = null;
+            ChangeMachineState(MachineState.Idling);
             return;
         }
 
@@ -91,14 +88,10 @@ public abstract class Machine : MonoBehaviour, IMachine
 
     protected virtual void PutItem(GameObject input, PlayerPickUp handler)
     {
-        ItemType inputType = Item.GetHoldingType(input).GetValueOrDefault();
-        if(!IsValid(inputType))
-        {
-            Hint.Create("INVALID ITEM", .5f);
-            return;
-        }
-
         if (CooldownHandler.IsUnderCreateIfNot(machineType + "_putItem", 1)) return;
+
+        ItemType inputType = Item.GetHoldingType(input).GetValueOrDefault();
+        if(!IsValid(inputType))  return;
 
         handler.DropHoldingItem();
         currentItems.Add(input);
@@ -109,7 +102,6 @@ public abstract class Machine : MonoBehaviour, IMachine
 
         currentRecipe = craftingRecipe;
 
-        Debug.LogError("ready");
         //Inform that its ready.
         ChangeMachineState(MachineState.Ready);
     }
@@ -124,8 +116,6 @@ public abstract class Machine : MonoBehaviour, IMachine
             PlayerMovement.freeze = false;
             PlayerPickUp.PlayerAnimator().IfPresent(animator => animator.SetBool("working", false));
         }
-
-        ShowHints();
 
         switch (machineState)
         {
@@ -150,10 +140,11 @@ public abstract class Machine : MonoBehaviour, IMachine
                 actionTimer = null;
                 currentItems.Clear();
 
-                Debug.Log("Done.");
                 //Stop animation, there should be also some sparkles as a finish effect?
                 break;
         }
+
+        ShowHints();
     }
 
     /// <summary>
@@ -233,28 +224,19 @@ public abstract class Machine : MonoBehaviour, IMachine
 
     protected void ShowHints()
     {
-        StartCoroutine(ShowIHints());
-    }
-
-    protected virtual IEnumerator ShowIHints()
-    {
-        PlayerPickUp.Instance().IfPresent(pickUp => pickUp.currentHint.stop = true);
-        yield return new WaitForSecondsRealtime(.15f);
-
-        if(machineState == MachineState.Ready)
+        if (machineState == MachineState.Ready)
         {
-            Hint.ShowWhile("HOLD " + HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && isWithinTheRange && !Input.GetKey(KeyCode.Space));
-            Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => machineState == MachineState.Ready && isWithinTheRange && !Input.GetKey(KeyCode.Space));
-            yield break;
+            Hint.ShowWhile("HOLD " + HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && isWithinTheRange);
+            Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => machineState == MachineState.Ready && isWithinTheRange);
+            return;
         }
-
 
         PlayerPickUp.Instance().IfPresent(handler => {
             ItemType itemType = Item.GetHoldingType(handler.holdingItem).GetValueOrDefault();
 
-            if (itemType == ItemType.None)
+            if (itemType == ItemType.None && machineState == MachineState.Done)
             {
-                if(machineState == MachineState.Done) Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => isWithinTheRange && machineState == MachineState.Done);
+                Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => isWithinTheRange && machineState == MachineState.Done);
                 return;
             }
 
