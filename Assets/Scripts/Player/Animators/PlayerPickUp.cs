@@ -50,6 +50,7 @@ public class PlayerPickUp : MonoBehaviour
         Rigidbody rigidbody = other.gameObject.GetComponent<Rigidbody>();
         if ((rigidbody != null && rigidbody.isKinematic) || MachineManager.IsGameObjectInMachine(other.gameObject)) return;
         itemsInRange.Add(other.gameObject);
+        if (holdingItem == null) Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => holdingItem == null && itemsInRange.Count > 0);
     }
 
     private void OnTriggerExit(Collider other)
@@ -70,6 +71,8 @@ public class PlayerPickUp : MonoBehaviour
         yield return new WaitForSecondsRealtime(.3f);
 
         holdingItem = itemGameObject;
+        Hint.ShowWhile(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null);
+
         UpdateHandsPosition();
 
         itemGameObject.transform.SetParent(playerHands.transform);

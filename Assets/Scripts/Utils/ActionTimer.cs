@@ -71,7 +71,8 @@ public class ActionTimer
             passedTime += howOften;
             onUpdate?.Invoke();
         }
-        
+
+        if (ended) yield break;
         ended = true;
         onComplete?.Invoke();
     }

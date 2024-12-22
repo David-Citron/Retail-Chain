@@ -221,6 +221,11 @@ public abstract class Machine : MonoBehaviour, IMachine
     {
         if (!other.CompareTag("Player")) return;
         isWithinTheRange = false;
+        PlayerPickUp.Instance().IfPresent(pickUp =>
+        {
+            if (pickUp.holdingItem == null) return;
+            Hint.ShowWhile(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => pickUp.holdingItem != null);
+        });
     }
 
     protected List<ItemType> GetCurrentItems()
@@ -237,10 +242,11 @@ public abstract class Machine : MonoBehaviour, IMachine
 
     protected virtual IEnumerator ShowIHints()
     {
+        if(HintSystem.instance.hint != null) HintSystem.instance.hint.Stop = true;
         yield return new WaitForSecondsRealtime(.3f);
         if(machineState == MachineState.Ready)
         {
-            Hint.ShowWhile("HOLD " + HintText.GetHintButton(HintButton.SPACE), () => machineState == MachineState.Ready && isWithinTheRange && !Input.GetKey(KeyCode.Space));
+            Hint.ShowWhile("HOLD " + HintText.GetHintButton(HintButton.SPACE) + " OR PRESS " + HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => machineState == MachineState.Ready && isWithinTheRange && !Input.GetKey(KeyCode.Space));
             yield break;
         }
 

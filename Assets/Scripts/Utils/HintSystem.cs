@@ -7,14 +7,20 @@ using System.Collections;
 [RequireComponent(typeof(TMP_Text))]
 public class HintSystem : MonoBehaviour
 {
+    public static HintSystem instance;
+
     public static Queue<Hint> hints = new Queue<Hint>();
 
-    private TMP_Text text;
+    public Hint hint;
 
+    private TMP_Text text;
     private static bool isHintActive = false;
+
+    private float passedTime;
 
     void Start()
     {
+        instance = this;
         text = GetComponent<TMP_Text>();
     }
 
@@ -23,7 +29,9 @@ public class HintSystem : MonoBehaviour
         if (!isHintActive && hints.Count > 0)
         {
             Hint hint = hints.Dequeue();
-            StartCoroutine(DisplayHint(hint));
+            this.hint = hint;
+            passedTime = 0;
+            StartCoroutine(DisplayHint());
         }
     }
 
@@ -34,23 +42,47 @@ public class HintSystem : MonoBehaviour
 
     public static bool IsActive() => isHintActive;
 
-    private IEnumerator DisplayHint(Hint hint)
+    private IEnumerator DisplayHint()
     {
         isHintActive = true;
         text.text = hint.Value;
-        
+
         if (hint.Predicate != null)
         {
             while (hint.Predicate.Invoke())
             {
+                if (hint.Stop)
+                {
+                    Reset();
+                    yield break;
+                }
                 yield return null;
             }
-        } else yield return new WaitForSeconds(hint.Seconds);
+        }
+        else
+        {
+            while(hint.Seconds > passedTime)
+            {
+                if (hint.Stop)
+                {
+                    Reset();
+                    yield break;
+                }
+                yield return new WaitForSecondsRealtime(.2f);
+                passedTime += 0.2f;
+            }
+        }
 
+        Reset();
+    }
 
+    private void Reset()
+    {
         text.text = "";
         isHintActive = false;
+        hint = null;
     }
+
 }
 
 public class Hint
@@ -58,6 +90,7 @@ public class Hint
     public string Value { get; private set; }
     public float Seconds { get; private set; }
     public Func<bool> Predicate { get; private set; }
+    public bool Stop { get; set; }
 
     private Hint(string value, float seconds, Func<bool> predicate = null)
     {
