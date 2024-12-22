@@ -12,9 +12,11 @@ public class PlayerPickUp : MonoBehaviour
 
     [SerializeField] private GameObject playerHands;
 
+    public Animator animator;
     public GameObject holdingItem;
 
-    public Animator animator;
+
+    public Hint currentHint;
 
     private void Start()
     {
@@ -50,7 +52,11 @@ public class PlayerPickUp : MonoBehaviour
         Rigidbody rigidbody = other.gameObject.GetComponent<Rigidbody>();
         if ((rigidbody != null && rigidbody.isKinematic) || MachineManager.IsGameObjectInMachine(other.gameObject)) return;
         itemsInRange.Add(other.gameObject);
-        if (holdingItem == null) Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => holdingItem == null && itemsInRange.Count > 0);
+        if (holdingItem == null && !Machine.isWithinTheRange)
+        {
+            if (currentHint != null) currentHint.stop = true;
+            currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => holdingItem == null && itemsInRange.Count > 0);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -68,10 +74,11 @@ public class PlayerPickUp : MonoBehaviour
     {
         if (holdingItem != null) yield break;
         animator.SetBool("holding", true);
+        if (currentHint != null) currentHint.stop = true;
         yield return new WaitForSecondsRealtime(.3f);
 
         holdingItem = itemGameObject;
-        Hint.ShowWhile(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null);
+        if(!Machine.isWithinTheRange) currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null);
 
         UpdateHandsPosition();
 

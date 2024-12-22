@@ -19,7 +19,7 @@ public abstract class Machine : MonoBehaviour, IMachine
     [SerializeField] private GameObject[] inputPlaces;
     [SerializeField] private Animator animator;
 
-    protected bool isWithinTheRange = false;
+    public static bool isWithinTheRange = false;
 
     public Machine(MachineType machineType)
     {
@@ -242,11 +242,12 @@ public abstract class Machine : MonoBehaviour, IMachine
 
     protected virtual IEnumerator ShowIHints()
     {
-        if(HintSystem.instance.hint != null) HintSystem.instance.hint.Stop = true;
+        PlayerPickUp.Instance().IfPresent(pickUp => pickUp.currentHint.stop = true);
         yield return new WaitForSecondsRealtime(.3f);
         if(machineState == MachineState.Ready)
         {
-            Hint.ShowWhile("HOLD " + HintText.GetHintButton(HintButton.SPACE) + " OR PRESS " + HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => machineState == MachineState.Ready && isWithinTheRange && !Input.GetKey(KeyCode.Space));
+            Hint.ShowWhile("HOLD " + HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && isWithinTheRange && !Input.GetKey(KeyCode.Space));
+            Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => machineState == MachineState.Ready && isWithinTheRange && !Input.GetKey(KeyCode.Space));
             yield break;
         }
 

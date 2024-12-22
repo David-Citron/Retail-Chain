@@ -3,69 +3,65 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Linq;
 
-[RequireComponent(typeof(TMP_Text))]
 public class HintSystem : MonoBehaviour
 {
     public static HintSystem instance;
 
+    public TMP_SpriteAsset spriteAsset;
+
+    public List<Hint> activeHints = new List<Hint>();
     public static Queue<Hint> hints = new Queue<Hint>();
-
-    public Hint hint;
-
-    private TMP_Text text;
-    private static bool isHintActive = false;
 
     private float passedTime;
 
     void Start()
     {
         instance = this;
-        text = GetComponent<TMP_Text>();
     }
 
     void Update()
     {
-        if (!isHintActive && hints.Count > 0)
-        {
-            Hint hint = hints.Dequeue();
-            this.hint = hint;
-            passedTime = 0;
-            StartCoroutine(DisplayHint());
-        }
+        if (hints.Count <= 0) return;
+        if (activeHints.Count >= 3) return;
+
+        Hint hint = hints.Dequeue();
+        activeHints.Add(hint);
+        passedTime = 0;
+        StartCoroutine(DisplayHint(hint));
     }
 
     public static void EnqueueHint(Hint hint)
     {
+        if(instance.activeHints.Any(el => el.value.Equals(hint.value))) return; //Protection of possible duplicate hint.
         hints.Enqueue(hint);
     }
 
-    public static bool IsActive() => isHintActive;
-
-    private IEnumerator DisplayHint()
+    private IEnumerator DisplayHint(Hint hint)
     {
-        isHintActive = true;
-        text.text = hint.Value;
+        CreateText(hint);
 
-        if (hint.Predicate != null)
+        if (hint.predicate != null)
         {
-            while (hint.Predicate.Invoke())
+            while (hint.predicate.Invoke())
             {
-                if (hint.Stop)
+                if (hint.stop)
                 {
-                    Reset();
+                    ResetText(hint);
                     yield break;
                 }
+
                 yield return null;
             }
         }
         else
         {
-            while(hint.Seconds > passedTime)
+            while(hint.seconds > passedTime)
             {
-                if (hint.Stop)
+                if (hint.stop)
                 {
-                    Reset();
+                    ResetText(hint);
                     yield break;
                 }
                 yield return new WaitForSecondsRealtime(.2f);
@@ -73,30 +69,48 @@ public class HintSystem : MonoBehaviour
             }
         }
 
-        Reset();
+        ResetText(hint);
     }
 
-    private void Reset()
+
+    private void CreateText(Hint hint)
     {
-        text.text = "";
-        isHintActive = false;
-        hint = null;
+        GameObject textObject = new GameObject("text-" + hint.value);
+
+        textObject.transform.SetParent(transform);
+
+        TMP_Text tmpText = textObject.AddComponent<TextMeshProUGUI>();
+
+        tmpText.text = hint.value;
+        tmpText.fontSize = 22; 
+        tmpText.fontStyle = FontStyles.Bold;
+        tmpText.alignment = TextAlignmentOptions.Left;
+        tmpText.spriteAsset = spriteAsset;
+
+        hint.textObject = textObject;
+    }
+
+    private void ResetText(Hint hint)
+    {
+        Destroy(hint.textObject);   
+        activeHints.Remove(hint);
     }
 
 }
 
 public class Hint
 {
-    public string Value { get; private set; }
-    public float Seconds { get; private set; }
-    public Func<bool> Predicate { get; private set; }
-    public bool Stop { get; set; }
+    public string value { get; private set; }
+    public float seconds { get; private set; }
+    public Func<bool> predicate { get; private set; }
+    public bool stop { get; set; }
+    public GameObject textObject { get; set; }
 
     private Hint(string value, float seconds, Func<bool> predicate = null)
     {
-        Value = value;
-        Seconds = seconds;
-        Predicate = predicate;
+        this.value = value;
+        this.seconds = seconds;
+        this.predicate = predicate;
 
         HintSystem.EnqueueHint(this);
     }
@@ -119,15 +133,11 @@ public class Hint
     }
 }
 
-
 public static class HintText
 {
-    public static string GetHintButton(HintButton button)
-    {
-        return $"<sprite={(int) button}>";
-    }
+    public static string GetHintButton(HintButton button) => $"<sprite={(int) button}>";
+    
 }
-
 
 public enum HintButton
 {
