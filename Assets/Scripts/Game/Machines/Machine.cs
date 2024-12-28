@@ -122,7 +122,7 @@ public abstract class Machine : MonoBehaviour, IMachine
         switch (machineState)
         {
             case MachineState.Ready:
-                if (currentItems.Count <= 0) ChangeMachineState(MachineState.Idling); // Check if something messed up and there is no items => change state back to Idling
+                if (inputPlaces.Length != 0 && currentItems.Count <= 0) ChangeMachineState(MachineState.Idling); // Check if something messed up and there is no items => change state back to Idling
                 CircleTimer.Stop();
                 break;
 
@@ -196,6 +196,7 @@ public abstract class Machine : MonoBehaviour, IMachine
 
     protected virtual void PlaceItem(GameObject item, bool isInput)
     {
+        if (item == null) return;
         GameObject place = isInput ? inputPlaces[currentItems.IndexOf(item)] : resultPlace;
         item.transform.SetParent(place.transform);
 
@@ -209,14 +210,14 @@ public abstract class Machine : MonoBehaviour, IMachine
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        isWithinTheRange = true;
+        ChangeIsWithinRange();
         ShowHints();
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        isWithinTheRange = false;
+        ChangeIsWithinRange();
         PlayerPickUp.Instance().IfPresent(pickUp =>
         {
             if (pickUp.holdingItem == null) return;
@@ -257,6 +258,8 @@ public abstract class Machine : MonoBehaviour, IMachine
             else Hint.ShowWhile("NO RECIPES FOUND", () => itemType != ItemType.None && isWithinTheRange && !anyRecipe && machineState == MachineState.Idling);
         });
     }
+
+    protected virtual void ChangeIsWithinRange() => isWithinTheRange = !isWithinTheRange;
 
     public List<GameObject> GetCurrentGameObjects() => currentItems;
     public MachineType GetMachineType() => machineType;

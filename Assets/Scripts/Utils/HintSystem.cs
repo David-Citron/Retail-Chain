@@ -34,7 +34,7 @@ public class HintSystem : MonoBehaviour
 
     public static void EnqueueHint(Hint hint)
     {
-        if(instance.activeHints.Any(el => el.value.Equals(hint.value))) return; //Protection of possible duplicate hint.
+        if(hints.Any(el => el.value.Equals(hint.value)) || instance.activeHints.Any(el => el.value.Equals(hint.value))) return; //Protection of possible duplicate hint.
         hints.Enqueue(hint);
     }
 
@@ -71,7 +71,6 @@ public class HintSystem : MonoBehaviour
 
         ResetText(hint);
     }
-
 
     private void CreateText(Hint hint)
     {

@@ -11,6 +11,10 @@ public class CraftingManager : MonoBehaviour
     {
         recipes.Add(new CraftingRecipe(MachineType.Printer, new List<ItemType>() { ItemType.EmptyBook }, ItemType.Book, 8));
         recipes.Add(new CraftingRecipe(MachineType.Cutter, new List<ItemType>() { ItemType.Wood}, ItemType.Paper, 7));
+
+
+        recipes.Add(new CraftingRecipe(MachineType.GlueDispenser, new List<ItemType>() { ItemType.None }, ItemType.GlueCanister, 3));
+        recipes.Add(new CraftingRecipe(MachineType.GlueDispenser, new List<ItemType>() { ItemType.GlueBarrel }, ItemType.None, 2));
     }
 
     void Start() {}
@@ -25,6 +29,11 @@ public class CraftingManager : MonoBehaviour
     public static List<CraftingRecipe> GetRecipesFor(ItemType itemType)
     {
         return recipes.FindAll(recipe => recipe.inputs.Contains(itemType));
+    }
+
+    public static List<CraftingRecipe> GetRecipesFor(MachineType machineType, ItemType itemType)
+    {
+        return recipes.FindAll(recipe => recipe.machineType == machineType && recipe.inputs.Contains(itemType));
     }
 
     public static CraftingRecipe FindRecipe(MachineType machineType, List<ItemType> itemTypes)

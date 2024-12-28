@@ -63,8 +63,6 @@ public class PlayerPickUp : MonoBehaviour
     {
         itemsInRange.Remove(other.gameObject);
     }
-
-
     public void PickUp(GameObject item)
     {
         StartCoroutine(PickUpItem(item));
@@ -75,7 +73,6 @@ public class PlayerPickUp : MonoBehaviour
         if (holdingItem != null) yield break;
         holdingItem = itemGameObject;
         animator.SetBool("holding", true);
-        itemGameObject.SetActive(true); //To be sure, activate the gameobject.
 
         if (currentHint != null) currentHint.stop = true;
         yield return new WaitForSecondsRealtime(.3f);
@@ -87,6 +84,8 @@ public class PlayerPickUp : MonoBehaviour
         itemGameObject.transform.SetParent(playerHands.transform);
         itemGameObject.transform.localPosition = Vector3.zero;
         itemGameObject.transform.localRotation = Quaternion.Euler(-90, 0, -90);
+
+        itemGameObject.SetActive(true); //To be sure, activate the gameobject.
 
         UpdateRigidbody(itemGameObject, true);
     }
