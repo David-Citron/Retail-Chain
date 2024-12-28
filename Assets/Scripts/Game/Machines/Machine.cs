@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -12,7 +11,7 @@ public abstract class Machine : MonoBehaviour, IMachine
     protected MachineType machineType;
     protected MachineState machineState = MachineState.Idling;
 
-    private ActionTimer actionTimer;
+    protected ActionTimer actionTimer;
     protected CraftingRecipe currentRecipe;
 
     [SerializeField] private GameObject resultPlace;
@@ -26,7 +25,7 @@ public abstract class Machine : MonoBehaviour, IMachine
         this.machineType = machineType;
     }
 
-    protected void Start()
+    protected virtual void Start()
     {
         foreach (var recipe in CraftingManager.recipes)
         {
@@ -35,15 +34,15 @@ public abstract class Machine : MonoBehaviour, IMachine
         }
     }
 
-    protected void Update()
+    protected virtual void Update()
     {
         if (!isWithinTheRange) return;
 
         PickUp(); // Check if the player wants to pickup the input or the result.
 
-        if (!Input.GetKeyDown(KeyCode.Space))   return;
+        if (!Input.GetKeyDown(KeyCode.Space)) return;
         
-        if(machineState != MachineState.Ready && currentItems.Count < inputPlaces.Length)
+        if(machineState != MachineState.Ready && (inputPlaces.Length == 0 || currentItems.Count < inputPlaces.Length))
         {
             PlayerPickUp.Instance().IfPresent(handler =>
             {
@@ -56,20 +55,23 @@ public abstract class Machine : MonoBehaviour, IMachine
 
         if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", 1)) return;
 
+        StartTimer();
         ChangeMachineState(MachineState.Working);
+    }
 
+    protected virtual void StartTimer()
+    {
         actionTimer = new ActionTimer(() => Input.GetKey(KeyCode.Space),
-            () => ChangeMachineState(MachineState.Done),
-            () => {
-                actionTimer = null;
-                ChangeMachineState(MachineState.Ready);
-        }, currentRecipe.time, 1).Run();
-
+        () => ChangeMachineState(MachineState.Done),
+        () => {
+            actionTimer = null;
+            ChangeMachineState(MachineState.Ready);
+    }, currentRecipe.time, 1).Run();
     }
 
     protected virtual void PickUp()
     {
-        if (!Input.GetKeyDown(KeyCode.E))return;
+        if (!Input.GetKeyDown(KeyCode.E)) return;
         
         if (machineState == MachineState.Done && resultItem != null)
         {
@@ -106,12 +108,12 @@ public abstract class Machine : MonoBehaviour, IMachine
         ChangeMachineState(MachineState.Ready);
     }
 
-    protected void ChangeMachineState(MachineState newState)
+    protected virtual void ChangeMachineState(MachineState newState)
     {
         if (machineState == newState) return;
         machineState = newState;
 
-        if (machineState != MachineState.Working)
+        if (machineState != MachineState.Working && PlayAnimation())
         {
             PlayerMovement.freeze = false;
             PlayerPickUp.PlayerAnimator().IfPresent(animator => animator.SetBool("working", false));
@@ -125,8 +127,12 @@ public abstract class Machine : MonoBehaviour, IMachine
                 break;
 
             case MachineState.Working:
-                PlayerPickUp.PlayerAnimator().IfPresent(animator => animator.SetBool("working", true));
-                PlayerMovement.freeze = true;
+                if(PlayAnimation())
+                {
+                    PlayerPickUp.PlayerAnimator().IfPresent(animator => animator.SetBool("working", true));
+                    PlayerMovement.freeze = true;
+                }
+
                 CircleTimer.Start(currentRecipe.time);
                 //Start animation
                 break;
@@ -154,7 +160,10 @@ public abstract class Machine : MonoBehaviour, IMachine
     /// <returns>New gameobject</returns>
     protected GameObject GetGameObjectFromPrefab(ItemType type)
     {
+        if (type == ItemType.None) return null;
+
         Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Items/" + type + ".prefab", typeof(GameObject));
+        if (prefab == null) return null;
         return (GameObject) Instantiate(prefab);
     }
     
@@ -185,7 +194,7 @@ public abstract class Machine : MonoBehaviour, IMachine
         return true;
     }
 
-    protected void PlaceItem(GameObject item, bool isInput)
+    protected virtual void PlaceItem(GameObject item, bool isInput)
     {
         GameObject place = isInput ? inputPlaces[currentItems.IndexOf(item)] : resultPlace;
         item.transform.SetParent(place.transform);
@@ -222,11 +231,11 @@ public abstract class Machine : MonoBehaviour, IMachine
         return list;
     }
 
-    protected void ShowHints()
+    protected virtual void ShowHints()
     {
         if (machineState == MachineState.Ready)
         {
-            Hint.ShowWhile("HOLD " + HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && isWithinTheRange);
+            Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && isWithinTheRange);
             Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => machineState == MachineState.Ready && isWithinTheRange);
             return;
         }
@@ -254,7 +263,8 @@ public abstract class Machine : MonoBehaviour, IMachine
     public GameObject GetResultPlace() => resultPlace;
     public MachineState GetMachineState() => machineState;
     public GameObject[] GetInputPlaces() => inputPlaces;
-    
+
+    public abstract bool PlayAnimation();
 }
 
 public enum MachineState

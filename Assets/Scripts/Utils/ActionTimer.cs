@@ -26,7 +26,7 @@ public class ActionTimer
         this.onComplete = onComplete;
         this.onFail = onFail;
     }
-    public ActionTimer(Action onUpdate, Action onComplete, float totalTime, float howOften) : this(null, onUpdate, onComplete, null, totalTime, howOften) { }
+    public ActionTimer(Action onComplete, Action onFail, float totalTime, float howOften) : this(null, null, onComplete, onFail, totalTime, howOften) { }
     public ActionTimer(Action onComplete, float totalTime, float howOften) : this(null, onComplete, totalTime, howOften) { }
     public ActionTimer(Func<bool> predicate, Action onComplete, float totalTime, float howOften) : this(predicate, null, onComplete, null, totalTime, howOften) { }
     public ActionTimer(Func<bool> predicate, Action onComplete, Action onFail, float totalTime, float howOften) : this(predicate, null, onComplete, onFail, totalTime, howOften) { }

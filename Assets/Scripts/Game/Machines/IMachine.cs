@@ -11,6 +11,8 @@ public interface IMachine
 
     MachineType GetMachineType();
     MachineState GetMachineState();
+
+    bool PlayAnimation();
 }
 
 public enum MachineType

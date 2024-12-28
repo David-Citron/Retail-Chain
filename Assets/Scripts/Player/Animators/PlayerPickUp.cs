@@ -74,8 +74,9 @@ public class PlayerPickUp : MonoBehaviour
     {
         if (holdingItem != null) yield break;
         holdingItem = itemGameObject;
-
         animator.SetBool("holding", true);
+        itemGameObject.SetActive(true); //To be sure, activate the gameobject.
+
         if (currentHint != null) currentHint.stop = true;
         yield return new WaitForSecondsRealtime(.3f);
 
