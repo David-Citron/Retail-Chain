@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public abstract class Machine : MonoBehaviour, IMachine
+public abstract class Machine : Reachable, IMachine
 {
     protected List<CraftingRecipe> possibleRecipes = new List<CraftingRecipe>();
     protected List<GameObject> currentItems = new List<GameObject>();
@@ -17,8 +17,6 @@ public abstract class Machine : MonoBehaviour, IMachine
     [SerializeField] private GameObject resultPlace;
     [SerializeField] private GameObject[] inputPlaces;
     [SerializeField] private Animator animator;
-
-    public static bool isWithinTheRange = false;
 
     public Machine(MachineType machineType)
     {
@@ -36,7 +34,7 @@ public abstract class Machine : MonoBehaviour, IMachine
 
     protected virtual void Update()
     {
-        if (!isWithinTheRange) return;
+        if (!isReachable) return;
 
         PickUp(); // Check if the player wants to pickup the input or the result.
 
@@ -92,7 +90,7 @@ public abstract class Machine : MonoBehaviour, IMachine
     {
         if (CooldownHandler.IsUnderCreateIfNot(machineType + "_putItem", 1)) return;
 
-        ItemType inputType = Item.GetHoldingType(input).GetValueOrDefault();
+        ItemType inputType = Item.GetItemType(input).GetValueOrDefault();
         if(!IsValid(inputType))  return;
 
         handler.DropHoldingItem();
@@ -138,7 +136,7 @@ public abstract class Machine : MonoBehaviour, IMachine
                 break;
 
             case MachineState.Done:
-                resultItem = GetGameObjectFromPrefab(currentRecipe.output);
+                resultItem = Item.GetGameObjectFromPrefab(currentRecipe.output);
                 PlaceItem(resultItem, false);
                 GetCurrentGameObjects().ForEach(item => Destroy(item));
 
@@ -151,20 +149,6 @@ public abstract class Machine : MonoBehaviour, IMachine
         }
 
         ShowHints();
-    }
-
-    /// <summary>
-    /// Gets the prefab item based on the ItemType.
-    /// </summary>
-    /// <param name="type">The ItemType</param>
-    /// <returns>New gameobject</returns>
-    protected GameObject GetGameObjectFromPrefab(ItemType type)
-    {
-        if (type == ItemType.None) return null;
-
-        Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Items/" + type + ".prefab", typeof(GameObject));
-        if (prefab == null) return null;
-        return (GameObject) Instantiate(prefab);
     }
     
     protected bool IsValid(ItemType input)
@@ -207,17 +191,10 @@ public abstract class Machine : MonoBehaviour, IMachine
         item.transform.localRotation = Quaternion.Euler(0, 0, 90);
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected override void OnReachableChange()
     {
-        if (!other.CompareTag("Player")) return;
-        ChangeIsWithinRange();
         ShowHints();
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (!other.CompareTag("Player")) return;
-        ChangeIsWithinRange();
+        if (isReachable) return;
         PlayerPickUp.Instance().IfPresent(pickUp =>
         {
             if (pickUp.holdingItem == null) return;
@@ -228,7 +205,7 @@ public abstract class Machine : MonoBehaviour, IMachine
     protected List<ItemType> GetCurrentItems()
     {
         List<ItemType> list = new List<ItemType>();
-        GetCurrentGameObjects().ForEach(item => Item.GetHoldingType(item).IfPresent(itemType => list.Add(itemType)));
+        GetCurrentGameObjects().ForEach(item => Item.GetItemType(item).IfPresent(itemType => list.Add(itemType)));
         return list;
     }
 
@@ -236,17 +213,17 @@ public abstract class Machine : MonoBehaviour, IMachine
     {
         if (machineState == MachineState.Ready)
         {
-            Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && isWithinTheRange);
-            Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => machineState == MachineState.Ready && isWithinTheRange);
+            Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && isReachable);
+            Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => machineState == MachineState.Ready && isReachable);
             return;
         }
 
         PlayerPickUp.Instance().IfPresent(handler => {
-            ItemType itemType = Item.GetHoldingType(handler.holdingItem).GetValueOrDefault();
+            ItemType itemType = Item.GetItemType(handler.holdingItem).GetValueOrDefault();
 
             if (itemType == ItemType.None && machineState == MachineState.Done)
             {
-                Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => isWithinTheRange && machineState == MachineState.Done);
+                Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => isReachable && machineState == MachineState.Done);
                 return;
             }
 
@@ -254,19 +231,17 @@ public abstract class Machine : MonoBehaviour, IMachine
 
             bool anyRecipe = CraftingManager.HasRecipesInMachine(machineType, itemType);
 
-            if (anyRecipe) Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => itemType != ItemType.None && isWithinTheRange && anyRecipe && machineState == MachineState.Idling);
-            else Hint.ShowWhile("NO RECIPES FOUND", () => itemType != ItemType.None && isWithinTheRange && !anyRecipe && machineState == MachineState.Idling);
+            if (anyRecipe) Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => itemType != ItemType.None && isReachable && anyRecipe && machineState == MachineState.Idling);
+            else Hint.ShowWhile("NO RECIPES FOUND", () => itemType != ItemType.None && isReachable && !anyRecipe && machineState == MachineState.Idling);
         });
     }
-
-    protected virtual void ChangeIsWithinRange() => isWithinTheRange = !isWithinTheRange;
 
     public List<GameObject> GetCurrentGameObjects() => currentItems;
     public MachineType GetMachineType() => machineType;
     public GameObject GetResultPlace() => resultPlace;
     public MachineState GetMachineState() => machineState;
     public GameObject[] GetInputPlaces() => inputPlaces;
-
+    public static bool IsReachable => isReachable;
     public abstract bool PlayAnimation();
 }
 

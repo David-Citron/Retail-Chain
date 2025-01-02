@@ -12,7 +12,7 @@ public class GlueDispenser : Machine
 
     protected override void Update()
     {
-        if (!isWithinTheRange) return;
+        if (!isReachable) return;
 
         if (!Input.GetKeyDown(KeyCode.Space)) return;
 
@@ -44,9 +44,9 @@ public class GlueDispenser : Machine
             }, currentRecipe.time, 1).Run();
     }
 
-    protected override void ChangeIsWithinRange()
+    protected override void OnReachableChange()
     {
-        base.ChangeIsWithinRange();
+        base.OnReachableChange();
         UpdateRecipe();
     }
 
@@ -55,7 +55,7 @@ public class GlueDispenser : Machine
         if (machineState != MachineState.Ready) return;
         
         var holdingItem = PlayerPickUp.Instance().GetValueOrDefault().holdingItem;
-        Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + (holdingItem == null ? " TO GET CANISTER" : " TO FILL DISPENSER"), () => machineState == MachineState.Ready && isWithinTheRange);
+        Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + (holdingItem == null ? " TO GET CANISTER" : " TO FILL DISPENSER"), () => machineState == MachineState.Ready && isReachable);
     }
 
     protected override void ChangeMachineState(MachineState newState)
@@ -102,21 +102,21 @@ public class GlueDispenser : Machine
     {
         if (possibleRecipes.Count == 0) return;
 
-        if (!isWithinTheRange)
+        if (!isReachable)
         {
             currentRecipe = null;
             return;
         }
 
         var holdingItem = PlayerPickUp.Instance().GetValueOrDefault().holdingItem;
-        var holdingType = Item.GetHoldingType(holdingItem).GetValueOrDefault();
+        var holdingType = Item.GetItemType(holdingItem).GetValueOrDefault();
 
         currentRecipe = possibleRecipes.Find(recipe => recipe.machineType == machineType && CraftingManager.ContainsAllItems(recipe, new List<ItemType>() { holdingType }));
 
         if (currentRecipe == null) return;
 
-        if (holdingType == ItemType.None && glueAmount < GLUE_CANISTER) Hint.ShowWhile("NOT ENOUGH GLUE", () => isWithinTheRange);
-        else if (holdingType == ItemType.GlueBarrel && glueAmount >= MAX_GLUE_AMOUNT) Hint.ShowWhile("GLUE DISPENSER IS FULL", () => isWithinTheRange);
+        if (holdingType == ItemType.None && glueAmount < GLUE_CANISTER) Hint.ShowWhile("NOT ENOUGH GLUE", () => isReachable);
+        else if (holdingType == ItemType.GlueBarrel && glueAmount >= MAX_GLUE_AMOUNT) Hint.ShowWhile("GLUE DISPENSER IS FULL", () => isReachable);
         else ChangeMachineState(MachineState.Ready);
     }
 

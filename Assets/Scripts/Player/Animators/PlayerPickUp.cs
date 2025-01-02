@@ -52,10 +52,10 @@ public class PlayerPickUp : MonoBehaviour
         Rigidbody rigidbody = other.gameObject.GetComponent<Rigidbody>();
         if ((rigidbody != null && rigidbody.isKinematic) || MachineManager.IsGameObjectInMachine(other.gameObject)) return;
         itemsInRange.Add(other.gameObject);
-        if (holdingItem == null && !Machine.isWithinTheRange)
+        if (holdingItem == null && !Machine.IsReachable)
         {
             if (currentHint != null) currentHint.stop = true;
-            currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => holdingItem == null && itemsInRange.Count > 0 && !Machine.isWithinTheRange);
+            currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => holdingItem == null && itemsInRange.Count > 0 && !Machine.IsReachable);
         }
     }
 
@@ -77,7 +77,7 @@ public class PlayerPickUp : MonoBehaviour
         if (currentHint != null) currentHint.stop = true;
         yield return new WaitForSecondsRealtime(.3f);
 
-        if(!Machine.isWithinTheRange) currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null && !Machine.isWithinTheRange);
+        if(!Machine.IsReachable) currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null && !Machine.IsReachable);
 
         UpdateHandsPosition();
 
@@ -117,7 +117,7 @@ public class PlayerPickUp : MonoBehaviour
 
     private void UpdateHandsPosition()
     {
-        Item.GetHoldingType(holdingItem).IfPresent(item =>
+        Item.GetItemType(holdingItem).IfPresent(item =>
         {
             switch (item)
             {
