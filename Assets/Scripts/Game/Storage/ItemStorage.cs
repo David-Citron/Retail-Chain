@@ -1,15 +1,20 @@
+using Edgegap;
+using Steamworks;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemStorage : Reachable
 {
 
+    public static ItemStorage instance;
+
     private Dictionary<ItemType, int> storedItems = new Dictionary<ItemType, int>();
 
-    void Start()
-    {
-        
-    }
+    public GameObject storageUi;
+    public GameObject itemPrefab;
+    public GameObject itemListContent;
+
+    void Start() { instance = this; }
 
     void Update()
     {
@@ -27,11 +32,27 @@ public class ItemStorage : Reachable
         }
 
         if (!Input.GetKeyDown(KeyCode.E)) return;
-        OpenUI();
+        ToggleUI();
     }
 
-    public void OpenUI()
+    public void ToggleUI()
     {
+        storageUi.SetActive(!storageUi.activeSelf);
+
+
+        if (!storageUi.activeSelf) return;
+
+        foreach (var item in storedItems.Keys)
+        {
+            GameObject createdItem = Instantiate(itemPrefab);
+
+            var component = createdItem.GetComponent<StorageContentItem>();
+
+            component.Initialize(item, storedItems[item]);
+
+            createdItem.transform.SetParent(itemListContent.transform);
+            createdItem.transform.localScale = Vector3.one;
+        }
 
     }
 

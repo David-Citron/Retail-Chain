@@ -39,6 +39,18 @@ public class Item : MonoBehaviour
         if (prefab == null) return null;
         return (GameObject) Instantiate(prefab);
     }
+
+    public static string GetNameOf(ItemType type)
+    {
+        switch(type)
+        {
+            case ItemType.GlueCanister: return "Glue Canister";
+            case ItemType.EmptyBook: return "Empty Book";
+            case ItemType.GlueBarrel: return "Glue Barrel";
+            case ItemType.None: return "Null";
+            default: return type.ToString();
+        }
+    }
 }
 
 public enum ItemType
