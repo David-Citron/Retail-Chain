@@ -10,11 +10,14 @@ public class CraftingManager : MonoBehaviour
     void Awake()
     {
         recipes.Add(new CraftingRecipe(MachineType.Printer, new List<ItemType>() { ItemType.EmptyBook }, ItemType.Book, 8));
-        recipes.Add(new CraftingRecipe(MachineType.Cutter, new List<ItemType>() { ItemType.Wood}, ItemType.Paper, 7));
+        recipes.Add(new CraftingRecipe(MachineType.Cutter, new List<ItemType>() { ItemType.Wood}, ItemType.Paper, 5));
 
 
         recipes.Add(new CraftingRecipe(MachineType.GlueDispenser, new List<ItemType>() { ItemType.None }, ItemType.GlueCanister, 3));
         recipes.Add(new CraftingRecipe(MachineType.GlueDispenser, new List<ItemType>() { ItemType.GlueBarrel }, ItemType.None, 2));
+
+
+        recipes.Add(new CraftingRecipe(MachineType.Workbench, new List<ItemType>() { ItemType.GlueCanister, ItemType.Paper }, ItemType.EmptyBook, 6));
     }
 
     void Start() {}

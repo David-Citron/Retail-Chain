@@ -20,5 +20,6 @@ public enum MachineType
     Printer,
     Workbench,
     Cutter,
-    GlueDispenser
+    GlueDispenser,
+    PackagingTable
 }

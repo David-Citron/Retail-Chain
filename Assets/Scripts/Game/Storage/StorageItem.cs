@@ -8,6 +8,7 @@ public class StorageContentItem : MonoBehaviour
     public ItemType itemType;
     public int amount;
 
+    public RawImage icon;
     public TMP_Text itemName;
     public Button takeButton;
 

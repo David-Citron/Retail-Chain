@@ -71,6 +71,15 @@ public class ItemStorage : Reachable
             Destroy(gameObject);
         });
 
+
+        ShowHints();
+
+        if (storedItems.ContainsKey(itemType))
+        {
+            storedItems[itemType] = GetStoredAmountOf(itemType) + 1;
+            return;
+        }
+
         storedItems.Add(itemType, GetStoredAmountOf(itemType) + 1);
     }
 
@@ -84,18 +93,37 @@ public class ItemStorage : Reachable
             return;
         }
 
-        storedItems.Add(itemType, amount - 1);
+        if (amount > 1) storedItems[itemType] = amount - 1;
+        else storedItems.Remove(itemType);
+
         PlayerPickUp.Instance().IfPresent(pickUp =>
         {
             GameObject item = Item.GetGameObjectFromPrefab(itemType);
-            if (item == null) return;
+            if (item == null)
+            {
+                Debug.LogWarning("error");
+                return;
+            }
+            Debug.LogWarning("picked up");
             pickUp.PickUp(item);
+            ToggleUI(); //Close.
+            ShowHints();
         });
     }
 
     protected override void OnReachableChange()
     {
+        ShowHints();
+    }
 
+    private void ShowHints()
+    {
+        if (!isReachable) return;
+        PlayerPickUp.Instance().IfPresent(pickUp =>
+        {
+            if (pickUp.holdingItem == null) Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => isReachable && pickUp.holdingItem == null);
+            else Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => isReachable && pickUp.holdingItem != null);
+        });
     }
 
     public int GetStoredAmountOf(ItemType itemType) => storedItems.GetValueOrDefault(itemType, 0);
