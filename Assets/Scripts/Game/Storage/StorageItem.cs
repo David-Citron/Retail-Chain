@@ -20,7 +20,7 @@ public class StorageContentItem : MonoBehaviour
         this.itemType = itemType;
         this.amount = amount;
 
-        itemName.text = Item.GetNameOf(itemType);
+        itemName.text = Item.GetNameOf(itemType) + "\n" + amount + "x";
 
         takeButton.enabled = true;
         takeButton.interactable = true;

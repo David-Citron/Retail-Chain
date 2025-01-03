@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LobbiesListManager : MonoBehaviour
-{
+public class LobbiesListManager : MonoBehaviour {
 
     public static LobbiesListManager instance;
 

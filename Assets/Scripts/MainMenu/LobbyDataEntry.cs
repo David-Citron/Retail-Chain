@@ -12,18 +12,8 @@ public class LobbyDataEntry : MonoBehaviour
     public RawImage profilePicture;
     public TMP_Text username;
     public Button joinButton;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void Start() {}
+    void Update() {}
 
     public void UpdateList()
     {
