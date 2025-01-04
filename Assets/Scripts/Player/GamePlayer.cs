@@ -2,6 +2,7 @@ using Mirror;
 using Steamworks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GamePlayer : NetworkBehaviour
@@ -29,6 +30,16 @@ public class GamePlayer : NetworkBehaviour
     [SerializeField] private Material[] bodyMaterials;
     [SerializeField] private RawImage lobbyLeaderCrown;
     [SerializeField] private Button kickButton;
+
+    private Scene scene;
+
+    private void Awake()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        scene = SceneManager.GetActiveScene();
+    }
 
     void Start()
     {
@@ -110,12 +121,10 @@ public class GamePlayer : NetworkBehaviour
     {
         if (isServer && isLocalPlayer) return;
         UpdateReadyStatus();
-        Debug.LogError("HOOK Called connId: " + connectionId);
     }
 
     public void ChangeReadyStatus()
     {
-        Debug.LogError("ChangeReadyStatus Called connId: " + connectionId);
         isReady = !isReady;
         UpdateReadyStatus();
     }
@@ -130,11 +139,7 @@ public class GamePlayer : NetworkBehaviour
         var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this).GetValueOrDefault();
         if (oppositePlayer == null || !oppositePlayer.isReady) return;
 
-        Debug.Log("Method trigerred - loading");
         NetworkManager.singleton.ServerChangeScene("Level1");
-
-        if (!isLocalPlayer) oppositePlayer.StartGame();
-        else StartGame();
     }
 
     private void UpdateReadyIcon()
@@ -152,16 +157,17 @@ public class GamePlayer : NetworkBehaviour
 
     public void StartGame()
     {
+        Debug.LogError("called started game.");
         GetComponentInChildren<Canvas>().gameObject.SetActive(false);
 
         if(isLocalPlayer)
         {
-            bankAccount = new PlayerBank();
-
+            Debug.LogError("Adding.");
             player.AddComponent<PlayerPickUp>();
             player.AddComponent<PlayerMovement>();
             player.transform.eulerAngles = new Vector3(0, 0, 0);
             player.transform.position = Vector3.zero;
+            Debug.LogError("Added all.");
         } else
         {
             player.gameObject.SetActive(false);
@@ -225,6 +231,25 @@ public class GamePlayer : NetworkBehaviour
             }
         });
     }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.LogError("scene changed.");
+        if (!string.Equals(scene.path, this.scene.path)) return;
+
+        var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this).GetValueOrDefault();
+        if (oppositePlayer == null)
+        {
+
+            Debug.LogError("opposite player is null.");
+            return;
+        }
+
+        Debug.LogError("starting game.");
+        if (!isLocalPlayer) oppositePlayer.StartGame();
+        else StartGame();
+    }
+    private void OnDestroy() => SceneManager.sceneLoaded -= OnSceneLoaded;
 
     public ulong GetSteamId() => steamID;
 }

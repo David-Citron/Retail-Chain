@@ -40,7 +40,7 @@ public class Exit : MonoBehaviour
 
         exitButton.onClick.AddListener(() =>
         {
-            Application.Quit();
+            SteamLobby.instance.LeaveLobby();
         });
     }
 }
