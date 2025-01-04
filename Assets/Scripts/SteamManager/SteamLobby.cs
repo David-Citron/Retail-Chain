@@ -66,10 +66,8 @@ public class SteamLobby : MonoBehaviour
         SteamMatchmaking.CreateLobby(lobbyType, networkManager.maxConnections);
     }
 
-    public void JoinLobby(CSteamID steamID)
-    {
-        SteamMatchmaking.JoinLobby(steamID);
-    }
+    public void JoinLobby(CSteamID steamID) => SteamMatchmaking.JoinLobby(steamID);
+    
 
     private void OnLobbyCreated(LobbyCreated_t callback)
     {
@@ -87,10 +85,7 @@ public class SteamLobby : MonoBehaviour
         SteamMatchmaking.SetLobbyData(LobbyId, "game", "retailchain");
     }
 
-    private void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback)
-    {
-        SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);
-    }
+    private void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback) => SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);
 
     private void OnLobbyEntered(LobbyEnter_t callback)
     {
