@@ -234,8 +234,8 @@ public class GamePlayer : NetworkBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.LogError("scene changed.");
-        if (!string.Equals(scene.path, this.scene.path)) return;
+        Debug.LogError("scene changed. index: " + scene.buildIndex);
+        // if (!string.Equals(scene.path, this.scene.path)) return;
 
         var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this).GetValueOrDefault();
         if (oppositePlayer == null)
