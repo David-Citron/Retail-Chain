@@ -9,14 +9,12 @@ public class MachineManager : MonoBehaviour
 
     public List<Machine> machines = new List<Machine>();
 
-    // Start is called before the first frame update
     void Start()
     {
         instance = this;
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
-public abstract class Machine : Reachable, IMachine
+public abstract class Machine : MonoBehaviour, IMachine, Interactable
 {
+    protected List<Interaction> interactions = new List<Interaction>();
     protected List<CraftingRecipe> possibleRecipes = new List<CraftingRecipe>();
     protected List<GameObject> currentItems = new List<GameObject>();
+
     protected GameObject resultItem = null;
 
     protected MachineType machineType;
@@ -30,14 +31,15 @@ public abstract class Machine : Reachable, IMachine
             if (recipe.machineType != machineType) continue;
             possibleRecipes.Add(recipe);
         }
+
+        new Interaction(KeyCode.E, () => PickUp(), );
+        new Interaction(KeyCode.Space, () => StartInteraction(), );
     }
 
-    protected virtual void Update()
+    protected virtual void Update() {}
+
+    protected virtual void StartInteraction()
     {
-        if (!isReachable) return;
-
-        PickUp(); // Check if the player wants to pickup the input or the result.
-
         if (!Input.GetKeyDown(KeyCode.Space)) return;
         
         if(machineState != MachineState.Ready && (inputPlaces.Length == 0 || currentItems.Count < inputPlaces.Length))
@@ -114,7 +116,7 @@ public abstract class Machine : Reachable, IMachine
         if (machineState != MachineState.Working && PlayAnimation())
         {
             PlayerMovement.freeze = false;
-            PlayerPickUp.PlayerAnimator().IfPresent(animator => animator.SetBool("working", false));
+            //PlayerPickUp.PlayerAnimator().IfPresent(animator => animator.SetBool("working", false));
         }
 
         switch (machineState)
@@ -127,7 +129,7 @@ public abstract class Machine : Reachable, IMachine
             case MachineState.Working:
                 if(PlayAnimation())
                 {
-                    PlayerPickUp.PlayerAnimator().IfPresent(animator => animator.SetBool("working", true));
+                    //PlayerPickUp.PlayerAnimator().IfPresent(animator => animator.SetBool("working", true));
                     PlayerMovement.freeze = true;
                 }
 
@@ -191,17 +193,6 @@ public abstract class Machine : Reachable, IMachine
         item.transform.localRotation = Quaternion.Euler(0, 0, 90);
     }
 
-    protected override void OnReachableChange()
-    {
-        ShowHints();
-        if (isReachable) return;
-        PlayerPickUp.Instance().IfPresent(pickUp =>
-        {
-            if (pickUp.holdingItem == null) return;
-            Hint.ShowWhile(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => pickUp.holdingItem != null);
-        });
-    }
-
     protected List<ItemType> GetCurrentItems()
     {
         List<ItemType> list = new List<ItemType>();
@@ -213,8 +204,8 @@ public abstract class Machine : Reachable, IMachine
     {
         if (machineState == MachineState.Ready)
         {
-            Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && isReachable);
-            Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => machineState == MachineState.Ready && isReachable);
+            Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready);
+            Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => machineState == MachineState.Ready);
             return;
         }
 
@@ -223,7 +214,7 @@ public abstract class Machine : Reachable, IMachine
 
             if (itemType == ItemType.None && machineState == MachineState.Done)
             {
-                Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => isReachable && machineState == MachineState.Done);
+                Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => machineState == MachineState.Done);
                 return;
             }
 
@@ -231,17 +222,17 @@ public abstract class Machine : Reachable, IMachine
 
             bool anyRecipe = CraftingManager.HasRecipesInMachine(machineType, itemType);
 
-            if (anyRecipe) Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => itemType != ItemType.None && isReachable && anyRecipe && machineState == MachineState.Idling);
-            else Hint.ShowWhile("NO RECIPES FOUND", () => itemType != ItemType.None && isReachable && !anyRecipe && machineState == MachineState.Idling);
+            if (anyRecipe) Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => itemType != ItemType.None && anyRecipe && machineState == MachineState.Idling);
+            else Hint.ShowWhile("NO RECIPES FOUND", () => itemType != ItemType.None && !anyRecipe && machineState == MachineState.Idling);
         });
     }
 
+    public List<Interaction> GetInteractions() => interactions;
     public List<GameObject> GetCurrentGameObjects() => currentItems;
     public MachineType GetMachineType() => machineType;
     public GameObject GetResultPlace() => resultPlace;
     public MachineState GetMachineState() => machineState;
     public GameObject[] GetInputPlaces() => inputPlaces;
-    public static bool IsReachable => isReachable;
     public abstract bool PlayAnimation();
 }
 

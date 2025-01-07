@@ -1,68 +1,26 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class PlayerPickUp : MonoBehaviour
 {
 
     private static PlayerPickUp instance;
 
-    private List<GameObject> itemsInRange = new List<GameObject>();
-
     [SerializeField] private GameObject playerHands;
-
-    public Animator animator;
     public GameObject holdingItem;
+    public Animator animator;
 
-
-    public Hint currentHint;
-
-    private void Start()
+    void Start()
     {
         instance = this;
         animator = GetComponent<Animator>();
-        itemsInRange.Clear();
     }
 
-    private void Update()
+    void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (holdingItem != null || itemsInRange.Count == 0) return;
-            GameObject nearestItem = itemsInRange[0];
-            float nearestItemDistance = Vector3.Distance(transform.position, nearestItem.transform.position);
-            for (int i = 0; i < itemsInRange.Count; i++)
-            {
-                float currentItemDistance = Vector3.Distance(transform.position, itemsInRange[i].transform.position);
-                if (currentItemDistance > nearestItemDistance) break;
-                nearestItemDistance = currentItemDistance;
-                nearestItem = itemsInRange[i];
-            }
-
-            PickUp(nearestItem);
-        } else if(Input.GetKeyDown(KeyCode.Q))
-        {
-            DropHoldingItem();
-        }
+        
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Rigidbody rigidbody = other.gameObject.GetComponent<Rigidbody>();
-        if ((rigidbody != null && rigidbody.isKinematic) || MachineManager.IsGameObjectInMachine(other.gameObject)) return;
-        itemsInRange.Add(other.gameObject);
-        if (holdingItem == null && !Machine.IsReachable)
-        {
-            if (currentHint != null) currentHint.stop = true;
-            currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => holdingItem == null && itemsInRange.Count > 0 && !Machine.IsReachable);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        itemsInRange.Remove(other.gameObject);
-    }
     public void PickUp(GameObject item)
     {
         StartCoroutine(PickUpItem(item));
@@ -74,10 +32,10 @@ public class PlayerPickUp : MonoBehaviour
         holdingItem = itemGameObject;
         animator.SetBool("holding", true);
 
-        if (currentHint != null) currentHint.stop = true;
+        //if (currentHint != null) currentHint.stop = true;
         yield return new WaitForSecondsRealtime(.3f);
 
-        if(!Machine.IsReachable) currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null && !Machine.IsReachable);
+        //if (!Machine.IsReachable) currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null && !Machine.IsReachable);
 
         UpdateHandsPosition();
 
@@ -138,11 +96,4 @@ public class PlayerPickUp : MonoBehaviour
     }
 
     public static Optional<PlayerPickUp> Instance() => Optional<PlayerPickUp>.Of(instance);
-   
-    public static Optional<Animator> PlayerAnimator()
-    {
-        Animator animator = null;
-        Instance().IfPresent(instance => animator = instance.animator);
-        return Optional<Animator>.Of(animator);
-    }
 }

@@ -105,14 +105,16 @@ public class Hint
     public bool stop { get; set; }
     public GameObject textObject { get; set; }
 
-    private Hint(string value, float seconds, Func<bool> predicate = null)
+    private Hint(string value, float seconds, bool register, Func<bool> predicate = null)
     {
         this.value = value;
         this.seconds = seconds;
         this.predicate = predicate;
 
-        HintSystem.EnqueueHint(this);
+        if(register) HintSystem.EnqueueHint(this);
     }
+
+    private Hint(string value, float seconds, Func<bool> predicate = null) : this(value, seconds, true, predicate) { }
 
     public static Hint Create(string value, float seconds)
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class Reachable : MonoBehaviour
 {
 
-    protected static bool isReachable = false;
+    protected bool isReachable = false;
 
     void Start() { }
     void Update() { }
@@ -12,6 +12,7 @@ public abstract class Reachable : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         SetReachable(true);
+        Debug.LogWarning(this.gameObject.name);
     }
 
     private void OnTriggerExit(Collider other)
