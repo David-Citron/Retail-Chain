@@ -1,7 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerPickUp : Interactable
+public class PlayerPickUp : MonoBehaviour
 {
 
     private static PlayerPickUp instance;
@@ -14,14 +15,6 @@ public class PlayerPickUp : Interactable
     {
         instance = this;
         animator = GetComponent<Animator>();
-
-        AddInteraction(new Interaction(KeyCode.E, gameObject => PickUpItem(gameObject), new Hint[] {
-            new Hint(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => holdingItem == null)
-        }));
-
-        AddInteraction(new Interaction(KeyCode.Q, gameObject => DropHoldingItem(), new Hint[] {
-            new Hint(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null)
-        }));
     }
 
     void Update() {}
@@ -39,11 +32,9 @@ public class PlayerPickUp : Interactable
         holdingItem = itemGameObject;
         animator.SetBool("holding", true);
 
-        //if (currentHint != null) currentHint.stop = true;
         yield return new WaitForSecondsRealtime(.3f);
 
         //if (!Machine.IsReachable) currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null && !Machine.IsReachable);
-
         UpdateHandsPosition();
 
         itemGameObject.transform.SetParent(playerHands.transform);
@@ -53,6 +44,8 @@ public class PlayerPickUp : Interactable
         itemGameObject.SetActive(true); //To be sure, activate the gameobject.
 
         UpdateRigidbody(itemGameObject, true);
+        PlayerInputManager.instance.collidersInRange.Remove(holdingItem);
+        PlayerInputManager.CustomInteractionHints(PickUpInteractions(), holdingItem);
     }
 
     public void DropHoldingItem()
@@ -68,16 +61,14 @@ public class PlayerPickUp : Interactable
     }
 
     private void UpdateRigidbody(GameObject item, bool pickedUp)
-    {
+    {  
+        Rigidbody rigidbody = item.GetComponent<Rigidbody>();
+        if (rigidbody != null)  rigidbody.isKinematic = pickedUp;
+
         foreach (var collider in item.GetComponents<Collider>())
         {
-            if (collider.isTrigger) continue;
             collider.enabled = !pickedUp;
         }
-
-        Rigidbody rigidbody = item.GetComponent<Rigidbody>();
-        if (rigidbody == null) return;
-        rigidbody.isKinematic = pickedUp;
     }
 
     private void UpdateHandsPosition()
@@ -103,5 +94,15 @@ public class PlayerPickUp : Interactable
     }
 
     public static Optional<PlayerPickUp> Instance() => Optional<PlayerPickUp>.Of(instance);
-    public override string GetTag() => "Item";
+    public static List<Interaction> PickUpInteractions()
+    {
+        return new List<Interaction>() {
+            new Interaction(KeyCode.E, gameObject => instance.PickUp(gameObject), new Hint[] {
+                new Hint(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => holdingItem == null)
+            }),
+            new Interaction(KeyCode.Q, gameObject => instance.DropHoldingItem(), new Hint[] {
+                new Hint(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null)
+            })
+        };
+    }
 }

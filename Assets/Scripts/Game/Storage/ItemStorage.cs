@@ -81,7 +81,7 @@ public class ItemStorage : Interactable
             Destroy(gameObject);
         });
 
-        UpdateHints();
+       // UpdateHints();
 
         if (storedItems.ContainsKey(itemType))
         {
@@ -111,7 +111,7 @@ public class ItemStorage : Interactable
             if (item == null) return;
             pickUp.PickUp(item);
             ToggleUI(); //Close.
-            UpdateHints();
+            //UpdateHints();
         });
     }
 

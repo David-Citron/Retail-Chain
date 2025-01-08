@@ -3,20 +3,29 @@ using UnityEngine;
 
 public class PlayerInputManager : MonoBehaviour
 {
-    private static PlayerInputManager instance;
+    public static PlayerInputManager instance;
 
-    private List<GameObject> collidersInRange = new List<GameObject>();
+    public List<GameObject> collidersInRange = new List<GameObject>();
 
     public Hint currentHint;
 
-    private void Start()
-    {
-        instance = this;
-    }
+    private void Start() { instance = this; }
 
     private void Update()
     {
-        if (collidersInRange.Count == 0 || !Input.anyKeyDown) return;
+        if (!Input.anyKeyDown) return;
+
+        if (PlayerPickUp.holdingItem != null) CustomInteractionHints(PlayerPickUp.PickUpInteractions(), PlayerPickUp.holdingItem);
+        
+
+        if (collidersInRange.Count == 0) return;
+
+        KeyCode pressedKey = KeyCode.None;
+        foreach (KeyCode keyCode in System.Enum.GetValues(typeof(KeyCode)))
+        {
+            if (!Input.GetKeyDown(keyCode)) continue;
+            pressedKey = keyCode;
+        }
 
         GameObject nearestItem = collidersInRange[0];
         float nearestItemDistance = Vector3.Distance(transform.position, nearestItem.transform.position);
@@ -28,33 +37,76 @@ public class PlayerInputManager : MonoBehaviour
             nearestItem = collidersInRange[i];
         }
 
-        ExecuteActionsOfCollider(nearestItem);
-    }
-
-    private void ExecuteActionsOfCollider(GameObject gameObject)
-    {
         Interactable interactable = gameObject.GetComponent<Interactable>();
-        if (interactable == null) return;
-        interactable.Interact(KeyCode.Space, gameObject);
+        if (interactable == null)
+        {
+            ProcessPlayerInteractions(nearestItem, pressedKey);
+            return;
+        }
+
+        interactable.Interact(pressedKey, nearestItem);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.Equals(PlayerPickUp.holdingItem)) return; //Ensure that the holding item is not in collider.
         collidersInRange.Add(other.gameObject);
-        UpdateHints(other.gameObject);
+        UpdateHints(other.gameObject, true);
     }
 
     private void OnTriggerExit(Collider other)
     {
         collidersInRange.Remove(other.gameObject);
-        UpdateHints(other.gameObject);
+        UpdateHints(other.gameObject, false);
     }
 
-    private void UpdateHints(GameObject collidedObject)
+    private void UpdateHints(GameObject collidedObject, bool entry)
     {
         Interactable interactable = collidedObject.GetComponent<Interactable>();
-        if (interactable == null) return;
+        if (interactable == null)
+        {
+            if (!entry) return;
+            if (isItem(collidedObject)) CustomInteractionHints(PlayerPickUp.PickUpInteractions(), collidedObject);
+            return;
+        }
+
         interactable.inReach = !interactable.inReach;
         interactable.UpdateHints(collidedObject);
     }
+
+    private void ProcessPlayerInteractions(GameObject gameObject, KeyCode keyCode)
+    {
+        if (isItem(gameObject)) CustomInteraction(PlayerPickUp.PickUpInteractions(), gameObject, keyCode);
+
+    }
+
+    private void CustomInteraction(List<Interaction> interactions, GameObject gameObject, KeyCode keyCode)
+    {
+        Debug.Log("0");
+        foreach (var interaction in interactions)
+        {
+            if (interaction.keyCode != keyCode) continue;
+            interaction.onInteract.Invoke(gameObject);
+            Debug.Log("1");
+        }
+    }
+
+    public static void CustomInteractionHints(List<Interaction> interactions, GameObject gameObject)
+    {
+        foreach (var interaction in interactions)
+        {
+            interaction.hints.ForEach(hint =>
+            {
+                hint.addiotionalPredicate = () =>
+                {
+                    var list = instance.collidersInRange;
+                    return PlayerPickUp.holdingItem != null || list.Contains(gameObject);
+                };
+                if (hint.predicate == null || !hint.predicate.Invoke()) return;
+                HintSystem.EnqueueHint(hint);
+            });
+        }
+    }
+
+    private bool isItem(GameObject gameObject) => gameObject.tag != null && gameObject.tag.StartsWith("Item");
 }

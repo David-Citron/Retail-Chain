@@ -19,6 +19,7 @@ public abstract class Interactable : MonoBehaviour
         {
             if (interaction.keyCode != keyCode) continue;
             interaction.onInteract.Invoke(gameObject);
+            Debug.Log("-1");
         }
     }
 
@@ -36,8 +37,7 @@ public abstract class Interactable : MonoBehaviour
             if (interaction.hints.Count == 0) continue;
 
             interaction.hints.ForEach(hint => {
-                Debug.LogError(hint.predicate.Invoke());
-                hint.predicate += () => inReach;
+                hint.addiotionalPredicate = () => inReach;
                 if (hint.predicate == null || !hint.predicate.Invoke()) return;
                 HintSystem.EnqueueHint(hint);
             });

@@ -12,7 +12,7 @@ public class HintSystem : MonoBehaviour
     public TMP_SpriteAsset spriteAsset;
 
     public List<Hint> activeHints = new List<Hint>();
-    public static Queue<Hint> hints = new Queue<Hint>();
+    public Queue<Hint> hints = new Queue<Hint>();
 
     private float passedTime;
 
@@ -34,8 +34,8 @@ public class HintSystem : MonoBehaviour
 
     public static void EnqueueHint(Hint hint)
     {
-        if(hints.Any(el => el.value.Equals(hint.value)) || instance.activeHints.Any(el => el.value.Equals(hint.value))) return; //Protection of possible duplicate hint.
-        hints.Enqueue(hint);
+        if(instance.hints.Any(el => el.value.Equals(hint.value)) || instance.activeHints.Any(el => el.value.Equals(hint.value))) return; //Protection of possible duplicate hint.
+        instance.hints.Enqueue(hint);
     }
 
     private IEnumerator DisplayHint(Hint hint)
@@ -44,14 +44,13 @@ public class HintSystem : MonoBehaviour
 
         if (hint.predicate != null)
         {
-            while (hint.predicate.Invoke())
+            while (hint.predicate.Invoke() && (hint.addiotionalPredicate != null && hint.addiotionalPredicate.Invoke()))
             {
                 if (hint.stop)
                 {
                     ResetText(hint);
                     yield break;
                 }
-
                 yield return null;
             }
         }
@@ -104,6 +103,8 @@ public class Hint
     public Func<bool> predicate { get; set; }
     public bool stop { get; set; }
     public GameObject textObject { get; set; }
+
+    public Func<bool> addiotionalPredicate {  get; set; }
 
     public Hint(string value, float seconds, bool register, Func<bool> predicate = null)
     {

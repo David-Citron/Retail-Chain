@@ -9,7 +9,7 @@ public abstract class Machine : Interactable, IMachine
     protected GameObject resultItem = null;
 
     protected MachineType machineType;
-    protected MachineState machineState = MachineState.Idling;
+    public MachineState machineState = MachineState.Idling;
 
     protected ActionTimer actionTimer;
     protected CraftingRecipe currentRecipe;
@@ -41,25 +41,27 @@ public abstract class Machine : Interactable, IMachine
         AddInteraction(new Interaction(KeyCode.E, collider => PickUp(), new Hint[] {
             new Hint(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready))
         }));
+
         AddInteraction(new Interaction(KeyCode.Space, collider => StartInteraction(), new Hint[] {
             new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready),
-            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => CraftingManager.HasRecipesInMachine(machineType, PlayerPickUp.GetHoldingType()) && PlayerPickUp.GetHoldingType() != ItemType.None && machineState == MachineState.Idling),
-            new Hint("NO RECIPES FOUND", () => !CraftingManager.HasRecipesInMachine(machineType, PlayerPickUp.GetHoldingType()) && PlayerPickUp.GetHoldingType() != ItemType.None && machineState == MachineState.Idling)
+            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => CraftingManager.HasRecipesInMachine(machineType, PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling),
+            new Hint("NO RECIPES FOUND", () => !CraftingManager.HasRecipesInMachine(machineType, PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling)
         }));
     }
 
     protected virtual void StartInteraction()
     {
-        if (!Input.GetKeyDown(KeyCode.Space)) return;
-        
+        Debug.Log("0");
         if(machineState != MachineState.Ready && (inputPlaces.Length == 0 || currentItems.Count < inputPlaces.Length))
         {
             PutItem(PlayerPickUp.holdingItem);
+            Debug.Log("1");
             return;
         }
 
         if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", 1)) return;
 
+        Debug.Log("2");
         StartTimer();
         ChangeMachineState(MachineState.Working);
     }
@@ -76,8 +78,6 @@ public abstract class Machine : Interactable, IMachine
 
     protected virtual void PickUp()
     {
-        if (!Input.GetKeyDown(KeyCode.E)) return;
-        
         if (machineState == MachineState.Done && resultItem != null)
         {
             PlayerPickUp.Instance().IfPresent(handler => handler.PickUp(resultItem));
