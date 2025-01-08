@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemStorage : Reachable
+public class ItemStorage : Interactable
 {
 
     public static ItemStorage instance;
@@ -25,26 +25,17 @@ public class ItemStorage : Reachable
         {
             ToggleUI();
         });
+
+        AddInteraction(new Interaction(KeyCode.Space, collider => InsertItem(PlayerPickUp.holdingItem), new Hint[] {
+            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => PlayerPickUp.holdingItem != null)
+        }));
+
+        AddInteraction(new Interaction(KeyCode.E, collider => ToggleUI(), new Hint[] {
+            new Hint(HintText.GetHintButton(HintButton.E) + " TO OPEN STORAGE", () => PlayerPickUp.holdingItem == null)
+        }));
     }
 
-    void Update()
-    {
-        if (!isReachable) return;
-        
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            PlayerPickUp.Instance().IfPresent(pickUp =>
-            {
-                if (pickUp.holdingItem == null) return;
-                InsertItem(pickUp.holdingItem);
-            });
-
-            return;
-        }
-
-        if (!Input.GetKeyDown(KeyCode.E)) return;
-        ToggleUI();
-    }
+    void Update() { }
 
     public void ToggleUI()
     {
@@ -90,8 +81,7 @@ public class ItemStorage : Reachable
             Destroy(gameObject);
         });
 
-
-        ShowHints();
+        UpdateHints();
 
         if (storedItems.ContainsKey(itemType))
         {
@@ -121,24 +111,10 @@ public class ItemStorage : Reachable
             if (item == null) return;
             pickUp.PickUp(item);
             ToggleUI(); //Close.
-            ShowHints();
-        });
-    }
-
-    protected override void OnReachableChange()
-    {
-        ShowHints();
-    }
-
-    private void ShowHints()
-    {
-        if (!isReachable) return;
-        PlayerPickUp.Instance().IfPresent(pickUp =>
-        {
-            if (pickUp.holdingItem == null) Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => isReachable && pickUp.holdingItem == null);
-            else Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => isReachable && pickUp.holdingItem != null);
+            UpdateHints();
         });
     }
 
     public int GetStoredAmountOf(ItemType itemType) => storedItems.GetValueOrDefault(itemType, 0);
+    public override string GetTag() => "ItemStorage";
 }

@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 72821491}
   m_Layer: 0
   m_Name: Storage
-  m_TagString: Untagged
+  m_TagString: ItemStorage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1324,7 +1324,7 @@ GameObject:
   - component: {fileID: 594941802}
   m_Layer: 0
   m_Name: Cutter
-  m_TagString: Untagged
+  m_TagString: Machine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2911,7 +2911,7 @@ GameObject:
   - component: {fileID: 1356778717}
   m_Layer: 0
   m_Name: Printer
-  m_TagString: Untagged
+  m_TagString: Machine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4254,6 +4254,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9096548437731138778, guid: abb816de441697f44b9470be00a24872,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1880871613}
+    - targetCorrespondingSourceObject: {fileID: 9096548437731138778, guid: abb816de441697f44b9470be00a24872,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1880871608}
   m_SourcePrefab: {fileID: 100100000, guid: abb816de441697f44b9470be00a24872, type: 3}
 --- !u!4 &1880871601 stripped
@@ -4295,9 +4299,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34dc01dff4f28b64a9d3644df9d8739b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1880871611 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8799316324195865495, guid: abb816de441697f44b9470be00a24872,
+    type: 3}
+  m_PrefabInstance: {fileID: 1880871600}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1880871613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880871602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c03da5b740b63794da780c74c7e7ac59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   playerHands: {fileID: 772650927}
-  animator: {fileID: 0}
-  holdingItem: {fileID: 0}
+  animator: {fileID: 1880871611}
 --- !u!1 &1882433901
 GameObject:
   m_ObjectHideFlags: 0
@@ -5046,7 +5067,7 @@ GameObject:
   - component: {fileID: 2088759482}
   m_Layer: 0
   m_Name: GlueDispenser
-  m_TagString: Untagged
+  m_TagString: Machine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

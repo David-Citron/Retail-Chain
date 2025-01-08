@@ -28,24 +28,33 @@ public class PlayerInputManager : MonoBehaviour
             nearestItem = collidersInRange[i];
         }
 
-        ExecuteActionsOfCollider(gameObject);
+        ExecuteActionsOfCollider(nearestItem);
     }
 
     private void ExecuteActionsOfCollider(GameObject gameObject)
     {
         Interactable interactable = gameObject.GetComponent<Interactable>();
-        interactable.Reach();
         if (interactable == null) return;
-        interactable.Interact(KeyCode.Space);
+        interactable.Interact(KeyCode.Space, gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         collidersInRange.Add(other.gameObject);
+        UpdateHints(other.gameObject);
     }
 
     private void OnTriggerExit(Collider other)
     {
         collidersInRange.Remove(other.gameObject);
+        UpdateHints(other.gameObject);
+    }
+
+    private void UpdateHints(GameObject collidedObject)
+    {
+        Interactable interactable = collidedObject.GetComponent<Interactable>();
+        if (interactable == null) return;
+        interactable.inReach = !interactable.inReach;
+        interactable.UpdateHints(collidedObject);
     }
 }

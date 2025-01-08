@@ -1,30 +1,37 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerPickUp : MonoBehaviour
+public class PlayerPickUp : Interactable
 {
 
     private static PlayerPickUp instance;
 
     [SerializeField] private GameObject playerHands;
-    public GameObject holdingItem;
+    public static GameObject holdingItem;
     public Animator animator;
 
     void Start()
     {
         instance = this;
         animator = GetComponent<Animator>();
+
+        AddInteraction(new Interaction(KeyCode.E, gameObject => PickUpItem(gameObject), new Hint[] {
+            new Hint(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => holdingItem == null)
+        }));
+
+        AddInteraction(new Interaction(KeyCode.Q, gameObject => DropHoldingItem(), new Hint[] {
+            new Hint(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null)
+        }));
     }
 
-    void Update()
-    {
-        
-    }
+    void Update() {}
 
     public void PickUp(GameObject item)
     {
         StartCoroutine(PickUpItem(item));
     }
+
+    public static ItemType GetHoldingType() => Item.GetItemType(holdingItem).GetValueOrDefault();
 
     private IEnumerator PickUpItem(GameObject itemGameObject)
     {
@@ -96,4 +103,5 @@ public class PlayerPickUp : MonoBehaviour
     }
 
     public static Optional<PlayerPickUp> Instance() => Optional<PlayerPickUp>.Of(instance);
+    public override string GetTag() => "Item";
 }

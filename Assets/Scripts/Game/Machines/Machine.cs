@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Machine : MonoBehaviour, IMachine, Interactable
+public abstract class Machine : Interactable, IMachine
 {
-    protected List<Interaction> interactions = new List<Interaction>();
     protected List<CraftingRecipe> possibleRecipes = new List<CraftingRecipe>();
     protected List<GameObject> currentItems = new List<GameObject>();
 
@@ -24,7 +23,7 @@ public abstract class Machine : MonoBehaviour, IMachine, Interactable
         this.machineType = machineType;
     }
 
-    protected virtual void Start()
+    protected void Start()
     {
         foreach (var recipe in CraftingManager.recipes)
         {
@@ -32,11 +31,22 @@ public abstract class Machine : MonoBehaviour, IMachine, Interactable
             possibleRecipes.Add(recipe);
         }
 
-        new Interaction(KeyCode.E, () => PickUp(), );
-        new Interaction(KeyCode.Space, () => StartInteraction(), );
+        OnStart();
     }
 
-    protected virtual void Update() {}
+    protected void Update() {}
+
+    protected virtual void OnStart()
+    {
+        AddInteraction(new Interaction(KeyCode.E, collider => PickUp(), new Hint[] {
+            new Hint(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready))
+        }));
+        AddInteraction(new Interaction(KeyCode.Space, collider => StartInteraction(), new Hint[] {
+            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready),
+            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => CraftingManager.HasRecipesInMachine(machineType, PlayerPickUp.GetHoldingType()) && PlayerPickUp.GetHoldingType() != ItemType.None && machineState == MachineState.Idling),
+            new Hint("NO RECIPES FOUND", () => !CraftingManager.HasRecipesInMachine(machineType, PlayerPickUp.GetHoldingType()) && PlayerPickUp.GetHoldingType() != ItemType.None && machineState == MachineState.Idling)
+        }));
+    }
 
     protected virtual void StartInteraction()
     {
@@ -44,12 +54,7 @@ public abstract class Machine : MonoBehaviour, IMachine, Interactable
         
         if(machineState != MachineState.Ready && (inputPlaces.Length == 0 || currentItems.Count < inputPlaces.Length))
         {
-            PlayerPickUp.Instance().IfPresent(handler =>
-            {
-                var item = handler.holdingItem;
-                if (item == null)  return;
-                PutItem(item, handler);
-            });
+            PutItem(PlayerPickUp.holdingItem);
             return;
         }
 
@@ -88,24 +93,27 @@ public abstract class Machine : MonoBehaviour, IMachine, Interactable
         ChangeMachineState(MachineState.Idling);
     }
 
-    protected virtual void PutItem(GameObject input, PlayerPickUp handler)
+    protected virtual void PutItem(GameObject input)
     {
         if (CooldownHandler.IsUnderCreateIfNot(machineType + "_putItem", 1)) return;
 
         ItemType inputType = Item.GetItemType(input).GetValueOrDefault();
-        if(!IsValid(inputType))  return;
+        if(!IsValid(inputType)) return;
 
-        handler.DropHoldingItem();
-        currentItems.Add(input);
-        PlaceItem(input, true);
+        PlayerPickUp.Instance().IfPresent(handler =>
+        {
+            handler.DropHoldingItem();
+            currentItems.Add(input);
+            PlaceItem(input, true);
 
-        var craftingRecipe = possibleRecipes.Find(recipe => recipe.machineType == machineType && CraftingManager.ContainsAllItems(recipe, GetCurrentItems()));
-        if(craftingRecipe == null)  return;
+            var craftingRecipe = possibleRecipes.Find(recipe => recipe.machineType == machineType && CraftingManager.ContainsAllItems(recipe, GetCurrentItems()));
+            if (craftingRecipe == null) return;
 
-        currentRecipe = craftingRecipe;
+            currentRecipe = craftingRecipe;
 
-        //Inform that its ready.
-        ChangeMachineState(MachineState.Ready);
+            //Inform that its ready.
+            ChangeMachineState(MachineState.Ready);
+        });
     }
 
     protected virtual void ChangeMachineState(MachineState newState)
@@ -149,8 +157,6 @@ public abstract class Machine : MonoBehaviour, IMachine, Interactable
                 //Stop animation, there should be also some sparkles as a finish effect?
                 break;
         }
-
-        ShowHints();
     }
     
     protected bool IsValid(ItemType input)
@@ -200,39 +206,12 @@ public abstract class Machine : MonoBehaviour, IMachine, Interactable
         return list;
     }
 
-    protected virtual void ShowHints()
-    {
-        if (machineState == MachineState.Ready)
-        {
-            Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready);
-            Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => machineState == MachineState.Ready);
-            return;
-        }
-
-        PlayerPickUp.Instance().IfPresent(handler => {
-            ItemType itemType = Item.GetItemType(handler.holdingItem).GetValueOrDefault();
-
-            if (itemType == ItemType.None && machineState == MachineState.Done)
-            {
-                Hint.ShowWhile(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => machineState == MachineState.Done);
-                return;
-            }
-
-            if (machineState != MachineState.Idling) return;
-
-            bool anyRecipe = CraftingManager.HasRecipesInMachine(machineType, itemType);
-
-            if (anyRecipe) Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => itemType != ItemType.None && anyRecipe && machineState == MachineState.Idling);
-            else Hint.ShowWhile("NO RECIPES FOUND", () => itemType != ItemType.None && !anyRecipe && machineState == MachineState.Idling);
-        });
-    }
-
-    public List<Interaction> GetInteractions() => interactions;
     public List<GameObject> GetCurrentGameObjects() => currentItems;
     public MachineType GetMachineType() => machineType;
     public GameObject GetResultPlace() => resultPlace;
     public MachineState GetMachineState() => machineState;
     public GameObject[] GetInputPlaces() => inputPlaces;
+    public override string GetTag() => "Machine";
     public abstract bool PlayAnimation();
 }
 

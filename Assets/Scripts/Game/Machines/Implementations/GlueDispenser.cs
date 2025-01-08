@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GlueDispenser : Machine
@@ -10,7 +9,14 @@ public class GlueDispenser : Machine
 
     public GlueDispenser() : base(MachineType.GlueDispenser) { }
 
-    protected override void Update()
+    protected override void OnStart()
+    {
+        AddInteraction(new Interaction(KeyCode.Space, i => StartInteraction(), new Hint[] {
+            new Hint(HintText.GetHintButton(HintButton.SPACE) + (PlayerPickUp.holdingItem == null ? " TO GET CANISTER" : " TO FILL DISPENSER"), () => machineState == MachineState.Ready)
+        }));
+    }
+
+    protected override void StartInteraction()
     {
         if (!Input.GetKeyDown(KeyCode.Space)) return;
 
@@ -42,20 +48,6 @@ public class GlueDispenser : Machine
             }, currentRecipe.time, 1).Run();
     }
 
-    /*protected override void OnReachableChange()
-    {
-        base.OnReachableChange();
-        UpdateRecipe();
-    }*/
-
-    protected override void ShowHints()
-    {
-        if (machineState != MachineState.Ready) return;
-        
-        var holdingItem = PlayerPickUp.Instance().GetValueOrDefault().holdingItem;
-        Hint.ShowWhile(HintText.GetHintButton(HintButton.SPACE) + (holdingItem == null ? " TO GET CANISTER" : " TO FILL DISPENSER"), () => machineState == MachineState.Ready);
-    }
-
     protected override void ChangeMachineState(MachineState newState)
     {
         base.ChangeMachineState(newState);
@@ -66,7 +58,7 @@ public class GlueDispenser : Machine
         {
             PlayerPickUp.Instance().IfPresent(pickUp =>
             {
-                var holdingItem = pickUp.holdingItem;
+                var holdingItem = PlayerPickUp.holdingItem;
                 if (holdingItem == null) return;
 
                 pickUp.DropHoldingItem();

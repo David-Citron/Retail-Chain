@@ -2,26 +2,45 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface Interactable
+public abstract class Interactable : MonoBehaviour
 {
 
-    abstract List<Interaction> GetInteractions();
+    protected List<Interaction> interactions = new List<Interaction>();
+    public bool inReach { get; set; }
+    public abstract string GetTag();
 
-    public void Interact(KeyCode keyCode)
+    public void AddInteraction(Interaction interaction) => interactions.Add(interaction);
+
+    public void Interact(KeyCode keyCode, GameObject gameObject)
     {
-        foreach (var interaction in GetInteractions())
+        if (GetTag().Equals("Item") && gameObject.tag.StartsWith(GetTag()) || !gameObject.CompareTag(GetTag())) return;
+
+        foreach (var interaction in interactions)
         {
             if (interaction.keyCode != keyCode) continue;
+            interaction.onInteract.Invoke(gameObject);
         }
     }
 
-    public void Reach()
+    public void UpdateHints(GameObject gameObject)
     {
-        foreach (var interaction in GetInteractions())
+        if (GetTag().Equals("Item") && gameObject.tag.StartsWith(GetTag()) || !gameObject.CompareTag(GetTag())) return;
+
+        UpdateHints();
+    }
+
+    public void UpdateHints()
+    {
+        foreach (var interaction in interactions)
         {
             if (interaction.hints.Count == 0) continue;
 
-            interaction.hints.ForEach(hint => HintSystem.EnqueueHint(hint));
+            interaction.hints.ForEach(hint => {
+                Debug.LogError(hint.predicate.Invoke());
+                hint.predicate += () => inReach;
+                if (hint.predicate == null || !hint.predicate.Invoke()) return;
+                HintSystem.EnqueueHint(hint);
+            });
         }
     }
 }
@@ -29,10 +48,10 @@ public interface Interactable
 public class Interaction
 {
     public KeyCode keyCode { get; private set; }
-    public Action onInteract {  get; private set; }
+    public Action<GameObject> onInteract {  get; private set; }
     public List<Hint> hints { get; } = new List<Hint>();
 
-    public Interaction(KeyCode keyCode, Action onInteract, Hint[] hints)
+    public Interaction(KeyCode keyCode, Action<GameObject> onInteract, Hint[] hints)
     {
         this.keyCode = keyCode;
         this.onInteract = onInteract;

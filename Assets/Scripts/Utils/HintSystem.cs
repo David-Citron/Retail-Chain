@@ -101,11 +101,11 @@ public class Hint
 {
     public string value { get; private set; }
     public float seconds { get; private set; }
-    public Func<bool> predicate { get; private set; }
+    public Func<bool> predicate { get; set; }
     public bool stop { get; set; }
     public GameObject textObject { get; set; }
 
-    private Hint(string value, float seconds, bool register, Func<bool> predicate = null)
+    public Hint(string value, float seconds, bool register, Func<bool> predicate = null)
     {
         this.value = value;
         this.seconds = seconds;
@@ -114,7 +114,8 @@ public class Hint
         if(register) HintSystem.EnqueueHint(this);
     }
 
-    private Hint(string value, float seconds, Func<bool> predicate = null) : this(value, seconds, true, predicate) { }
+    public Hint(string value, float seconds, Func<bool> predicate = null) : this(value, seconds, true, predicate) { }
+    public Hint(string value, Func<bool> predicate = null) : this(value, 0, false, predicate) { }
 
     public static Hint Create(string value, float seconds)
     {
