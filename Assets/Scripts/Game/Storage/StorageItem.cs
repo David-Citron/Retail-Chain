@@ -21,7 +21,8 @@ public class StorageContentItem : MonoBehaviour
         this.itemType = itemType;
         this.amount = amount;
 
-        itemName.text = Item.GetNameOf(itemType) + "\n" + amount + "x";
+        itemName.text = ItemManager.GetNameOf(itemType) + "\n" + amount + "x";
+        icon.texture = ItemManager.GetIcon(itemType);
 
         takeButton.enabled = true;
         takeButton.interactable = true;

@@ -26,12 +26,12 @@ public class ItemStorage : Interactable
             ToggleUI();
         });
 
-        AddInteraction(new Interaction(KeyCode.Space, collider => InsertItem(PlayerPickUp.holdingItem), new Hint[] {
-            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => PlayerPickUp.holdingItem != null)
+        AddInteraction(new Interaction(() => Input.GetKeyDown(KeyCode.Space) && PlayerInputManager.IsIn(GetTag()), collider => InsertItem(PlayerPickUp.holdingItem), new Hint[] {
+            new Hint(GetTag(), HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => PlayerPickUp.holdingItem != null)
         }));
 
-        AddInteraction(new Interaction(KeyCode.E, collider => ToggleUI(), new Hint[] {
-            new Hint(HintText.GetHintButton(HintButton.E) + " TO OPEN STORAGE", () => PlayerPickUp.holdingItem == null)
+        AddInteraction(new Interaction(() => Input.GetKeyDown(KeyCode.E) && PlayerInputManager.IsIn(GetTag()), collider => ToggleUI(), new Hint[] {
+            new Hint(GetTag(), HintText.GetHintButton(HintButton.E) + " TO OPEN STORAGE", () => PlayerPickUp.holdingItem == null)
         }));
     }
 
@@ -68,7 +68,7 @@ public class ItemStorage : Interactable
 
     public void InsertItem(GameObject gameObject)
     {
-        ItemType itemType = Item.GetItemType(gameObject).GetValueOrDefault();
+        ItemType itemType = ItemManager.GetItemType(gameObject).GetValueOrDefault();
         if(itemType == ItemType.None)
         {
             Hint.Create("INVALID ITEM", 1);
@@ -81,7 +81,7 @@ public class ItemStorage : Interactable
             Destroy(gameObject);
         });
 
-       // UpdateHints();
+        UpdateHints();
 
         if (storedItems.ContainsKey(itemType))
         {
@@ -109,12 +109,12 @@ public class ItemStorage : Interactable
 
         PlayerPickUp.Instance().IfPresent(pickUp =>
         {
-            GameObject item = Item.GetGameObjectFromPrefab(itemType);
+            GameObject item = ItemManager.GetGameObjectFromPrefab(itemType);
             if (item == null) return;
             pickUp.PickUp(item);
             if (validate) ToggleUI();
             else TestingUtils.instance.testerUI.SetActive(false);
-            //UpdateHints();
+            UpdateHints();
         });
     }
 

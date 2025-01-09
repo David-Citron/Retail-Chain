@@ -116,7 +116,10 @@ public class Hint
     }
 
     public Hint(string value, float seconds, Func<bool> predicate = null) : this(value, seconds, true, predicate) { }
-    public Hint(string value, Func<bool> predicate = null) : this(value, 0, false, predicate) { }
+    public Hint(string value, Func<bool> predicate = null) : this(value, 0, false, predicate) {}
+    public Hint(string tag, string value, Func<bool> predicate = null) : this(value, 0, false, predicate) {
+        addiotionalPredicate = () => PlayerInputManager.IsIn(tag);
+    }
 
     public static Hint Create(string value, float seconds)
     {

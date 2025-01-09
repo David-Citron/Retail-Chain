@@ -38,14 +38,14 @@ public abstract class Machine : Interactable, IMachine
 
     protected virtual void OnStart()
     {
-        AddInteraction(new Interaction(KeyCode.E, collider => PickUp(), new Hint[] {
-            new Hint(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready))
-        }));
+        AddInteraction(new Interaction(() => Input.GetKeyDown(KeyCode.E) && PlayerInputManager.IsIn(GetTag()), collider => PickUp(),
+            new Hint(GetTag(), HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready))
+        ));
 
-        AddInteraction(new Interaction(KeyCode.Space, collider => StartInteraction(), new Hint[] {
-            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready),
-            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => CraftingManager.HasRecipesInMachine(machineType, PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling),
-            new Hint("NO RECIPES FOUND", () => !CraftingManager.HasRecipesInMachine(machineType, PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling)
+        AddInteraction(new Interaction(() => Input.GetKeyDown(KeyCode.Space) && PlayerInputManager.IsIn(GetTag()), collider => StartInteraction(), new Hint[] {
+            new Hint(GetTag(), HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready),
+            new Hint(GetTag(), HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling),
+            new Hint(GetTag(), "NO RECIPES FOUND", () => !IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling)
         }));
     }
 
@@ -94,7 +94,7 @@ public abstract class Machine : Interactable, IMachine
     {
         if (CooldownHandler.IsUnderCreateIfNot(machineType + "_putItem", 1)) return;
 
-        ItemType inputType = Item.GetItemType(item).GetValueOrDefault();
+        ItemType inputType = ItemManager.GetItemType(item).GetValueOrDefault();
         if(!IsValid(inputType)) return;
 
         PlayerPickUp.Instance().IfPresent(handler =>
@@ -143,7 +143,7 @@ public abstract class Machine : Interactable, IMachine
                 break;
 
             case MachineState.Done:
-                resultItem = Item.GetGameObjectFromPrefab(currentRecipe.output);
+                resultItem = ItemManager.GetGameObjectFromPrefab(currentRecipe.output);
                 PlaceItem(resultItem, false);
                 GetCurrentGameObjects().ForEach(item => Destroy(item));
 
@@ -159,7 +159,7 @@ public abstract class Machine : Interactable, IMachine
     
     protected bool IsValid(ItemType input)
     {
-        if (possibleRecipes.Count == 0)  return false;
+        if (possibleRecipes.Count == 0) return false;
         
         foreach (var recipe in possibleRecipes)
         {
@@ -189,7 +189,7 @@ public abstract class Machine : Interactable, IMachine
         if (item == null) return;
 
         GameObject place = null;
-        if(inputPlaces.Count > 1)
+        if(inputPlaces.Count > 0)
         {
             GameObject nearestSlot = inputPlaces[0];
             float nearestItemDistance = Vector3.Distance(PlayerInputManager.instance.transform.position, nearestSlot.transform.position);
@@ -220,7 +220,7 @@ public abstract class Machine : Interactable, IMachine
     protected List<ItemType> GetCurrentItems()
     {
         List<ItemType> list = new List<ItemType>();
-        GetCurrentGameObjects().ForEach(item => Item.GetItemType(item).IfPresent(itemType => list.Add(itemType)));
+        GetCurrentGameObjects().ForEach(item => ItemManager.GetItemType(item).IfPresent(itemType => list.Add(itemType)));
         return list;
     }
 
@@ -229,7 +229,6 @@ public abstract class Machine : Interactable, IMachine
     public GameObject GetResultPlace() => resultPlace;
     public MachineState GetMachineState() => machineState;
     public List<GameObject> GetInputPlaces() => inputPlaces;
-    public override string GetTag() => "Machine";
     public abstract bool PlayAnimation();
 }
 

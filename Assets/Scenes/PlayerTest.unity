@@ -1427,7 +1427,6 @@ GameObject:
   m_Component:
   - component: {fileID: 450133220}
   - component: {fileID: 450133223}
-  - component: {fileID: 450133222}
   - component: {fileID: 450133221}
   m_Layer: 0
   m_Name: Camera (1)
@@ -1495,14 +1494,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!81 &450133222
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 450133219}
-  m_Enabled: 1
 --- !u!20 &450133223
 Camera:
   m_ObjectHideFlags: 0
@@ -1564,7 +1555,6 @@ GameObject:
   m_Component:
   - component: {fileID: 500497089}
   - component: {fileID: 500497092}
-  - component: {fileID: 500497091}
   - component: {fileID: 500497090}
   m_Layer: 0
   m_Name: Camera (1)
@@ -1632,14 +1622,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!81 &500497091
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 500497088}
-  m_Enabled: 1
 --- !u!20 &500497092
 Camera:
   m_ObjectHideFlags: 0
@@ -1975,7 +1957,7 @@ GameObject:
   - component: {fileID: 594941802}
   m_Layer: 0
   m_Name: Cutter
-  m_TagString: Machine
+  m_TagString: MachineCutter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2487,7 +2469,6 @@ GameObject:
   m_Component:
   - component: {fileID: 803993030}
   - component: {fileID: 803993033}
-  - component: {fileID: 803993032}
   - component: {fileID: 803993031}
   m_Layer: 0
   m_Name: Camera (1)
@@ -2555,14 +2536,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!81 &803993032
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 803993029}
-  m_Enabled: 1
 --- !u!20 &803993033
 Camera:
   m_ObjectHideFlags: 0
@@ -3700,7 +3673,7 @@ GameObject:
   - component: {fileID: 1356778717}
   m_Layer: 0
   m_Name: Printer
-  m_TagString: Machine
+  m_TagString: MachinePrinter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3932,7 +3905,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1378021313}
   - component: {fileID: 1378021316}
-  - component: {fileID: 1378021315}
   - component: {fileID: 1378021314}
   m_Layer: 0
   m_Name: Camera
@@ -4000,14 +3972,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!81 &1378021315
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1378021312}
-  m_Enabled: 1
 --- !u!20 &1378021316
 Camera:
   m_ObjectHideFlags: 0
@@ -4059,6 +4023,58 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!1 &1379978411
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1379978413}
+  - component: {fileID: 1379978412}
+  m_Layer: 0
+  m_Name: ItemManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1379978412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1379978411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1204a0b6d8899174488f2e27a1d1cb4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items:
+  - {fileID: 11400000, guid: bb132ed1727f00d4394bd8388624db27, type: 2}
+  - {fileID: 11400000, guid: 68e1b47f86167504baaf3f87b1ee1ee5, type: 2}
+  - {fileID: 11400000, guid: 55f75468bb5b51d46923101720931f40, type: 2}
+  - {fileID: 11400000, guid: 9a33f2d6c3a252e4f870a35546895175, type: 2}
+  - {fileID: 11400000, guid: f8d8f5937c1236b418188ea7c843bc2a, type: 2}
+  - {fileID: 11400000, guid: 16a539d79ee5de042822599e7d33abe1, type: 2}
+  - {fileID: 11400000, guid: a11321ee2898de7428f9c4ccfa190632, type: 2}
+--- !u!4 &1379978413
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1379978411}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.076837, y: -13.827912, z: 10.282261}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1405253203
 GameObject:
   m_ObjectHideFlags: 0
@@ -4287,7 +4303,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1440813465}
   - component: {fileID: 1440813468}
-  - component: {fileID: 1440813467}
   - component: {fileID: 1440813466}
   m_Layer: 0
   m_Name: Camera
@@ -4355,14 +4370,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!81 &1440813467
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1440813464}
-  m_Enabled: 1
 --- !u!20 &1440813468
 Camera:
   m_ObjectHideFlags: 0
@@ -4429,7 +4436,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1477088480
 Transform:
   m_ObjectHideFlags: 0
@@ -5460,7 +5467,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1979048936}
   - component: {fileID: 1979048939}
-  - component: {fileID: 1979048938}
   - component: {fileID: 1979048937}
   m_Layer: 0
   m_Name: Camera (1)
@@ -5528,14 +5534,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!81 &1979048938
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1979048935}
-  m_Enabled: 1
 --- !u!20 &1979048939
 Camera:
   m_ObjectHideFlags: 0
@@ -5731,7 +5729,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1999040709}
   - component: {fileID: 1999040712}
-  - component: {fileID: 1999040711}
   - component: {fileID: 1999040710}
   m_Layer: 0
   m_Name: Camera
@@ -5799,14 +5796,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!81 &1999040711
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1999040708}
-  m_Enabled: 1
 --- !u!20 &1999040712
 Camera:
   m_ObjectHideFlags: 0
@@ -6082,7 +6071,7 @@ GameObject:
   - component: {fileID: 2088759482}
   m_Layer: 0
   m_Name: GlueDispenser
-  m_TagString: Machine
+  m_TagString: MachineGlueDispenser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7338,3 +7327,4 @@ SceneRoots:
   - {fileID: 936159633713351571}
   - {fileID: 1597104657}
   - {fileID: 1083402915}
+  - {fileID: 1379978413}

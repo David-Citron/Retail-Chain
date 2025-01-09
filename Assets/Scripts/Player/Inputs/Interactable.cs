@@ -4,40 +4,17 @@ using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour
 {
-
-    protected List<Interaction> interactions = new List<Interaction>();
-    public bool inReach { get; set; }
+    public static List<Interaction> interactions = new List<Interaction>();
     public abstract string GetTag();
 
     public void AddInteraction(Interaction interaction) => interactions.Add(interaction);
-
-    public void Interact(KeyCode keyCode, GameObject gameObject)
-    {
-        if (!gameObject.CompareTag(GetTag())) return;
-
-        foreach (var interaction in interactions)
-        {
-            if (interaction.keyCode != keyCode) continue;
-            interaction.onInteract.Invoke(gameObject);
-        }
-    }
-
-    public void UpdateHints(GameObject gameObject)
-    {
-        if (!gameObject.CompareTag(GetTag())) return;
-
-        UpdateHints();
-    }
 
     public void UpdateHints()
     {
         foreach (var interaction in interactions)
         {
-            if (interaction.hints.Count == 0) continue;
-
             interaction.hints.ForEach(hint => {
-                hint.addiotionalPredicate = () => inReach;
-                if (hint.predicate == null || !hint.predicate.Invoke()) return;
+                if (hint.predicate != null && !hint.predicate.Invoke() || hint.addiotionalPredicate != null && !hint.addiotionalPredicate()) return;
                 HintSystem.EnqueueHint(hint);
             });
         }
@@ -46,14 +23,16 @@ public abstract class Interactable : MonoBehaviour
 
 public class Interaction
 {
-    public KeyCode keyCode { get; private set; }
+    public Func<bool> prediction { get; private set; }
     public Action<GameObject> onInteract {  get; private set; }
     public List<Hint> hints { get; } = new List<Hint>();
 
-    public Interaction(KeyCode keyCode, Action<GameObject> onInteract, Hint[] hints)
+    public Interaction(Func<bool> prediction, Action<GameObject> onInteract, Hint[] hints)
     {
-        this.keyCode = keyCode;
+        this.prediction = prediction;
         this.onInteract = onInteract;
         this.hints.AddRange(hints);
     }
+
+    public Interaction(Func<bool> prediction, Action<GameObject> onInteract, Hint hint) : this(prediction, onInteract, new Hint[] {hint}) {}
 }

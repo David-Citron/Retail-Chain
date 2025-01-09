@@ -30,4 +30,5 @@ public class Printer : Machine
     }
 
     public override bool PlayAnimation() => false;
+    public override string GetTag() => "MachinePrinter";
 }

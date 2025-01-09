@@ -15,26 +15,21 @@ public class PlayerPickUp : MonoBehaviour
     {
         instance = this;
         animator = GetComponent<Animator>();
+
+        Interactable.interactions.AddRange(GetInteractions());
     }
 
     void Update() {}
 
-    public void PickUp(GameObject item)
-    {
-        StartCoroutine(PickUpItem(item));
-    }
-
-    public static ItemType GetHoldingType() => Item.GetItemType(holdingItem).GetValueOrDefault();
-
+    public void PickUp(GameObject item) => StartCoroutine(PickUpItem(item));
     private IEnumerator PickUpItem(GameObject itemGameObject)
     {
-        if (holdingItem != null) yield break;
+        if (itemGameObject == null || holdingItem != null) yield break;
         holdingItem = itemGameObject;
         animator.SetBool("holding", true);
 
         yield return new WaitForSecondsRealtime(.3f);
 
-        //if (!Machine.IsReachable) currentHint = Hint.ShowWhile(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null && !Machine.IsReachable);
         UpdateHandsPosition();
 
         itemGameObject.transform.SetParent(playerHands.transform);
@@ -45,7 +40,7 @@ public class PlayerPickUp : MonoBehaviour
 
         UpdateRigidbody(itemGameObject, true);
         PlayerInputManager.instance.collidersInRange.Remove(holdingItem);
-        PlayerInputManager.CustomInteractionHints(PickUpInteractions(), holdingItem);
+        PlayerInputManager.CustomInteractionHints(GetInteractions(), holdingItem);
     }
 
     public void DropHoldingItem()
@@ -73,7 +68,7 @@ public class PlayerPickUp : MonoBehaviour
 
     private void UpdateHandsPosition()
     {
-        Item.GetItemType(holdingItem).IfPresent(item =>
+        ItemManager.GetItemType(holdingItem).IfPresent(item =>
         {
             switch (item)
             {
@@ -93,16 +88,11 @@ public class PlayerPickUp : MonoBehaviour
         });
     }
 
+    public static ItemType GetHoldingType() => ItemManager.GetItemType(holdingItem).GetValueOrDefault();
     public static Optional<PlayerPickUp> Instance() => Optional<PlayerPickUp>.Of(instance);
-    public static List<Interaction> PickUpInteractions()
-    {
-        return new List<Interaction>() {
-            new Interaction(KeyCode.E, gameObject => instance.PickUp(gameObject), new Hint[] {
-                new Hint(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => holdingItem == null)
-            }),
-            new Interaction(KeyCode.Q, gameObject => instance.DropHoldingItem(), new Hint[] {
-                new Hint(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null)
-            })
-        };
-    }
+    public static List<Interaction> GetInteractions() => new List<Interaction>() {
+        new Interaction(() => Input.GetKeyDown(KeyCode.E), gameObject => instance.PickUp(gameObject), new Hint(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => holdingItem == null)),
+        new Interaction(() => Input.GetKeyDown(KeyCode.Q), gameObject => instance.DropHoldingItem(), new Hint(HintText.GetHintButton(HintButton.Q) + " TO DROP", () => holdingItem != null))
+    };
+    
 }

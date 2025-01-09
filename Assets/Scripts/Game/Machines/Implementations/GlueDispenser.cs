@@ -11,15 +11,13 @@ public class GlueDispenser : Machine
 
     protected override void OnStart()
     {
-        AddInteraction(new Interaction(KeyCode.Space, i => StartInteraction(), new Hint[] {
-            new Hint(HintText.GetHintButton(HintButton.SPACE) + (PlayerPickUp.holdingItem == null ? " TO GET CANISTER" : " TO FILL DISPENSER"), () => machineState == MachineState.Ready)
+        AddInteraction(new Interaction(() => Input.GetKeyDown(KeyCode.Space) && PlayerInputManager.IsIn(GetTag()), i => StartInteraction(), new Hint[] {
+            new Hint(GetTag(), HintText.GetHintButton(HintButton.SPACE) + (PlayerPickUp.holdingItem == null ? " TO GET CANISTER" : " TO FILL DISPENSER"), () => machineState == MachineState.Ready)
         }));
     }
 
     protected override void StartInteraction()
     {
-        if (!Input.GetKeyDown(KeyCode.Space)) return;
-
         if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", 1)) return;
 
         ChangeMachineState(MachineState.Working);
@@ -111,4 +109,5 @@ public class GlueDispenser : Machine
     }
 
     public override bool PlayAnimation() => true;
+    public override string GetTag() => "MachineGlueDispenser";
 }

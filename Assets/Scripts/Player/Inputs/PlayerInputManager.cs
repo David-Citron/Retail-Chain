@@ -1,51 +1,43 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerInputManager : MonoBehaviour
 {
     public static PlayerInputManager instance;
 
-    public List<GameObject> collidersInRange = new List<GameObject>();
+    public List<GameObject> collidersInRange;
 
     public Hint currentHint;
 
-    private void Start() { instance = this; }
+    private void Start() {
+        instance = this;
+        collidersInRange = new List<GameObject>();
+    }
 
     private void Update()
     {
         if (!Input.anyKeyDown) return;
-        KeyCode pressedKey = KeyCode.None;
-        foreach (KeyCode keyCode in System.Enum.GetValues(typeof(KeyCode)))
+
+        GameObject nearestItem = null;
+        if (collidersInRange.Count > 0)
         {
-            if (!Input.GetKeyDown(keyCode)) continue;
-            pressedKey = keyCode;
+            nearestItem = collidersInRange[0];
+            float nearestItemDistance = Vector3.Distance(transform.position, nearestItem.transform.position);
+            for (int i = 0; i < collidersInRange.Count; i++)
+            {
+                float currentItemDistance = Vector3.Distance(transform.position, collidersInRange[i].transform.position);
+                if (currentItemDistance > nearestItemDistance) break;
+                nearestItemDistance = currentItemDistance;
+                nearestItem = collidersInRange[i];
+            }
         }
 
-        if (collidersInRange.Count == 0)
+        Interactable.interactions.ForEach(interaction =>
         {
-            if (PlayerPickUp.holdingItem != null) CustomInteraction(PlayerPickUp.PickUpInteractions(), PlayerPickUp.holdingItem, pressedKey);
-            return;
-        }
-
-
-        GameObject nearestItem = collidersInRange[0];
-        float nearestItemDistance = Vector3.Distance(transform.position, nearestItem.transform.position);
-        for (int i = 0; i < collidersInRange.Count; i++)
-        {
-            float currentItemDistance = Vector3.Distance(transform.position, collidersInRange[i].transform.position);
-            if (currentItemDistance > nearestItemDistance) break;
-            nearestItemDistance = currentItemDistance;
-            nearestItem = collidersInRange[i];
-        }
-
-        Interactable interactable = nearestItem.GetComponent<Interactable>();
-        if (interactable == null)
-        {
-            ProcessPlayerInteractions(nearestItem, pressedKey);
-            return;
-        }
-
-        interactable.Interact(pressedKey, nearestItem);
+            if (!interaction.prediction.Invoke()) return;
+            interaction.onInteract.Invoke(nearestItem);
+        });
     }
 
     private void OnTriggerEnter(Collider other)
@@ -67,27 +59,11 @@ public class PlayerInputManager : MonoBehaviour
         if (interactable == null)
         {
             if (!entry) return;
-            if (isItem(collidedObject)) CustomInteractionHints(PlayerPickUp.PickUpInteractions(), collidedObject);
+            if (isItem(collidedObject)) CustomInteractionHints(PlayerPickUp.GetInteractions(), collidedObject);
             return;
         }
 
-        interactable.inReach = !interactable.inReach;
-        interactable.UpdateHints(collidedObject);
-    }
-
-    private void ProcessPlayerInteractions(GameObject gameObject, KeyCode keyCode)
-    {
-        if (isItem(gameObject)) CustomInteraction(PlayerPickUp.PickUpInteractions(), gameObject, keyCode);
-
-    }
-
-    private void CustomInteraction(List<Interaction> interactions, GameObject gameObject, KeyCode keyCode)
-    {
-        foreach (var interaction in interactions)
-        {
-            if (interaction.keyCode != keyCode) continue;
-            interaction.onInteract.Invoke(gameObject);
-        }
+        interactable.UpdateHints();
     }
 
     public static void CustomInteractionHints(List<Interaction> interactions, GameObject gameObject)
@@ -98,7 +74,7 @@ public class PlayerInputManager : MonoBehaviour
             {
                 hint.addiotionalPredicate = () =>
                 {
-                    var list = instance.collidersInRange;
+                    var list = new List<GameObject>(instance.collidersInRange);
                     return PlayerPickUp.holdingItem != null || list.Contains(gameObject);
                 };
                 if (hint.predicate == null || !hint.predicate.Invoke()) return;
@@ -108,4 +84,9 @@ public class PlayerInputManager : MonoBehaviour
     }
 
     private bool isItem(GameObject gameObject) => gameObject.tag != null && gameObject.tag.StartsWith("Item");
+    public static bool IsIn(string tag)
+    {
+        var copy = new List<GameObject>(instance.collidersInRange);
+        return copy.Any(gameObject => gameObject.tag != null && gameObject.tag.Equals(tag));
+     }
 }

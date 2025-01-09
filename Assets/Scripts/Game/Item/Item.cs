@@ -1,5 +1,3 @@
-using System;
-using UnityEditor;
 using UnityEngine;
 
 public class Item : MonoBehaviour
@@ -17,39 +15,6 @@ public class Item : MonoBehaviour
     void Update()
     {
         
-    }
-
-
-    public static Optional<ItemType> GetItemType(GameObject gameObject)
-    {
-        if (Enum.TryParse(gameObject == null ? "" : gameObject.tag.Replace("Item", ""), out ItemType itemType)) return Optional<ItemType>.Of(itemType);
-        else return Optional<ItemType>.Empty();
-    }
-
-    /// <summary>
-    /// Gets the prefab item based on the ItemType.
-    /// </summary>
-    /// <param name="type">The ItemType</param>
-    /// <returns>New gameobject</returns>
-    public static GameObject GetGameObjectFromPrefab(ItemType type)
-    {
-        if (type == ItemType.None) return null;
-
-        UnityEngine.Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Items/" + type + ".prefab", typeof(GameObject));
-        if (prefab == null) return null;
-        return (GameObject) Instantiate(prefab);
-    }
-
-    public static string GetNameOf(ItemType type)
-    {
-        switch(type)
-        {
-            case ItemType.GlueCanister: return "Glue Canister";
-            case ItemType.EmptyBook: return "Empty Book";
-            case ItemType.GlueBarrel: return "Glue Barrel";
-            case ItemType.None: return "Null";
-            default: return type.ToString();
-        }
     }
 }
 
