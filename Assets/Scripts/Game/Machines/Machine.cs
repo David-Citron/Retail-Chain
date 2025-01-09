@@ -51,17 +51,14 @@ public abstract class Machine : Interactable, IMachine
 
     protected virtual void StartInteraction()
     {
-        Debug.Log("0");
         if(machineState != MachineState.Ready && (inputPlaces.Length == 0 || currentItems.Count < inputPlaces.Length))
         {
             PutItem(PlayerPickUp.holdingItem);
-            Debug.Log("1");
             return;
         }
 
         if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", 1)) return;
 
-        Debug.Log("2");
         StartTimer();
         ChangeMachineState(MachineState.Working);
     }
@@ -124,7 +121,7 @@ public abstract class Machine : Interactable, IMachine
         if (machineState != MachineState.Working && PlayAnimation())
         {
             PlayerMovement.freeze = false;
-            //PlayerPickUp.PlayerAnimator().IfPresent(animator => animator.SetBool("working", false));
+            PlayerPickUp.Instance().IfPresent(pikUp => pikUp.animator.SetBool("working", false));
         }
 
         switch (machineState)
@@ -137,7 +134,7 @@ public abstract class Machine : Interactable, IMachine
             case MachineState.Working:
                 if(PlayAnimation())
                 {
-                    //PlayerPickUp.PlayerAnimator().IfPresent(animator => animator.SetBool("working", true));
+                    PlayerPickUp.Instance().IfPresent(pikUp => pikUp.animator.SetBool("working", true));
                     PlayerMovement.freeze = true;
                 }
 
@@ -157,6 +154,7 @@ public abstract class Machine : Interactable, IMachine
                 //Stop animation, there should be also some sparkles as a finish effect?
                 break;
         }
+        UpdateHints();
     }
     
     protected bool IsValid(ItemType input)

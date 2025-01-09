@@ -14,18 +14,19 @@ public class PlayerInputManager : MonoBehaviour
     private void Update()
     {
         if (!Input.anyKeyDown) return;
-
-        if (PlayerPickUp.holdingItem != null) CustomInteractionHints(PlayerPickUp.PickUpInteractions(), PlayerPickUp.holdingItem);
-        
-
-        if (collidersInRange.Count == 0) return;
-
         KeyCode pressedKey = KeyCode.None;
         foreach (KeyCode keyCode in System.Enum.GetValues(typeof(KeyCode)))
         {
             if (!Input.GetKeyDown(keyCode)) continue;
             pressedKey = keyCode;
         }
+
+        if (collidersInRange.Count == 0)
+        {
+            if (PlayerPickUp.holdingItem != null) CustomInteraction(PlayerPickUp.PickUpInteractions(), PlayerPickUp.holdingItem, pressedKey);
+            return;
+        }
+
 
         GameObject nearestItem = collidersInRange[0];
         float nearestItemDistance = Vector3.Distance(transform.position, nearestItem.transform.position);
@@ -37,7 +38,7 @@ public class PlayerInputManager : MonoBehaviour
             nearestItem = collidersInRange[i];
         }
 
-        Interactable interactable = gameObject.GetComponent<Interactable>();
+        Interactable interactable = nearestItem.GetComponent<Interactable>();
         if (interactable == null)
         {
             ProcessPlayerInteractions(nearestItem, pressedKey);
@@ -82,12 +83,10 @@ public class PlayerInputManager : MonoBehaviour
 
     private void CustomInteraction(List<Interaction> interactions, GameObject gameObject, KeyCode keyCode)
     {
-        Debug.Log("0");
         foreach (var interaction in interactions)
         {
             if (interaction.keyCode != keyCode) continue;
             interaction.onInteract.Invoke(gameObject);
-            Debug.Log("1");
         }
     }
 

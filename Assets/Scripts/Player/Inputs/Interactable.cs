@@ -13,19 +13,18 @@ public abstract class Interactable : MonoBehaviour
 
     public void Interact(KeyCode keyCode, GameObject gameObject)
     {
-        if (GetTag().Equals("Item") && gameObject.tag.StartsWith(GetTag()) || !gameObject.CompareTag(GetTag())) return;
+        if (!gameObject.CompareTag(GetTag())) return;
 
         foreach (var interaction in interactions)
         {
             if (interaction.keyCode != keyCode) continue;
             interaction.onInteract.Invoke(gameObject);
-            Debug.Log("-1");
         }
     }
 
     public void UpdateHints(GameObject gameObject)
     {
-        if (GetTag().Equals("Item") && gameObject.tag.StartsWith(GetTag()) || !gameObject.CompareTag(GetTag())) return;
+        if (!gameObject.CompareTag(GetTag())) return;
 
         UpdateHints();
     }
