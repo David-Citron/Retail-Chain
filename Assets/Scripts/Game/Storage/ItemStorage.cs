@@ -92,25 +92,28 @@ public class ItemStorage : Interactable
         storedItems.Add(itemType, GetStoredAmountOf(itemType) + 1);
     }
 
-    public void TakeItem(ItemType itemType)
+    public void TakeItem(ItemType itemType, bool validate)
     {
         int amount = GetStoredAmountOf(itemType);
 
-        if (amount <= 0)
+        if (amount <= 0 && validate)
         {
             Hint.Create("THERE IS NOT ENOUGH ITEMS", 2);
             return;
         }
 
-        if (amount > 1) storedItems[itemType] = amount - 1;
-        else storedItems.Remove(itemType);
+        if(validate) {
+            if (amount > 1) storedItems[itemType] = amount - 1;
+            else storedItems.Remove(itemType);
+        }
 
         PlayerPickUp.Instance().IfPresent(pickUp =>
         {
             GameObject item = Item.GetGameObjectFromPrefab(itemType);
             if (item == null) return;
             pickUp.PickUp(item);
-            ToggleUI(); //Close.
+            if (validate) ToggleUI();
+            else TestingUtils.instance.testerUI.SetActive(false);
             //UpdateHints();
         });
     }
