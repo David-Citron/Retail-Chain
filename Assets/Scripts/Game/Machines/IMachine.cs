@@ -5,9 +5,9 @@ public interface IMachine
 {
 
     List<GameObject> GetCurrentGameObjects();
+    List<GameObject> GetInputPlaces();
 
     GameObject GetResultPlace();
-    GameObject[] GetInputPlaces();
 
     MachineType GetMachineType();
     MachineState GetMachineState();

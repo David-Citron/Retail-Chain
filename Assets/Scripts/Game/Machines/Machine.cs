@@ -15,7 +15,7 @@ public abstract class Machine : Interactable, IMachine
     protected CraftingRecipe currentRecipe;
 
     [SerializeField] private GameObject resultPlace;
-    [SerializeField] private GameObject[] inputPlaces;
+    [SerializeField] private List<GameObject> inputPlaces;
     [SerializeField] private Animator animator;
 
     public Machine(MachineType machineType)
@@ -51,7 +51,7 @@ public abstract class Machine : Interactable, IMachine
 
     protected virtual void StartInteraction()
     {
-        if(machineState != MachineState.Ready && (inputPlaces.Length == 0 || currentItems.Count < inputPlaces.Length))
+        if(machineState != MachineState.Ready && (inputPlaces.Count == 0 || currentItems.Count < inputPlaces.Count))
         {
             PutItem(PlayerPickUp.holdingItem);
             return;
@@ -90,18 +90,18 @@ public abstract class Machine : Interactable, IMachine
         ChangeMachineState(MachineState.Idling);
     }
 
-    protected virtual void PutItem(GameObject input)
+    protected virtual void PutItem(GameObject item)
     {
         if (CooldownHandler.IsUnderCreateIfNot(machineType + "_putItem", 1)) return;
 
-        ItemType inputType = Item.GetItemType(input).GetValueOrDefault();
+        ItemType inputType = Item.GetItemType(item).GetValueOrDefault();
         if(!IsValid(inputType)) return;
 
         PlayerPickUp.Instance().IfPresent(handler =>
         {
             handler.DropHoldingItem();
-            currentItems.Add(input);
-            PlaceItem(input, true);
+            currentItems.Add(item);
+            PlaceItem(item, true);
 
             var craftingRecipe = possibleRecipes.Find(recipe => recipe.machineType == machineType && CraftingManager.ContainsAllItems(recipe, GetCurrentItems()));
             if (craftingRecipe == null) return;
@@ -127,7 +127,7 @@ public abstract class Machine : Interactable, IMachine
         switch (machineState)
         {
             case MachineState.Ready:
-                if (inputPlaces.Length != 0 && currentItems.Count <= 0) ChangeMachineState(MachineState.Idling); // Check if something messed up and there is no items => change state back to Idling
+                if (inputPlaces.Count != 0 && currentItems.Count <= 0) ChangeMachineState(MachineState.Idling); // Check if something messed up and there is no items => change state back to Idling
                 CircleTimer.Stop();
                 break;
 
@@ -187,7 +187,27 @@ public abstract class Machine : Interactable, IMachine
     protected virtual void PlaceItem(GameObject item, bool isInput)
     {
         if (item == null) return;
-        GameObject place = isInput ? inputPlaces[currentItems.IndexOf(item)] : resultPlace;
+
+        GameObject place = null;
+        if(inputPlaces.Count > 1)
+        {
+            GameObject nearestSlot = inputPlaces[0];
+            float nearestItemDistance = Vector3.Distance(PlayerInputManager.instance.transform.position, nearestSlot.transform.position);
+            for (int i = 0; i < inputPlaces.Count; i++)
+            {
+                float currentItemDistance = Vector3.Distance(PlayerInputManager.instance.transform.position, inputPlaces[i].transform.position);
+                if (currentItemDistance > nearestItemDistance) break;
+                nearestItemDistance = currentItemDistance;
+                nearestSlot = inputPlaces[i];
+            }
+
+            place = nearestSlot;
+        }
+
+        if (place == null) return;
+
+        if (!isInput) place = inputPlaces.Find(input => input != place);
+
         item.transform.SetParent(place.transform);
 
         Rigidbody rigidbody = item.GetComponent<Rigidbody>();
@@ -208,7 +228,7 @@ public abstract class Machine : Interactable, IMachine
     public MachineType GetMachineType() => machineType;
     public GameObject GetResultPlace() => resultPlace;
     public MachineState GetMachineState() => machineState;
-    public GameObject[] GetInputPlaces() => inputPlaces;
+    public List<GameObject> GetInputPlaces() => inputPlaces;
     public override string GetTag() => "Machine";
     public abstract bool PlayAnimation();
 }
