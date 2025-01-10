@@ -15,5 +15,5 @@ MonoBehaviour:
   itemType: 1
   itemName: Package
   icon: {fileID: 8400000, guid: f11669437bb3e8e44943f9f02a815740, type: 2}
-  itemPrefab: {fileID: 4377304545986593602, guid: 8489543da3348dd429e24477acf7f1b0,
+  itemPrefab: {fileID: 8382797891489782671, guid: 47617510c55b6a342a79458b52b2c476,
     type: 3}

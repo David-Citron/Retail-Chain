@@ -21,24 +21,22 @@ public class PlayerPickUp : MonoBehaviour
 
     void Update() {}
 
-    public void PickUp(GameObject item) => StartCoroutine(PickUpItem(item));
-    private IEnumerator PickUpItem(GameObject itemGameObject)
+    public void PickUp(GameObject itemGameObject)
     {
-        if (itemGameObject == null || holdingItem != null) yield break;
+        if (itemGameObject == null || holdingItem != null) return;
+
         holdingItem = itemGameObject;
+        UpdateHandsPosition();
         animator.SetBool("holding", true);
 
-        yield return new WaitForSecondsRealtime(.3f);
+        itemGameObject.SetActive(true); //To be sure, activate the gameobject.
 
-        UpdateHandsPosition();
+        UpdateRigidbody(itemGameObject, true);
 
         itemGameObject.transform.SetParent(playerHands.transform);
         itemGameObject.transform.localPosition = Vector3.zero;
         itemGameObject.transform.localRotation = Quaternion.Euler(-90, 0, -90);
 
-        itemGameObject.SetActive(true); //To be sure, activate the gameobject.
-
-        UpdateRigidbody(itemGameObject, true);
         PlayerInputManager.instance.collidersInRange.Remove(holdingItem);
         PlayerInputManager.CustomInteractionHints(GetInteractions(), holdingItem);
     }

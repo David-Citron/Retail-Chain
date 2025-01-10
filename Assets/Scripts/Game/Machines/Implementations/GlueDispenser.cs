@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GlueDispenser : Machine
@@ -12,12 +13,15 @@ public class GlueDispenser : Machine
     protected override void OnStart()
     {
         AddInteraction(new Interaction(() => Input.GetKeyDown(KeyCode.Space) && PlayerInputManager.IsIn(GetTag()), i => StartInteraction(), new Hint[] {
-            new Hint(GetTag(), HintText.GetHintButton(HintButton.SPACE) + (PlayerPickUp.holdingItem == null ? " TO GET CANISTER" : " TO FILL DISPENSER"), () => machineState == MachineState.Ready)
+            new Hint(GetTag(), HintText.GetHintButton(HintButton.SPACE) + " TO GET CANISTER", () => PlayerPickUp.holdingItem == null && machineState == MachineState.Ready),
+            new Hint(GetTag(), HintText.GetHintButton(HintButton.SPACE) + " TO FILL GLUE DISPENSER", () => PlayerPickUp.holdingItem != null),
+            new Hint(GetTag(), "NO RECIPES FOUND", () => PlayerPickUp.GetHoldingType() != ItemType.None && PlayerPickUp.GetHoldingType() != ItemType.GlueBarrel && machineState == MachineState.Idling)
         }));
     }
 
     protected override void StartInteraction()
     {
+        UpdateRecipe();
         if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", 1)) return;
 
         ChangeMachineState(MachineState.Working);
@@ -89,23 +93,16 @@ public class GlueDispenser : Machine
     private void UpdateRecipe()
     {
         if (possibleRecipes.Count == 0) return;
-        /*
-        if (!isReachable)
-        {
-            currentRecipe = null;
-            return;
-        }
-
-        var holdingItem = PlayerPickUp.Instance().GetValueOrDefault().holdingItem;
-        var holdingType = Item.GetItemType(holdingItem).GetValueOrDefault();
+        
+        var holdingType = PlayerPickUp.GetHoldingType();
 
         currentRecipe = possibleRecipes.Find(recipe => recipe.machineType == machineType && CraftingManager.ContainsAllItems(recipe, new List<ItemType>() { holdingType }));
 
         if (currentRecipe == null) return;
 
-        if (holdingType == ItemType.None && glueAmount < GLUE_CANISTER) Hint.ShowWhile("NOT ENOUGH GLUE", () => isReachable);
-        else if (holdingType == ItemType.GlueBarrel && glueAmount >= MAX_GLUE_AMOUNT) Hint.ShowWhile("GLUE DISPENSER IS FULL", () => isReachable);
-        else ChangeMachineState(MachineState.Ready);*/
+        if (holdingType == ItemType.None && glueAmount < GLUE_CANISTER) Hint.Create("NOT ENOUGH GLUE", 1);
+        else if (holdingType == ItemType.GlueBarrel && glueAmount >= MAX_GLUE_AMOUNT) Hint.Create("GLUE DISPENSER IS FULL", 1);
+        else ChangeMachineState(MachineState.Ready);
     }
 
     public override bool PlayAnimation() => true;
