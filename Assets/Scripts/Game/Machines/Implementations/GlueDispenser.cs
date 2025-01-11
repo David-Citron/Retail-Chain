@@ -12,10 +12,10 @@ public class GlueDispenser : Machine
 
     protected override void OnStart()
     {
-        AddInteraction(new Interaction(() => Input.GetKeyDown(KeyCode.Space) && PlayerInputManager.IsIn(GetTag()), i => StartInteraction(), new Hint[] {
-            new Hint(GetTag(), HintText.GetHintButton(HintButton.SPACE) + " TO GET CANISTER", () => PlayerPickUp.holdingItem == null && machineState == MachineState.Ready),
-            new Hint(GetTag(), HintText.GetHintButton(HintButton.SPACE) + " TO FILL GLUE DISPENSER", () => PlayerPickUp.holdingItem != null),
-            new Hint(GetTag(), "NO RECIPES FOUND", () => PlayerPickUp.GetHoldingType() != ItemType.None && PlayerPickUp.GetHoldingType() != ItemType.GlueBarrel && machineState == MachineState.Idling)
+        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, i => StartInteraction(), new Hint[] {
+            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO GET CANISTER", () => PlayerPickUp.holdingItem == null && machineState == MachineState.Ready),
+            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO FILL GLUE DISPENSER", () => PlayerPickUp.holdingItem != null),
+            new Hint("NO RECIPES FOUND", () => PlayerPickUp.GetHoldingType() != ItemType.None && PlayerPickUp.GetHoldingType() != ItemType.GlueBarrel && machineState == MachineState.Idling)
         }));
     }
 
@@ -82,9 +82,9 @@ public class GlueDispenser : Machine
         UpdateRecipe();
     }
 
-    protected override void PlaceItem(GameObject item, bool isInput)
+    protected override void PlaceItem(GameObject place, GameObject item)
     {
-        if (item == null) return;
+        if (item == null) return ;
         item.SetActive(false);//Hide the object.
         item.transform.SetParent(transform); //Set parent the printer for the item
         item.transform.localPosition = Vector3.zero;

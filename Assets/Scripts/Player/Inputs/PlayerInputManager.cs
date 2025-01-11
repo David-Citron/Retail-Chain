@@ -33,8 +33,7 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
 
-        Interactable.interactions.ForEach(interaction =>
-        {
+        Interactable.interactions.ForEach(interaction => {
             if (!interaction.prediction.Invoke()) return;
             interaction.onInteract.Invoke(nearestItem);
         });
@@ -44,13 +43,14 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (other.gameObject.Equals(PlayerPickUp.holdingItem)) return; //Ensure that the holding item is not in collider.
         collidersInRange.Add(other.gameObject);
+        UpdateInteractable(other.gameObject);
         UpdateHints(other.gameObject, true);
     }
 
     private void OnTriggerExit(Collider other)
     {
         collidersInRange.Remove(other.gameObject);
-        UpdateHints(other.gameObject, false);
+        UpdateInteractable(other.gameObject);
     }
 
     private void UpdateHints(GameObject collidedObject, bool entry)
@@ -83,10 +83,14 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    private bool isItem(GameObject gameObject) => gameObject.tag != null && gameObject.tag.StartsWith("Item");
-    public static bool IsIn(string tag)
+    private void UpdateInteractable(GameObject collider)
     {
-        var copy = new List<GameObject>(instance.collidersInRange);
-        return copy.Any(gameObject => gameObject.tag != null && gameObject.tag.Equals(tag));
-     }
+       Interactable interactable = collider.GetComponent<Interactable>();
+        if (interactable == null) return;
+        interactable.ToggleIsPlayerNear();
+
+        if(!interactable.IsPlayerNear()) interactable.GetCurrentInteractions(interactable.GetTag()).ForEach(interaction => interaction.hints.ForEach(hint => hint.isActive = false));
+    }
+
+    private bool isItem(GameObject gameObject) => gameObject.tag != null && gameObject.tag.StartsWith("Item");
 }

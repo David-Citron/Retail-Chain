@@ -15,6 +15,7 @@ public class ItemStorage : Interactable
     public GameObject itemListContent;
 
     public Button closeButton;
+    private bool isPlayerNear;
 
     void Start() {
         instance = this;
@@ -26,12 +27,12 @@ public class ItemStorage : Interactable
             ToggleUI();
         });
 
-        AddInteraction(new Interaction(() => Input.GetKeyDown(KeyCode.Space) && PlayerInputManager.IsIn(GetTag()), collider => InsertItem(PlayerPickUp.holdingItem), new Hint[] {
-            new Hint(GetTag(), HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => PlayerPickUp.holdingItem != null)
+        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, collider => InsertItem(PlayerPickUp.holdingItem), new Hint[] {
+            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => PlayerPickUp.holdingItem != null)
         }));
 
-        AddInteraction(new Interaction(() => Input.GetKeyDown(KeyCode.E) && PlayerInputManager.IsIn(GetTag()), collider => ToggleUI(), new Hint[] {
-            new Hint(GetTag(), HintText.GetHintButton(HintButton.E) + " TO OPEN STORAGE", () => PlayerPickUp.holdingItem == null)
+        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.E) && isPlayerNear, collider => ToggleUI(), new Hint[] {
+            new Hint(HintText.GetHintButton(HintButton.E) + " TO OPEN STORAGE", () => PlayerPickUp.holdingItem == null)
         }));
     }
 
@@ -120,4 +121,6 @@ public class ItemStorage : Interactable
 
     public int GetStoredAmountOf(ItemType itemType) => storedItems.GetValueOrDefault(itemType, 0);
     public override string GetTag() => "ItemStorage";
+    public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
+    public override bool IsPlayerNear() => isPlayerNear;
 }

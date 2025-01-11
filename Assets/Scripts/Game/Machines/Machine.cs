@@ -9,7 +9,7 @@ public abstract class Machine : Interactable, IMachine
     protected GameObject resultItem = null;
 
     protected MachineType machineType;
-    public MachineState machineState = MachineState.Idling;
+    protected MachineState machineState = MachineState.Idling;
 
     protected ActionTimer actionTimer;
     protected CraftingRecipe currentRecipe;
@@ -17,6 +17,8 @@ public abstract class Machine : Interactable, IMachine
     [SerializeField] private GameObject resultPlace;
     [SerializeField] private List<GameObject> inputPlaces;
     [SerializeField] private Animator animator;
+
+    protected bool isPlayerNear;
 
     public Machine(MachineType machineType)
     {
@@ -34,18 +36,22 @@ public abstract class Machine : Interactable, IMachine
         OnStart();
     }
 
-    protected void Update() {}
+    protected virtual void Update() {
+        InputInfo inputInfo = GetNearestSlot();
+        if (inputInfo == null || !inputInfo.isInValidDistance) return;
+        UpdateHints();
+    }
 
     protected virtual void OnStart()
     {
-        AddInteraction(new Interaction(() => Input.GetKeyDown(KeyCode.E) && PlayerInputManager.IsIn(GetTag()), collider => PickUp(),
-            new Hint(GetTag(), HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready))
+        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.E) && isPlayerNear, collider => PickUp(), 
+            new Hint(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready) && GetNearestSlot().IsReadyToPickUp())
         ));
 
-        AddInteraction(new Interaction(() => Input.GetKeyDown(KeyCode.Space) && PlayerInputManager.IsIn(GetTag()), collider => StartInteraction(), new Hint[] {
-            new Hint(GetTag(), HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready),
-            new Hint(GetTag(), HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling),
-            new Hint(GetTag(), "NO RECIPES FOUND", () => !IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling)
+        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, collider => StartInteraction(), new Hint[] {
+            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && GetNearestSlot().isInValidDistance),
+            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling && GetNearestSlot().IsValid()),
+            new Hint("INVALID ITEM", () => !IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling)
         }));
     }
 
@@ -70,11 +76,14 @@ public abstract class Machine : Interactable, IMachine
         () => {
             actionTimer = null;
             ChangeMachineState(MachineState.Ready);
-    }, currentRecipe.time, 1).Run();
+        }, currentRecipe.time, 1).Run();
     }
 
     protected virtual void PickUp()
     {
+        InputInfo nearestInput = GetNearestSlot();
+        if(inputPlaces.Count != 0 && resultPlace != null && (nearestInput == null || !nearestInput.IsReadyToPickUp())) return;
+
         if (machineState == MachineState.Done && resultItem != null)
         {
             PlayerPickUp.Instance().IfPresent(handler => handler.PickUp(resultItem));
@@ -90,9 +99,11 @@ public abstract class Machine : Interactable, IMachine
         ChangeMachineState(MachineState.Idling);
     }
 
-    protected virtual void PutItem(GameObject item)
+    protected void PutItem(GameObject item)
     {
         if (CooldownHandler.IsUnderCreateIfNot(machineType + "_putItem", 1)) return;
+        InputInfo input = GetNearestSlot();
+        if (input == null || !input.IsValid()) return;
 
         ItemType inputType = ItemManager.GetItemType(item).GetValueOrDefault();
         if(!IsValid(inputType)) return;
@@ -101,7 +112,7 @@ public abstract class Machine : Interactable, IMachine
         {
             handler.DropHoldingItem();
             currentItems.Add(item);
-            PlaceItem(item, true);
+            PlaceItem(input.inputPlace, item);
 
             var craftingRecipe = possibleRecipes.Find(recipe => recipe.machineType == machineType && CraftingManager.ContainsAllItems(recipe, GetCurrentItems()));
             if (craftingRecipe == null) return;
@@ -144,7 +155,7 @@ public abstract class Machine : Interactable, IMachine
 
             case MachineState.Done:
                 resultItem = ItemManager.GetGameObjectFromPrefab(currentRecipe.output);
-                PlaceItem(resultItem, false);
+                PlaceItem(resultPlace, resultItem);
                 GetCurrentGameObjects().ForEach(item => Destroy(item));
 
                 currentRecipe = null;
@@ -157,7 +168,7 @@ public abstract class Machine : Interactable, IMachine
         UpdateHints();
     }
     
-    protected bool IsValid(ItemType input)
+    protected virtual bool IsValid(ItemType input)
     {
         if (possibleRecipes.Count == 0) return false;
         
@@ -184,29 +195,9 @@ public abstract class Machine : Interactable, IMachine
         return true;
     }
 
-    protected virtual void PlaceItem(GameObject item, bool isInput)
+    protected virtual void PlaceItem(GameObject place, GameObject item)
     {
         if (item == null) return;
-
-        GameObject place = null;
-        if(inputPlaces.Count > 0)
-        {
-            GameObject nearestSlot = inputPlaces[0];
-            float nearestItemDistance = Vector3.Distance(PlayerInputManager.instance.transform.position, nearestSlot.transform.position);
-            for (int i = 0; i < inputPlaces.Count; i++)
-            {
-                float currentItemDistance = Vector3.Distance(PlayerInputManager.instance.transform.position, inputPlaces[i].transform.position);
-                if (currentItemDistance > nearestItemDistance) break;
-                nearestItemDistance = currentItemDistance;
-                nearestSlot = inputPlaces[i];
-            }
-
-            place = nearestSlot;
-        }
-
-        if (place == null) return;
-
-        if (!isInput) place = inputPlaces.Find(input => input != place);
 
         item.transform.SetParent(place.transform);
 
@@ -217,6 +208,29 @@ public abstract class Machine : Interactable, IMachine
         item.transform.localRotation = Quaternion.Euler(0, 0, 90);
     }
 
+    internal InputInfo GetNearestSlot()
+    {
+        if (inputPlaces.Count == 0) return null; //If the inputs are 0.
+
+        GameObject nearestSlot = inputPlaces[0];
+        float nearestItemDistance = Vector3.Distance(PlayerInputManager.instance.transform.position, nearestSlot.transform.position);
+
+        for (int i = 0; i < inputPlaces.Count; i++)
+        {
+            float currentItemDistance = Vector3.Distance(PlayerInputManager.instance.transform.position, inputPlaces[i].transform.position);
+            if (currentItemDistance > nearestItemDistance) break;
+            nearestItemDistance = currentItemDistance;
+            nearestSlot = inputPlaces[i];
+        }
+
+        if (nearestSlot.transform.childCount != 0)
+        {
+            Hint.ShowWhile("ITEM SLOT IS FULL", () => PlayerPickUp.GetHoldingType() != ItemType.None && machineState == MachineState.Idling && GetNearestSlot().IsReadyToPickUp());
+        }
+
+        return new InputInfo(nearestSlot, nearestItemDistance <= 1f, nearestSlot.transform.childCount != 0);
+    }
+
     protected List<ItemType> GetCurrentItems()
     {
         List<ItemType> list = new List<ItemType>();
@@ -224,11 +238,13 @@ public abstract class Machine : Interactable, IMachine
         return list;
     }
 
-    public List<GameObject> GetCurrentGameObjects() => currentItems;
-    public MachineType GetMachineType() => machineType;
-    public GameObject GetResultPlace() => resultPlace;
-    public MachineState GetMachineState() => machineState;
     public List<GameObject> GetInputPlaces() => inputPlaces;
+    public List<GameObject> GetCurrentGameObjects() => currentItems;
+    public GameObject GetResultPlace() => resultPlace;
+    public MachineType GetMachineType() => machineType;
+    public MachineState GetMachineState() => machineState;
+    public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
+    public override bool IsPlayerNear() => isPlayerNear;
     public abstract bool PlayAnimation();
 }
 
@@ -238,4 +254,21 @@ public enum MachineState
     Ready, //Machine is ready to start the process
     Working, //Working state
     Done, //When the item is done - ready to pick up
+}
+
+internal class InputInfo
+{
+    public GameObject inputPlace { get; private set; }
+    public bool isInValidDistance { get; private set; }
+    public bool isFull { get; private set; }
+
+    public InputInfo(GameObject inputPlace, bool isInValidDistance, bool isFull)
+    {
+        this.inputPlace = inputPlace;
+        this.isInValidDistance = isInValidDistance;
+        this.isFull = isFull;
+    }
+
+    public bool IsValid() => isInValidDistance && !isFull;
+    public bool IsReadyToPickUp() => isInValidDistance && isFull;
 }

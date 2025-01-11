@@ -44,9 +44,9 @@ public class HintSystem : MonoBehaviour
 
         if (hint.predicate != null)
         {
-            while (hint.predicate.Invoke() && (hint.addiotionalPredicate != null && hint.addiotionalPredicate.Invoke()))
+            while (hint.predicate.Invoke() && (hint.addiotionalPredicate?.Invoke() ?? true))
             {
-                if (hint.stop)
+                if (!hint.isActive)
                 {
                     ResetText(hint);
                     yield break;
@@ -58,7 +58,7 @@ public class HintSystem : MonoBehaviour
         {
             while(hint.seconds > passedTime)
             {
-                if (hint.stop)
+                if (!hint.isActive)
                 {
                     ResetText(hint);
                     yield break;
@@ -73,6 +73,7 @@ public class HintSystem : MonoBehaviour
 
     private void CreateText(Hint hint)
     {
+        hint.isActive = true;
         GameObject textObject = new GameObject("text-" + hint.value);
 
         textObject.transform.SetParent(transform);
@@ -92,19 +93,19 @@ public class HintSystem : MonoBehaviour
     {
         Destroy(hint.textObject);   
         activeHints.Remove(hint);
+        hint.isActive = false;
     }
-
 }
 
 public class Hint
 {
+    public GameObject textObject { get; set; }
     public string value { get; private set; }
     public float seconds { get; private set; }
     public Func<bool> predicate { get; set; }
-    public bool stop { get; set; }
-    public GameObject textObject { get; set; }
-
     public Func<bool> addiotionalPredicate {  get; set; }
+    public bool isActive { get; set; }
+
 
     public Hint(string value, float seconds, bool register, Func<bool> predicate = null)
     {
@@ -117,10 +118,6 @@ public class Hint
 
     public Hint(string value, float seconds, Func<bool> predicate = null) : this(value, seconds, true, predicate) { }
     public Hint(string value, Func<bool> predicate = null) : this(value, 0, false, predicate) {}
-    public Hint(string tag, string value, Func<bool> predicate = null) : this(value, 0, false, predicate) {
-        addiotionalPredicate = () => PlayerInputManager.IsIn(tag);
-    }
-
     public static Hint Create(string value, float seconds)
     {
         return new Hint(value, seconds);

@@ -16,6 +16,7 @@ TagManager:
   - MachineCutter
   - MachinePrinter
   - MachineGlueDispenser
+  - MachineWorkbench
   layers:
   - Default
   - TransparentFX

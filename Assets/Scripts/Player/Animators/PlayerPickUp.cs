@@ -23,7 +23,7 @@ public class PlayerPickUp : MonoBehaviour
 
     public void PickUp(GameObject itemGameObject)
     {
-        if (itemGameObject == null || holdingItem != null) return;
+        if (itemGameObject == null || holdingItem != null || itemGameObject.tag == null || !itemGameObject.tag.StartsWith("Item")) return;
 
         holdingItem = itemGameObject;
         UpdateHandsPosition();
