@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemStorage : Interactable
+[RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
+public class StorageRack : Interactable
 {
 
-    public static ItemStorage instance;
+    public static StorageRack instance;
 
     private Dictionary<ItemType, int> storedItems = new Dictionary<ItemType, int>();
     private List<GameObject> items = new List<GameObject>();
@@ -16,6 +17,15 @@ public class ItemStorage : Interactable
 
     public Button closeButton;
     private bool isPlayerNear;
+
+    private void Awake()
+    {
+        GetComponent<Rigidbody>().isKinematic = true;
+
+        BoxCollider collider = gameObject.AddComponent<BoxCollider>();
+        collider.isTrigger = true;
+        collider.size = new Vector3(80f, 50f, collider.size.z);
+    }
 
     void Start() {
         instance = this;
@@ -120,7 +130,7 @@ public class ItemStorage : Interactable
     }
 
     public int GetStoredAmountOf(ItemType itemType) => storedItems.GetValueOrDefault(itemType, 0);
-    public override string GetTag() => "ItemStorage";
+    public override string GetTag() => "StorageRack";
     public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
     public override bool IsPlayerNear() => isPlayerNear;
 }

@@ -12,11 +12,12 @@ TagManager:
   - ItemGlueCanister
   - ItemGlueBarrel
   - ItemGlueTube
-  - ItemStorage
   - MachineCutter
   - MachinePrinter
   - MachineGlueDispenser
   - MachineWorkbench
+  - MachinePackagingTable
+  - StorageRack
   layers:
   - Default
   - TransparentFX

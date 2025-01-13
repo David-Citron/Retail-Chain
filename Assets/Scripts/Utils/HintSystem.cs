@@ -81,7 +81,9 @@ public class HintSystem : MonoBehaviour
         TMP_Text tmpText = textObject.AddComponent<TextMeshProUGUI>();
 
         tmpText.text = hint.value;
-        tmpText.fontSize = 22; 
+        tmpText.enableAutoSizing = true;
+        tmpText.fontSizeMin = 15;
+        tmpText.fontSizeMax = 20;
         tmpText.fontStyle = FontStyles.Bold;
         tmpText.alignment = TextAlignmentOptions.Left;
         tmpText.spriteAsset = spriteAsset;

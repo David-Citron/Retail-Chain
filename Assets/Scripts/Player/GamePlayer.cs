@@ -157,17 +157,17 @@ public class GamePlayer : NetworkBehaviour
 
     public void StartGame()
     {
-        Debug.LogError("called started game.");
         GetComponentInChildren<Canvas>().gameObject.SetActive(false);
 
         if(isLocalPlayer)
         {
-            Debug.LogError("Adding.");
-            player.AddComponent<PlayerPickUp>();
-            player.AddComponent<PlayerMovement>();
+            PlayerPickUp pickUp = player.AddComponent<PlayerPickUp>();
+
+
+            player.GetComponent<PlayerMovement>().enabled = true;
+            player.AddComponent<PlayerInputManager>();
             player.transform.eulerAngles = new Vector3(0, 0, 0);
             player.transform.position = Vector3.zero;
-            Debug.LogError("Added all.");
         } else
         {
             player.gameObject.SetActive(false);
@@ -234,18 +234,9 @@ public class GamePlayer : NetworkBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.LogError("scene changed. index: " + scene.buildIndex);
-        // if (!string.Equals(scene.path, this.scene.path)) return;
-
         var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this).GetValueOrDefault();
-        if (oppositePlayer == null)
-        {
-
-            Debug.LogError("opposite player is null.");
-            return;
-        }
-
-        Debug.LogError("starting game.");
+        if (oppositePlayer == null) return;
+        
         if (!isLocalPlayer) oppositePlayer.StartGame();
         else StartGame();
     }

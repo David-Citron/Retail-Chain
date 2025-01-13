@@ -232,13 +232,13 @@ public abstract class Machine : Interactable, IMachine
             nearestItemDistance = currentItemDistance;
             nearestSlot = inputPlaces[i];
         }
-
+            
         if (nearestSlot.transform.childCount != 0)
         {
             Hint.ShowWhile("ITEM SLOT IS FULL", () => PlayerPickUp.GetHoldingType() != ItemType.None && machineState == MachineState.Idling && GetNearestSlot().IsReadyToPickUp());
         }
 
-        return new InputInfo(nearestSlot, nearestItemDistance <= 1f, nearestSlot.transform.childCount != 0);
+        return new InputInfo(nearestSlot, nearestItemDistance <= 4f, nearestSlot.transform.childCount != 0);
     }
 
     protected List<ItemType> GetCurrentItems()

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PlayerInputManager : MonoBehaviour
@@ -7,8 +6,6 @@ public class PlayerInputManager : MonoBehaviour
     public static PlayerInputManager instance;
 
     public List<GameObject> collidersInRange;
-
-    public Hint currentHint;
 
     private void Start() {
         instance = this;

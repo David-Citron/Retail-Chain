@@ -29,7 +29,7 @@ public class StorageContentItem : MonoBehaviour
         takeButton.onClick.RemoveAllListeners();
         takeButton.onClick.AddListener(() =>
         {
-            ItemStorage.instance.TakeItem(itemType, tester);
+            StorageRack.instance.TakeItem(itemType, tester);
         });
     }
 

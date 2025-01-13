@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,8 +6,9 @@ public class PlayerPickUp : MonoBehaviour
 
     private static PlayerPickUp instance;
 
-    [SerializeField] private GameObject playerHands;
     public static GameObject holdingItem;
+
+    [SerializeField] private GameObject playerHands;
     public Animator animator;
 
     void Start()
