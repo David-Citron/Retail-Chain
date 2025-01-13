@@ -1637,9 +1637,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 495687350}
-  - component: {fileID: 495687349}
-  - component: {fileID: 495687348}
-  - component: {fileID: 495687347}
+  - component: {fileID: 495687352}
+  - component: {fileID: 495687351}
+  - component: {fileID: 495687354}
   m_Layer: 0
   m_Name: Printer
   m_TagString: MachinePrinter
@@ -1647,7 +1647,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &495687347
+--- !u!4 &495687350
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 495687346}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.15, y: 0, z: 4.12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1846295621}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &495687351
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1662,7 +1678,7 @@ MonoBehaviour:
   resultPlace: {fileID: 0}
   inputPlaces: []
   animator: {fileID: 0}
---- !u!54 &495687348
+--- !u!54 &495687352
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1685,12 +1701,12 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!135 &495687349
-SphereCollider:
+--- !u!65 &495687354
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1704,28 +1720,12 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.2
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!4 &495687350
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 495687346}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.15, y: 0, z: 4.12}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1846295621}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &500497088
 GameObject:
   m_ObjectHideFlags: 0
@@ -2136,6 +2136,7 @@ GameObject:
   - component: {fileID: 594941800}
   - component: {fileID: 594941801}
   - component: {fileID: 594941802}
+  - component: {fileID: 594941803}
   m_Layer: 0
   m_Name: Cutter
   m_TagString: MachineCutter
@@ -2226,6 +2227,27 @@ MonoBehaviour:
   - {fileID: 1577790134}
   - {fileID: 637342266}
   animator: {fileID: 0}
+--- !u!65 &594941803
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594941797}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &604026887
 GameObject:
   m_ObjectHideFlags: 0
@@ -2651,6 +2673,7 @@ GameObject:
   - component: {fileID: 802734717}
   - component: {fileID: 802734716}
   - component: {fileID: 802734719}
+  - component: {fileID: 802734720}
   m_Layer: 0
   m_Name: Workbench
   m_TagString: MachineWorkbench
@@ -2741,6 +2764,27 @@ MonoBehaviour:
   - {fileID: 272412685}
   - {fileID: 2026205058}
   animator: {fileID: 0}
+--- !u!65 &802734720
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 802734714}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &803993029
 GameObject:
   m_ObjectHideFlags: 0
@@ -6440,6 +6484,7 @@ GameObject:
   - component: {fileID: 2088759484}
   - component: {fileID: 2088759483}
   - component: {fileID: 2088759482}
+  - component: {fileID: 2088759486}
   m_Layer: 0
   m_Name: GlueDispenser
   m_TagString: MachineGlueDispenser
@@ -6527,6 +6572,27 @@ Transform:
   - {fileID: 1947439890}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2088759486
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088759480}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2144710375
 GameObject:
   m_ObjectHideFlags: 0

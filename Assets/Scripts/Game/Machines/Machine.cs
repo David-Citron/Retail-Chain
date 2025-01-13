@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
 public abstract class Machine : Interactable, IMachine
 {
     protected List<CraftingRecipe> possibleRecipes = new List<CraftingRecipe>();
@@ -23,6 +24,15 @@ public abstract class Machine : Interactable, IMachine
     public Machine(MachineType machineType)
     {
         this.machineType = machineType;
+    }
+
+    private void Awake()
+    {
+        GetComponent<Rigidbody>().isKinematic = true;
+          
+        BoxCollider collider = gameObject.AddComponent<BoxCollider>();
+        collider.isTrigger = true;
+        collider.size = new Vector3(collider.size.x, 1.5f, collider.size.z);
     }
 
     protected void Start()
