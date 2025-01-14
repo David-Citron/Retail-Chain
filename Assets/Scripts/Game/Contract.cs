@@ -95,13 +95,15 @@ public class Contract : NetworkBehaviour
     [TargetRpc]
     private void TargetContractFulfilledRequest(NetworkConnectionToClient target)
     {
+        Debug.Log("Calling Contract Fulfilled Answer");
         CmdContractFulfilledAnswer(IsLocalContractFinished());
     }
 
     [Command(requiresAuthority = false)]
     private void CmdContractFulfilledAnswer(bool result)
     {
-        fulfilled.Add(result);
+        Debug.Log("CONTRACT FULFILLED");
+        //fulfilled.Add(result);
     }
 
     [Command(requiresAuthority = false)]
