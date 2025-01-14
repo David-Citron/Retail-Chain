@@ -52,6 +52,7 @@ public class ContractManager : NetworkBehaviour
         //
 
         if (!isServer) return;
+        Debug.Log("Calling StartNewContract");
         StartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
     }
 
@@ -64,6 +65,7 @@ public class ContractManager : NetworkBehaviour
     [ClientRpc]
     private void StartNewContract(List<ContractItem> contractItems, int time)
     {
+        Debug.Log("StartNewContract Called");
         localContract.StartNewContract(contractItems, time);
     }
 

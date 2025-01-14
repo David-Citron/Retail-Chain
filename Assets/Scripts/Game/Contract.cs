@@ -13,7 +13,7 @@ public class Contract : NetworkBehaviour
 
     private void Start()
     {
-        if ((isLocalPlayer && !isServer) || (!isLocalPlayer && isServer)) syncDirection = SyncDirection.ClientToServer; // !!! Maybe it can be set ClientToServer everytime
+        /*if ((isLocalPlayer && !isServer) || (!isLocalPlayer && isServer))*/ syncDirection = SyncDirection.ClientToServer; // !!! Maybe it can be set ClientToServer everytime
         currentContractItems = new List<ContractItem>();
 
         // Local player only:
