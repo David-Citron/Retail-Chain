@@ -832,6 +832,7 @@ GameObject:
   - component: {fileID: 280084879458998657}
   - component: {fileID: 1242578463153756097}
   - component: {fileID: 1887182057643010168}
+  - component: {fileID: 1207304504279209785}
   m_Layer: 0
   m_Name: GamePlayer
   m_TagString: Untagged
@@ -916,6 +917,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 5464609351489627812}
   readyButtonAnimator: {fileID: 4884592720568400081}
+--- !u!114 &1207304504279209785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8006308443850848738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39bfd666ac66eee4b91eec5acf6aa694, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  status: 0
 --- !u!1 &8860557073595784361
 GameObject:
   m_ObjectHideFlags: 0
@@ -1095,10 +1112,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9096548437731138778, guid: abb816de441697f44b9470be00a24872,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8114248985647702768}
-    - targetCorrespondingSourceObject: {fileID: 9096548437731138778, guid: abb816de441697f44b9470be00a24872,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 5464609351489627812}
   m_SourcePrefab: {fileID: 100100000, guid: abb816de441697f44b9470be00a24872, type: 3}
 --- !u!4 &5306010444013798633 stripped
@@ -1113,22 +1126,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3722725859504638465}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8114248985647702768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5590279859071227611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39bfd666ac66eee4b91eec5acf6aa694, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
-  status: 0
 --- !u!95 &5464609351489627812
 Animator:
   serializedVersion: 5
