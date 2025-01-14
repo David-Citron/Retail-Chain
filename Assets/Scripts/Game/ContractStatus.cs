@@ -1,7 +1,7 @@
 public enum ContractStatus
 {
-    Unknown,
-    Pending,
-    Failed,
-    Success
+    Unknown = 0,
+    Pending = 2,
+    Failed = -1,
+    Success = 1
 }

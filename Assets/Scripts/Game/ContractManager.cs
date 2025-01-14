@@ -73,6 +73,7 @@ public class ContractManager : NetworkBehaviour
         bool contractSuccess = true;
         contracts.ForEach(contract =>
         {
+            Debug.Log("Current ContractStatus: " + contract.status);
             if (contract.status == ContractStatus.Unknown || contract.status == ContractStatus.Pending) contractNotFinished = true;
             if (contract.status != ContractStatus.Success) contractSuccess = false;
         });
