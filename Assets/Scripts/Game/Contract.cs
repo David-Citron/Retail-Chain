@@ -51,6 +51,7 @@ public class Contract : NetworkBehaviour
             Debug.LogError("Trying to start contract cycle on client side");
             return;
         }
+        currentContractItems = new List<ContractItem>();
         actionTimer = new ActionTimer(() =>
         {
             CheckContract();
@@ -102,8 +103,9 @@ public class Contract : NetworkBehaviour
     [Command(requiresAuthority = false)]
     private void CmdContractFulfilledAnswer(bool result)
     {
-        Debug.Log("CONTRACT FULFILLED");
-        //fulfilled.Add(result);
+        Debug.Log("CONTRACT FULFILLED and Result: " + result);
+        bool readValue = result;
+        fulfilled.Add(readValue);
     }
 
     [Command(requiresAuthority = false)]
