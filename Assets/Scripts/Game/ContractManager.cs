@@ -35,6 +35,7 @@ public class ContractManager : NetworkBehaviour
         //
 
         instance = this;
+        syncDirection = SyncDirection.ServerToClient;
         contracts = new List<Contract>();
         PlayerManager.instance.gamePlayers.ForEach(player =>
         {
@@ -54,12 +55,19 @@ public class ContractManager : NetworkBehaviour
         if (!isServer) return;
         Debug.Log("Calling StartNewContract");
         StartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
+        Test();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    [ClientRpc]
+    private void Test()
+    {
+        Debug.Log("THIS WORKS");
     }
 
     [ClientRpc]

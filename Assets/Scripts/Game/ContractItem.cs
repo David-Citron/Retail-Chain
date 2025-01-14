@@ -1,10 +1,11 @@
+[System.Serializable]
 public class ContractItem
 {
     public ItemType itemType;
     public int quantity;
-    public int quantityRemaining { private set; get; }
-    public bool fulfilled { private set; get; }
-    public int price { private set; get; }
+    public int quantityRemaining;
+    public bool fulfilled;
+    public int price;
 
     /// <summary>
     /// Creates ContractItem.
