@@ -98,13 +98,13 @@ public class Contract : NetworkBehaviour
         CmdContractFulfilledAnswer(IsLocalContractFinished());
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CmdContractFulfilledAnswer(bool result)
     {
         fulfilled.Add(result);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CmdLoadOffer(List<ContractItem> offeredContractItems)
     {
         if (!isServer)
@@ -136,7 +136,7 @@ public class Contract : NetworkBehaviour
         // TODO: show offer in local player's UI
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CmdOfferConfirmation(bool accepted)
     {
         StartNewContractCycle(lastOfferContractItems, CONTRACT_TIME);
