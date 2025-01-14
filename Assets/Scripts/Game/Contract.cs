@@ -43,7 +43,7 @@ public class Contract : NetworkBehaviour
 
     public void HookStatus(ContractStatus oldValue, ContractStatus newValue)
     {
-        if (status == ContractStatus.Failed ||  status == ContractStatus.Success) 
+        if (newValue == ContractStatus.Failed || newValue == ContractStatus.Success) 
         {
             Debug.Log("Hook caught! Sending command to check contracts");
             ContractManager.instance.CmdCheckContracts();
@@ -63,7 +63,6 @@ public class Contract : NetworkBehaviour
             case PlayerRole.Shop:
                 int sum = 0;
                 currentContractItems.ForEach(item => sum += item.price);
-                Debug.Log(ownerBank.GetBalance());
                 if (ownerBank.GetBalance() > sum) status = ContractStatus.Success;
                 else status = ContractStatus.Failed;
                 break;
