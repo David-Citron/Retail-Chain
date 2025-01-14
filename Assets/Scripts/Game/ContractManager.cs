@@ -7,7 +7,7 @@ public class ContractManager : NetworkBehaviour
 {
     public static ContractManager instance;
 
-    private List<Contract> contracts;
+    [SerializeField] private List<Contract> contracts;
     [SerializeField] private Contract localContract = null;
     [SerializeField] private Contract serverContract = null;
 
@@ -52,13 +52,19 @@ public class ContractManager : NetworkBehaviour
         //
 
         if (!isServer) return;
-        localContract.StartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
+        StartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    [ClientRpc]
+    private void StartNewContract(List<ContractItem> contractItems, int time)
+    {
+        localContract.StartNewContract(contractItems, time);
     }
 
     [Command (requiresAuthority = false)]
