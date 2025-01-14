@@ -57,7 +57,7 @@ public class ContractManager : NetworkBehaviour
         Debug.Log("Calling StartNewContract");
         RpcStartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
         RpcTest();
-        new ActionTimer(() => { RpcTest(); }, 5, 1);
+        new ActionTimer(() => { RpcTest(); }, 5, 1).Run();
     }
 
     // Update is called once per frame
