@@ -7,7 +7,7 @@ public class Contract : NetworkBehaviour
 {
     public static Contract instance;
 
-    private const int CONTRACT_TIME = 300;
+    private const int CONTRACT_TIME = 10;
     private const int NEGOTIATION_TIME = 120;
 
     [SyncVar]
@@ -19,6 +19,7 @@ public class Contract : NetworkBehaviour
     [SerializeField] private GameObject negotiationPanel;
 
     private List<ContractItem> lastOfferContractItems;
+    private List<bool> fulfilled;
     private bool negotiated = false;
 
     // Start is called before the first frame update
@@ -65,15 +66,14 @@ public class Contract : NetworkBehaviour
             return;
         }
 
-        bool fullfilled = true;
         PlayerManager.instance.gamePlayers.ForEach(player =>
         {
-            if (!TargetContractFulfilled(player.connectionToClient)) fullfilled = false;
+            TargetContractFulfilledRequest(player.connectionToClient);
         });
-        if (fullfilled) StartNegotiation();
-        else ContractFailed();
+
+        new ActionTimer(() => fulfilled.Count < 2 || fulfilled.Count == 2 && (!fulfilled[0] || !fulfilled[1]), null, () => { Debug.Log("Contract failed"); ContractFailed(); }, () => { Debug.Log("Contract successfuly completed"); StartNegotiation(); }, 15, .1f);
     }
-    
+
     private void StartNegotiation()
     {
         if (!isServer)
@@ -81,6 +81,7 @@ public class Contract : NetworkBehaviour
             Debug.LogError("Trying to initialize negotiation panel on client side");
             return;
         }
+        fulfilled = new List<bool>();
         RpcInitializeNegotiation();
         new ActionTimer(() => !negotiated, null /* ADD TIMER IN UI */, () => StartNewContractCycle(lastOfferContractItems, CONTRACT_TIME), () => ContractNotNegotiated(), NEGOTIATION_TIME, 1).Run();
     }
@@ -92,9 +93,15 @@ public class Contract : NetworkBehaviour
     }
 
     [TargetRpc]
-    private bool TargetContractFulfilled(NetworkConnectionToClient target)
+    private void TargetContractFulfilledRequest(NetworkConnectionToClient target)
     {
-        return IsLocalContractFinished();
+        CmdContractFulfilledAnswer(IsLocalContractFinished());
+    }
+
+    [Command]
+    private void CmdContractFulfilledAnswer(bool result)
+    {
+        fulfilled.Add(result);
     }
 
     [Command]

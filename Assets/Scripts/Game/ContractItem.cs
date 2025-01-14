@@ -20,6 +20,8 @@ public class ContractItem
         fulfilled = false;
     }
 
+    public ContractItem() { }
+
     /// <summary>
     /// One instance of an item was provided for the contract.
     /// </summary>
