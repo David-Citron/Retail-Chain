@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerBank : MonoBehaviour
 {
-
     private int balance;
 
     void Start() {}

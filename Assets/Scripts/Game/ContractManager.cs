@@ -61,7 +61,7 @@ public class ContractManager : NetworkBehaviour
 
     }
 
-    [Command]
+    [Command (requiresAuthority = false)]
     public void CmdCheckContracts()
     {
         if (!isServer)

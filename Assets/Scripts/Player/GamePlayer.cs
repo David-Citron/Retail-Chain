@@ -161,7 +161,7 @@ public class GamePlayer : NetworkBehaviour
 
         if(isLocalPlayer)
         {
-            bankAccount = new PlayerBank();
+            gameObject.GetComponent<PlayerBank>().enabled = true;
 
             player.AddComponent<PlayerInputManager>().enabled = true;
             player.GetComponent<PlayerMovement>().enabled = true;

@@ -63,6 +63,7 @@ public class Contract : NetworkBehaviour
             case PlayerRole.Shop:
                 int sum = 0;
                 currentContractItems.ForEach(item => sum += item.price);
+                Debug.Log(ownerBank.GetBalance());
                 if (ownerBank.GetBalance() > sum) status = ContractStatus.Success;
                 else status = ContractStatus.Failed;
                 break;

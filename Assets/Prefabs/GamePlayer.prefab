@@ -833,6 +833,7 @@ GameObject:
   - component: {fileID: 1242578463153756097}
   - component: {fileID: 1887182057643010168}
   - component: {fileID: 1207304504279209785}
+  - component: {fileID: 2632534241301776678}
   m_Layer: 0
   m_Name: GamePlayer
   m_TagString: Untagged
@@ -892,7 +893,7 @@ MonoBehaviour:
   connectionId: -1
   playerRole: 0
   isReady: 0
-  bankAccount: {fileID: 0}
+  bankAccount: {fileID: 2632534241301776678}
   player: {fileID: 5590279859071227611}
   profilePictureImage: {fileID: 4945835094688652624}
   displayNameText: {fileID: 5105763292973986451}
@@ -933,6 +934,18 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   status: 0
+--- !u!114 &2632534241301776678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8006308443850848738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84be8455631664574b3b944ee38f0343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8860557073595784361
 GameObject:
   m_ObjectHideFlags: 0
