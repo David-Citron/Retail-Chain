@@ -161,11 +161,12 @@ public class GamePlayer : NetworkBehaviour
 
         if(isLocalPlayer)
         {
-            PlayerPickUp pickUp = player.AddComponent<PlayerPickUp>();
+            bankAccount = new PlayerBank();
 
-
+            player.AddComponent<PlayerInputManager>().enabled = true;
             player.GetComponent<PlayerMovement>().enabled = true;
-            player.AddComponent<PlayerInputManager>();
+            player.GetComponent<PlayerPickUp>().enabled = true;
+
             player.transform.eulerAngles = new Vector3(0, 0, 0);
             player.transform.position = Vector3.zero;
         } else
@@ -235,10 +236,13 @@ public class GamePlayer : NetworkBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this).GetValueOrDefault();
-        if (oppositePlayer == null) return;
-        
-        if (!isLocalPlayer) oppositePlayer.StartGame();
-        else StartGame();
+        if (oppositePlayer == null)
+        {
+            //KICK TO LOBBY
+            return;
+        }
+
+        StartGame();
     }
     private void OnDestroy() => SceneManager.sceneLoaded -= OnSceneLoaded;
 
