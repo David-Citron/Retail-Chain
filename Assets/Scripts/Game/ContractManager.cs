@@ -54,8 +54,8 @@ public class ContractManager : NetworkBehaviour
 
         if (!isServer) return;
         Debug.Log("Calling StartNewContract");
-        StartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
-        Test();
+        RpcStartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
+        RpcTest();
     }
 
     // Update is called once per frame
@@ -65,13 +65,13 @@ public class ContractManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void Test()
+    private void RpcTest()
     {
         Debug.Log("THIS WORKS");
     }
 
     [ClientRpc]
-    private void StartNewContract(List<ContractItem> contractItems, int time)
+    private void RpcStartNewContract(List<ContractItem> contractItems, int time)
     {
         Debug.Log("StartNewContract Called");
         localContract.StartNewContract(contractItems, time);
