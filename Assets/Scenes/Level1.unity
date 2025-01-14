@@ -928,7 +928,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 577862814}
-  - component: {fileID: 577862813}
+  - component: {fileID: 577862815}
   - component: {fileID: 577862812}
   m_Layer: 0
   m_Name: Contract
@@ -954,22 +954,6 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
---- !u!114 &577862813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 577862811}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39bfd666ac66eee4b91eec5acf6aa694, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
-  negotiationPanel: {fileID: 0}
 --- !u!4 &577862814
 Transform:
   m_ObjectHideFlags: 0
@@ -985,6 +969,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &577862815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577862811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 792cc87578603f043b00ddf24d180bfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  localContract: {fileID: 0}
+  serverContract: {fileID: 0}
+  negotiationPanel: {fileID: 0}
 --- !u!1 &760812648
 GameObject:
   m_ObjectHideFlags: 0
@@ -1833,7 +1835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03da5b740b63794da780c74c7e7ac59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHands: {fileID: 1433699561}
+  playerHands: {fileID: 0}
   animator: {fileID: 1277506798}
 --- !u!95 &1277506798 stripped
 Animator:
@@ -2492,12 +2494,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1413968779}
   m_CullTransparentMesh: 1
---- !u!1 &1433699561 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7254083904256775012, guid: abb816de441697f44b9470be00a24872,
-    type: 3}
-  m_PrefabInstance: {fileID: 1382454026}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1440478605
 GameObject:
   m_ObjectHideFlags: 0

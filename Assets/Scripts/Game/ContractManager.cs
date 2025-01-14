@@ -8,8 +8,8 @@ public class ContractManager : NetworkBehaviour
     public static ContractManager instance;
 
     private List<Contract> contracts;
-    private Contract localContract = null;
-    private Contract serverContract = null;
+    [SerializeField] private Contract localContract = null;
+    [SerializeField] private Contract serverContract = null;
 
     private const int CONTRACT_TIME = 10;
     private const int NEGOTIATION_TIME = 120;
