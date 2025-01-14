@@ -7,11 +7,19 @@ public class Contract : NetworkBehaviour
 {
     public static Contract instance;
 
-    private List<ContractItem> currentContractItems = new List<ContractItem>();
-    private int timeRemaining; // In seconds
-    public int timePassed { private set; get; }
+    private const int CONTRACT_TIME = 300;
+    private const int NEGOTIATION_TIME = 120;
+
+    [SyncVar]
+    private List<ContractItem> currentContractItems;
+    [SerializeField] private List<ContractItem> firstContractItems = new List<ContractItem>(){ new ContractItem(ItemType.Book, 1, 50), new ContractItem(ItemType.GlueCanister, 2, 60), new ContractItem(ItemType.Paper, 2, 100) };
+
+    private ActionTimer actionTimer;
 
     [SerializeField] private GameObject negotiationPanel;
+
+    private List<ContractItem> lastOfferContractItems;
+    private bool negotiated = false;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +27,10 @@ public class Contract : NetworkBehaviour
         instance = this;
         if (negotiationPanel != null) negotiationPanel.SetActive(false);
         currentContractItems = new List<ContractItem>();
-        ResetTimer();
+        negotiated = false;
+        // Server side only
+        if (!isServer) return;
+        StartNewContractCycle(firstContractItems, CONTRACT_TIME);
     }
 
     // Update is called once per frame
@@ -33,61 +44,132 @@ public class Contract : NetworkBehaviour
     /// </summary>
     /// <param name="newContractItems">List of ContractItems for the new contract</param>
     /// <param name="newContractTime">Set time for the new contract (in seconds)</param>
-    void StartNewContractCycle(List<ContractItem> newContractItems, int newContractTime)
+    private void StartNewContractCycle(List<ContractItem> newContractItems, int newContractTime)
     {
-        currentContractItems = newContractItems;
-        timeRemaining = newContractTime;
-        StartCoroutine(ContractCycle());
+        if (!isServer) {
+            Debug.LogError("Trying to start contract cycle on client side");
+            return;
+        }
+        actionTimer = new ActionTimer(() =>
+        {
+            CheckContract();
+            actionTimer = null;
+        }, newContractTime, 1).Run();
     }
 
-    /// <summary>
-    /// When running, timer is decremented each second until it counts down to zero.
-    /// Once it hits zero, checks if the contract was finished successfuly and handles next actions accordingly.
-    /// </summary>
-    private IEnumerator ContractCycle()
+    private void CheckContract()
     {
-        while (timeRemaining > 0)
+        if (!isServer)
         {
-            yield return new WaitForSecondsRealtime(1);
-            TimeTick();
+            Debug.LogError("Checking contract's status called on non-server");
+            return;
         }
-        // Contract time expired:
-        if (IsContractFinished()) StartNegotiation();
+
+        bool fullfilled = true;
+        PlayerManager.instance.gamePlayers.ForEach(player =>
+        {
+            if (!TargetContractFulfilled(player.connectionToClient)) fullfilled = false;
+        });
+        if (fullfilled) StartNegotiation();
         else ContractFailed();
     }
-
-    private void TimeTick()
-    {
-        timeRemaining--;
-        timePassed++;
-    }
-
-    private void ResetTimer()
-    {
-        timeRemaining = 0;
-        timePassed = 0;
-    }
-
-    /// <summary>
-    /// Shows the negotiation panel.
-    /// </summary>
+    
     private void StartNegotiation()
+    {
+        if (!isServer)
+        {
+            Debug.LogError("Trying to initialize negotiation panel on client side");
+            return;
+        }
+        RpcInitializeNegotiation();
+        new ActionTimer(() => !negotiated, null /* ADD TIMER IN UI */, () => StartNewContractCycle(lastOfferContractItems, CONTRACT_TIME), () => ContractNotNegotiated(), NEGOTIATION_TIME, 1).Run();
+    }
+
+    [ClientRpc]
+    private void RpcInitializeNegotiation()
     {
         if (negotiationPanel != null) negotiationPanel.SetActive(true);
     }
 
-    /// <summary>
-    /// Checks if contract is fulfilled.
-    /// </summary>
-    /// <returns>Current status of contract</returns>
-    private bool IsContractFinished()
+    [TargetRpc]
+    private bool TargetContractFulfilled(NetworkConnectionToClient target)
+    {
+        return IsLocalContractFinished();
+    }
+
+    [Command]
+    private void CmdLoadOffer(List<ContractItem> offeredContractItems)
+    {
+        if (!isServer)
+        {
+            Debug.LogError("Trying to load offer on client side");
+            return;
+        }
+        Optional<NetworkConnectionToClient> targetNetworkConnection = Optional<NetworkConnectionToClient>.Empty();
+
+        PlayerManager.instance.gamePlayers.ForEach(player =>
+        {
+            if (player.playerRole == PlayerRole.Factory) Optional<NetworkConnectionToClient>.Of(player.connectionToClient);
+        });
+
+        targetNetworkConnection.IfPresentOrElse(factoryConnection =>
+        {
+            lastOfferContractItems = offeredContractItems;
+            TargetShowOffer(factoryConnection, lastOfferContractItems);
+        }, () =>
+        {
+            Debug.LogError("Factory player was not found");
+            return;
+        });
+    }
+
+    [TargetRpc]
+    private void TargetShowOffer(NetworkConnectionToClient target, List<ContractItem> offeredContractItems)
+    {
+        // TODO: show offer in local player's UI
+    }
+
+    [Command]
+    private void CmdOfferConfirmation(bool accepted)
+    {
+        StartNewContractCycle(lastOfferContractItems, CONTRACT_TIME);
+    }
+
+    public void SendOffer()
+    {
+        if (!isClient)
+        {
+            Debug.Log("Tryting to send an offer on non-client side");
+            return;
+        }
+        // TODO: load client data from UI and invoke CmdLoadOffer on server
+    }
+   
+    private bool IsLocalContractFinished()
     {
         bool contractNotFinished = false;
-        for (int i = 0; i < currentContractItems.Count; i++)
-        {
-            if (currentContractItems[i].fulfilled) continue;
-            contractNotFinished = true;
-        }
+        PlayerManager.instance.GetLocalGamePlayer().IfPresentOrElse(localPlayer => {
+            if (localPlayer.playerRole == PlayerRole.Factory)
+            {
+                for (int i = 0; i < currentContractItems.Count; i++)
+                {
+                    if (currentContractItems[i].fulfilled) continue;
+                    contractNotFinished = true;
+                }
+            }else if (localPlayer.playerRole == PlayerRole.Shop)
+            {
+                int contractSum = 0;
+                currentContractItems.ForEach(contractItem =>
+                {
+                    contractSum += contractItem.price;
+                });
+                if (localPlayer.bankAccount.GetBalance() < contractSum)
+                {
+                    contractNotFinished = true;
+                }
+            }
+        }, () => Debug.LogError("Local player was not found"));
+        Debug.Log("Local contract check, finished: " + !contractNotFinished);
         return !contractNotFinished;
     }
 
@@ -97,5 +179,12 @@ public class Contract : NetworkBehaviour
     private void ContractFailed()
     {
         // TODO: Game ends
+        Debug.LogWarning("GAME ENDS!!!!");
+    }
+
+    private void ContractNotNegotiated()
+    {
+        // TODO: Game ends
+        Debug.LogWarning("GAME ENDS!!!!");
     }
 }

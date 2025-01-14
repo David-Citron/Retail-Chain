@@ -124,6 +124,17 @@ public class PlayerManager : MonoBehaviour
         return Optional<GamePlayer>.Empty();
     }
 
+    public Optional<GamePlayer> GetLocalGamePlayer()
+    {
+        for (int i = 0; i < gamePlayers.Count; i++)
+        {
+            GamePlayer gamePlayer = gamePlayers[i];
+            if (!gamePlayer.isLocalPlayer) continue;
+            return Optional<GamePlayer>.Of(gamePlayer);
+        }
+        return Optional<GamePlayer>.Empty();
+    }
+
     void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
     {
         if (scene.buildIndex != 0) return;

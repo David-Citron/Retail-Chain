@@ -4,16 +4,18 @@ public class ContractItem
     public int quantity;
     public int quantityRemaining { private set; get; }
     public bool fulfilled { private set; get; }
+    public int price { private set; get; }
 
     /// <summary>
     /// Creates ContractItem.
     /// </summary>
     /// <param name="itemType">Sets type of the item.</param>
     /// <param name="quantity">Sets quantity of this item for the contract</param>
-    public ContractItem(ItemType itemType, int quantity)
+    public ContractItem(ItemType itemType, int quantity, int price)
     {
         this.itemType = itemType;
         this.quantity = quantity;
+        this.price = price;
         quantityRemaining = quantity;
         fulfilled = false;
     }
