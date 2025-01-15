@@ -17,7 +17,6 @@ public abstract class Machine : Interactable, IMachine
 
     [SerializeField] private GameObject resultPlace;
     [SerializeField] private List<GameObject> inputPlaces;
-    [SerializeField] private Animator animator;
 
     protected bool isPlayerNear;
 

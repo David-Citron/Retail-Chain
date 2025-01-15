@@ -5,12 +5,15 @@ using UnityEngine.UI;
 public class Printer : Machine
 {
     public TMP_Text timeDisplay;
-    public RawImage readyIcon;
+    public RawImage doneIcon;
 
     public Printer() : base(MachineType.Printer) {}
 
     protected override void OnStart()
     {
+        timeDisplay.text = "WAITING";
+        doneIcon.gameObject.SetActive(false);
+
         AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.E) && isPlayerNear, collider => PickUp(),
             new Hint(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready))
         ));
@@ -28,7 +31,7 @@ public class Printer : Machine
     protected override void ChangeMachineState(MachineState newState)
     {
         base.ChangeMachineState(newState);
-        readyIcon.gameObject.SetActive(newState == MachineState.Done);
+        doneIcon.gameObject.SetActive(newState == MachineState.Done);
         timeDisplay.gameObject.SetActive(newState != MachineState.Done);
         timeDisplay.text = newState == MachineState.Idling ? "WAITING" : "READY";
     }

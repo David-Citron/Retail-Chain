@@ -74,9 +74,11 @@ public class HintSystem : MonoBehaviour
     private void CreateText(Hint hint)
     {
         hint.isActive = true;
-        GameObject textObject = new GameObject("text-" + hint.value);
+        GameObject textObject = Instantiate(new GameObject("text-" + hint.value));
 
         textObject.transform.SetParent(transform);
+        textObject.transform.localScale = Vector3.one;
+        textObject.transform.localPosition = Vector3.zero;
 
         TMP_Text tmpText = textObject.AddComponent<TextMeshProUGUI>();
 

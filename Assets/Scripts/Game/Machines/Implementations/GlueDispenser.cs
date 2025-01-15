@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class GlueDispenser : Machine
 {
-    private const int MAX_GLUE_AMOUNT = 50; // 50L is equal to 10x Glue Canister, one barell is 25L.
+    private const int MAX_GLUE_AMOUNT = 50; // 50L is equal to 10x Glue Canister, one barrel is 25L.
+    private const int GLUE_AMOUNT_PER_BARREL = 25; // Amount of glue in barrel
     private const int GLUE_CANISTER = 5;
 
     public int glueAmount;
-    [SerializeField] private Renderer material;
+    [SerializeField] private GameObject glueLiquid;
 
     public GlueDispenser() : base(MachineType.GlueDispenser) { }
 
@@ -16,8 +17,10 @@ public class GlueDispenser : Machine
         AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, i => StartInteraction(), new Hint[] {
             new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO GET CANISTER", () => PlayerPickUp.holdingItem == null && machineState == MachineState.Ready),
             new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO FILL GLUE DISPENSER", () => PlayerPickUp.holdingItem != null),
-            new Hint("NO RECIPES FOUND", () => PlayerPickUp.GetHoldingType() != ItemType.None && PlayerPickUp.GetHoldingType() != ItemType.GlueBarrel && machineState == MachineState.Idling)
+            new Hint("INVALID ITEM", () => PlayerPickUp.GetHoldingType() != ItemType.None && PlayerPickUp.GetHoldingType() != ItemType.GlueBarrel && machineState == MachineState.Idling)
         }));
+
+        UpdateGlueLiquid();
     }
 
     protected override void StartInteraction()
@@ -66,7 +69,7 @@ public class GlueDispenser : Machine
 
                 pickUp.DropHoldingItem();
                 Destroy(holdingItem);
-                UpdateGlueAmount(5);
+                ChangeGlueAmount(GLUE_AMOUNT_PER_BARREL);
             });
 
             UpdateRecipe();
@@ -76,7 +79,7 @@ public class GlueDispenser : Machine
         PlayerPickUp.Instance().IfPresent(pickUp =>
         {
             pickUp.DropHoldingItem();
-            UpdateGlueAmount(-5);
+            ChangeGlueAmount(-GLUE_CANISTER);
             pickUp.PickUp(resultItem);
         });
 
@@ -106,12 +109,13 @@ public class GlueDispenser : Machine
         else ChangeMachineState(MachineState.Ready);
     }
 
-    private void UpdateGlueAmount(int amount)
+    private void ChangeGlueAmount(int amount)
     {
-        glueAmount += amount;
-
-        
+        glueAmount = Mathf.Clamp(glueAmount + amount, 0, MAX_GLUE_AMOUNT);
+        UpdateGlueLiquid();
     }
+
+    private void UpdateGlueLiquid() => glueLiquid.transform.localScale = new Vector3(1, 1, (glueAmount / (float) MAX_GLUE_AMOUNT));
 
     public override bool PlayAnimation() => true;
     public override string GetTag() => "MachineGlueDispenser";
