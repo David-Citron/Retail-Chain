@@ -49,21 +49,33 @@ public class ContractManager : NetworkBehaviour
         if (negotiationPanel != null) negotiationPanel.SetActive(false);
         negotiated = false;
 
-        //
-        // Server side only:
-        //
+        
 
-        if (!isServer) return;
+    }
+
+    [Server]
+    public void InitializeFirstContract()
+    {
         Debug.Log("Calling StartNewContract");
-        RpcStartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
+        //RpcStartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
+        Debug.Log(NetworkClient.spawned);
         RpcTest();
-        new ActionTimer(() => { RpcTest(); }, 5, 1).Run();
+        
+        //new ActionTimer(() => { RpcTest(); }, 5, 1).Run();
+        //StartCoroutine(delay());
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    IEnumerator delay()
+    {
+        yield return new WaitForSecondsRealtime(5);
+        Debug.Log(NetworkClient.spawned);
+        RpcTest();
     }
 
     [ClientRpc]

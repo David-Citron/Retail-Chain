@@ -83,4 +83,24 @@ public class CustomNetworkManager : NetworkManager
         stopHost = -1;
         base.OnStartHost();
     }
+
+    public override void OnServerSceneChanged(string sceneName)
+    {
+        base.OnServerSceneChanged(sceneName);
+        if (ContractManager.instance == null) { Debug.Log("ContractManager = null"); return; }
+        ContractManager.instance.InitializeFirstContract();
+    }
+
+    public override void OnServerReady(NetworkConnectionToClient conn)
+    {
+        base.OnServerReady(conn);
+        PlayerManager.instance.GetLocalGamePlayer().IfPresent(player =>
+        {
+            if (conn != player.connectionToClient)
+            {
+                if (ContractManager.instance == null) return;
+                ContractManager.instance.InitializeFirstContract();
+            }
+        });
+    }
 }
