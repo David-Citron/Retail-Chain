@@ -12,12 +12,12 @@ public class ActionTimer
 
     private readonly float howOften;
 
-    private readonly Action onUpdate;
+    private readonly Action<ActionTimer> onUpdate;
     private readonly Action onFail;
     private readonly Action onComplete;
     private bool ended;
 
-    public ActionTimer(Func<bool> predicate, Action onUpdate, Action onComplete, Action onFail, float totalTime, float howOften)
+    public ActionTimer(Func<bool> predicate, Action<ActionTimer> onUpdate, Action onComplete, Action onFail, float totalTime, float howOften)
     {
         this.predicate = predicate;
         this.totalTime = totalTime;
@@ -27,6 +27,7 @@ public class ActionTimer
         this.onFail = onFail;
     }
 
+    public ActionTimer(Action<ActionTimer> onUpdate, Action onComplete, Action onFail, float totalTime, float howOften) : this(null, onUpdate, onComplete, onFail, totalTime, howOften) { }
     public ActionTimer(Action onComplete, Action onFail, float totalTime, float howOften) : this(null, null, onComplete, onFail, totalTime, howOften) { }
     public ActionTimer(Action onComplete, float totalTime, float howOften) : this(null, onComplete, totalTime, howOften) { }
     public ActionTimer(Func<bool> predicate, Action onComplete, float totalTime, float howOften) : this(predicate, null, onComplete, null, totalTime, howOften) { }
@@ -59,7 +60,7 @@ public class ActionTimer
 
             yield return new WaitForSecondsRealtime(howOften);
             passedTime += howOften;
-            onUpdate?.Invoke();
+            onUpdate?.Invoke(this);
         }
 
         if (ended) yield break;

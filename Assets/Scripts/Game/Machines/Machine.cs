@@ -32,7 +32,7 @@ public abstract class Machine : Interactable, IMachine
           
         BoxCollider collider = gameObject.AddComponent<BoxCollider>();
         collider.isTrigger = true;
-        collider.size = new Vector3(collider.size.x, 1.5f, collider.size.z);
+        collider.size = GetColliderSize(collider);
     }
 
     protected void Start()
@@ -67,14 +67,17 @@ public abstract class Machine : Interactable, IMachine
 
     protected virtual void StartInteraction()
     {
+        Debug.Log("INteraction started");
         if(machineState != MachineState.Ready && (inputPlaces.Count == 0 || currentItems.Count < inputPlaces.Count))
         {
             PutItem(PlayerPickUp.holdingItem);
+            Debug.Log("put");
             return;
         }
 
         if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", 1)) return;
 
+        Debug.Log("started");
         StartTimer();
         ChangeMachineState(MachineState.Working);
     }
@@ -113,7 +116,7 @@ public abstract class Machine : Interactable, IMachine
     {
         if (CooldownHandler.IsUnderCreateIfNot(machineType + "_putItem", 1)) return;
         InputInfo input = GetNearestSlot();
-        if (input == null || !input.IsValid()) return;
+        if (inputPlaces.Count != 0 && resultPlace != null && (input == null || !input.IsValid())) return;
 
         ItemType inputType = ItemManager.GetItemType(item).GetValueOrDefault();
         if(!IsValid(inputType)) return;
@@ -122,7 +125,7 @@ public abstract class Machine : Interactable, IMachine
         {
             handler.DropHoldingItem();
             currentItems.Add(item);
-            PlaceItem(input.inputPlace, item);
+            PlaceItem(input != null ? input.inputPlace : null, item);
 
             var craftingRecipe = possibleRecipes.Find(recipe => recipe.machineType == machineType && CraftingManager.ContainsAllItems(recipe, GetCurrentItems()));
             if (craftingRecipe == null) return;
@@ -149,7 +152,7 @@ public abstract class Machine : Interactable, IMachine
         {
             case MachineState.Ready:
                 if (inputPlaces.Count != 0 && currentItems.Count <= 0) ChangeMachineState(MachineState.Idling); // Check if something messed up and there is no items => change state back to Idling
-                CircleTimer.Stop();
+                if(PlayAnimation()) CircleTimer.Stop();
                 break;
 
             case MachineState.Working:
@@ -157,9 +160,9 @@ public abstract class Machine : Interactable, IMachine
                 {
                     PlayerPickUp.Instance().IfPresent(pikUp => pikUp.animator.SetBool("working", true));
                     PlayerMovement.freeze = true;
+                    CircleTimer.Start(currentRecipe.time);
                 }
 
-                CircleTimer.Start(currentRecipe.time);
                 //Start animation
                 break;
 
@@ -238,7 +241,7 @@ public abstract class Machine : Interactable, IMachine
             Hint.ShowWhile("ITEM SLOT IS FULL", () => PlayerPickUp.GetHoldingType() != ItemType.None && machineState == MachineState.Idling && GetNearestSlot().IsReadyToPickUp());
         }
 
-        return new InputInfo(nearestSlot, nearestItemDistance <= 4f, nearestSlot.transform.childCount != 0);
+        return new InputInfo(nearestSlot, nearestItemDistance <= 1f, nearestSlot.transform.childCount != 0);
     }
 
     protected List<ItemType> GetCurrentItems()
@@ -254,6 +257,7 @@ public abstract class Machine : Interactable, IMachine
     public MachineType GetMachineType() => machineType;
     public MachineState GetMachineState() => machineState;
     public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
+    public virtual Vector3 GetColliderSize(BoxCollider collider) => new Vector3(collider.size.x, 1.5f, collider.size.z);
     public override bool IsPlayerNear() => isPlayerNear;
     public abstract bool PlayAnimation();
 }

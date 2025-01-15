@@ -1,11 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
 {
 
+    private List<DeliveryOffer> deliveryOffers;
+
+    private const int TIME_BEFORE_DELIVERY = 55; //Every 55 seconds.
+
     void Start()
     {
-        
+        deliveryOffers = new List<DeliveryOffer>();   
     }
 
     void Update()
@@ -14,9 +19,17 @@ public class NewBehaviourScript : MonoBehaviour
     }
 
 
-   private void GenerateOffers()
+    private void GenerateOffers()
     {
         //Some logic based on the contract? Or just 3 random items - discuss.
+    }
+
+
+    private void StartDeliveryTimer()
+    {
+        new ActionTimer(() =>
+        {
+        }, TIME_BEFORE_DELIVERY, 1).Run();
     }
 }
 

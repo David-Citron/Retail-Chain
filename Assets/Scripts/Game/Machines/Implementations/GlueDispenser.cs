@@ -7,6 +7,7 @@ public class GlueDispenser : Machine
     private const int GLUE_CANISTER = 5;
 
     public int glueAmount;
+    [SerializeField] private Renderer material;
 
     public GlueDispenser() : base(MachineType.GlueDispenser) { }
 
@@ -65,7 +66,7 @@ public class GlueDispenser : Machine
 
                 pickUp.DropHoldingItem();
                 Destroy(holdingItem);
-                glueAmount += 5;
+                UpdateGlueAmount(5);
             });
 
             UpdateRecipe();
@@ -75,7 +76,7 @@ public class GlueDispenser : Machine
         PlayerPickUp.Instance().IfPresent(pickUp =>
         {
             pickUp.DropHoldingItem();
-            glueAmount -= 5;
+            UpdateGlueAmount(-5);
             pickUp.PickUp(resultItem);
         });
 
@@ -103,6 +104,13 @@ public class GlueDispenser : Machine
         if (holdingType == ItemType.None && glueAmount < GLUE_CANISTER) Hint.Create("NOT ENOUGH GLUE", 1);
         else if (holdingType == ItemType.GlueBarrel && glueAmount >= MAX_GLUE_AMOUNT) Hint.Create("GLUE DISPENSER IS FULL", 1);
         else ChangeMachineState(MachineState.Ready);
+    }
+
+    private void UpdateGlueAmount(int amount)
+    {
+        glueAmount += amount;
+
+        
     }
 
     public override bool PlayAnimation() => true;

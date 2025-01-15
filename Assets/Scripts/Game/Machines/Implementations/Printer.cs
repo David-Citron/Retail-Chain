@@ -1,27 +1,41 @@
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class Printer : Machine
 {
-    public Printer() : base(MachineType.Printer) { }
+    public TMP_Text timeDisplay;
+    public RawImage readyIcon;
+
+    public Printer() : base(MachineType.Printer) {}
 
     protected override void OnStart()
     {
-        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.E), collider => PickUp(),
+        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.E) && isPlayerNear, collider => PickUp(),
             new Hint(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready))
         ));
 
-        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space), collider => StartInteraction(), new Hint[] {
+        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, collider => StartInteraction(), new Hint[] {
+            new Hint("PRINTING..", () => machineState == MachineState.Working),
             new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO PRINT", () => machineState == MachineState.Ready),
             new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling),
             new Hint("INVALID ITEM", () => !IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling)
         }));
     }
 
-    protected override void Update() { }
+    protected override void Update() {}
+
+    protected override void ChangeMachineState(MachineState newState)
+    {
+        base.ChangeMachineState(newState);
+        readyIcon.gameObject.SetActive(newState == MachineState.Done);
+        timeDisplay.gameObject.SetActive(newState != MachineState.Done);
+        timeDisplay.text = newState == MachineState.Idling ? "WAITING" : "READY";
+    }
 
     protected override void StartTimer()
     {
-        actionTimer = new ActionTimer(
+        actionTimer = new ActionTimer(action => timeDisplay.text = ConvertPassedTime(action.passedTime),
             () => ChangeMachineState(MachineState.Done),
             () => {
                 actionTimer = null;
@@ -35,16 +49,20 @@ public class Printer : Machine
         item.transform.localPosition = Vector3.zero;
     }
 
-    protected override void ChangeMachineState(MachineState newState)
+    private string ConvertPassedTime(float passedTime)
     {
-        base.ChangeMachineState(newState);
-        if(machineState == MachineState.Working)
+        int time = currentRecipe.time - (int) passedTime;
+        int minutes = 0;
+        while(time > 60)
         {
-            Hint.Create("PRINTING..", 2);
+            minutes++;
+            time -= 60;
         }
+        return (minutes > 9 ? minutes : "0" + minutes) + ":" + (time > 9 ? time : "0" + time);
     }
 
     protected override bool IsValid(ItemType input) => input == ItemType.EmptyBook;
     public override bool PlayAnimation() => false;
     public override string GetTag() => "MachinePrinter";
+    public override Vector3 GetColliderSize(BoxCollider collider) => new Vector3(collider.size.x, collider.size.y, 1.5f);
 }
