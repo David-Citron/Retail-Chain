@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public ItemType itemType { get; set; }
+    public ItemType itemType = ItemType.None;
     public ItemType contentType = ItemType.None;
-    public int sellPrice { get; set; }
+    public int sellPrice = 0;
 
     void Start() {}
     void Update() {}

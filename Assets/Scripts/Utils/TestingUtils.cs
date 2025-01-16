@@ -5,9 +5,10 @@ using System;
 public class TestingUtils : MonoBehaviour
 {
     public static TestingUtils instance;
-    private List<GameObject> items = new List<GameObject>();
-    public GameObject itemListContent;
 
+    private List<GameObject> items = new List<GameObject>();
+
+    public GameObject itemListContent;
     public GameObject testerUI;
     public GameObject prefabItem;
 
@@ -28,12 +29,12 @@ public class TestingUtils : MonoBehaviour
         {
             GameObject createdItem = Instantiate(prefabItem);
 
+            createdItem.transform.SetParent(itemListContent.transform);
+            createdItem.transform.localScale = Vector3.one;
+
             var component = createdItem.GetComponent<StorageContentItem>();
 
             component.Initialize((ItemType) item, 1, false);
-
-            createdItem.transform.SetParent(itemListContent.transform);
-            createdItem.transform.localScale = Vector3.one;
 
             items.Add(createdItem);
         }

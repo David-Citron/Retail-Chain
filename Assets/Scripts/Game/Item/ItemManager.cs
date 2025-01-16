@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    private static List<ItemData> items = new List<ItemData>();
+    private static ItemManager instance;
+    [SerializeField] private List<ItemData> items = new List<ItemData>();
 
-    void Start() {}
+    void Start() { instance = this; }
     void Update() {}
 
 
@@ -25,6 +26,7 @@ public class ItemManager : MonoBehaviour
 
     public static void UpdateItem(GameObject gameObject, ItemType contentType, int sellPrice)
     {
+        if(gameObject == null) return;
         Item item = gameObject.GetComponent<Item>();
         if (item == null) return;
         item.contentType = contentType;
@@ -45,19 +47,19 @@ public class ItemManager : MonoBehaviour
     private static GameObject GetGameObjectFromPrefab(ItemType type)
     {
         if (type == ItemType.None) return null;
-        return Instantiate(items.Find(item => item.itemType == type).itemPrefab);
+        return Instantiate(instance.items.Find(item => item.itemType == type).itemPrefab);
     }
 
     public static string GetNameOf(ItemType type)
     {
         if (type == ItemType.None) return "Error";
-        return items.Find(item => item.itemType == type).itemName;
+        return instance.items.Find(item => item.itemType == type).itemName;
     }
 
 
     public static RenderTexture GetIcon(ItemType type)
     {
         if (type == ItemType.None) return null;
-        return items.Find(item => item.itemType == type).icon;
+        return instance.items.Find(item => item.itemType == type).icon;
     }
 }

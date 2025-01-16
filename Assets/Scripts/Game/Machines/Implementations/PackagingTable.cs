@@ -10,6 +10,9 @@ public class PackagingTable : Machine
         if (newState == MachineState.Done) currentType = currentRecipe.inputs.Find(i => i != ItemType.Package);
 
         base.ChangeMachineState(newState);
+
+        if (resultItem == null) return;
+        Debug.LogError(resultItem.name);
         ItemManager.UpdateItem(resultItem, currentType);
     }
 

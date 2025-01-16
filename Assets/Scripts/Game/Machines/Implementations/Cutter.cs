@@ -15,11 +15,6 @@ public class Cutter : Machine
         blade.transform.rotation *= Quaternion.Euler(rotationSpeed * Time.deltaTime, 0, 0);
     }
 
-    protected override void ChangeMachineState(MachineState newState)
-    {
-        base.ChangeMachineState(newState);
-    }
-
     public override string GetTag() => "MachineCutter";
     public override bool PlayAnimation() => true;
 }

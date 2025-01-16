@@ -181,18 +181,9 @@ public abstract class Machine : Interactable, IMachine
     {
         if (possibleRecipes.Count == 0) return false;
 
-        foreach (var recipe in possibleRecipes)
-        {
-            if (recipe.inputs.Contains(input)) break;
-            return false;
-        }
-
-
-        Debug.LogError("PASSED");
-
+        bool result = false;
         if (GetCurrentItems().Count != 0)
         {
-            bool result = false;
             var copy = GetCurrentItems();
             copy.Add(input);
 
@@ -201,10 +192,16 @@ public abstract class Machine : Interactable, IMachine
                 if (!CraftingManager.ContainsAllItems(recipe, copy)) continue;
                 result = true;
             }
-            return result;
+        } else
+        {
+            foreach (var recipe in possibleRecipes)
+            {
+                if (!recipe.inputs.Contains(input)) continue;
+                result = true;
+            }
         }
 
-        return true;
+        return result;
     }
 
     protected virtual void PlaceItem(GameObject place, GameObject item)

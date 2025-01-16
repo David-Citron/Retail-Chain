@@ -53,7 +53,6 @@ public class StorageRack : Interactable
 
     public void ToggleUI()
     {
-
         if(storedItems.Count <= 0 && !storageUi.activeSelf)
         {
             Hint.ShowWhile("NO ITEMS IN STORAGE", () => storedItems.Count <= 0 && isPlayerNear);
@@ -69,12 +68,12 @@ public class StorageRack : Interactable
         {
             GameObject createdItem = Instantiate(itemPrefab);
 
+            createdItem.transform.SetParent(itemListContent.transform, false);
+            createdItem.transform.localScale = Vector3.one;
+
             var component = createdItem.GetComponent<StorageContentItem>();
 
             component.Initialize(item, storedItems[item]);
-
-            createdItem.transform.SetParent(itemListContent.transform);
-            createdItem.transform.localScale = Vector3.one;
 
             contentItems.Add(createdItem);
         }
