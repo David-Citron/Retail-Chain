@@ -4,12 +4,32 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    public static ItemManager instance;
-    public List<ItemData> items = new List<ItemData>();
+    private static List<ItemData> items = new List<ItemData>();
 
-    void Start() { instance = this; }
+    void Start() {}
     void Update() {}
 
+
+    public static GameObject CreateItem(ItemType itemType)
+    {
+        GameObject gameObject = GetGameObjectFromPrefab(itemType);
+        Item item = gameObject.AddComponent<Item>();
+        item.itemType = itemType;
+
+        return gameObject;
+    }
+
+
+    public static void UpdateItem(GameObject gameObject, ItemType contentType) => UpdateItem(gameObject, contentType, 0);
+    public static void UpdateItem(GameObject gameObject, int sellPrice) => UpdateItem(gameObject, ItemType.None, sellPrice);
+
+    public static void UpdateItem(GameObject gameObject, ItemType contentType, int sellPrice)
+    {
+        Item item = gameObject.GetComponent<Item>();
+        if (item == null) return;
+        item.contentType = contentType;
+        item.sellPrice = sellPrice;
+    }
 
     public static Optional<ItemType> GetItemType(GameObject gameObject)
     {
@@ -22,22 +42,22 @@ public class ItemManager : MonoBehaviour
     /// </summary>
     /// <param name="type">The ItemType</param>
     /// <returns>New gameobject</returns>
-    public static GameObject GetGameObjectFromPrefab(ItemType type)
+    private static GameObject GetGameObjectFromPrefab(ItemType type)
     {
         if (type == ItemType.None) return null;
-        return Instantiate(instance.items.Find(item => item.itemType == type).itemPrefab);
+        return Instantiate(items.Find(item => item.itemType == type).itemPrefab);
     }
 
     public static string GetNameOf(ItemType type)
     {
         if (type == ItemType.None) return "Error";
-        return instance.items.Find(item => item.itemType == type).itemName;
+        return items.Find(item => item.itemType == type).itemName;
     }
 
 
     public static RenderTexture GetIcon(ItemType type)
     {
         if (type == ItemType.None) return null;
-        return instance.items.Find(item => item.itemType == type).icon;
+        return items.Find(item => item.itemType == type).icon;
     }
 }

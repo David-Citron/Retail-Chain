@@ -11,6 +11,7 @@ public class Cutter : Machine
     protected override void Update()
     {
         base.Update();
+        if (machineState != MachineState.Working) return;
         blade.transform.rotation *= Quaternion.Euler(rotationSpeed * Time.deltaTime, 0, 0);
     }
 

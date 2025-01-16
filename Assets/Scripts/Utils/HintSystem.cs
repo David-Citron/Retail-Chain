@@ -74,7 +74,7 @@ public class HintSystem : MonoBehaviour
     private void CreateText(Hint hint)
     {
         hint.isActive = true;
-        GameObject textObject = Instantiate(new GameObject("text-" + hint.value));
+        GameObject textObject = new GameObject("text-" + hint.value);
 
         textObject.transform.SetParent(transform);
         textObject.transform.localScale = Vector3.one;
@@ -122,10 +122,8 @@ public class Hint
 
     public Hint(string value, float seconds, Func<bool> predicate = null) : this(value, seconds, true, predicate) { }
     public Hint(string value, Func<bool> predicate = null) : this(value, 0, false, predicate) {}
-    public static Hint Create(string value, float seconds)
-    {
-        return new Hint(value, seconds);
-    }
+    public static Hint Create(string value, float seconds) => new Hint(value, seconds);
+    
 
     /// <summary>
     /// Hint stays while the condition is true.
@@ -134,16 +132,8 @@ public class Hint
     /// <param name="value">The hint</param>
     /// <param name="predicate">The condition</param>
     /// <returns>Hint object</returns>
-    public static Hint ShowWhile(string value, Func<bool> predicate)
-    {
-        return new Hint(value, 0, predicate);
-    }
-}
-
-public static class HintText
-{
-    public static string GetHintButton(HintButton button) => $"<sprite={(int) button}>";
-    
+    public static Hint ShowWhile(string value, Func<bool> predicate) => new Hint(value, 0, predicate);
+    public static string GetHintButton(HintButton button) => $"<sprite={(int)button}>";
 }
 
 public enum HintButton

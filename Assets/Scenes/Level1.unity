@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,6 +123,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &3368552 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6100014687351428289, guid: 7ae44ffea1806b746bb638654913ddb6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1000107767}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &73998966 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -463794036176171685, guid: 7ae44ffea1806b746bb638654913ddb6,
@@ -844,6 +850,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 369445869}
   m_CullTransparentMesh: 1
+--- !u!1 &497203287 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8172730803185829198, guid: 7ae44ffea1806b746bb638654913ddb6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1000107767}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &518220901 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6256408246428599253, guid: 7ae44ffea1806b746bb638654913ddb6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1000107767}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &556819880
 GameObject:
   m_ObjectHideFlags: 0
@@ -1392,6 +1410,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &759082602 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1876438464178590269, guid: 7ae44ffea1806b746bb638654913ddb6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1000107767}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &820249050
 GameObject:
   m_ObjectHideFlags: 0
@@ -2353,6 +2377,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1096734896}
   m_CullTransparentMesh: 1
+--- !u!1 &1182190637 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 625699035898026466, guid: 7ae44ffea1806b746bb638654913ddb6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1000107767}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1197262166
 GameObject:
   m_ObjectHideFlags: 0
@@ -2763,6 +2793,12 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.8070712, y: 0.0100000175, z: 0.100000024}
   m_Center: {x: -0.1964645, y: 0.70499986, z: 0.050000027}
+--- !u!1 &1350584278 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -1625494359805926369, guid: 7ae44ffea1806b746bb638654913ddb6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1000107767}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1353372503
 GameObject:
   m_ObjectHideFlags: 0
@@ -3247,6 +3283,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1413968779}
   m_CullTransparentMesh: 1
+--- !u!1 &1434818887 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2217830378953333781, guid: 7ae44ffea1806b746bb638654913ddb6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1000107767}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1440478605
 GameObject:
   m_ObjectHideFlags: 0
@@ -3582,6 +3624,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1541518354}
   m_CullTransparentMesh: 1
+--- !u!1 &1575871149 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1405455617666276336, guid: 7ae44ffea1806b746bb638654913ddb6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1000107767}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1579555338
 GameObject:
   m_ObjectHideFlags: 0
@@ -4908,6 +4956,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff2a5a23e24e9bb4f931c91a897cc36a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rackItems:
+  - {fileID: 1350584278}
+  - {fileID: 1434818887}
+  - {fileID: 3368552}
+  - {fileID: 497203287}
+  - {fileID: 518220901}
+  - {fileID: 1575871149}
+  - {fileID: 759082602}
+  - {fileID: 1182190637}
   storageUi: {fileID: 1353372503}
   itemPrefab: {fileID: 6182094383509676740, guid: 19fe3e2c493aab040bc052725ae0facc,
     type: 3}
@@ -4982,9 +5039,9 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 1
   m_Spacing: 20
-  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0

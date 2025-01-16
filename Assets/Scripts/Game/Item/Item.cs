@@ -2,20 +2,13 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    private int buyPrice;
-    private int sellPrice;
+    public ItemType itemType { get; set; }
+    public ItemType contentType = ItemType.None;
+    public int sellPrice { get; set; }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    void Start() {}
+    void Update() {}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
 
 public enum ItemType

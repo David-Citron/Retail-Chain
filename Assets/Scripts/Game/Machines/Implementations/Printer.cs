@@ -15,13 +15,13 @@ public class Printer : Machine
         doneIcon.gameObject.SetActive(false);
 
         AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.E) && isPlayerNear, collider => PickUp(),
-            new Hint(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready))
+            new Hint(Hint.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready))
         ));
 
         AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, collider => StartInteraction(), new Hint[] {
             new Hint("PRINTING..", () => machineState == MachineState.Working),
-            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO PRINT", () => machineState == MachineState.Ready),
-            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling),
+            new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO PRINT", () => machineState == MachineState.Ready),
+            new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling),
             new Hint("INVALID ITEM", () => !IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling)
         }));
     }

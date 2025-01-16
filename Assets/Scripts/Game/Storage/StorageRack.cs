@@ -9,7 +9,8 @@ public class StorageRack : Interactable
     public static StorageRack instance;
 
     private Dictionary<ItemType, int> storedItems = new Dictionary<ItemType, int>();
-    private List<GameObject> items = new List<GameObject>();
+    [SerializeField] private List<GameObject> rackItems = new List<GameObject>();
+    private List<GameObject> contentItems = new List<GameObject>();
 
     public GameObject storageUi;
     public GameObject itemPrefab;
@@ -37,31 +38,33 @@ public class StorageRack : Interactable
             ToggleUI();
         });
 
+        UpdateRackItems();
+
         AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, collider => InsertItem(PlayerPickUp.holdingItem), new Hint[] {
-            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => PlayerPickUp.holdingItem != null)
+            new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INSERT", () => PlayerPickUp.holdingItem != null)
         }));
 
         AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.E) && isPlayerNear, collider => ToggleUI(), new Hint[] {
-            new Hint(HintText.GetHintButton(HintButton.E) + " TO OPEN STORAGE", () => PlayerPickUp.holdingItem == null)
+            new Hint(Hint.GetHintButton(HintButton.E) + " TO OPEN STORAGE", () => PlayerPickUp.holdingItem == null)
         }));
     }
 
-    void Update() { }
+    void Update() {}
 
     public void ToggleUI()
     {
 
         if(storedItems.Count <= 0 && !storageUi.activeSelf)
         {
-            Hint.Create("NO ITEMS IN STORAGE", 1);
+            Hint.ShowWhile("NO ITEMS IN STORAGE", () => storedItems.Count <= 0 && isPlayerNear);
             return;
         }
 
         storageUi.SetActive(!storageUi.activeSelf);
-
+        PlayerMovement.freeze = storageUi.activeSelf;
         if (!storageUi.activeSelf) return;
 
-        foreach (var item in items) Destroy(item);
+        foreach (var item in contentItems) Destroy(item);
         foreach (var item in storedItems.Keys)
         {
             GameObject createdItem = Instantiate(itemPrefab);
@@ -73,7 +76,7 @@ public class StorageRack : Interactable
             createdItem.transform.SetParent(itemListContent.transform);
             createdItem.transform.localScale = Vector3.one;
 
-            items.Add(createdItem);
+            contentItems.Add(createdItem);
         }
     }
 
@@ -101,6 +104,7 @@ public class StorageRack : Interactable
         }
 
         storedItems.Add(itemType, GetStoredAmountOf(itemType) + 1);
+        UpdateRackItems();
     }
 
     public void TakeItem(ItemType itemType, bool validate)
@@ -120,16 +124,43 @@ public class StorageRack : Interactable
 
         PlayerPickUp.Instance().IfPresent(pickUp =>
         {
-            GameObject item = ItemManager.GetGameObjectFromPrefab(itemType);
+            GameObject item = ItemManager.CreateItem(itemType);
             if (item == null) return;
             pickUp.PickUp(item);
             if (validate) ToggleUI();
             else TestingUtils.instance.testerUI.SetActive(false);
             UpdateHints();
+            UpdateRackItems();
         });
     }
 
-    public int GetStoredAmountOf(ItemType itemType) => storedItems.GetValueOrDefault(itemType, 0);
+    private void UpdateRackItems()
+    {
+        int totalItemsAmount = GetStoredAmount();
+        int activeItemCount = Mathf.Clamp(totalItemsAmount / 5, 0, rackItems.Count);
+
+        for (int i = 0; i < rackItems.Count; i++)
+        {
+            rackItems[i].SetActive(totalItemsAmount != 0 && i <= activeItemCount);
+        }
+
+
+        if (totalItemsAmount == 1) rackItems[0].SetActive(true); // If there at least one enable first item for better visual effect.
+    }
+
+
+    private int GetStoredAmount()
+    {
+        int amount = 0;
+        foreach(int number in storedItems.Values)
+        {
+            amount += number;
+        }
+        return amount;
+    }
+
+
+    private int GetStoredAmountOf(ItemType itemType) => storedItems.GetValueOrDefault(itemType, 0);
     public override string GetTag() => "StorageRack";
     public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
     public override bool IsPlayerNear() => isPlayerNear;

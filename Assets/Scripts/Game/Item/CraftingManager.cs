@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 public class CraftingManager : MonoBehaviour
 {
@@ -16,6 +17,12 @@ public class CraftingManager : MonoBehaviour
         recipes.Add(new CraftingRecipe(MachineType.GlueDispenser, new List<ItemType>() { ItemType.GlueBarrel }, ItemType.None, 2));
 
         recipes.Add(new CraftingRecipe(MachineType.Workbench, new List<ItemType>() { ItemType.GlueCanister, ItemType.Paper }, ItemType.EmptyBook, 6));
+
+        foreach(ItemType value in Enum.GetValues(typeof(ItemType))) {
+            if (value == ItemType.Package || value == ItemType.None) continue;
+            recipes.Add(new CraftingRecipe(MachineType.PackagingTable, new List<ItemType>() { ItemType.Package, value }, ItemType.Package, 3));
+            Debug.Log("added packaging recipe for " + value);
+        }
     }
 
     void Start() {}

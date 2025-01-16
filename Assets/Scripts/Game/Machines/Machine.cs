@@ -54,29 +54,26 @@ public abstract class Machine : Interactable, IMachine
     protected virtual void OnStart()
     {
         AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.E) && isPlayerNear, collider => PickUp(), 
-            new Hint(HintText.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready) && GetNearestSlot().IsReadyToPickUp())
+            new Hint(Hint.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready) && GetNearestSlot().IsReadyToPickUp())
         ));
 
         AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, collider => StartInteraction(), new Hint[] {
-            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && GetNearestSlot().isInValidDistance),
-            new Hint(HintText.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling && GetNearestSlot().IsValid()),
+            new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && GetNearestSlot().isInValidDistance),
+            new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling && GetNearestSlot().IsValid()),
             new Hint("INVALID ITEM", () => !IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling)
         }));
     }
 
     protected virtual void StartInteraction()
     {
-        Debug.Log("INteraction started");
         if(machineState != MachineState.Ready && (inputPlaces.Count == 0 || currentItems.Count < inputPlaces.Count))
         {
             PutItem(PlayerPickUp.holdingItem);
-            Debug.Log("put");
             return;
         }
 
         if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", 1)) return;
 
-        Debug.Log("started");
         StartTimer();
         ChangeMachineState(MachineState.Working);
     }
@@ -166,7 +163,7 @@ public abstract class Machine : Interactable, IMachine
                 break;
 
             case MachineState.Done:
-                resultItem = ItemManager.GetGameObjectFromPrefab(currentRecipe.output);
+                resultItem = ItemManager.CreateItem(currentRecipe.output);
                 PlaceItem(resultPlace, resultItem);
                 GetCurrentGameObjects().ForEach(item => Destroy(item));
 
@@ -183,12 +180,15 @@ public abstract class Machine : Interactable, IMachine
     protected virtual bool IsValid(ItemType input)
     {
         if (possibleRecipes.Count == 0) return false;
-        
+
         foreach (var recipe in possibleRecipes)
         {
-            if (recipe.inputs.Contains(input)) continue;
+            if (recipe.inputs.Contains(input)) break;
             return false;
         }
+
+
+        Debug.LogError("PASSED");
 
         if (GetCurrentItems().Count != 0)
         {
@@ -240,7 +240,7 @@ public abstract class Machine : Interactable, IMachine
             Hint.ShowWhile("ITEM SLOT IS FULL", () => PlayerPickUp.GetHoldingType() != ItemType.None && machineState == MachineState.Idling && GetNearestSlot().IsReadyToPickUp());
         }
 
-        return new InputInfo(nearestSlot, nearestItemDistance <= 1f, nearestSlot.transform.childCount != 0);
+        return new InputInfo(nearestSlot, nearestItemDistance <= 1.3f, nearestSlot.transform.childCount != 0);
     }
 
     protected List<ItemType> GetCurrentItems()
