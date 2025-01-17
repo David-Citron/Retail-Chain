@@ -59,8 +59,8 @@ public abstract class Machine : Interactable, IMachine
 
         AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, collider => StartInteraction(), new Hint[] {
             new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && GetNearestSlot().isInValidDistance),
-            new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling && GetNearestSlot().IsValid()),
-            new Hint("INVALID ITEM", () => !IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling)
+            new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling && GetNearestSlot().IsValid()),
+            new Hint("INVALID ITEM", () => !IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling)
         }));
     }
 
@@ -114,8 +114,7 @@ public abstract class Machine : Interactable, IMachine
         InputInfo input = GetNearestSlot();
         if (inputPlaces.Count != 0 && resultPlace != null && (input == null || !input.IsValid())) return;
 
-        ItemType inputType = ItemManager.GetItemType(item).GetValueOrDefault();
-        if(!IsValid(inputType)) return;
+        if(!IsValid(item)) return;
 
         PlayerPickUp.Instance().IfPresent(handler =>
         {
@@ -177,15 +176,18 @@ public abstract class Machine : Interactable, IMachine
         UpdateHints();
     }
     
-    protected virtual bool IsValid(ItemType input)
+    protected virtual bool IsValid(GameObject item)
     {
         if (possibleRecipes.Count == 0) return false;
+        Item itemInfo = ItemManager.GetItemInfo(item);
+        if (itemInfo != null && itemInfo.contentType != ItemType.None) return false;
 
+        ItemType itemType = ItemManager.GetItemType(item).GetValueOrDefault();
         bool result = false;
         if (GetCurrentItems().Count != 0)
         {
             var copy = GetCurrentItems();
-            copy.Add(input);
+            copy.Add(itemType);
 
             foreach (var recipe in possibleRecipes)
             {
@@ -196,7 +198,7 @@ public abstract class Machine : Interactable, IMachine
         {
             foreach (var recipe in possibleRecipes)
             {
-                if (!recipe.inputs.Contains(input)) continue;
+                if (!recipe.inputs.Contains(itemType)) continue;
                 result = true;
             }
         }

@@ -21,7 +21,6 @@ public class CraftingManager : MonoBehaviour
         foreach(ItemType value in Enum.GetValues(typeof(ItemType))) {
             if (value == ItemType.Package || value == ItemType.None) continue;
             recipes.Add(new CraftingRecipe(MachineType.PackagingTable, new List<ItemType>() { ItemType.Package, value }, ItemType.Package, 3));
-            Debug.Log("added packaging recipe for " + value);
         }
     }
 

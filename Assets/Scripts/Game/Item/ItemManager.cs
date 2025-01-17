@@ -14,12 +14,14 @@ public class ItemManager : MonoBehaviour
     public static GameObject CreateItem(ItemType itemType)
     {
         GameObject gameObject = GetGameObjectFromPrefab(itemType);
+        if (gameObject == null) return null;
         Item item = gameObject.AddComponent<Item>();
         item.itemType = itemType;
 
         return gameObject;
     }
 
+    public static Item GetItemInfo(GameObject gameObject) => gameObject == null ? null : gameObject.GetComponent<Item>();
 
     public static void UpdateItem(GameObject gameObject, ItemType contentType) => UpdateItem(gameObject, contentType, 0);
     public static void UpdateItem(GameObject gameObject, int sellPrice) => UpdateItem(gameObject, ItemType.None, sellPrice);

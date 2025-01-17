@@ -88,7 +88,7 @@ public class GlueDispenser : Machine
 
     protected override void PlaceItem(GameObject place, GameObject item)
     {
-        if (item == null) return ;
+        if (item == null) return;
         item.SetActive(false);//Hide the object.
         item.transform.SetParent(transform); //Set parent the printer for the item
         item.transform.localPosition = Vector3.zero;

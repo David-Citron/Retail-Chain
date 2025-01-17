@@ -12,7 +12,6 @@ public class PackagingTable : Machine
         base.ChangeMachineState(newState);
 
         if (resultItem == null) return;
-        Debug.LogError(resultItem.name);
         ItemManager.UpdateItem(resultItem, currentType);
     }
 

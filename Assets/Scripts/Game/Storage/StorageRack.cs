@@ -53,6 +53,8 @@ public class StorageRack : Interactable
 
     public void ToggleUI()
     {
+        if (PlayerPickUp.holdingItem != null) return;
+
         if(storedItems.Count <= 0 && !storageUi.activeSelf)
         {
             Hint.ShowWhile("NO ITEMS IN STORAGE", () => storedItems.Count <= 0 && isPlayerNear);
@@ -125,9 +127,12 @@ public class StorageRack : Interactable
         {
             GameObject item = ItemManager.CreateItem(itemType);
             if (item == null) return;
+
             pickUp.PickUp(item);
+
             if (validate) ToggleUI();
             else TestingUtils.instance.testerUI.SetActive(false);
+
             UpdateHints();
             UpdateRackItems();
         });

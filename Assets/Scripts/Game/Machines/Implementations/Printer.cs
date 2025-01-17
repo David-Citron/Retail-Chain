@@ -21,8 +21,8 @@ public class Printer : Machine
         AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, collider => StartInteraction(), new Hint[] {
             new Hint("PRINTING..", () => machineState == MachineState.Working),
             new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO PRINT", () => machineState == MachineState.Ready),
-            new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling),
-            new Hint("INVALID ITEM", () => !IsValid(PlayerPickUp.GetHoldingType()) && machineState == MachineState.Idling)
+            new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling),
+            new Hint("INVALID ITEM", () => !IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling)
         }));
     }
 
@@ -64,7 +64,7 @@ public class Printer : Machine
         return (minutes > 9 ? minutes : "0" + minutes) + ":" + (time > 9 ? time : "0" + time);
     }
 
-    protected override bool IsValid(ItemType input) => input == ItemType.EmptyBook;
+    protected override bool IsValid(GameObject item) => ItemManager.GetItemType(item).GetValueOrDefault() == ItemType.EmptyBook;
     public override bool PlayAnimation() => false;
     public override string GetTag() => "MachinePrinter";
     public override Vector3 GetColliderSize(BoxCollider collider) => new Vector3(collider.size.x, collider.size.y, 1.5f);
