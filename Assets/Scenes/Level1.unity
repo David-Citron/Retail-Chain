@@ -1632,7 +1632,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &878006841
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3531,6 +3531,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83706befc2d89d64d80f06e4a32bcaaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  background: {fileID: 1353372503}
+  layouts:
+  - {fileID: 878006840}
+  playerInfoField: {fileID: 1781850266}
   username: {fileID: 1440478607}
   profilePicture: {fileID: 102256337}
   balance: {fileID: 2078376578}
@@ -3964,7 +3968,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1781850267}
-  - {fileID: 2078376577}
   - {fileID: 1963152734}
   - {fileID: 252835090}
   - {fileID: 1389412870}
@@ -4548,7 +4551,7 @@ GameObject:
   - component: {fileID: 1781850269}
   - component: {fileID: 1781850268}
   m_Layer: 5
-  m_Name: Username
+  m_Name: PlayerInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4568,6 +4571,7 @@ RectTransform:
   m_Children:
   - {fileID: 102256336}
   - {fileID: 1440478606}
+  - {fileID: 2078376577}
   m_Father: {fileID: 1620674095}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
@@ -4965,7 +4969,6 @@ MonoBehaviour:
   - {fileID: 1575871149}
   - {fileID: 759082602}
   - {fileID: 1182190637}
-  storageUi: {fileID: 1353372503}
   itemPrefab: {fileID: 6182094383509676740, guid: 19fe3e2c493aab040bc052725ae0facc,
     type: 3}
   itemListContent: {fileID: 1849078161}
@@ -5140,11 +5143,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1620674095}
+  m_Father: {fileID: 1781850267}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -50, y: -180}
+  m_AnchoredPosition: {x: -50, y: -150}
   m_SizeDelta: {x: 348.0543, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &2078376578

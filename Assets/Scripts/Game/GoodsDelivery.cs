@@ -1,38 +1,59 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Collections;
 
 public class NewBehaviourScript : MonoBehaviour
 {
 
     private List<DeliveryOffer> deliveryOffers;
 
+    [SerializeField] private GameObject truck;
+    [SerializeField] private GameObject garageDoor;
+
+    private float elapsedTime;
+    private bool isMoving;
+
     private const int OFFERS = 3;
-    private const int TIME_BEFORE_DELIVERY = 55; //Every 55 seconds.
+    private const int TIME_BEFORE_DELIVERY = 5; //Every 55 seconds.
 
     void Start()
     {
-        deliveryOffers = new List<DeliveryOffer>();   
+        deliveryOffers = new List<DeliveryOffer>();
+        StartCoroutine(StartDeliveryTimer());
     }
 
     void Update()
     {
-        
+        if (!isMoving) return;
+        PlayTruckAnimation(deliveryOffers.Count > 0);
     }
 
-    private void StartDeliveryTimer()
+    private IEnumerator StartDeliveryTimer()
     {
+        yield return new WaitForSeconds(2f);
         new ActionTimer(() =>
         {
+            garageDoor.gameObject.SetActive(false);
             GenerateOffers();
 
-            new ActionTimer(() => StartDeliveryTimer(), 20, 1).Run(); //After 20 seconds start timer for the new delivery.
+            //new ActionTimer(() => StartDeliveryTimer(), 20, 1).Run(); //After 20 seconds start timer for the new delivery.
         }, TIME_BEFORE_DELIVERY, 1).Run();
     }
 
-    private void PlayTruckAnimation()
+    private void PlayTruckAnimation(bool inAnimation)
     {
+        if (truck == null || elapsedTime >= 3f)
+        {
+            isMoving = false;
+            return;
+        }
 
+        elapsedTime += Time.deltaTime;
+        float t = elapsedTime / 150f;
+
+        float newZ = Mathf.Lerp(truck.transform.localPosition.z, inAnimation ? -6 : -8, t);
+        truck.transform.localPosition = new Vector3(truck.transform.localPosition.x, truck.transform.localPosition.y, newZ);
     }
 
 
@@ -48,6 +69,8 @@ public class NewBehaviourScript : MonoBehaviour
             deliveryOffers.Add(new DeliveryOffer(GetRandomType(random), random.Next(50, 150)));
         }
 
+        elapsedTime = 0f;
+        isMoving = true;
     }
 
     private ItemType GetRandomType(System.Random random)
@@ -56,7 +79,6 @@ public class NewBehaviourScript : MonoBehaviour
         return (ItemType) values.GetValue(random.Next(values.Length));
     }
 }
-
 
 public class DeliveryOffer
 {

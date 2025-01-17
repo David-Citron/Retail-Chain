@@ -12,7 +12,6 @@ public class StorageRack : Interactable
     [SerializeField] private List<GameObject> rackItems = new List<GameObject>();
     private List<GameObject> contentItems = new List<GameObject>();
 
-    public GameObject storageUi;
     public GameObject itemPrefab;
     public GameObject itemListContent;
 
@@ -55,15 +54,13 @@ public class StorageRack : Interactable
     {
         if (PlayerPickUp.holdingItem != null) return;
 
-        if(storedItems.Count <= 0 && !storageUi.activeSelf)
+        if(storedItems.Count <= 0 && !GameLayoutManager.instance.IsEnabled(LayoutType.ItemRack))
         {
             Hint.ShowWhile("NO ITEMS IN STORAGE", () => storedItems.Count <= 0 && isPlayerNear);
             return;
         }
 
-        storageUi.SetActive(!storageUi.activeSelf);
-        PlayerMovement.freeze = storageUi.activeSelf;
-        if (!storageUi.activeSelf) return;
+        if (!GameLayoutManager.instance.ToggleUI(LayoutType.ItemRack)) return;
 
         foreach (var item in contentItems) Destroy(item);
         foreach (var item in storedItems.Keys)
@@ -128,11 +125,10 @@ public class StorageRack : Interactable
             GameObject item = ItemManager.CreateItem(itemType);
             if (item == null) return;
 
-            pickUp.PickUp(item);
-
             if (validate) ToggleUI();
             else TestingUtils.instance.testerUI.SetActive(false);
 
+            pickUp.PickUp(item);
             UpdateHints();
             UpdateRackItems();
         });
