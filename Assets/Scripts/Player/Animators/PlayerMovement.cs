@@ -43,8 +43,6 @@ public class PlayerMovement : MonoBehaviour
         if (freeze) return;
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
-
-        RotatePlayer();
     }
 
     void FixedUpdate()
@@ -62,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         MovePlayer();
+        RotatePlayer();
     }
 
     void LateUpdate()
@@ -95,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
         if (movementInput.magnitude >= 0.1f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(movementInput);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
         }
     }
 
