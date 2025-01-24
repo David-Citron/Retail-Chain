@@ -36,17 +36,4 @@ public class ContractItem
     }
 }
 
-public static class ContractItemReaderWriter
-{
-    public static void WriteContractItem(this NetworkWriter writer, ContractItem contractItem)
-    {
-        writer.WriteByte((byte)contractItem.itemType);
-        writer.WriteInt(contractItem.quantity);
-        writer.WriteInt(contractItem.price);
-    }
 
-    public static ContractItem ReadContractItem (this NetworkReader reader)
-    {
-        return new ContractItem((ItemType)reader.ReadByte(), reader.ReadInt(), reader.ReadInt());
-    }
-}

@@ -57,7 +57,7 @@ public class ContractManager : NetworkBehaviour
         Debug.Log("Calling StartNewContract");
         // TODO!!!!!
         // Test for ClientRPC parameters
-        //RpcStartNewContractTest1(new ContractItem(ItemType.GlueBarrel, 1, 200), 200);
+        RpcStartNewContractTest1(new ContractItem(ItemType.GlueBarrel, 1, 200), 200);
         RpcStartNewContractTest2(new List<int> { 1, 2, 4, 6 }, 200);
         // RpcStartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
         RpcTest();
@@ -159,5 +159,20 @@ public class ContractManager : NetworkBehaviour
             return;
         }
         Debug.Log("Contract WAS NOT finished successfully!");
+    }
+}
+
+public static class ContractItemReaderWriter
+{
+    public static void WriteContractItem(this NetworkWriter writer, ContractItem contractItem)
+    {
+        writer.WriteByte((byte)contractItem.itemType);
+        writer.WriteInt(contractItem.quantity);
+        writer.WriteInt(contractItem.price);
+    }
+
+    public static ContractItem ReadContractItem(this NetworkReader reader)
+    {
+        return new ContractItem((ItemType)reader.ReadByte(), reader.ReadInt(), reader.ReadInt());
     }
 }
