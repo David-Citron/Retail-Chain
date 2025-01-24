@@ -49,19 +49,21 @@ public class ItemManager : MonoBehaviour
     private static GameObject GetGameObjectFromPrefab(ItemType type)
     {
         if (type == ItemType.None) return null;
-        return Instantiate(instance.items.Find(item => item.itemType == type).itemPrefab);
+        return Instantiate(GetItemData(type).itemPrefab);
     }
 
     public static string GetNameOf(ItemType type)
     {
         if (type == ItemType.None) return "Error";
-        return instance.items.Find(item => item.itemType == type).itemName;
+        return GetItemData(type).itemName;
     }
 
 
     public static RenderTexture GetIcon(ItemType type)
     {
         if (type == ItemType.None) return null;
-        return instance.items.Find(item => item.itemType == type).icon;
+        return GetItemData(type).icon;
     }
+
+    public static ItemData GetItemData(ItemType itemType) => instance.items.Find(item => item.itemType == itemType);
 }

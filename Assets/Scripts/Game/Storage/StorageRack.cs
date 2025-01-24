@@ -67,7 +67,7 @@ public class StorageRack : Interactable
         {
             GameObject createdItem = Instantiate(itemPrefab);
 
-            createdItem.transform.SetParent(itemListContent.transform, false);
+            createdItem.transform.SetParent(itemListContent.transform);
             createdItem.transform.localScale = Vector3.one;
 
             var component = createdItem.GetComponent<StorageContentItem>();

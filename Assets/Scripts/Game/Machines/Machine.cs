@@ -221,7 +221,7 @@ public abstract class Machine : Interactable, IMachine
 
     internal InputInfo GetNearestSlot()
     {
-        if (inputPlaces.Count == 0) return null; //If the inputs are 0.
+        if (!isPlayerNear || inputPlaces.Count == 0) return null; //If the inputs are 0.
 
         GameObject nearestSlot = inputPlaces[0];
         float nearestItemDistance = Vector3.Distance(PlayerInputManager.instance.transform.position, nearestSlot.transform.position);

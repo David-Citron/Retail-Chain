@@ -64,5 +64,5 @@ public class GameLayoutManager : MonoBehaviour
 public enum LayoutType
 {
     ItemRack,
-
+    DeliveryOffers,
 }
