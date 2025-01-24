@@ -30,7 +30,7 @@ public class ContractManager : NetworkBehaviour
     private bool negotiated = false;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         //
         // Server + client:
@@ -57,9 +57,9 @@ public class ContractManager : NetworkBehaviour
         Debug.Log("Calling StartNewContract");
         // TODO!!!!!
         // Test for ClientRPC parameters
-        RpcStartNewContractTest1(new ContractItem(ItemType.GlueBarrel, 1, 200), 200);
-        RpcStartNewContractTest2(new List<int> { 1, 2, 4, 6 }, 200);
-        // RpcStartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
+        // RpcStartNewContractTest1(new ContractItem(ItemType.GlueBarrel, 1, 200), 200);
+        // RpcStartNewContractTest2(new List<int> { 1, 2, 4, 6 }, 200);
+        RpcStartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
         RpcTest();
         
         //new ActionTimer(() => { RpcTest(); }, 5, 1).Run();
