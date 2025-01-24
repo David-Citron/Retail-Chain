@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using System.Threading;
+using System;
 
 public class ContractManager : NetworkBehaviour
 {
@@ -48,16 +49,17 @@ public class ContractManager : NetworkBehaviour
         });
         if (negotiationPanel != null) negotiationPanel.SetActive(false);
         negotiated = false;
-
-        
-
     }
 
     [Server]
     public void InitializeFirstContract()
     {
         Debug.Log("Calling StartNewContract");
-        //RpcStartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
+        // TODO!!!!!
+        // Test for ClientRPC parameters
+        RpcStartNewContractTest1(new ContractItem(ItemType.GlueBarrel, 1, 200), 200);
+        RpcStartNewContractTest2(new List<int> { 1, 2, 4, 6 }, 200);
+        // RpcStartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
         Debug.Log(NetworkClient.spawned);
         RpcTest();
         
@@ -84,11 +86,51 @@ public class ContractManager : NetworkBehaviour
         Debug.Log("THIS WORKS");
     }
 
+    // Try:
+    // 1. List<int>
+    // 2. ContractItem
+    //
     [ClientRpc]
     private void RpcStartNewContract(List<ContractItem> contractItems, int time)
     {
-        Debug.Log("StartNewContract Called");
-        localContract.StartNewContract(contractItems, time);
+        try
+        {
+            Debug.Log("StartNewContract Called");
+            localContract.StartNewContract(contractItems, time);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error: " + e.Message);
+        }
+    }
+    
+    [ClientRpc]
+    private void RpcStartNewContractTest1(ContractItem contractItems, int time)
+    {
+        try
+        {
+            Debug.Log("StartNewContract Called");
+            localContract.StartNewContract(new List<ContractItem>() { contractItems }, time);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error TEST 1: " + e.Message);
+        }
+    }
+
+    [ClientRpc]
+    private void RpcStartNewContractTest2(List<int> ids, int time)
+    {
+        try
+        {
+            Debug.Log("StartNewContract Called");
+            ids.Add(10);
+            //localContract.StartNewContract(new List<ContractItem>() { contractItems }, time);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error TEST 2: " + e.Message);
+        }
     }
 
     [Command (requiresAuthority = false)]
@@ -119,5 +161,4 @@ public class ContractManager : NetworkBehaviour
         }
         Debug.Log("Contract WAS NOT finished successfully!");
     }
-
 }

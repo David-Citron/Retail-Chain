@@ -3,14 +3,15 @@ using System.Collections.Generic;
 //using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Settings : MonoBehaviour
 {
-    [SerializeField] private Dropdown resolutionDropdown;
-    [SerializeField] private Dropdown windowModeDropdown;
-    [SerializeField] private Dropdown primaryDisplayDropdown;
-    [SerializeField] private Dropdown qualityDropdown;
-    [SerializeField] private Dropdown targetFramerateDropdown;
+    [SerializeField] private TMP_Dropdown resolutionDropdown;
+    [SerializeField] private TMP_Dropdown windowModeDropdown;
+    [SerializeField] private TMP_Dropdown primaryDisplayDropdown;
+    [SerializeField] private TMP_Dropdown qualityDropdown;
+    [SerializeField] private TMP_Dropdown targetFramerateDropdown;
     [SerializeField] private Slider masterVolumeSlider;
     [SerializeField] private Slider soundVolumeSlider;
     [SerializeField] private Slider musicVolumeSlider;
@@ -29,12 +30,9 @@ public class Settings : MonoBehaviour
         windowModes.Add(FullScreenMode.ExclusiveFullScreen);
         windowModes.Add(FullScreenMode.FullScreenWindow);
         windowModes.Add(FullScreenMode.Windowed);
-        targetFramerates.Clear();
-        targetFramerates.Add(30);
-        targetFramerates.Add(60);
-        targetFramerates.Add(120);
-        targetFramerates.Add(180);
-        targetFramerates.Add(240);
+        targetFramerates = new List<int>{ 30, 60, 120, 160, 180, 240};
+
+        Refresh();
     }
 
     // Update is called once per frame
@@ -57,7 +55,7 @@ public class Settings : MonoBehaviour
         int currentResolution = 0;
         List<string> options = new List<string>();
 
-        for (int i = 0; i < availableResolutions.Length; i++)
+        for (int i = availableResolutions.Length - 1; i >= 0; i--)
         {
             Resolution resolution = availableResolutions[i];
             resolutions.Add(resolution);
@@ -68,12 +66,15 @@ public class Settings : MonoBehaviour
             }
         }
 
+        resolutionDropdown.ClearOptions();
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolution;
         resolutionDropdown.RefreshShownValue();
 
         // Window Mode
         int currentFullscreenMode = 0;
+
+        List<string> windowModeLabels = new List<string> { "Fullscreen", "Borderless fullscreen", "Maximized window", "Window" };
 
         for (int i = 0; i < windowModes.Count; i++)
         {
@@ -83,6 +84,8 @@ public class Settings : MonoBehaviour
             }
         }
 
+        windowModeDropdown.ClearOptions();
+        windowModeDropdown.AddOptions(windowModeLabels);
         windowModeDropdown.value = currentFullscreenMode;
         windowModeDropdown.RefreshShownValue();
 

@@ -11,6 +11,7 @@ public class Item : MonoBehaviour
 
 }
 
+[System.Serializable]
 public enum ItemType
 {
     None, // Default value.
