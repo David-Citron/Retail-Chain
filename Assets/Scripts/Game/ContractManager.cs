@@ -166,6 +166,7 @@ public static class ContractItemReaderWriter
 {
     public static void WriteContractItem(this NetworkWriter writer, ContractItem contractItem)
     {
+        Debug.LogWarning("WRITE CONTRACT ITEM CALLED");
         writer.WriteByte((byte)contractItem.itemType);
         writer.WriteInt(contractItem.quantity);
         writer.WriteInt(contractItem.price);
@@ -173,6 +174,7 @@ public static class ContractItemReaderWriter
 
     public static ContractItem ReadContractItem(this NetworkReader reader)
     {
+        Debug.LogWarning("READ CONTRACT ITEM CALLED");
         return new ContractItem((ItemType)reader.ReadByte(), reader.ReadInt(), reader.ReadInt());
     }
 }
