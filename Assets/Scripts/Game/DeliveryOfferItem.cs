@@ -26,6 +26,7 @@ public class DeliveryOfferItem : MonoBehaviour
 
     void Start() {
         amountInput.onValueChanged.AddListener(newValue => CheckValue(newValue));
+        amountInput.characterValidation = TMP_InputField.CharacterValidation.Integer;
 
         ItemData itemData = ItemManager.GetItemData(deliveryOffer.item);
         itemIcon.texture = itemData.icon;
@@ -76,12 +77,15 @@ public class DeliveryOfferItem : MonoBehaviour
 
     private void CheckValue(string newValue)
     {
-        if(!int.TryParse(newValue, out int newAmount))
+        string[] parts = newValue.Split('/');
+        string result = parts[0];
+        if (!int.TryParse(result, out int newAmount))
         {
 
             return;
         }
 
-        UpdateAmount(newAmount);
+        amountToBuy = newAmount;
+        UpdateAmount();
     }
 }

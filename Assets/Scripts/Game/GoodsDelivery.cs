@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using UnityEngine.UI;
+using System.Linq;
 
 public class GoodsDelivery : Interactable
 {
@@ -12,7 +13,9 @@ public class GoodsDelivery : Interactable
 
     [SerializeField] private GameObject truck;
     [SerializeField] private GameObject garageDoor;
+
     [SerializeField] private Button closeButton;
+    [SerializeField] private Button departureButton;
 
     public GameObject itemPrefab;
     public GameObject itemListContent;
@@ -35,6 +38,10 @@ public class GoodsDelivery : Interactable
         closeButton.gameObject.SetActive(true);
         closeButton.onClick.RemoveAllListeners();
         closeButton.onClick.AddListener(() => ToggleOffersUI());
+
+        departureButton.gameObject.SetActive(true);
+        departureButton.onClick.RemoveAllListeners();
+        departureButton.onClick.AddListener(() => ClearOffers());
     }
 
     void Update() {}
@@ -81,14 +88,7 @@ public class GoodsDelivery : Interactable
         yield return new WaitForSeconds(2f);
         new ActionTimer(() =>
         {
-            //garageDoor.gameObject.SetActive(false);
             GenerateOffers();
-
-            new ActionTimer(() =>
-            {
-                ClearOffers();
-                new ActionTimer(() => StartCoroutine(StartDeliveryTimer()), 20).Run();
-            }, 15).Run();
         }, TIME_BEFORE_DELIVERY).Run();
     }
 
@@ -96,6 +96,7 @@ public class GoodsDelivery : Interactable
     {
         if (truck == null || elapsedTime >= 3.5f)
         {
+            garageDoor.gameObject.SetActive(!inAnimation);
             isMoving = false;
             return;
         }
@@ -129,12 +130,16 @@ public class GoodsDelivery : Interactable
         deliveryOffers.Clear();
         elapsedTime = 0f;
         isMoving = true;
+
+        new ActionTimer(() => StartCoroutine(StartDeliveryTimer()), TIME_BEFORE_DELIVERY).Run();
     }
 
     private ItemType GetRandomType(System.Random random)
     {
         Array values = Enum.GetValues(typeof(ItemType));
-        return (ItemType) values.GetValue(random.Next(values.Length));
+        var value = (ItemType) values.GetValue(random.Next(values.Length));
+        while(deliveryOffers.Any(item => item.item == value)) value = (ItemType) values.GetValue(random.Next(values.Length));
+        return value;
     }
 
     private bool IsActive() => deliveryOffers.Count > 0;
