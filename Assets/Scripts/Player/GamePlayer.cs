@@ -1,6 +1,7 @@
 using Mirror;
 using Steamworks;
 using TMPro;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -161,13 +162,18 @@ public class GamePlayer : NetworkBehaviour
 
         if(isLocalPlayer)
         {
+
             GetComponent<PlayerBank>().enabled = true;
+            Destroy(GetComponent<LobbyAnimator>());
 
             player.GetComponent<PlayerInputManager>().enabled = true;
             player.GetComponent<PlayerMovement>().enabled = true;
             player.GetComponent<PlayerPickUp>().enabled = true;
 
-            GameManager.Teleport(this);
+            Rigidbody rb = player.GetComponent<Rigidbody>();
+            rb.constraints = RigidbodyConstraints.None;
+
+            Game.instance.Teleport(this);
         } else
         {
             player.gameObject.SetActive(false);

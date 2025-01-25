@@ -7,7 +7,7 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
 
-    [SerializeField] public List<GamePlayer> gamePlayers = new List<GamePlayer>();
+    public List<GamePlayer> gamePlayers = new List<GamePlayer>();
     [SerializeField] private List<Transform> lobbySpawnPoints = new List<Transform>();
 
     [SerializeField] public Account account;
