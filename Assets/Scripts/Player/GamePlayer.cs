@@ -163,7 +163,7 @@ public class GamePlayer : NetworkBehaviour
         {
             gameObject.GetComponent<PlayerBank>().enabled = true;
 
-            player.AddComponent<PlayerInputManager>().enabled = true;
+            player.GetComponent<PlayerInputManager>().enabled = true;
             player.GetComponent<PlayerMovement>().enabled = true;
             player.GetComponent<PlayerPickUp>().enabled = true;
 
