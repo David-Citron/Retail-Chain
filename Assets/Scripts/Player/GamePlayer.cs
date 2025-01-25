@@ -233,8 +233,10 @@ public class GamePlayer : NetworkBehaviour
         });
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if (scene.buildIndex == 0) return;
+
         var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this).GetValueOrDefault();
         if (oppositePlayer == null)
         {

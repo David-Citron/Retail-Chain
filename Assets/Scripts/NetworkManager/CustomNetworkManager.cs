@@ -1,7 +1,6 @@
 using UnityEngine;
 using Mirror;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class CustomNetworkManager : NetworkManager
 {
@@ -11,6 +10,7 @@ public class CustomNetworkManager : NetworkManager
 
     public override void Start()
     {
+        if (instance != null) return;
         instance = this;
         base.Start();
     }
@@ -33,6 +33,8 @@ public class CustomNetworkManager : NetworkManager
     {
         Debug.LogWarning("Client disconnected");
         base.OnClientDisconnect();
+
+        PlayerManager.instance.Reset();
 
         SteamLobby.instance.LeaveLobby();
         LayoutManager.Instance().IfPresent(layoutManager => layoutManager.HideLoadingScreen());

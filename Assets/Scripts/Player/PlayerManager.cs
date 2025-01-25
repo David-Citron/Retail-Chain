@@ -30,11 +30,6 @@ public class PlayerManager : MonoBehaviour
         instance = this;
     }
 
-    /*private void OnSceneLoaded(UnityEngine.SceneManagement.Scene arg0, LoadSceneMode arg1)
-    {
-        throw new NotImplementedException();
-    }*/
-
     // Update is called once per frame
     void Update()
     {
@@ -51,8 +46,9 @@ public class PlayerManager : MonoBehaviour
 
         LayoutManager.Instance().IfPresent(layoutManager =>
         {
-            gamePlayer.transform.position = lobbySpawnPoints[GetPlayerIndex(gamePlayer)].position;
-            gamePlayer.transform.rotation = lobbySpawnPoints[GetPlayerIndex(gamePlayer)].rotation;
+            Transform transform = lobbySpawnPoints[GetPlayerIndex(gamePlayer)];
+            gamePlayer.transform.position = transform.position;
+            gamePlayer.transform.rotation = transform.rotation;
 
             layoutManager.UpdatePlayer(new CSteamID(gamePlayer.GetSteamId()));
             GetOppositePlayer(gamePlayer).IfPresent(lobbyLeader => layoutManager.UpdateInvitePlayerButton(lobbyLeader));
@@ -135,11 +131,13 @@ public class PlayerManager : MonoBehaviour
         return Optional<GamePlayer>.Empty();
     }
 
-    void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.buildIndex != 0) return;
+        lobbySpawnPoints.Clear();
+
         GameObject spawnPoint1 = GameObject.Find("PlayerSpawnPoint1");
-        GameObject spawnPoint2 = GameObject.Find("PlayerSpawnPoint1");
+        GameObject spawnPoint2 = GameObject.Find("PlayerSpawnPoint2");
         lobbySpawnPoints.Add(spawnPoint1.transform);
         lobbySpawnPoints.Add(spawnPoint2.transform);
     }

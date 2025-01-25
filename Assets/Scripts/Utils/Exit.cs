@@ -40,7 +40,11 @@ public class Exit : MonoBehaviour
 
         exitButton.onClick.AddListener(() =>
         {
-            SteamLobby.instance.LeaveLobby();
+            PlayerManager.instance.GetLocalGamePlayer().IfPresent(gamePlayer =>
+            {
+                if (gamePlayer.isServer && gamePlayer.isClient) CustomNetworkManager.singleton.StopHost();
+                else CustomNetworkManager.singleton.StopClient();
+            });
         });
     }
 }
