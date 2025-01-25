@@ -161,14 +161,13 @@ public class GamePlayer : NetworkBehaviour
 
         if(isLocalPlayer)
         {
-            gameObject.GetComponent<PlayerBank>().enabled = true;
+            GetComponent<PlayerBank>().enabled = true;
 
             player.GetComponent<PlayerInputManager>().enabled = true;
             player.GetComponent<PlayerMovement>().enabled = true;
             player.GetComponent<PlayerPickUp>().enabled = true;
 
-            player.transform.eulerAngles = new Vector3(0, 0, 0);
-            player.transform.position = Vector3.zero;
+            GameManager.Teleport(this);
         } else
         {
             player.gameObject.SetActive(false);
