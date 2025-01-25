@@ -18,6 +18,7 @@ TagManager:
   - MachineWorkbench
   - MachinePackagingTable
   - StorageRack
+  - GoodsDelivery
   layers:
   - Default
   - TransparentFX

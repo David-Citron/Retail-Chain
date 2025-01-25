@@ -7,21 +7,26 @@ public class DeliveryOfferItem : MonoBehaviour
     public DeliveryOffer deliveryOffer;
     private int amountToBuy;
 
-
     [SerializeField] private RawImage itemIcon;
     [SerializeField] private TMP_Text itemName;
     [SerializeField] private TMP_Text itemPrice;
 
-    [SerializeField] private TMP_Text amountText;
+    [SerializeField] private TMP_InputField amountInput;
     [SerializeField] private Button increment;
     [SerializeField] private Button decrease;
+
+    [SerializeField] private Button buyButton;
+
 
     public void Initialize(DeliveryOffer deliveryOffer)
     {
         this.deliveryOffer = deliveryOffer;
+        UpdateAmount();
     }
 
     void Start() {
+        amountInput.onValueChanged.AddListener(newValue => CheckValue(newValue));
+
         ItemData itemData = ItemManager.GetItemData(deliveryOffer.item);
         itemIcon.texture = itemData.icon;
         itemName.text = itemData.name;
@@ -40,6 +45,10 @@ public class DeliveryOfferItem : MonoBehaviour
         {
             UpdateAmount(-1);
         });
+
+        buyButton.gameObject.SetActive(true);
+        buyButton.onClick.RemoveAllListeners();
+        buyButton.onClick.AddListener(() => BuyItems());
     }
 
     void Update() {}
@@ -47,6 +56,32 @@ public class DeliveryOfferItem : MonoBehaviour
     private void UpdateAmount(int by)
     {
         amountToBuy = Mathf.Clamp(amountToBuy + by, 0, deliveryOffer.itemAmount);
-        amountText.text = amountToBuy + "/" + deliveryOffer.itemAmount;
+        amountInput.placeholder.name = amountToBuy + "/" + deliveryOffer.itemAmount;
+        amountInput.text = amountToBuy + "/" + deliveryOffer.itemAmount;
+    }
+
+    private void UpdateAmount() => UpdateAmount(0);
+
+    private void BuyItems()
+    {
+        deliveryOffer.itemAmount = deliveryOffer.itemAmount - amountToBuy;
+        StorageRack.instance.InsertItem(deliveryOffer.item, amountToBuy);
+
+        UpdateAmount();
+
+        if (deliveryOffer.itemAmount > 0) return;
+        GoodsDelivery.instance.UpdateOffers();
+    }
+
+
+    private void CheckValue(string newValue)
+    {
+        if(!int.TryParse(newValue, out int newAmount))
+        {
+
+            return;
+        }
+
+        UpdateAmount(newAmount);
     }
 }

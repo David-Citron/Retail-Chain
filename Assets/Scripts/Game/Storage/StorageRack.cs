@@ -39,7 +39,7 @@ public class StorageRack : Interactable
 
         UpdateRackItems();
 
-        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, collider => InsertItem(PlayerPickUp.holdingItem), new Hint[] {
+        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, collider => InsertGameObject(PlayerPickUp.holdingItem), new Hint[] {
             new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INSERT", () => PlayerPickUp.holdingItem != null)
         }));
 
@@ -78,31 +78,37 @@ public class StorageRack : Interactable
         }
     }
 
-    public void InsertItem(GameObject gameObject)
+    public void InsertItem(ItemType itemType, int amount)
     {
-        ItemType itemType = ItemManager.GetItemType(gameObject).GetValueOrDefault();
-        if(itemType == ItemType.None)
+        if (itemType == ItemType.None)
         {
             Hint.Create("INVALID ITEM", 1);
             return;
         }
 
+        UpdateHints();
+
+        if (storedItems.ContainsKey(itemType))
+        {
+            storedItems[itemType] = GetStoredAmountOf(itemType) + amount;
+            return;
+        }
+
+        storedItems.Add(itemType, GetStoredAmountOf(itemType) + amount);
+        UpdateRackItems();
+    }
+
+    public void InsertGameObject(GameObject gameObject)
+    {
+        ItemType itemType = ItemManager.GetItemType(gameObject).GetValueOrDefault();
+        
         PlayerPickUp.Instance().IfPresent(pickUp =>
         {
             pickUp.DropHoldingItem();
             Destroy(gameObject);
         });
 
-        UpdateHints();
-
-        if (storedItems.ContainsKey(itemType))
-        {
-            storedItems[itemType] = GetStoredAmountOf(itemType) + 1;
-            return;
-        }
-
-        storedItems.Add(itemType, GetStoredAmountOf(itemType) + 1);
-        UpdateRackItems();
+        InsertItem(itemType, 1);
     }
 
     public void TakeItem(ItemType itemType, bool validate)

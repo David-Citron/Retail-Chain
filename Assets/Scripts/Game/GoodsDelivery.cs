@@ -2,16 +2,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Collections;
+using UnityEngine.UI;
 
-public class GooodsDelivery : Interactable
+public class GoodsDelivery : Interactable
 {
+    public static GoodsDelivery instance;
 
     private List<DeliveryOffer> deliveryOffers;
-    private List<GameObject> contentItems = new List<GameObject>();
 
     [SerializeField] private GameObject truck;
     [SerializeField] private GameObject garageDoor;
-
+    [SerializeField] private Button closeButton;
 
     public GameObject itemPrefab;
     public GameObject itemListContent;
@@ -20,16 +21,20 @@ public class GooodsDelivery : Interactable
     private bool isMoving;
     private bool isPlayerNear;
 
-    private const int OFFERS = 3;
     private const int TIME_BEFORE_DELIVERY = 5; //Every 55 seconds.
 
     void Start()
     {
+        instance = this;
         deliveryOffers = new List<DeliveryOffer>();
 
-        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.E) && isPlayerNear, gameObject => OpenOffers(), new Hint(Hint.GetHintButton(HintButton.E) + " TO OPEN OFFERS", () => isPlayerNear)));
+        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.E) && isPlayerNear && IsActive(), gameObject => ToggleOffersUI(), new Hint(Hint.GetHintButton(HintButton.E) + " TO OPEN OFFERS", () => isPlayerNear && IsActive())));
 
         StartCoroutine(StartDeliveryTimer());
+
+        closeButton.gameObject.SetActive(true);
+        closeButton.onClick.RemoveAllListeners();
+        closeButton.onClick.AddListener(() => ToggleOffersUI());
     }
 
     void Update() {}
@@ -37,26 +42,38 @@ public class GooodsDelivery : Interactable
     void FixedUpdate()
     {
         if (!isMoving) return;
-        PlayTruckAnimation(deliveryOffers.Count > 0);
+        PlayTruckAnimation(IsActive());
     }
 
-    private void OpenOffers()
+    private void ToggleOffersUI()
     {
-        if (!GameLayoutManager.instance.ToggleUI(LayoutType.DeliveryOffers)) return;
+        if (!GameLayoutManager.instance.ToggleUI(LayoutType.DeliveryOffers) || !IsActive()) return;
+        UpdateOffers();
+    }
 
-        foreach (var item in contentItems) Destroy(item);
+    public void UpdateOffers()
+    {
         foreach (var item in deliveryOffers)
         {
+            if(item.contentItem != null) Destroy(item.contentItem);
+            if (item.itemAmount <= 0) continue;
+            
             GameObject createdItem = Instantiate(itemPrefab);
 
             createdItem.transform.SetParent(itemListContent.transform);
             createdItem.transform.localScale = Vector3.one;
 
-            var offer = createdItem.GetComponent<DeliveryOffer>();
-            offer.Initialize(item.);
+            var offer = createdItem.GetComponent<DeliveryOfferItem>();
+            offer.Initialize(item);
 
-            contentItems.Add(createdItem);
+            item.contentItem = createdItem;
         }
+
+        deliveryOffers.RemoveAll(deliveryOffer => deliveryOffer.itemAmount <= 0);
+
+        if (IsActive()) return;
+        Hint.Create("NO MORE OFFERS", 2);
+        ClearOffers();
     }
 
     private IEnumerator StartDeliveryTimer()
@@ -64,11 +81,15 @@ public class GooodsDelivery : Interactable
         yield return new WaitForSeconds(2f);
         new ActionTimer(() =>
         {
-            garageDoor.gameObject.SetActive(false);
+            //garageDoor.gameObject.SetActive(false);
             GenerateOffers();
 
-            new ActionTimer(() => StartDeliveryTimer(), 20, 1).Run(); //After 20 seconds start timer for the new delivery.
-        }, TIME_BEFORE_DELIVERY, 1).Run();
+            new ActionTimer(() =>
+            {
+                ClearOffers();
+                new ActionTimer(() => StartCoroutine(StartDeliveryTimer()), 20).Run();
+            }, 15).Run();
+        }, TIME_BEFORE_DELIVERY).Run();
     }
 
     private void PlayTruckAnimation(bool inAnimation)
@@ -89,16 +110,23 @@ public class GooodsDelivery : Interactable
 
     private void GenerateOffers()
     {
-        //Some logic based on the contract? Or just 3 random items - discuss.
-
         deliveryOffers.Clear();
 
         System.Random random = new System.Random();
-        for(int i = 0; i < OFFERS; i++)
+        for(int i = 0; i < random.Next(2, 6); i++)
         {
             deliveryOffers.Add(new DeliveryOffer(GetRandomType(random), random.Next(50, 150), random.Next(3, 6)));
         }
 
+        elapsedTime = 0f;
+        isMoving = true;
+    }
+
+    private void ClearOffers()
+    {
+        if (GameLayoutManager.instance.IsEnabled(LayoutType.DeliveryOffers)) ToggleOffersUI();
+
+        deliveryOffers.Clear();
         elapsedTime = 0f;
         isMoving = true;
     }
@@ -109,6 +137,7 @@ public class GooodsDelivery : Interactable
         return (ItemType) values.GetValue(random.Next(values.Length));
     }
 
+    private bool IsActive() => deliveryOffers.Count > 0;
     public override string GetTag() => "GoodsDelivery";
     public override bool IsPlayerNear() => isPlayerNear;
     public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
@@ -117,8 +146,10 @@ public class GooodsDelivery : Interactable
 public class DeliveryOffer
 {
     public ItemType item { get; private set; }
+    public GameObject contentItem {  get; set; }
+
     public int price { get; private set; }
-    public int itemAmount { get; private set; }
+    public int itemAmount { get; set; }
 
     public DeliveryOffer(ItemType item, int price, int itemAmount)
     {
