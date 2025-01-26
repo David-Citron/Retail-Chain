@@ -20,6 +20,8 @@ public class PlayerInputManager : MonoBehaviour
         if (collidersInRange.Count > 0)
         {
             nearestItem = collidersInRange[0];
+            if (nearestItem == null) return;
+
             float nearestItemDistance = Vector3.Distance(transform.position, nearestItem.transform.position);
             for (int i = 0; i < collidersInRange.Count; i++)
             {
