@@ -26,8 +26,7 @@ public class ContractManager : NetworkBehaviour
     [SerializeField] private GameObject negotiationPanel;
 
     private List<ContractItem> lastOfferContractItems;
-    private List<bool> fulfilled;
-    private bool negotiated = false;
+    private ActionTimer negotiationTimer = null;
 
     // Start is called before the first frame update
     void Awake()
@@ -48,22 +47,13 @@ public class ContractManager : NetworkBehaviour
             if (player.isServer) serverContract = contract;
         });
         if (negotiationPanel != null) negotiationPanel.SetActive(false);
-        negotiated = false;
     }
 
     [Server]
     public void InitializeFirstContract()
     {
         Debug.Log("Calling StartNewContract");
-        // TODO!!!!!
-        // Test for ClientRPC parameters
-        // RpcStartNewContractTest1(new ContractItem(ItemType.GlueBarrel, 1, 200), 200);
-        // RpcStartNewContractTest2(new List<int> { 1, 2, 4, 6 }, 200);
         RpcStartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
-        RpcTest();
-        
-        //new ActionTimer(() => { RpcTest(); }, 5, 1).Run();
-        //StartCoroutine(delay());
     }
 
     // Update is called once per frame
@@ -71,94 +61,101 @@ public class ContractManager : NetworkBehaviour
     {
 
     }
-
-    IEnumerator delay()
-    {
-        yield return new WaitForSecondsRealtime(5);
-        Debug.Log(NetworkClient.spawned);
-        RpcTest();
-    }
-
-    [ClientRpc]
-    private void RpcTest()
-    {
-        Debug.Log("THIS WORKS");
-    }
-
-    // Try:
-    // 1. List<int>
-    // 2. ContractItem
-    //
+    
     [ClientRpc]
     private void RpcStartNewContract(List<ContractItem> contractItems, int time)
     {
-        try
+        if (localContract == null)
         {
-            Debug.Log("StartNewContract Called");
-            localContract.StartNewContract(contractItems, time);
+            Debug.LogError("Local contract is null"); return;
         }
-        catch (Exception e)
-        {
-            Debug.LogError("Error: " + e.Message);
-        }
-    }
-    
-    [ClientRpc]
-    private void RpcStartNewContractTest1(ContractItem contractItems, int time)
-    {
-        try
-        {
-            Debug.Log("StartNewContract Called");
-            localContract.StartNewContract(new List<ContractItem>() { contractItems }, time);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("Error TEST 1: " + e.Message);
-        }
-    }
-
-    [ClientRpc]
-    private void RpcStartNewContractTest2(List<int> ids, int time)
-    {
-        try
-        {
-            Debug.Log("StartNewContract Called");
-            ids.Add(10);
-            //localContract.StartNewContract(new List<ContractItem>() { contractItems }, time);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("Error TEST 2: " + e.Message);
-        }
+        localContract.StartNewContract(contractItems, time);
     }
 
     [Command (requiresAuthority = false)]
     public void CmdCheckContracts()
     {
-        if (!isServer)
-        {
-            Debug.LogError("Checking contract's status called on non-server");
-            return;
-        }
         bool contractNotFinished = false;
         bool contractSuccess = true;
         contracts.ForEach(contract =>
         {
-            Debug.Log("Current ContractStatus: " + contract.status);
             if (contract.status == ContractStatus.Unknown || contract.status == ContractStatus.Pending) contractNotFinished = true;
             if (contract.status != ContractStatus.Success) contractSuccess = false;
         });
         if (contractNotFinished)
         {
-            Debug.Log("Contract is not finished yet");
+            Debug.LogError("Contract is not finished yet");
             return;
         }
         if (contractSuccess)
         {
             Debug.Log("Contract was finished successfully!");
+            StartNegotiation();
             return;
         }
-        Debug.Log("Contract WAS NOT finished successfully!");
+        Debug.LogError("Game over!");
+        // TODO
+    }
+
+    [Server]
+    private void StartNegotiation()
+    {
+        RpcShowNegotiationPanel();
+        negotiationTimer = new ActionTimer(() =>
+        {
+            // TODO: game ends
+            Debug.Log("Game ends! Not negotiated!");
+        }, NEGOTIATION_TIME).Run();
+    }
+
+    [ClientRpc]
+    private void RpcShowNegotiationPanel()
+    {
+        if (negotiationPanel == null)
+        {
+            Debug.LogWarning("Negotiation panel is null");
+            return;
+        }
+        negotiationPanel.SetActive(true);
+    }
+
+    [ClientRpc]
+    private void RpcHideNegotiationPanel()
+    {
+        if (negotiationPanel == null)
+        {
+            Debug.LogWarning("Negotiation panel is null");
+            return;
+        }
+        negotiationPanel.SetActive(false);
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdSendNegotiationOffer(List<ContractItem> contractItems)
+    {
+        // TODO
+        RpcShowNegotiationOffer(contractItems);
+    }
+
+    [ClientRpc]
+    public void RpcShowNegotiationOffer(List<ContractItem> contractItems)
+    {
+        // TODO
+        lastOfferContractItems = contractItems;
+    }
+
+    [Command(requiresAuthority = false)]
+    public void AcceptContract()
+    {
+        EndNegotiation();
+        RpcStartNewContract(lastOfferContractItems, CONTRACT_TIME);
+    }
+
+    [Server]
+    private void EndNegotiation()
+    {
+        negotiationTimer.Stop();
+        RpcHideNegotiationPanel();
     }
 }
 
@@ -166,7 +163,6 @@ public static class ContractItemReaderWriter
 {
     public static void WriteContractItem(this NetworkWriter writer, ContractItem contractItem)
     {
-        Debug.LogWarning("WRITE CONTRACT ITEM CALLED");
         writer.WriteByte((byte)contractItem.itemType);
         writer.WriteInt(contractItem.quantity);
         writer.WriteInt(contractItem.price);
@@ -174,7 +170,6 @@ public static class ContractItemReaderWriter
 
     public static ContractItem ReadContractItem(this NetworkReader reader)
     {
-        Debug.LogWarning("READ CONTRACT ITEM CALLED");
         return new ContractItem((ItemType)reader.ReadByte(), reader.ReadInt(), reader.ReadInt());
     }
 }
