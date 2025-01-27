@@ -41,6 +41,9 @@ public class ActionTimer
         return this;
     }
 
+    public void Stop() => ended = true;
+    
+
     private IEnumerator CheckFailPrediction()
     {
         while (!ended)
