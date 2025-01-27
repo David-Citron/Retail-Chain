@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ActionKeybind : MonoBehaviour
+public class ActionKeybind
 {
     public KeyCode positiveKey;
     public KeyCode positiveAltKey;
     public KeyCode negativeKey;
     public KeyCode negativeAltKey;
-    public float axis = 0;
+    public float axis { get; private set; } = 0;
     public float sensitivity = 1;
-    public UnityAction onPress = null;
 
     const float DEFAULT_SENSITIVITY = 1;
 
@@ -29,62 +28,56 @@ public class ActionKeybind : MonoBehaviour
         negativeAltKey = negativeAlt;
         this.sensitivity = sensitivity;
         axis = 0;
-        onPress = null;
     }
 
-    public ActionKeybind(UnityAction onPress, KeyCode positive) : this(onPress, positive, KeyCode.None) { }
-    public ActionKeybind(UnityAction onPress, KeyCode positive, KeyCode positiveAlt)
+    public bool GetInput()
     {
-        positiveKey = positive;
-        positiveAltKey = positiveAlt;
-        negativeKey = KeyCode.None;
-        negativeAltKey = KeyCode.None;
-        sensitivity = 1;
-        axis = 0;
-        this.onPress = onPress;
+        return Input.GetKeyDown(positiveKey) || (positiveAltKey != KeyCode.None && Input.GetKeyDown(positiveAltKey));
     }
 
-    public float ReadAxis()
+    public float CalculateAxis()
     {
-        return axis;
-    }
-
-    public bool ReadInput()
-    {
-        return axis > 0;
-    }
-
-    private void Update()
-    {
-        if (onPress != null && Input.GetKeyDown(positiveKey) || (positiveAltKey != KeyCode.None && Input.GetKeyDown(positiveAltKey)))
-        {
-            onPress?.Invoke();
-            return;
-        }
         float current = 0;
-        if (Input.GetKey(positiveKey) || (positiveAltKey != KeyCode.None && Input.GetKey(positiveAltKey)))
+
+        bool positivePress = KeyPressed(positiveKey, positiveAltKey);
+        bool negativePress = KeyPressed(negativeKey, negativeAltKey);
+
+        if (positivePress && negativePress)
         {
-            current = axis + sensitivity * Time.deltaTime;
-        }else
-        {
-            if ((negativeKey != KeyCode.None && Input.GetKey(negativeKey)) || (negativeAltKey != KeyCode.None && Input.GetKey(negativeAltKey)))
-            {
-                current = axis - sensitivity * Time.deltaTime;
-            }
-        }
-        if ((negativeKey != KeyCode.None && Input.GetKey(negativeKey)) || (negativeAltKey != KeyCode.None && Input.GetKey(negativeAltKey)))
-        {
-            current = axis - sensitivity * Time.deltaTime;
-        }
-        else
-        {
-            if (Input.GetKey(positiveKey) || (positiveAltKey != KeyCode.None && Input.GetKey(positiveAltKey)))
+            if (axis < 0)
             {
                 current = axis + sensitivity * Time.deltaTime;
+                axis = current;
+                axis = Mathf.Clamp(axis, 0, 1);
             }
+            else if (axis > 0)
+            {
+                current = axis - sensitivity * Time.deltaTime;
+                axis = current;
+                axis = Mathf.Clamp(axis, -1, 0);
+            }
+            Debug.Log(axis);
+            return axis;
+        }
+
+        if (positivePress)
+        {
+            axis = Mathf.Clamp(axis, 0, 1);
+            current = axis + sensitivity * Time.deltaTime;
+        }
+        else if (negativePress)
+        {
+            axis = Mathf.Clamp(axis, -1, 0);
+            current = axis - sensitivity * Time.deltaTime;
         }
         current = Mathf.Clamp(current, -1, 1);
         axis = current;
         Debug.Log(axis);
+        return axis;
+    }
+
+    private bool KeyPressed(KeyCode key, KeyCode alt)
+    {
+        return (key != KeyCode.None && Input.GetKey(key)) || (alt != KeyCode.None && Input.GetKey(alt));
     }
 }

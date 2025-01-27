@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -20,10 +21,15 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector3 lastWallNormal;
 
+    public ActionKeybind horizontalInput, verticalInput;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+
+        horizontalInput = new ActionKeybind(KeyCode.D, KeyCode.RightArrow, KeyCode.A, KeyCode.LeftArrow, 100);
+        verticalInput = new ActionKeybind(KeyCode.W, KeyCode.UpArrow, KeyCode.S, KeyCode.DownArrow, 100);
 
         rb.freezeRotation = true;
 
@@ -41,8 +47,10 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         if (freeze) return;
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
+        horizontal = horizontalInput.CalculateAxis();
+        vertical = verticalInput.CalculateAxis();
+        //horizontal = Input.GetAxis("Horizontal");
+        //vertical = Input.GetAxis("Vertical");
     }
 
     void FixedUpdate()
