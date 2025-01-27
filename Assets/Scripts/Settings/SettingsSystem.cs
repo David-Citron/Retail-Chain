@@ -17,21 +17,16 @@ public class Settings : MonoBehaviour
     [SerializeField] private Slider musicVolumeSlider;
 
     private List<Resolution> resolutions = new List<Resolution>();
-    private List<FullScreenMode> windowModes = new List<FullScreenMode>();
     private List<Display> displays = new List<Display>();
     private List<QualitySettings> qualitySettings = new List<QualitySettings>();
-    private List<int> targetFramerates = new List<int>();
+
+    static List<int> targetFramerates = new List<int> { 30, 60, 120, 160, 180, 240 };
+    static List<string> windowModeLabels = new List<string> { "Fullscreen", "Borderless", "Maximized window", "Window" };
+    static List<FullScreenMode> windowModes = new List<FullScreenMode> { FullScreenMode.ExclusiveFullScreen, FullScreenMode.FullScreenWindow, FullScreenMode.MaximizedWindow, FullScreenMode.Windowed };
 
     // Start is called before the first frame update
     void Start()
     {
-        // Set values into lists
-        windowModes.Clear();
-        windowModes.Add(FullScreenMode.ExclusiveFullScreen);
-        windowModes.Add(FullScreenMode.FullScreenWindow);
-        windowModes.Add(FullScreenMode.Windowed);
-        targetFramerates = new List<int>{ 30, 60, 120, 160, 180, 240};
-
         Refresh();
     }
 
@@ -52,7 +47,7 @@ public class Settings : MonoBehaviour
         // Resolutions
         resolutions.Clear();
         Resolution[] availableResolutions = Screen.resolutions;
-        int currentResolution = 0;
+        int currentResolution = -1;
         List<string> options = new List<string>();
 
         for (int i = availableResolutions.Length - 1; i >= 0; i--)
@@ -62,19 +57,17 @@ public class Settings : MonoBehaviour
             options.Add(resolution.width + "x" +  resolution.height);
             if (Screen.currentResolution.width == resolution.width && Screen.currentResolution.height == resolution.height)
             {
-                currentResolution = i;
+                currentResolution = (availableResolutions.Length - 1) - i;
             }
         }
 
         resolutionDropdown.ClearOptions();
         resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = currentResolution;
         resolutionDropdown.RefreshShownValue();
+        resolutionDropdown.value = currentResolution;
 
         // Window Mode
         int currentFullscreenMode = 0;
-
-        List<string> windowModeLabels = new List<string> { "Fullscreen", "Borderless fullscreen", "Maximized window", "Window" };
 
         for (int i = 0; i < windowModes.Count; i++)
         {
@@ -119,24 +112,36 @@ public class Settings : MonoBehaviour
             options.Add(qualityLevelNames[i]);
         }
 
+        qualityDropdown.ClearOptions();
         qualityDropdown.AddOptions(options);
         qualityDropdown.value = QualitySettings.GetQualityLevel();
         qualityDropdown.RefreshShownValue();
 
         // Target Framerate
         int currentFramerate = Application.targetFrameRate;
-        int targetFramerate = 0;
+        int targetFramerateIndex = -1;
         options = new List<string>();
         for (int i = 0; i < targetFramerates.Count; i++)
         {
             options.Add(targetFramerates[i] + " FPS");
             if (targetFramerates[i] == currentFramerate)
             {
-                targetFramerate = i;
+                targetFramerateIndex = i;
             }
         }
+        if (targetFramerateIndex == -1)
+        {
+            if (currentFramerate != -1)
+            {
+                Debug.LogError("Target Framerate not found");
+                return;
+            }
+            options.Add("Unlimited");
+            targetFramerateIndex = options.Count - 1;
+        }
+        targetFramerateDropdown.ClearOptions();
         targetFramerateDropdown.AddOptions(options);
-        targetFramerateDropdown.value = targetFramerate;
+        targetFramerateDropdown.value = targetFramerateIndex;
         targetFramerateDropdown.RefreshShownValue();
     }
 
