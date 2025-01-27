@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ActionKeybind : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class ActionKeybind : MonoBehaviour
     public KeyCode negativeAltKey;
     public float axis = 0;
     public float sensitivity = 1;
+    public UnityAction onPress = null;
 
     const float DEFAULT_SENSITIVITY = 1;
 
@@ -27,6 +29,19 @@ public class ActionKeybind : MonoBehaviour
         negativeAltKey = negativeAlt;
         this.sensitivity = sensitivity;
         axis = 0;
+        onPress = null;
+    }
+
+    public ActionKeybind(UnityAction onPress, KeyCode positive) : this(onPress, positive, KeyCode.None) { }
+    public ActionKeybind(UnityAction onPress, KeyCode positive, KeyCode positiveAlt)
+    {
+        positiveKey = positive;
+        positiveAltKey = positiveAlt;
+        negativeKey = KeyCode.None;
+        negativeAltKey = KeyCode.None;
+        sensitivity = 1;
+        axis = 0;
+        this.onPress = onPress;
     }
 
     public float ReadAxis()
@@ -41,6 +56,11 @@ public class ActionKeybind : MonoBehaviour
 
     private void Update()
     {
+        if (onPress != null && Input.GetKeyDown(positiveKey) || (positiveAltKey != KeyCode.None && Input.GetKeyDown(positiveAltKey)))
+        {
+            onPress?.Invoke();
+            return;
+        }
         float current = 0;
         if (Input.GetKey(positiveKey) || (positiveAltKey != KeyCode.None && Input.GetKey(positiveAltKey)))
         {
