@@ -21,6 +21,8 @@ public class ItemManager : MonoBehaviour
         return gameObject;
     }
 
+    public static List<ItemData> GetAllItemData() => instance.items;
+
     public static Item GetItemInfo(GameObject gameObject) => gameObject == null ? null : gameObject.GetComponent<Item>();
 
     public static void UpdateItem(GameObject gameObject, ItemType contentType) => UpdateItem(gameObject, contentType, 0);

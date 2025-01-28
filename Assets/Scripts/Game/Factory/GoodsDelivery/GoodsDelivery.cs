@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using System.Collections;
 using UnityEngine.UI;
 using System.Linq;
@@ -11,7 +10,7 @@ public class GoodsDelivery : Interactable
 
     private List<DeliveryOffer> deliveryOffers;
 
-    [SerializeField] private GameObject truck;
+    [SerializeField] private GameObject vehicle;
     [SerializeField] private GameObject garageDoor;
 
     [SerializeField] private Button closeButton;
@@ -94,18 +93,22 @@ public class GoodsDelivery : Interactable
 
     private void PlayTruckAnimation(bool inAnimation)
     {
-        if (truck == null || elapsedTime >= 3.5f)
+        if (vehicle == null || elapsedTime >= 3.5f)
         {
-            garageDoor.gameObject.SetActive(!inAnimation);
             isMoving = false;
+            garageDoor.gameObject.SetActive(!inAnimation);
+            if (!inAnimation) vehicle.SetActive(false);
             return;
         }
+
+        if (inAnimation && !vehicle.activeSelf) vehicle.SetActive(true);
+        if(!inAnimation && !garageDoor.activeSelf) garageDoor.SetActive(true);
 
         elapsedTime += Time.fixedDeltaTime;
         float t = elapsedTime / 50f;
 
-        float newZ = Mathf.Lerp(truck.transform.localPosition.z, inAnimation ? -5.8f : -8, t);
-        truck.transform.localPosition = new Vector3(truck.transform.localPosition.x, truck.transform.localPosition.y, newZ);
+        float newZ = Mathf.Lerp(vehicle.transform.localPosition.z, inAnimation ? -5.8f : -8, t);
+        vehicle.transform.localPosition = new Vector3(vehicle.transform.localPosition.x, vehicle.transform.localPosition.y, newZ);
     }
 
 
@@ -127,6 +130,12 @@ public class GoodsDelivery : Interactable
     {
         if (GameLayoutManager.instance.IsEnabled(LayoutType.DeliveryOffers)) ToggleOffersUI();
 
+        foreach (var offer in deliveryOffers)
+        {
+            if (offer.contentItem == null) continue;
+            Destroy(offer.contentItem);
+        }
+
         deliveryOffers.Clear();
         elapsedTime = 0f;
         isMoving = true;
@@ -134,11 +143,12 @@ public class GoodsDelivery : Interactable
         new ActionTimer(() => StartCoroutine(StartDeliveryTimer()), TIME_BEFORE_DELIVERY).Run();
     }
 
-    private ItemType GetRandomType(System.Random random)
+    private ItemData GetRandomType(System.Random random)
     {
-        Array values = Enum.GetValues(typeof(ItemType));
-        var value = (ItemType) values.GetValue(random.Next(values.Length));
-        while(deliveryOffers.Any(item => item.item == value)) value = (ItemType) values.GetValue(random.Next(values.Length));
+        List<ItemData> values = ItemManager.GetAllItemData();
+        int index = values.Count - 1;
+        var value = values[random.Next(index)];
+        while(deliveryOffers.Any(item => item.item == value)) value = values[random.Next(index)];
         return value;
     }
 
@@ -150,13 +160,13 @@ public class GoodsDelivery : Interactable
 
 public class DeliveryOffer
 {
-    public ItemType item { get; private set; }
+    public ItemData item { get; private set; }
     public GameObject contentItem {  get; set; }
 
     public int price { get; private set; }
     public int itemAmount { get; set; }
 
-    public DeliveryOffer(ItemType item, int price, int itemAmount)
+    public DeliveryOffer(ItemData item, int price, int itemAmount)
     {
         this.item = item;
         this.price = price;

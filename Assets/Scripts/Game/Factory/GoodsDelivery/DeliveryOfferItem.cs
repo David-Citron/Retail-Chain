@@ -28,9 +28,8 @@ public class DeliveryOfferItem : MonoBehaviour
         amountInput.onValueChanged.AddListener(newValue => CheckValue(newValue));
         amountInput.characterValidation = TMP_InputField.CharacterValidation.Integer;
 
-        ItemData itemData = ItemManager.GetItemData(deliveryOffer.item);
-        itemIcon.texture = itemData.icon;
-        itemName.text = itemData.name;
+        itemIcon.texture = deliveryOffer.item.icon;
+        itemName.text = deliveryOffer.item.name;
         itemPrice.text = "$" + deliveryOffer.price + " / item";
 
         increment.gameObject.SetActive(true);
@@ -66,7 +65,7 @@ public class DeliveryOfferItem : MonoBehaviour
     private void BuyItems()
     {
         deliveryOffer.itemAmount = deliveryOffer.itemAmount - amountToBuy;
-        StorageRack.instance.InsertItem(deliveryOffer.item, amountToBuy);
+        StorageRack.instance.InsertItem(deliveryOffer.item.itemType, amountToBuy);
 
         UpdateAmount();
 
