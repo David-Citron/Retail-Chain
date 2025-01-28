@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class ActionKeybind
 {
@@ -30,11 +27,8 @@ public class ActionKeybind
         axis = 0;
     }
 
-    public bool GetInput()
-    {
-        return Input.GetKeyDown(positiveKey) || (positiveAltKey != KeyCode.None && Input.GetKeyDown(positiveAltKey));
-    }
-
+    public bool GetInput() => Input.GetKeyDown(positiveKey) || (positiveAltKey != KeyCode.None && Input.GetKeyDown(positiveAltKey));
+    
     public float CalculateAxis()
     {
         float current = 0;
@@ -56,7 +50,6 @@ public class ActionKeybind
                 axis = current;
                 axis = Mathf.Clamp(axis, -1, 0);
             }
-            Debug.Log(axis);
             return axis;
         }
 
@@ -72,12 +65,8 @@ public class ActionKeybind
         }
         current = Mathf.Clamp(current, -1, 1);
         axis = current;
-        Debug.Log(axis);
         return axis;
     }
 
-    private bool KeyPressed(KeyCode key, KeyCode alt)
-    {
-        return (key != KeyCode.None && Input.GetKey(key)) || (alt != KeyCode.None && Input.GetKey(alt));
-    }
+    private bool KeyPressed(KeyCode key, KeyCode alt) => (key != KeyCode.None && Input.GetKey(key)) || (alt != KeyCode.None && Input.GetKey(alt));
 }

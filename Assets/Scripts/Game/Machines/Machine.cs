@@ -53,11 +53,11 @@ public abstract class Machine : Interactable, IMachine
 
     protected virtual void OnStart()
     {
-        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.E) && isPlayerNear, collider => PickUp(), 
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear, collider => PickUp(), 
             new Hint(Hint.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready) && GetNearestSlot().IsReadyToPickUp())
         ));
 
-        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, collider => StartInteraction(), new Hint[] {
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.MachineInteraction) && isPlayerNear, collider => StartInteraction(), new Hint[] {
             new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && GetNearestSlot().isInValidDistance),
             new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling && GetNearestSlot().IsValid()),
             new Hint("INVALID ITEM", () => !IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling)
@@ -80,7 +80,7 @@ public abstract class Machine : Interactable, IMachine
 
     protected virtual void StartTimer()
     {
-        actionTimer = new ActionTimer(() => Input.GetKey(KeyCode.Space),
+        actionTimer = new ActionTimer(() => HoldingKey(ActionType.MachineInteraction),
         () => ChangeMachineState(MachineState.Done),
         () => {
             actionTimer = null;

@@ -11,7 +11,9 @@ public abstract class Interactable : MonoBehaviour
     public abstract bool IsPlayerNear();
     public abstract void ToggleIsPlayerNear();
 
-    public void AddInteraction(Interaction interaction) => interactions.Add(interaction);
+    protected void AddInteraction(Interaction interaction) => interactions.Add(interaction);
+    protected bool PressedKey(ActionType actionType) => Input.GetKeyDown(KeybindManager.GetKeybind(actionType).positiveKey);
+    protected bool HoldingKey(ActionType actionType) => Input.GetKey(KeybindManager.GetKeybind(actionType).positiveKey);
 
     public void UpdateHints()
     {
@@ -30,6 +32,7 @@ public abstract class Interactable : MonoBehaviour
 public class Interaction
 {
     public readonly string tag;
+
     public Func<bool> prediction { get; private set; }
     public Action<GameObject> onInteract {  get; private set; }
     public List<Hint> hints { get; } = new List<Hint>();
@@ -44,4 +47,18 @@ public class Interaction
 
     public Interaction(string tag, Func<bool> prediction, Action<GameObject> onInteract, Hint hint) : this(tag, prediction, onInteract, new Hint[] {hint}) { }
     public Interaction(Func<bool> prediction, Action<GameObject> onInteract, Hint hint) : this(null, prediction, onInteract, new Hint[] { hint }) { }
+}
+
+public enum ActionType
+{
+    None,
+    HorizontalInput,
+    VerticalInput,
+    PickUpItem,
+    DropItem,
+    OpenMenu,
+    MachineInteraction,
+    Cleaning
+
+
 }

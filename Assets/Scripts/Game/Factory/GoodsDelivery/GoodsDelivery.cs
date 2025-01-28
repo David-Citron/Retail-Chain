@@ -31,7 +31,7 @@ public class GoodsDelivery : Interactable
         instance = this;
         deliveryOffers = new List<DeliveryOffer>();
 
-        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.E) && isPlayerNear && IsActive(), gameObject => ToggleOffersUI(), new Hint(Hint.GetHintButton(HintButton.E) + " TO OPEN OFFERS", () => isPlayerNear && IsActive())));
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.OpenMenu) && isPlayerNear && IsActive(), gameObject => ToggleOffersUI(), new Hint(Hint.GetHintButton(HintButton.E) + " TO OPEN OFFERS", () => isPlayerNear && IsActive())));
 
         StartCoroutine(StartDeliveryTimer());
 

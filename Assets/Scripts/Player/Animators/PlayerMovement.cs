@@ -21,15 +21,10 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector3 lastWallNormal;
 
-    public ActionKeybind horizontalInput, verticalInput;
-
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-
-        horizontalInput = new ActionKeybind(KeyCode.D, KeyCode.RightArrow, KeyCode.A, KeyCode.LeftArrow, 100);
-        verticalInput = new ActionKeybind(KeyCode.W, KeyCode.UpArrow, KeyCode.S, KeyCode.DownArrow, 100);
 
         rb.freezeRotation = true;
 
@@ -47,8 +42,8 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         if (freeze) return;
-        horizontal = horizontalInput.CalculateAxis();
-        vertical = verticalInput.CalculateAxis();
+        horizontal = KeybindManager.GetKeybind(ActionType.HorizontalInput).CalculateAxis();
+        vertical = KeybindManager.GetKeybind(ActionType.VerticalInput).CalculateAxis();
         //horizontal = Input.GetAxis("Horizontal");
         //vertical = Input.GetAxis("Vertical");
     }

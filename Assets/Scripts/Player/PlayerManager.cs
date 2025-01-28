@@ -10,7 +10,6 @@ public class PlayerManager : MonoBehaviour
     public List<GamePlayer> gamePlayers = new List<GamePlayer>();
     [SerializeField] private List<Transform> lobbySpawnPoints = new List<Transform>();
 
-    [SerializeField] public Account account;
 
     // Start is called before the first frame update
     void Start()

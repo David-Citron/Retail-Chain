@@ -14,11 +14,11 @@ public class Printer : Machine
         timeDisplay.text = "WAITING";
         doneIcon.gameObject.SetActive(false);
 
-        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.E) && isPlayerNear, collider => PickUp(),
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear, collider => PickUp(),
             new Hint(Hint.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready))
         ));
 
-        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, collider => StartInteraction(), new Hint[] {
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.MachineInteraction) && isPlayerNear, collider => StartInteraction(), new Hint[] {
             new Hint("PRINTING..", () => machineState == MachineState.Working),
             new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO PRINT", () => machineState == MachineState.Ready),
             new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling),
