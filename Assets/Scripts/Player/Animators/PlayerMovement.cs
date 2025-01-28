@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -42,10 +41,8 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         if (freeze) return;
-        horizontal = KeybindManager.GetKeybind(ActionType.HorizontalInput).CalculateAxis();
-        vertical = KeybindManager.GetKeybind(ActionType.VerticalInput).CalculateAxis();
-        //horizontal = Input.GetAxis("Horizontal");
-        //vertical = Input.GetAxis("Vertical");
+        horizontal = KeybindManager.keybinds[ActionType.HorizontalInput].CalculateAxis();
+        vertical = KeybindManager.keybinds[ActionType.VerticalInput].CalculateAxis();
     }
 
     void FixedUpdate()
