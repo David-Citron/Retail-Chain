@@ -12,8 +12,8 @@ public abstract class Interactable : MonoBehaviour
     public abstract void ToggleIsPlayerNear();
 
     protected void AddInteraction(Interaction interaction) => interactions.Add(interaction);
-    protected bool PressedKey(ActionType actionType) => Input.GetKeyDown(KeybindManager.GetKeybind(actionType).positiveKey);
-    protected bool HoldingKey(ActionType actionType) => Input.GetKey(KeybindManager.GetKeybind(actionType).positiveKey);
+    protected bool PressedKey(ActionType actionType) => Input.GetKeyDown(KeybindManager.keybinds[actionType].positiveKey);
+    protected bool HoldingKey(ActionType actionType) => Input.GetKey(KeybindManager.keybinds[actionType].positiveKey);
 
     public void UpdateHints()
     {
