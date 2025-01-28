@@ -19,7 +19,6 @@ public class GlueDispenser : Machine
             new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO FILL GLUE DISPENSER", () => PlayerPickUp.holdingItem != null),
             new Hint("INVALID ITEM", () => PlayerPickUp.GetHoldingType() != ItemType.None && PlayerPickUp.GetHoldingType() != ItemType.GlueBarrel && machineState == MachineState.Idling)
         }));
-
         UpdateGlueLiquid();
     }
 
@@ -115,7 +114,7 @@ public class GlueDispenser : Machine
         UpdateGlueLiquid();
     }
 
-    private void UpdateGlueLiquid() => glueLiquid.transform.localScale = new Vector3(1, 1, glueAmount == 0 ? -0.1f : (glueAmount / (float) MAX_GLUE_AMOUNT));
+    private void UpdateGlueLiquid() => glueLiquid.transform.localScale = new Vector3(1, 1, (glueAmount / (float) MAX_GLUE_AMOUNT));
 
     public override bool PlayAnimation() => true;
     public override string GetTag() => "MachineGlueDispenser";

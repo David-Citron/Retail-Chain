@@ -2410,7 +2410,12 @@ PrefabInstance:
     - target: {fileID: -7581518892062101839, guid: 7ae44ffea1806b746bb638654913ddb6,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7581518892062101839, guid: 7ae44ffea1806b746bb638654913ddb6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.495
       objectReference: {fileID: 0}
     - target: {fileID: -7500789270576895544, guid: 7ae44ffea1806b746bb638654913ddb6,
         type: 3}
@@ -5936,7 +5941,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
