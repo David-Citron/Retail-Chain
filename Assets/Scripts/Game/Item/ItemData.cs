@@ -7,4 +7,8 @@ public class ItemData : ScriptableObject
     public string itemName;
     public RenderTexture icon;
     public GameObject itemPrefab;
+    public int maxOfferAmount;
+
+    public int buyPrice;
+    public int sellPrice;
 }

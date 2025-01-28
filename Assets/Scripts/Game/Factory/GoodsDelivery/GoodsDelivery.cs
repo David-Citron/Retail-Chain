@@ -119,7 +119,7 @@ public class GoodsDelivery : Interactable
         System.Random random = new System.Random();
         for(int i = 0; i < random.Next(2, 6); i++)
         {
-            deliveryOffers.Add(new DeliveryOffer(GetRandomType(random), random.Next(50, 150), random.Next(3, 6)));
+            deliveryOffers.Add(new DeliveryOffer(GetRandomType(random), random.Next(50, 150), random.Next(1, 4)));
         }
 
         elapsedTime = 0f;
