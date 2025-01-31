@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bfc67a21cfa2f44f83d58279d218a7e, type: 3}
   m_Name: PickUpItem
   m_EditorClassIdentifier: 
-  label: Pick up
-  action: 3
-  influence: 1
-  defaultPrimaryKey: 101
+  label: Pick up item
+  action: 0
+  influence: 0
+  defaultPrimaryKey: 0
   defaultAlternativeKey: 0

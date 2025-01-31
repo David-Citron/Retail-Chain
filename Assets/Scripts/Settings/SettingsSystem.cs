@@ -21,7 +21,6 @@ public class Settings : MonoBehaviour
     private List<Resolution> resolutions = new List<Resolution>();
     private List<Display> displays = new List<Display>();
     private List<QualitySettings> qualitySettings = new List<QualitySettings>();
-    private Dictionary<ActionType, ActionKeybind> keybinds = new Dictionary<ActionType, ActionKeybind>();
 
     static List<int> targetFramerates = new List<int> { 30, 60, 120, 160, 180, 240 };
     static List<string> windowModeLabels = new List<string> { "Fullscreen", "Borderless", "Maximized window", "Window" };

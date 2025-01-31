@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bfc67a21cfa2f44f83d58279d218a7e, type: 3}
   m_Name: MovementDown
   m_EditorClassIdentifier: 
-  label: Move right
-  action: 1
-  influence: 1
+  label: Move down
+  action: 0
+  influence: 0
+  defaultPrimaryKey: 0
+  defaultAlternativeKey: 274

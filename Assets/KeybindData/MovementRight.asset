@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: MovementRight
   m_EditorClassIdentifier: 
   label: Move right
-  action: 1
+  action: 0
   influence: 0
+  defaultPrimaryKey: 0
+  defaultAlternativeKey: 275
