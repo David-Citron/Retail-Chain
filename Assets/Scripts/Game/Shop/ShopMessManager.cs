@@ -40,7 +40,7 @@ public class ShopMessManager : MonoBehaviour
         {
             SpawnMess();
             StartCoroutine(StartMessTimer());
-        }, random.Next(15, 60)).Run();
+        }, random.Next(10, 50)).Run();
     }
     private List<GameObject> GetAvailablePlaces() => messPlaces.FindAll(place => place.transform.childCount == 0);
 }

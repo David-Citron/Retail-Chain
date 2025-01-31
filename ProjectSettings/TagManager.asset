@@ -19,6 +19,8 @@ TagManager:
   - MachinePackagingTable
   - StorageRack
   - GoodsDelivery
+  - ShopMess
+  - DisplaySlot
   layers:
   - Default
   - TransparentFX

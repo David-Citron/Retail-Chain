@@ -86,6 +86,7 @@ public class PlayerPickUp : MonoBehaviour
         });
     }
 
+    public static bool IsHodlingItem() => holdingItem != null;
     public static ItemType GetHoldingType() => ItemManager.GetItemType(holdingItem).GetValueOrDefault();
     public static Optional<PlayerPickUp> Instance() => Optional<PlayerPickUp>.Of(instance);
     public static List<Interaction> GetInteractions() => new List<Interaction>() {

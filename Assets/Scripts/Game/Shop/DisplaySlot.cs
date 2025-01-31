@@ -5,7 +5,8 @@ using UnityEngine;
 public class DisplaySlot : Interactable
 {
 
-    [SerializeField] private List<GameObject> inputSlots = new List<GameObject>();
+    [SerializeField] private List<GameObject> inputSlots;
+    private List<GameObject> currentItems;
 
     private bool isPlayerNear;
 
@@ -15,18 +16,53 @@ public class DisplaySlot : Interactable
 
         BoxCollider collider = gameObject.AddComponent<BoxCollider>();
         collider.isTrigger = true;
+        collider.size = new Vector3(collider.size.x, 1.8f, collider.size.z);
     }
 
 
     void Start()
     {
-        AddInteraction(new Interaction(GetTag(), () => Input.GetKeyDown(KeyCode.Space) && isPlayerNear, gameObject => AddItem(), 
-            new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO ADD ITEM", () => isPlayerNear && GetNearestSlot().isInValidDistance)));
+        currentItems = new List<GameObject>();
+
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.MachineInteraction) && isPlayerNear, gameObject => PutItem(PlayerPickUp.holdingItem), 
+            new Hint[] {
+                new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO ADD ITEM", () => PlayerPickUp.IsHodlingItem() && GetNearestSlot().isInValidDistance),
+                new Hint("YOU NEED TO HOLD AN ITEM", () => !PlayerPickUp.IsHodlingItem() && isPlayerNear)
+            }));
     }
 
     void Update()
     {
-        
+        InputInfo inputInfo = GetNearestSlot();
+        if (inputInfo == null || !inputInfo.isInValidDistance) return;
+        UpdateHints();
+    }
+
+    private void PutItem(GameObject item)
+    {
+        if(item == null) return;
+        InputInfo input = GetNearestSlot();
+        if (inputSlots.Count == 0 || input == null || !input.IsValid()) return;
+
+        PlayerPickUp.Instance().IfPresent(handler =>
+        {
+            handler.DropHoldingItem();
+            currentItems.Add(item);
+            PlaceItem(input != null ? input.inputPlace : null, item);
+        });
+    }
+
+    private void PlaceItem(GameObject place, GameObject item)
+    {
+        if (item == null) return;
+
+        item.transform.SetParent(place.transform);
+
+        Rigidbody rigidbody = item.GetComponent<Rigidbody>();
+        if (rigidbody == null) return;
+        rigidbody.isKinematic = true;
+        item.transform.localPosition = Vector3.zero;
+        item.transform.localRotation = Quaternion.Euler(0, 0, 90);
     }
 
     public void AddItem()
@@ -36,7 +72,7 @@ public class DisplaySlot : Interactable
 
     internal InputInfo GetNearestSlot()
     {
-        if (!isPlayerNear || inputSlots.Count == 0) return null; //If the inputs are 0.
+        if (!isPlayerNear || inputSlots.Count == 0) return new InputInfo(); //If the inputs are 0.
 
         GameObject nearestSlot = inputSlots[0];
         float nearestItemDistance = Vector3.Distance(PlayerInputManager.instance.transform.position, nearestSlot.transform.position);
@@ -54,11 +90,10 @@ public class DisplaySlot : Interactable
             Hint.ShowWhile("ITEM SLOT IS FULL", () => PlayerPickUp.GetHoldingType() != ItemType.None && GetNearestSlot().IsReadyToPickUp());
         }
 
-        return new InputInfo(nearestSlot, nearestItemDistance <= 1.3f, nearestSlot.transform.childCount != 0);
+        return new InputInfo(nearestSlot, nearestItemDistance <= 1f, nearestSlot.transform.childCount != 0);
     }
 
     public override string GetTag() => "DisplaySlot";
     public override bool IsPlayerNear() => isPlayerNear;
-
     public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
 }

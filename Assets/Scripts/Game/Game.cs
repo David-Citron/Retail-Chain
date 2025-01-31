@@ -24,4 +24,10 @@ public class Game : MonoBehaviour
         gamePlayer.transform.position = transformPosition.position;
         gamePlayer.transform.rotation = transformPosition.rotation;
     }
+
+    public static void DestroyGameObject(GameObject gameObject)
+    {
+        PlayerInputManager.instance.collidersInRange.Remove(gameObject);
+        Destroy(gameObject);
+    }
 }

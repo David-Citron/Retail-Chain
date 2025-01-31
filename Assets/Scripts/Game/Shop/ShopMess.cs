@@ -26,12 +26,16 @@ public class ShopMess : Interactable
     private void StartCleaning()
     {
         isCleaning = true;
-        float cleaningTime = (DateTimeOffset.Now.ToUnixTimeMilliseconds() - spawnedAt) / 1000f;
-        cleaningTime = Mathf.Clamp(cleaningTime, 2, 10);
+
+        float cleaningTime = (DateTimeOffset.Now.ToUnixTimeMilliseconds() - spawnedAt) / 2000f;
+        cleaningTime = Mathf.Clamp(cleaningTime, 1, 6);
+
         new ActionTimer(() => Input.GetKey(KeyCode.Space),
             () =>
             {
-                Destroy(this.gameObject);
+                gameObject.SetActive(false);
+                Destroy(gameObject);
+                PlayerInputManager.instance.collidersInRange.Remove(gameObject);
             },
             () => {
                 isCleaning = false;
