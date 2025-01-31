@@ -14,7 +14,7 @@ public class GlueDispenser : Machine
 
     protected override void OnStart()
     {
-        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.MachineInteraction) && isPlayerNear, i => StartInteraction(), new Hint[] {
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, i => StartInteraction(), new Hint[] {
             new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO GET CANISTER", () => !PlayerPickUp.IsHodlingItem() && machineState == MachineState.Ready),
             new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO FILL GLUE DISPENSER", () => PlayerPickUp.IsHodlingItem()),
             new Hint("INVALID ITEM", () => PlayerPickUp.GetHoldingType() != ItemType.None && PlayerPickUp.GetHoldingType() != ItemType.GlueBarrel && machineState == MachineState.Idling)
@@ -35,7 +35,7 @@ public class GlueDispenser : Machine
 
     private void CreateCanister()
     {
-        actionTimer = new ActionTimer(() => HoldingKey(ActionType.MachineInteraction),
+        actionTimer = new ActionTimer(() => HoldingKey(ActionType.Interaction),
             () => ChangeMachineState(MachineState.Done),
             () => {
                 actionTimer = null;
@@ -45,7 +45,7 @@ public class GlueDispenser : Machine
 
     private void FillDispenser()
     {
-        actionTimer = new ActionTimer(() => HoldingKey(ActionType.MachineInteraction),
+        actionTimer = new ActionTimer(() => HoldingKey(ActionType.Interaction),
             () => ChangeMachineState(MachineState.Done),
             () => {
                 actionTimer = null;

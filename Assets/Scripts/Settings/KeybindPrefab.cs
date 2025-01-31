@@ -5,9 +5,7 @@ using System;
 
 public class KeybindPrefab : MonoBehaviour
 {
-    public ActionKeybind keybind;
-    public KeyType keyType;
-
+    public KeybindData keybindData;
 
     // Start is called before the first frame update
     void Start()
@@ -21,14 +19,13 @@ public class KeybindPrefab : MonoBehaviour
         
     }
 
-    public void ChangeKeybind()
+    public void ChangeKeybind(bool settingAlt)
     {
         Settings.keybindChangeMenu.SetActive(true);
-        StartCoroutine(ReadKeyPress());
+        StartCoroutine(ReadKeyPress(settingAlt));
     }
 
-    // maybe add param like primary/alt?
-    public IEnumerator ReadKeyPress()
+    public IEnumerator ReadKeyPress(bool settingAlt)
     {
         bool set = false;
         while (!set)
@@ -39,14 +36,40 @@ public class KeybindPrefab : MonoBehaviour
             {
                 if (Input.GetKeyDown(key))
                 {
-                    // TODO
+                    set = true;
+                    switch (keybindData.influence)
+                    {
+                        case KeybindInfluence.Positive:
+                            if (!settingAlt)
+                            {
+                                KeybindManager.keybinds[keybindData.action].positiveKey = key;
+                            }
+                            else
+                            {
+                                KeybindManager.keybinds[keybindData.action].positiveAltKey = key;
+                            }
+                            break;
+                        case KeybindInfluence.Negative:
+                            if (!settingAlt)
+                            {
+                                KeybindManager.keybinds[keybindData.action].negativeKey = key;
+                            }
+                            else
+                            {
+                                KeybindManager.keybinds[keybindData.action].negativeAltKey = key;
+                            }
+                            break;
+                        default:
+                            Debug.LogError("Keybind type is not set");
+                            break;
+                    }
                 }
             }
         }
     }
 }
 
-public enum KeyType
+public enum KeybindInfluence
 {
     None,
     Positive,

@@ -7,6 +7,8 @@ using System;
 
 public class Settings : MonoBehaviour
 {
+    [SerializeField] List<KeybindData> keybindDataList = new List<KeybindData>();
+
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private TMP_Dropdown windowModeDropdown;
     [SerializeField] private TMP_Dropdown primaryDisplayDropdown;
@@ -44,17 +46,24 @@ public class Settings : MonoBehaviour
 
     void InitializeKeybindsMenu()
     {
-        if (keybindPrefab == null || keybindPrefabContainer == null) return;
-
-        // Load keybinds from KeybindManager
-        keybinds = KeybindManager.keybinds;
-
-        foreach (ActionType action in Enum.GetValues(typeof(ActionType)))
+        if (keybindPrefab == null || keybindPrefabContainer == null)
         {
-            if (action == ActionType.None) continue;
-            ActionKeybind keybind = keybinds[action];
-            GameObject keybindInstance = Instantiate(keybindPrefab, keybindPrefabContainer.transform);
-            // TODO
+            Debug.LogWarning("KeybindPrefab or KeybindPrefabContainer is not set");
+            return;
+        }
+
+        foreach (KeybindData keybindData in keybindDataList)
+        {
+            if (keybindData.action == ActionType.None) continue;
+            GameObject instance = Instantiate(keybindPrefab, keybindPrefabContainer.transform);
+            KeybindPrefab instanceScript = instance.GetComponent<KeybindPrefab>();
+            if (instanceScript == null)
+            {
+                Debug.LogError("KeybindPrefab script not found");
+                return;
+            }
+            instanceScript.keybindData = keybindData;
+            // TODO?
         }
     }
 

@@ -39,7 +39,7 @@ public class StorageRack : Interactable
 
         UpdateRackItems();
 
-        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.MachineInteraction) && isPlayerNear, collider => InsertGameObject(PlayerPickUp.holdingItem), new Hint[] {
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, collider => InsertGameObject(PlayerPickUp.holdingItem), new Hint[] {
             new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INSERT", () => PlayerPickUp.IsHodlingItem())
         }));
 

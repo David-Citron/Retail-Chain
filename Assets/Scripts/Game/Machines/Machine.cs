@@ -57,7 +57,7 @@ public abstract class Machine : Interactable, IMachine
             new Hint(Hint.GetHintButton(HintButton.E) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready) && GetNearestSlot().IsReadyToPickUp())
         ));
 
-        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.MachineInteraction) && isPlayerNear, collider => StartInteraction(), new Hint[] {
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, collider => StartInteraction(), new Hint[] {
             new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INTERACT", () => machineState == MachineState.Ready && GetNearestSlot().isInValidDistance),
             new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INSERT", () => IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling && GetNearestSlot().IsValid()),
             new Hint("INVALID ITEM", () => !IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling)
@@ -80,7 +80,7 @@ public abstract class Machine : Interactable, IMachine
 
     protected virtual void StartTimer()
     {
-        actionTimer = new ActionTimer(() => HoldingKey(ActionType.MachineInteraction),
+        actionTimer = new ActionTimer(() => HoldingKey(ActionType.Interaction),
         () => ChangeMachineState(MachineState.Done),
         () => {
             actionTimer = null;

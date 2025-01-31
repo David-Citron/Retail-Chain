@@ -24,7 +24,7 @@ public class DisplaySlot : Interactable
     {
         currentItems = new List<GameObject>();
 
-        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.MachineInteraction) && isPlayerNear, gameObject => PutItem(PlayerPickUp.holdingItem), 
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, gameObject => PutItem(PlayerPickUp.holdingItem), 
             new Hint[] {
                 new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO ADD ITEM", () => PlayerPickUp.IsHodlingItem() && GetNearestSlot().isInValidDistance),
                 new Hint("YOU NEED TO HOLD AN ITEM", () => !PlayerPickUp.IsHodlingItem() && isPlayerNear)
