@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DropItem
   m_EditorClassIdentifier: 
   label: Drop item
-  action: 0
-  influence: 0
+  action: 4
+  influence: 1
   defaultPrimaryKey: 0
   defaultAlternativeKey: 0

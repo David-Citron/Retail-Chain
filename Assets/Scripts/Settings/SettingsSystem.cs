@@ -4,9 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Settings : MonoBehaviour
 {
+    [SerializeField] private GameObject keybindPrefab;
+    [SerializeField] private GameObject keybindPrefabContainer;
+    [SerializeField] public static GameObject keybindChangeOverlay;
+    [SerializeField] private List<GameObject> tabs = new List<GameObject>();
+    [SerializeField] private List<GameObject> panels = new List<GameObject>();
+
     [SerializeField] List<KeybindData> keybindDataList = new List<KeybindData>();
 
     [SerializeField] private TMP_Dropdown resolutionDropdown;
@@ -21,20 +28,21 @@ public class Settings : MonoBehaviour
     private List<Resolution> resolutions = new List<Resolution>();
     private List<Display> displays = new List<Display>();
     private List<QualitySettings> qualitySettings = new List<QualitySettings>();
+    private List<KeybindPrefab> keybindPrefabs = new List<KeybindPrefab>();
 
     static List<int> targetFramerates = new List<int> { 30, 60, 120, 160, 180, 240 };
     static List<string> windowModeLabels = new List<string> { "Fullscreen", "Borderless", "Maximized window", "Window" };
     static List<FullScreenMode> windowModes = new List<FullScreenMode> { FullScreenMode.ExclusiveFullScreen, FullScreenMode.FullScreenWindow, FullScreenMode.MaximizedWindow, FullScreenMode.Windowed };
 
-    [SerializeField] private GameObject keybindPrefab;
-    [SerializeField] private GameObject keybindPrefabContainer;
-    [SerializeField] public static GameObject keybindChangeMenu;
 
     // Start is called before the first frame update
     void Start()
     {
+        keybindChangeOverlay = transform.GetChild(transform.childCount - 1).gameObject;
+        if (keybindChangeOverlay != null) keybindChangeOverlay.SetActive(false);
         InitializeKeybindsMenu();
-        Refresh();
+        //Refresh();
+        ChangeTab(0);
     }
 
     // Update is called once per frame
@@ -43,8 +51,19 @@ public class Settings : MonoBehaviour
         
     }
 
-    void InitializeKeybindsMenu()
+    // Possibly add cloud sync
+    // This method is called also when reloading the keybind menu
+    private void InitializeKeybindsMenu()
     {
+        if (keybindPrefabs.Count > 0)
+        {
+            keybindPrefabs.ForEach(prefab =>
+            {
+                Destroy(prefab.gameObject);
+            });
+            keybindPrefabs.Clear();
+        }
+
         if (keybindPrefab == null || keybindPrefabContainer == null)
         {
             Debug.LogWarning("KeybindPrefab or KeybindPrefabContainer is not set");
@@ -54,6 +73,11 @@ public class Settings : MonoBehaviour
         foreach (KeybindData keybindData in keybindDataList)
         {
             if (keybindData.action == ActionType.None) continue;
+            if (keybindData.influence == KeybindInfluence.None)
+            {
+                Debug.LogError("Keybind influence was not set");
+                return;
+            }
             GameObject instance = Instantiate(keybindPrefab, keybindPrefabContainer.transform);
             KeybindPrefab instanceScript = instance.GetComponent<KeybindPrefab>();
             if (instanceScript == null)
@@ -62,8 +86,42 @@ public class Settings : MonoBehaviour
                 return;
             }
             instanceScript.keybindData = keybindData;
-            // TODO?
+            keybindPrefabs.Add(instanceScript);
+
+            if (keybindData.influence == KeybindInfluence.Positive)
+            {
+                instanceScript.primaryKeyCode = KeybindManager.keybinds[keybindData.action].positiveKey;
+                instanceScript.altKeyCode = KeybindManager.keybinds[keybindData.action].positiveAltKey;
+            }else
+            {
+                instanceScript.primaryKeyCode = KeybindManager.keybinds[keybindData.action].negativeKey;
+                instanceScript.altKeyCode = KeybindManager.keybinds[keybindData.action].negativeAltKey;
+            }
+            instanceScript.label.text = keybindData.label;
         }
+    }
+
+    public void ApplyChanges()
+    {
+        keybindPrefabs.ForEach(keybind =>
+        {
+            if (keybind.keybindData.action == ActionType.None) return;
+            switch (keybind.keybindData.influence)
+            {
+                case KeybindInfluence.Positive:
+                    KeybindManager.keybinds[keybind.keybindData.action].positiveKey = keybind.primaryKeyCode;
+                    KeybindManager.keybinds[keybind.keybindData.action].positiveAltKey = keybind.altKeyCode;
+                    break;
+                case KeybindInfluence.Negative:
+                    KeybindManager.keybinds[keybind.keybindData.action].negativeKey = keybind.primaryKeyCode;
+                    KeybindManager.keybinds[keybind.keybindData.action].negativeAltKey = keybind.altKeyCode;
+                    break;
+                default:
+                    Debug.LogError("Keybind influence is not set");
+                    break;
+            }
+        });
+        // TODO: apply other changes
     }
 
     public void ResetToDefault()
@@ -175,48 +233,19 @@ public class Settings : MonoBehaviour
         targetFramerateDropdown.RefreshShownValue();
     }
 
-    public void SetResolution(int index)
+    public void ChangeTab(int index)
     {
-
+        for (int i = 0; i < panels.Count; i++)
+        {
+            // Replace this with abstraction through class:
+            if (i == index && panels[index].name.Contains("Keybind")) InitializeKeybindsMenu();
+            panels[i].SetActive(i == index);
+            tabs[i].GetComponent<Image>().color = (i == index) ? new Color32(49, 54, 56, 255) : new Color32(236, 100, 97, 255);
+        }
     }
 
-    public void SetWindowMode(int index)
+    public void ChangeTab(GameObject panel)
     {
-
-    }
-
-    public void SetPrimaryDisplay(int index)
-    {
-
-    }
-
-    public void SetQuality(int index)
-    {
-
-    }
-
-    public void SetTargetFramerate(int index)
-    {
-
-    }
-
-    public void SetOutputDevice(int index)
-    {
-
-    }
-
-    public void SetMasterVolume(float value)
-    {
-
-    }
-
-    public void SetSoundVolume(float value)
-    {
-
-    }
-
-    public void SetMusicVolume(float value)
-    {
-
+        ChangeTab(panels.IndexOf(panel));
     }
 }

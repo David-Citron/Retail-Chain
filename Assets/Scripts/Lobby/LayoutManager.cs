@@ -195,6 +195,7 @@ public class LayoutManager : MonoBehaviour
     public void ShowSettings()
     {
         settingsMenu.SetActive(true);
+        settingsMenu.GetComponent<Settings>().ChangeTab(0);
         mainMenu.SetActive(false);
         lobby.SetActive(false);
         lobbiesMenu.SetActive(false);

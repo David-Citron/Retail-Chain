@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Interact
   m_EditorClassIdentifier: 
   label: Interact
-  action: 0
-  influence: 0
+  action: 6
+  influence: 1
   defaultPrimaryKey: 0
   defaultAlternativeKey: 0

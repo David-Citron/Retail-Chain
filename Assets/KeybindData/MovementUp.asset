@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MovementUp
   m_EditorClassIdentifier: 
   label: Move up
-  action: 0
-  influence: 0
+  action: 2
+  influence: 1
   defaultPrimaryKey: 0
-  defaultAlternativeKey: 273
+  defaultAlternativeKey: 0

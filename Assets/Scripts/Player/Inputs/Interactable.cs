@@ -49,6 +49,7 @@ public class Interaction
     public Interaction(Func<bool> prediction, Action<GameObject> onInteract, Hint hint) : this(null, prediction, onInteract, new Hint[] { hint }) { }
 }
 
+[Serializable]
 public enum ActionType
 {
     None,

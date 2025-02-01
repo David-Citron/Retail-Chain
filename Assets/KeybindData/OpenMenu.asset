@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: OpenMenu
   m_EditorClassIdentifier: 
   label: Open menu
-  action: 0
-  influence: 0
+  action: 5
+  influence: 1
   defaultPrimaryKey: 0
   defaultAlternativeKey: 0

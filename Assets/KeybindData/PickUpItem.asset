@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PickUpItem
   m_EditorClassIdentifier: 
   label: Pick up item
-  action: 0
-  influence: 0
+  action: 3
+  influence: 1
   defaultPrimaryKey: 0
   defaultAlternativeKey: 0

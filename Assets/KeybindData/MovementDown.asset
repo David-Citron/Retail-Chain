@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MovementDown
   m_EditorClassIdentifier: 
   label: Move down
-  action: 0
-  influence: 0
+  action: 2
+  influence: 2
   defaultPrimaryKey: 0
-  defaultAlternativeKey: 274
+  defaultAlternativeKey: 0
