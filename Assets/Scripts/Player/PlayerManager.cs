@@ -10,34 +10,33 @@ public class PlayerManager : MonoBehaviour
     public List<GamePlayer> gamePlayers = new List<GamePlayer>();
     [SerializeField] private List<Transform> lobbySpawnPoints = new List<Transform>();
 
-
-    // Start is called before the first frame update
     void Start()
     {
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
 
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         if (instance != null)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
             return;
         }
 
         instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    public void Reset()
-    {
-        gamePlayers.Clear();
-    }
+    void Update() {}
 
+    /// <summary>
+    /// Clears gameplayers.
+    /// </summary>
+    public void Reset() => gamePlayers.Clear();
+    
+    /// <summary>
+    /// Adds gameplayer to list, while it also create a player object on lobby and set ups buttons.
+    /// </summary>
+    /// <param name="gamePlayer">The gameplayer</param>
     public void AddGamePlayer(GamePlayer gamePlayer)
     {
         gamePlayers.Add(gamePlayer);
@@ -53,6 +52,10 @@ public class PlayerManager : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Disconnects player and will assure that game wont start.
+    /// </summary>
+    /// <param name="connectionId">The connection id of disconnected player</param>
     public void PlayerDisconnected(int connectionId)
     {
         GetGamePlayerByConnId(connectionId).IfPresent(gamePlayer =>
@@ -74,12 +77,25 @@ public class PlayerManager : MonoBehaviour
         return Optional<GamePlayer>.Of(gamePlayers[gamePlayers.IndexOf(player) == 0 ? 1 : 0]);
     }
 
+    /// <summary>
+    /// Gets GamePlayer object based on given CSteamID
+    /// </summary>
+    /// <param name="id">CSteamID of player</param>
+    /// <returns>The option of GamePlayer</returns>
     public Optional<GamePlayer> GetPlayer(CSteamID id)
     {
-        var index = GetPlayerIndex(id);
-        return index == -1 ? Optional<GamePlayer>.Empty() : Optional<GamePlayer>.Of(gamePlayers[index]);
+        for (int i = 0; i < gamePlayers.Count; i++)
+        {
+            if (gamePlayers[i].GetSteamId() != id.m_SteamID) continue;
+            return Optional<GamePlayer>.Of(gamePlayers[i]);
+        }
+        return Optional<GamePlayer>.Empty();
     }
 
+    /// <summary>
+    /// Gets lobby leader.
+    /// </summary>
+    /// <returns>The optional of lobby leader gameplayer object</returns>
     public Optional<GamePlayer> GetLobbyLeader() {
         var steamId = SteamMatchmaking.GetLobbyOwner(SteamLobby.LobbyId);
         foreach (var gamePlayer in gamePlayers)
@@ -90,22 +106,20 @@ public class PlayerManager : MonoBehaviour
         return Optional<GamePlayer>.Empty();
     }
 
-    public int GetPlayerIndex(CSteamID id)
-    {
-        for (int i = 0; i < gamePlayers.Count; i++)
-        {
-            if (gamePlayers[i].GetSteamId() != id.m_SteamID) continue;
-            return i;
-        }
 
-        return -1;
-    }
+    /// <summary>
+    /// Gets index of given gameplayer
+    /// </summary>
+    /// <param name="gamePlayer">The gameplayer</param>
+    /// <returns>The index of gameplayer in list.</returns>
+    public int GetPlayerIndex(GamePlayer gamePlayer) => gamePlayers.IndexOf(gamePlayer);
+    
 
-    public int GetPlayerIndex(GamePlayer gamePlayer)
-    {
-        return gamePlayers.IndexOf(gamePlayer);
-    }
-
+    /// <summary>
+    /// Gets gameplayer by connection id.
+    /// </summary>
+    /// <param name="connId">The connection id of gameplayer</param>
+    /// <returns>The optional of gameplayer object.</returns>
     public Optional<GamePlayer> GetGamePlayerByConnId(int connId)
     {
 
@@ -118,6 +132,10 @@ public class PlayerManager : MonoBehaviour
         return Optional<GamePlayer>.Empty();
     }
 
+    /// <summary>
+    /// Gets local gameplayer object.
+    /// </summary>
+    /// <returns>The gameobject of local player.</returns>
     public Optional<GamePlayer> GetLocalGamePlayer()
     {
         for (int i = 0; i < gamePlayers.Count; i++)

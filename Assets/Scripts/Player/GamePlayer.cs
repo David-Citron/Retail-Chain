@@ -251,6 +251,5 @@ public class GamePlayer : NetworkBehaviour
         StartGame();
     }
     private void OnDestroy() => SceneManager.sceneLoaded -= OnSceneLoaded;
-
     public ulong GetSteamId() => steamID;
 }

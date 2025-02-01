@@ -1,5 +1,3 @@
-using Mirror;
-
 [System.Serializable]
 public class ContractItem
 {

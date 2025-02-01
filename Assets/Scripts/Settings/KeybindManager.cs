@@ -26,7 +26,5 @@ public class KeybindManager : MonoBehaviour
         keybinds.Add(ActionType.PickUpItem, new ActionKeybind(KeyCode.E));
         keybinds.Add(ActionType.DropItem, new ActionKeybind(KeyCode.Q));
         keybinds.Add(ActionType.OpenMenu, new ActionKeybind(KeyCode.E));
-
-        keybinds.Add(ActionType.Cleaning, new ActionKeybind(KeyCode.Space));
     }
 }

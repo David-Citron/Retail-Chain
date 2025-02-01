@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerBank : MonoBehaviour
 {
     private int balance;
+    private int income; //This is income before next contract, after that it will be reset to 0.
 
     void Start() {}
 
@@ -16,6 +17,7 @@ public class PlayerBank : MonoBehaviour
     public void AddBalance(int amount)
     {
         balance += amount;
+        income += amount;
         UpdateMenu();
     }
 
@@ -32,12 +34,19 @@ public class PlayerBank : MonoBehaviour
         return true;
     }
 
-    public void CalculateCharges()
+    public void PayTaxes()
     {
-        int charges = (int) (balance * 0.025m);
+        PayTax((int) (income * 0.1m)); //Income tax
+        PayTax(TaxesManager.GetRentTaxes()); //Rent taxes (electricity, gas, rent)
 
+        income = 0;
+    }
 
-        //if (!RemoveBalance(charges)) Game.Instance().IfPresent(game => game.setGameState(GameState.Ending));
+    private void PayTax(int amount)
+    {
+        if (RemoveBalance(amount)) return;
+
+        //End game
     }
 
     public int GetBalance() => balance;

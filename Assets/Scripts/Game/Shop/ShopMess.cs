@@ -12,7 +12,7 @@ public class ShopMess : Interactable
     void Start()
     {
         spawnedAt = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Cleaning) && isPlayerNear, gameObject => StartCleaning(),
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, gameObject => StartCleaning(),
             new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO CLEAN", () => isPlayerNear && !isCleaning)));
 
 

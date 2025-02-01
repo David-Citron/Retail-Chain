@@ -2,32 +2,39 @@ using Mirror;
 
 public class TaxesManager : NetworkBehaviour
 {
-    private static TaxesManager instance;
+    public static TaxesManager instance;
 
-    private int taxesTariff;
+    public const int DEFAULT_RENT_TAXES = 150;
+
+    [SyncVar]
+    public float inflation;
 
     void Start()
     {
         instance = this;
+
+        syncDirection = SyncDirection.ServerToClient;
     }
 
-    void Update()
-    {
-        
-    }
+    void Update() {}
 
-    public void IncreaseTariff(int increaseBy)
-    {
-        taxesTariff += increaseBy;
-    }
+    /// <summary>
+    /// Increases inflation by given number
+    /// </summary>
+    /// <param name="increaseBy">Inflation will increase by that amount</param>
+    public static void IncraseInflaction(float increaseBy) => instance.inflation += increaseBy;
 
+    /// <summary>
+    /// Calculates rent taxes. That includes electricity, gas & rent.
+    /// There is default rate which is multiplied by inflation.
+    /// </summary>
+    /// <returns>The rent taxes</returns>
+    public static int GetRentTaxes() => GetInflactionPrice(DEFAULT_RENT_TAXES);
 
-    public static int GetTaxedPrice(int price)
-    {
-        int newPrice = price;
-        Instance().IfPresent(taxesManager => newPrice = price + (int) (price * (taxesManager.taxesTariff / 100m)));
-        return newPrice;
-    }
-
-    public static Optional<TaxesManager> Instance() => Optional<TaxesManager>.Of(instance);
+    /// <summary>
+    /// Returns price multiplied by current inflation.
+    /// </summary>
+    /// <param name="price">The price</param>
+    /// <returns>The new price (inflation included)</returns>
+    public static int GetInflactionPrice(int price) => (int) (price * instance.inflation);
 }

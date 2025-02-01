@@ -57,8 +57,5 @@ public enum ActionType
     PickUpItem,
     DropItem,
     OpenMenu,
-    Interaction,
-    Cleaning
-
-
+    Interaction
 }
