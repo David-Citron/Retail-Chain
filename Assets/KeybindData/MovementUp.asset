@@ -15,5 +15,5 @@ MonoBehaviour:
   label: Move up
   action: 2
   influence: 1
-  defaultPrimaryKey: 0
-  defaultAlternativeKey: 0
+  defaultPrimaryKey: 119
+  defaultAlternativeKey: 273

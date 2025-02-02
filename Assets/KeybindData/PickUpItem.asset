@@ -15,5 +15,5 @@ MonoBehaviour:
   label: Pick up item
   action: 3
   influence: 1
-  defaultPrimaryKey: 0
+  defaultPrimaryKey: 101
   defaultAlternativeKey: 0

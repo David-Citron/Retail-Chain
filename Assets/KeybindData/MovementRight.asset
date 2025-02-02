@@ -15,5 +15,5 @@ MonoBehaviour:
   label: Move right
   action: 1
   influence: 1
-  defaultPrimaryKey: 0
+  defaultPrimaryKey: 100
   defaultAlternativeKey: 275

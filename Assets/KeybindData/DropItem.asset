@@ -15,5 +15,5 @@ MonoBehaviour:
   label: Drop item
   action: 4
   influence: 1
-  defaultPrimaryKey: 0
+  defaultPrimaryKey: 113
   defaultAlternativeKey: 0

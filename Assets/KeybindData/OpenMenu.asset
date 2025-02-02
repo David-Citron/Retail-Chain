@@ -15,5 +15,5 @@ MonoBehaviour:
   label: Open menu
   action: 5
   influence: 1
-  defaultPrimaryKey: 0
+  defaultPrimaryKey: 27
   defaultAlternativeKey: 0

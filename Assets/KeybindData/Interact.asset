@@ -15,5 +15,5 @@ MonoBehaviour:
   label: Interact
   action: 6
   influence: 1
-  defaultPrimaryKey: 0
+  defaultPrimaryKey: 32
   defaultAlternativeKey: 0
