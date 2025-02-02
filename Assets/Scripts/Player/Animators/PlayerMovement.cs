@@ -41,8 +41,8 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         if (freeze) return;
-        horizontal = KeybindManager.keybinds[ActionType.HorizontalInput].CalculateAxis();
-        vertical = KeybindManager.keybinds[ActionType.VerticalInput].CalculateAxis();
+        horizontal = KeybindManager.instance.keybinds[ActionType.HorizontalInput].CalculateAxis();
+        vertical = KeybindManager.instance.keybinds[ActionType.VerticalInput].CalculateAxis();
     }
 
     void FixedUpdate()

@@ -3,16 +3,20 @@ using UnityEngine;
 
 public class KeybindManager : MonoBehaviour
 {
+    public static KeybindManager instance = null;
 
-    public static Dictionary<ActionType, ActionKeybind> keybinds = new Dictionary<ActionType, ActionKeybind>();
+    public Dictionary<ActionType, ActionKeybind> keybinds = new Dictionary<ActionType, ActionKeybind>();
 
-    // List of bindable keys:
-    public static Dictionary<KeyCode, int> spriteId = new Dictionary<KeyCode, int>();
-    
+    // List of supported bindable keys:
+    public Dictionary<KeyCode, int> spriteId = new Dictionary<KeyCode, int>();
+
+    [Tooltip("Related axis KeybindData must be passed in a row")]
     public List<KeybindData> keybindDataList = new List<KeybindData>();
 
     void Awake()
     {
+        if (instance == null) instance = this;
+        else Destroy(this);
         DontDestroyOnLoad(gameObject);
         Initialize();
     }
@@ -21,15 +25,16 @@ public class KeybindManager : MonoBehaviour
     void Update() {}
 
 
-    public static void Initialize()
+    public void Initialize()
     {
-        keybinds.Add(ActionType.HorizontalInput, new ActionKeybind(KeyCode.D, KeyCode.RightArrow, KeyCode.A, KeyCode.LeftArrow, 100));
+        LoadDefaultsFromKeybindData();
+        /*keybinds.Add(ActionType.HorizontalInput, new ActionKeybind(KeyCode.D, KeyCode.RightArrow, KeyCode.A, KeyCode.LeftArrow, 100));
         keybinds.Add(ActionType.VerticalInput, new ActionKeybind(KeyCode.W, KeyCode.UpArrow, KeyCode.S, KeyCode.DownArrow, 100));
 
         keybinds.Add(ActionType.Interaction, new ActionKeybind(KeyCode.Space));
         keybinds.Add(ActionType.PickUpItem, new ActionKeybind(KeyCode.E));
         keybinds.Add(ActionType.DropItem, new ActionKeybind(KeyCode.Q));
-        keybinds.Add(ActionType.OpenMenu, new ActionKeybind(KeyCode.Escape));
+        keybinds.Add(ActionType.OpenMenu, new ActionKeybind(KeyCode.Escape));*/
 
         SetSupportedKeys();
     }
@@ -37,9 +42,51 @@ public class KeybindManager : MonoBehaviour
     public void LoadDefaultsFromKeybindData()
     {
         // Load defaults from keybind data list
+        // Make sure to pass both axis data behind each other
+        keybinds.Clear();
+
+        for (int i = 0; i < keybindDataList.Count; i++) 
+        {
+            ActionType action = keybindDataList[i].action;
+            if ((i + 1) < keybindDataList.Count && keybindDataList[i + 1].action == action)
+            {
+                keybinds.Add(action, ActionKeybindFromData(keybindDataList[i], keybindDataList[i + 1], 100));
+                i++;
+                continue;
+            }
+            KeybindData keybindData = keybindDataList[i];
+            keybinds.Add(action, new ActionKeybind(keybindData.defaultPrimaryKey, keybindData.defaultAlternativeKey));
+        }
     }
 
-    private static void SetSupportedKeys()
+    private static ActionKeybind ActionKeybindFromData(KeybindData first, KeybindData second, float sensitivity)
+    {
+        List<KeybindData> dataList = new List<KeybindData>() { first, second };
+        KeyCode positive = KeyCode.None;
+        KeyCode positiveAlt = KeyCode.None;
+        KeyCode negative = KeyCode.None;
+        KeyCode negativeAlt = KeyCode.None;
+        dataList.ForEach(data =>
+        {
+            switch (data.influence)
+            {
+                case KeybindInfluence.Positive:
+                    positive = data.defaultPrimaryKey;
+                    positiveAlt = data.defaultAlternativeKey;
+                    break;
+                case KeybindInfluence.Negative:
+                    negative = data.defaultPrimaryKey;
+                    negativeAlt = data.defaultAlternativeKey;
+                    break;
+                default:
+                    Debug.LogError("Keybind influence not set in KeybindData");
+                    break;
+            }
+        });
+        return new ActionKeybind(positive, positiveAlt, negative, negativeAlt, sensitivity);
+    }
+
+    private void SetSupportedKeys()
     {
         spriteId = new Dictionary<KeyCode, int>(){
             { KeyCode.A, 0 },
@@ -90,7 +137,7 @@ public class KeybindManager : MonoBehaviour
             { KeyCode.F10, 45 },
             { KeyCode.F11, 46 },
             { KeyCode.F12, 47 },
-            { KeyCode.Return, 83 }, // Test this one
+            { KeyCode.Return, 83 },
             { KeyCode.Space, 88 },
             { KeyCode.Escape, 90 },
             { KeyCode.UpArrow, 96 },

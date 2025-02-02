@@ -27,16 +27,16 @@ public class KeybindPrefab : MonoBehaviour
 
     public void ReloadIcons()
     {
-        if (KeybindManager.spriteId.ContainsKey(primaryKeyCode))
+        if (KeybindManager.instance.spriteId.ContainsKey(primaryKeyCode))
         {
-            primaryKey.GetComponentInChildren<TMP_Text>().text = "<sprite=" + KeybindManager.spriteId[primaryKeyCode] + ">";
+            primaryKey.GetComponentInChildren<TMP_Text>().text = "<sprite=" + KeybindManager.instance.spriteId[primaryKeyCode] + ">";
         }else
         {
             primaryKey.GetComponentInChildren<TMP_Text>().text = "";
         }
-        if (KeybindManager.spriteId.ContainsKey(altKeyCode))
+        if (KeybindManager.instance.spriteId.ContainsKey(altKeyCode))
         {
-            altKey.GetComponentInChildren<TMP_Text>().text = "<sprite=" + KeybindManager.spriteId[altKeyCode] + ">";
+            altKey.GetComponentInChildren<TMP_Text>().text = "<sprite=" + KeybindManager.instance.spriteId[altKeyCode] + ">";
         }
         else
         {
@@ -61,7 +61,7 @@ public class KeybindPrefab : MonoBehaviour
             foreach (KeyCode key in Enum.GetValues(typeof(KeyCode)))
             {
                 if (!Input.GetKey(key)) continue;
-                if (!KeybindManager.spriteId.ContainsKey(key)) continue;
+                if (!KeybindManager.instance.spriteId.ContainsKey(key)) continue;
                 set = true;
                 switch (keybindData.influence)
                 {

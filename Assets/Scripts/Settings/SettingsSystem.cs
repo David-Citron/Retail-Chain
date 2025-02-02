@@ -18,31 +18,21 @@ public class Settings : MonoBehaviour
 
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private TMP_Dropdown windowModeDropdown;
-    [SerializeField] private TMP_Dropdown primaryDisplayDropdown;
-    [SerializeField] private TMP_Dropdown qualityDropdown;
-    [SerializeField] private TMP_Dropdown targetFramerateDropdown;
-    [SerializeField] private Slider masterVolumeSlider;
-    [SerializeField] private Slider soundVolumeSlider;
-    [SerializeField] private Slider musicVolumeSlider;
 
     private List<Resolution> resolutions = new List<Resolution>();
-    private List<Display> displays = new List<Display>();
-    private List<QualitySettings> qualitySettings = new List<QualitySettings>();
     private List<KeybindPrefab> keybindPrefabs = new List<KeybindPrefab>();
 
-    static List<int> targetFramerates = new List<int> { 30, 60, 120, 160, 180, 240 };
     static List<string> windowModeLabels = new List<string> { "Fullscreen", "Borderless", "Maximized window", "Window" };
     static List<FullScreenMode> windowModes = new List<FullScreenMode> { FullScreenMode.ExclusiveFullScreen, FullScreenMode.FullScreenWindow, FullScreenMode.MaximizedWindow, FullScreenMode.Windowed };
 
+    private int currentTabIndex = 0;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         keybindChangeOverlay = transform.GetChild(transform.childCount - 1).gameObject;
+        panels.ForEach(panel => panel.SetActive(false));
         if (keybindChangeOverlay != null) keybindChangeOverlay.SetActive(false);
-        InitializeKeybindsMenu();
-        //Refresh();
-        ChangeTab(0);
     }
 
     // Update is called once per frame
@@ -51,9 +41,19 @@ public class Settings : MonoBehaviour
         
     }
 
+    public void Open()
+    {
+        ChangeTab(0, true);
+    }
+
+    public void Close()
+    {
+        if (panels[1].activeInHierarchy) ApplyKeybindChanges();
+    }
+
     // Possibly add cloud sync
-    // This method is called also when reloading the keybind menu
-    private void InitializeKeybindsMenu()
+    // This method is called when reloading the keybind menu to load current keybind buttons in use
+    private void ReloadKeybindsMenu()
     {
         if (keybindPrefabs.Count > 0)
         {
@@ -90,18 +90,18 @@ public class Settings : MonoBehaviour
 
             if (keybindData.influence == KeybindInfluence.Positive)
             {
-                instanceScript.primaryKeyCode = KeybindManager.keybinds[keybindData.action].positiveKey;
-                instanceScript.altKeyCode = KeybindManager.keybinds[keybindData.action].positiveAltKey;
+                instanceScript.primaryKeyCode = KeybindManager.instance.keybinds[keybindData.action].positiveKey;
+                instanceScript.altKeyCode = KeybindManager.instance.keybinds[keybindData.action].positiveAltKey;
             }else
             {
-                instanceScript.primaryKeyCode = KeybindManager.keybinds[keybindData.action].negativeKey;
-                instanceScript.altKeyCode = KeybindManager.keybinds[keybindData.action].negativeAltKey;
+                instanceScript.primaryKeyCode = KeybindManager.instance.keybinds[keybindData.action].negativeKey;
+                instanceScript.altKeyCode = KeybindManager.instance.keybinds[keybindData.action].negativeAltKey;
             }
             instanceScript.label.text = keybindData.label;
         }
     }
 
-    public void ApplyChanges()
+    public void ApplyKeybindChanges()
     {
         keybindPrefabs.ForEach(keybind =>
         {
@@ -109,12 +109,12 @@ public class Settings : MonoBehaviour
             switch (keybind.keybindData.influence)
             {
                 case KeybindInfluence.Positive:
-                    KeybindManager.keybinds[keybind.keybindData.action].positiveKey = keybind.primaryKeyCode;
-                    KeybindManager.keybinds[keybind.keybindData.action].positiveAltKey = keybind.altKeyCode;
+                    KeybindManager.instance.keybinds[keybind.keybindData.action].positiveKey = keybind.primaryKeyCode;
+                    KeybindManager.instance.keybinds[keybind.keybindData.action].positiveAltKey = keybind.altKeyCode;
                     break;
                 case KeybindInfluence.Negative:
-                    KeybindManager.keybinds[keybind.keybindData.action].negativeKey = keybind.primaryKeyCode;
-                    KeybindManager.keybinds[keybind.keybindData.action].negativeAltKey = keybind.altKeyCode;
+                    KeybindManager.instance.keybinds[keybind.keybindData.action].negativeKey = keybind.primaryKeyCode;
+                    KeybindManager.instance.keybinds[keybind.keybindData.action].negativeAltKey = keybind.altKeyCode;
                     break;
                 default:
                     Debug.LogError("Keybind influence is not set");
@@ -124,13 +124,18 @@ public class Settings : MonoBehaviour
         // TODO: apply other changes
     }
 
+    // Resets current tab to default settings
     public void ResetToDefault()
     {
-
+        if (currentTabIndex == 1)
+        {
+            KeybindManager.instance.LoadDefaultsFromKeybindData();
+            ReloadKeybindsMenu();
+        }
     }
 
     // Loads current values into UI elements
-    public void Refresh()
+    public void ReloadGeneralMenu()
     {
         // Resolutions
         resolutions.Clear();
@@ -142,12 +147,14 @@ public class Settings : MonoBehaviour
         {
             Resolution resolution = availableResolutions[i];
             resolutions.Add(resolution);
-            options.Add(resolution.width + "x" +  resolution.height);
+            options.Add(resolution.width + ":" +  resolution.height);
             if (Screen.currentResolution.width == resolution.width && Screen.currentResolution.height == resolution.height)
             {
-                currentResolution = (availableResolutions.Length - 1) - i;
+                currentResolution = options.Count - 1;
             }
         }
+
+        if (currentResolution == -1) Application.Quit();
 
         resolutionDropdown.ClearOptions();
         resolutionDropdown.AddOptions(options);
@@ -169,76 +176,26 @@ public class Settings : MonoBehaviour
         windowModeDropdown.AddOptions(windowModeLabels);
         windowModeDropdown.value = currentFullscreenMode;
         windowModeDropdown.RefreshShownValue();
-
-        // Primary Display
-        Display[] availableDisplays = Display.displays;
-        options = new List<string>();
-        int currentDisplay = 0;
-
-        for (int i = 0; i < availableDisplays.Length; i++)
-        {
-            Display display = availableDisplays[i];
-            displays.Add(display);
-            options.Add("Display " + (i + 1));
-
-            if (display.active)
-            {
-                currentDisplay = i;
-            }
-        }
-
-        primaryDisplayDropdown.AddOptions(options);
-        primaryDisplayDropdown.value = currentDisplay;
-        primaryDisplayDropdown.RefreshShownValue();
-
-        // Quality
-        string[] qualityLevelNames = QualitySettings.names;
-        options = new List<string>();
-
-        for (int i = 0;i < qualityLevelNames.Length; i++)
-        {
-            options.Add(qualityLevelNames[i]);
-        }
-
-        qualityDropdown.ClearOptions();
-        qualityDropdown.AddOptions(options);
-        qualityDropdown.value = QualitySettings.GetQualityLevel();
-        qualityDropdown.RefreshShownValue();
-
-        // Target Framerate
-        int currentFramerate = Application.targetFrameRate;
-        int targetFramerateIndex = -1;
-        options = new List<string>();
-        for (int i = 0; i < targetFramerates.Count; i++)
-        {
-            options.Add(targetFramerates[i] + " FPS");
-            if (targetFramerates[i] == currentFramerate)
-            {
-                targetFramerateIndex = i;
-            }
-        }
-        if (targetFramerateIndex == -1)
-        {
-            if (currentFramerate != -1)
-            {
-                Debug.LogError("Target Framerate not found");
-                return;
-            }
-            options.Add("Unlimited");
-            targetFramerateIndex = options.Count - 1;
-        }
-        targetFramerateDropdown.ClearOptions();
-        targetFramerateDropdown.AddOptions(options);
-        targetFramerateDropdown.value = targetFramerateIndex;
-        targetFramerateDropdown.RefreshShownValue();
     }
 
     public void ChangeTab(int index)
     {
+        ChangeTab(index, false);
+    }
+
+    public void ChangeTab(int index, bool forceUpdate)
+    {
+        if (!forceUpdate && panels[index].activeInHierarchy) return;
+
+        currentTabIndex = index;
+
+        if (currentTabIndex == 0) ReloadGeneralMenu();
+
+        if (currentTabIndex == 1) ReloadKeybindsMenu();
+        else ApplyKeybindChanges();
+
         for (int i = 0; i < panels.Count; i++)
         {
-            // Replace this with abstraction through class:
-            if (i == index && panels[index].name.Contains("Keybind")) InitializeKeybindsMenu();
             panels[i].SetActive(i == index);
             tabs[i].GetComponent<Image>().color = (i == index) ? new Color32(49, 54, 56, 255) : new Color32(236, 100, 97, 255);
         }
@@ -247,5 +204,16 @@ public class Settings : MonoBehaviour
     public void ChangeTab(GameObject panel)
     {
         ChangeTab(panels.IndexOf(panel));
+    }
+
+    public void SetResolution(int index)
+    {
+        Resolution res = resolutions[index];
+        Screen.SetResolution(res.width, res.height, Screen.fullScreenMode);
+    }
+
+    public void SetWindowMode(int index)
+    {
+        Screen.fullScreenMode = windowModes[index];
     }
 }

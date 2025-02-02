@@ -189,13 +189,14 @@ public class LayoutManager : MonoBehaviour
         mainMenu.SetActive(true);
         lobby.SetActive(false);
         lobbiesMenu.SetActive(false);
+        if (settingsMenu.activeInHierarchy) settingsMenu.GetComponent<Settings>().Close();
         settingsMenu.SetActive(false);
     }
 
     public void ShowSettings()
     {
         settingsMenu.SetActive(true);
-        settingsMenu.GetComponent<Settings>().ChangeTab(0);
+        settingsMenu.GetComponent<Settings>().Open();
         mainMenu.SetActive(false);
         lobby.SetActive(false);
         lobbiesMenu.SetActive(false);
