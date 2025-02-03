@@ -146,6 +146,7 @@ public class Settings : MonoBehaviour
         for (int i = availableResolutions.Length - 1; i >= 0; i--)
         {
             Resolution resolution = availableResolutions[i];
+            if (resolutions.Count > 0 && resolution.width == resolutions[resolutions.Count - 1].width && resolution.height == resolutions[resolutions.Count - 1].height) continue;
             resolutions.Add(resolution);
             options.Add(resolution.width + ":" +  resolution.height);
             if (Screen.currentResolution.width == resolution.width && Screen.currentResolution.height == resolution.height)
