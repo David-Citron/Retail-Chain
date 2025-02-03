@@ -40,11 +40,11 @@ public class StorageRack : Interactable
         UpdateRackItems();
 
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, collider => InsertGameObject(PlayerPickUp.holdingItem), new Hint[] {
-            new Hint(Hint.GetHintButton(HintButton.SPACE) + " TO INSERT", () => PlayerPickUp.IsHodlingItem())
+            new Hint(Hint.GetHintButton(KeyCode.Space) + " TO INSERT", () => PlayerPickUp.IsHodlingItem())
         }));
 
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.OpenMenu) && isPlayerNear, collider => ToggleUI(), new Hint[] {
-            new Hint(Hint.GetHintButton(HintButton.E) + " TO OPEN STORAGE", () => !PlayerPickUp.IsHodlingItem())
+            new Hint(Hint.GetHintButton(KeyCode.E) + " TO OPEN STORAGE", () => !PlayerPickUp.IsHodlingItem())
         }));
     }
 

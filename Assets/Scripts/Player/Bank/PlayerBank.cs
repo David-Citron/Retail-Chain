@@ -34,6 +34,9 @@ public class PlayerBank : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// This method pays all player's taxes.
+    /// </summary>
     public void PayTaxes()
     {
         PayTax((int) (income * 0.1m)); //Income tax
@@ -42,6 +45,10 @@ public class PlayerBank : MonoBehaviour
         income = 0;
     }
 
+    /// <summary>
+    /// Pay tax, if player does not have enough money the game ends.
+    /// </summary>
+    /// <param name="amount">The tax charge</param>
     private void PayTax(int amount)
     {
         if (RemoveBalance(amount)) return;
@@ -49,6 +56,10 @@ public class PlayerBank : MonoBehaviour
         //End game
     }
 
+    /// <summary>
+    /// Gets the player's balance
+    /// </summary>
+    /// <returns>The balance</returns>
     public int GetBalance() => balance;
 
     private void UpdateMenu()

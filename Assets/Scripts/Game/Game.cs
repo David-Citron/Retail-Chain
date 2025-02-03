@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +5,6 @@ public class Game : MonoBehaviour
 {
 
     public static Game instance;
-
-    private DateTime gameStart;
 
     [SerializeField] private List<GameObject> spawnLocations = new List<GameObject>();
 
@@ -17,10 +14,19 @@ public class Game : MonoBehaviour
     }
 
     void Start() {
-        gameStart = DateTime.Now;
     }
 
     void Update() {}
+
+    public void EndGame()
+    {
+        /*
+         
+        When the game ends show player his game statistics and at the bottom of it "BACK TO LOBBY"
+         
+         
+         */
+    }
 
     /// <summary>
     /// Teleports gameplayer to his start location

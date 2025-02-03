@@ -77,16 +77,15 @@ public class HintSystem : MonoBehaviour
         GameObject textObject = new GameObject("text-" + hint.value);
 
         textObject.transform.SetParent(transform);
-        textObject.transform.localScale = Vector3.one;
         textObject.transform.localPosition = Vector3.zero;
 
         TMP_Text tmpText = textObject.AddComponent<TextMeshProUGUI>();
 
         tmpText.text = hint.value;
         tmpText.enableAutoSizing = true;
-        tmpText.fontSizeMin = 15;
-        tmpText.fontSizeMax = 25;
-        tmpText.fontStyle = FontStyles.Bold;
+        tmpText.fontSizeMin = 18;
+        tmpText.fontSizeMax = 26;
+        tmpText.fontStyle = FontStyles.Normal;
         tmpText.alignment = TextAlignmentOptions.Left;
         tmpText.spriteAsset = spriteAsset;
 
@@ -133,19 +132,5 @@ public class Hint
     /// <param name="predicate">The condition</param>
     /// <returns>Hint object</returns>
     public static Hint ShowWhile(string value, Func<bool> predicate) => new Hint(value, 0, predicate);
-    public static string GetHintButton(HintButton button) => $"<sprite={(int)button}>";
-}
-
-public enum HintButton
-{
-    A, B, C, D, E, F, G, H, I, J, K, L, M,
-    N, O, P, Q, R, S, T, U, V, X, W, Y, Z,
-    ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE,
-    F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12,
-    MINUS, PLUS, TILDE, ASTERISK, SEMICOLON, SLASH, BRACKETS_LEFT, BRACKETS_RIGHT,
-    QUOTATION, QUESTION_MARK, ALT, LESS_THAN, MORE_THAN, MOUSE, MOUSE_X, MOUSE_Y, MOUSE_XY,
-    MOUSE_RIGHT, MOUSE_LEFT, MOUSE_MIDDLE, MOUSE_WHEEL, MOUSE_UP, MOUSE_DOWN, CURSOR,
-    ENTER_ALT, ENTER, ENTER_TALL, PLUS_TALL, SHIFT_SUPER, SHIFT, BACKSPACE, CAPSLOCK,
-    ESC, CTRL, END, PAGEDOWN, PAGEUP, NUMLOCK, DEL, SPACE, UP, DOWN, LEFT, RIGHT, PRTSCREEN,
-    HOME, TAB, INSERT, BACKSPACE_ALT,
+    public static string GetHintButton(KeyCode button) => $"<sprite={KeybindManager.instance.spriteId[button]}>";
 }

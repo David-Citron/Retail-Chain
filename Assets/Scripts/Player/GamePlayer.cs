@@ -58,13 +58,10 @@ public class GamePlayer : NetworkBehaviour
 
         InicializeButtons();
 
-        LayoutManager.Instance().IfPresent(layoutManager =>
-        {
-            layoutManager.SendNotification("Player " + PlayerSteamUtils.GetSteamUsername(new CSteamID(steamID)) + " has joined your Lobby.", 5);
-            if (isLocalPlayer) layoutManager.HideLoadingScreen();
-        });
 
         if (!isLocalPlayer) return;
+
+        LayoutManager.Instance().IfPresent(layoutManager => layoutManager.HideLoadingScreen());
 
         //If there is no second player, the PlayerRole is set to Shop, otherwise it depends on the role of the opposite player.
         PlayerManager.instance.GetOppositePlayer(this).IfPresentOrElse(secondPlayer =>
@@ -77,7 +74,7 @@ public class GamePlayer : NetworkBehaviour
 
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
 
     }

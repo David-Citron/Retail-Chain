@@ -12,7 +12,6 @@ public class TaxesManager : NetworkBehaviour
     void Start()
     {
         instance = this;
-
         syncDirection = SyncDirection.ServerToClient;
     }
 

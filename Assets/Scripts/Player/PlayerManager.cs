@@ -71,6 +71,11 @@ public class PlayerManager : MonoBehaviour
         if(gamePlayers.Count != 0) LayoutManager.Instance().IfPresent(layoutManager => layoutManager.UpdateInvitePlayerButton(gamePlayers[0]));
     }
 
+    /// <summary>
+    /// Gets the opposite player of given player
+    /// </summary>
+    /// <param name="player">The gameplayer</param>
+    /// <returns>The Optional of opposite gameplayer object</returns>
     public Optional<GamePlayer> GetOppositePlayer(GamePlayer player)
     {
         if (gamePlayers.Count < 2) return Optional<GamePlayer>.Empty();
