@@ -11,4 +11,6 @@ public class ItemData : ScriptableObject
 
     public int buyPrice;
     public int sellPrice;
+
+    public bool sellable;
 }

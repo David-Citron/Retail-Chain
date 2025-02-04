@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d621259318cb1064a9f6b4bf1a4596a7, type: 3}
   m_Name: GlueCanister
   m_EditorClassIdentifier: 
-  itemType: 2
+  itemType: 0
   itemName: GlueCanister
   icon: {fileID: 8400000, guid: b0dea9914cda7724a872a436bc1deff1, type: 2}
   itemPrefab: {fileID: 3290485508082759740, guid: 3ef47ac46eafb4d499c62ad3f94c1c57,
     type: 3}
+  maxOfferAmount: 0
+  buyPrice: 0
+  sellPrice: 0
+  sellable: 1
