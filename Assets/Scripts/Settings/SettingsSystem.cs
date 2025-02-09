@@ -1,10 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Settings : MonoBehaviour
 {
@@ -198,7 +195,7 @@ public class Settings : MonoBehaviour
         for (int i = 0; i < panels.Count; i++)
         {
             panels[i].SetActive(i == index);
-            tabs[i].GetComponent<Image>().color = (i == index) ? new Color32(49, 54, 56, 255) : new Color32(236, 100, 97, 255);
+            tabs[i].GetComponent<Shadow>().enabled = i == index;
         }
     }
 

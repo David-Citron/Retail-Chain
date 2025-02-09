@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Shadow))]
@@ -10,32 +11,48 @@ public class CustomButton : MonoBehaviour,
         IPointerEnterHandler, IPointerExitHandler,
         ISelectHandler
 {
-    private TMP_Text buttonText;
+
+    private static Dictionary<ButtonColor, ColorGroup> colorGroups = new Dictionary<ButtonColor, ColorGroup>();
+
+    public ButtonColor buttonColor;
+
     private Button button;
+    private Image image;
+    private TMP_Text buttonText;
     private Shadow shadow;
-
-    private Color normalColor = Color.white;
-    private Color32 highlightedColor = new Color32(49, 54, 56, 255);
-
-    private Color32 shadowColor = new Color32(188, 188, 188, 255);
-    private Color32 highlightedColorShadow = new Color32(33, 37, 39, 255);
 
     private bool isPointerInside { get; set; }
     private bool isPointerDown { get; set; }
 
+    void Awake()
+    {
+        if (colorGroups.Count != 0) return;
+        colorGroups.Add(ButtonColor.Gray, new ColorGroup(new Color32(49, 54, 56, 255), new Color32(37, 37, 37, 255)));
+        colorGroups.Add(ButtonColor.Pink, new ColorGroup(new Color32(236, 100, 97, 255), new Color32(147, 66, 66, 255)));
+    }
+
     void Start()
     {
-        buttonText = transform.GetComponentInChildren<TMP_Text>();
         button = GetComponent<Button>();
+        buttonText = transform.GetComponentInChildren<TMP_Text>();
         shadow = GetComponent<Shadow>();
+        image = GetComponent<Image>();
+
+        button.interactable = true;
+        button.transition = Selectable.Transition.SpriteSwap;
+        SpriteState spriteState = button.spriteState;
+        spriteState.highlightedSprite = image.sprite;
+        button.spriteState = spriteState;
+
+        image.color = GetColor(ButtonColorType.Normal);
 
         shadow.effectDistance = new Vector2(10, -10);
-        shadow.effectColor = shadowColor;
+        shadow.effectColor = GetColor(ButtonColorType.Shadow);
     }
 
     private void OnDisable()
     {
-        ChangeColor(normalColor);
+        ChangeTextColor(ButtonColorType.Normal);
     }
 
     protected enum SelectionState
@@ -58,18 +75,22 @@ public class CustomButton : MonoBehaviour,
         switch (state)
         {
             case SelectionState.Highlighted:
-                ChangeColor(highlightedColor);
+                ChangeTextColor(ButtonColorType.Shadow);
                 break;
             case SelectionState.Normal:
-                ChangeColor(normalColor);
+                ChangeTextColor(ButtonColorType.Normal);
                 break;
         }
     }
 
-    private void ChangeColor(Color color)
+    /// <summary>
+    /// Changes text & shadow colors
+    /// </summary>
+    /// <param name="color">New color</param>
+    private void ChangeTextColor(ButtonColorType colorType)
     {
-        if (buttonText != null) buttonText.color = color;
-        if (shadow != null) shadow.effectColor = color == normalColor ? shadowColor : highlightedColorShadow;
+        if (buttonText != null) buttonText.color = colorType == ButtonColorType.Shadow ? GetColor(ButtonColorType.Normal) : Color.white;
+        image.color = colorType == ButtonColorType.Shadow ? Color.white : GetColor(ButtonColorType.Normal);
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)
@@ -110,6 +131,41 @@ public class CustomButton : MonoBehaviour,
     {
         yield return new WaitForEndOfFrame();
         EventSystem.current.SetSelectedGameObject(null);
-        ChangeColor(normalColor);
+        ChangeTextColor(ButtonColorType.Normal);
+    }
+
+    private Color32 GetColor(ButtonColorType colorType)
+    {
+        var colorGroup = colorGroups[buttonColor];
+        switch (colorType)
+        {
+            case ButtonColorType.Normal: return colorGroup.color;
+            case ButtonColorType.Shadow: return colorGroup.shadowColor;
+        }
+        return Color.white;
+    }
+}
+
+public enum ButtonColor
+{
+    Gray,
+    Pink
+}
+
+public enum ButtonColorType
+{
+    Normal,
+    Shadow
+}
+
+public class ColorGroup
+{
+    public Color32 color;
+    public Color32 shadowColor;
+
+    public ColorGroup(Color32 color, Color32 shadowColor)
+    {
+        this.color = color;
+        this.shadowColor = shadowColor;
     }
 }
