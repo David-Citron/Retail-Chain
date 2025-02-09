@@ -44,10 +44,10 @@ public class CustomButton : MonoBehaviour,
         spriteState.highlightedSprite = image.sprite;
         button.spriteState = spriteState;
 
-        image.color = GetColor(ButtonColorType.Normal);
-
         shadow.effectDistance = new Vector2(10, -10);
         shadow.effectColor = GetColor(ButtonColorType.Shadow);
+
+        ChangeTextColor(ButtonColorType.Normal);
     }
 
     private void OnDisable()
@@ -90,7 +90,7 @@ public class CustomButton : MonoBehaviour,
     private void ChangeTextColor(ButtonColorType colorType)
     {
         if (buttonText != null) buttonText.color = colorType == ButtonColorType.Shadow ? GetColor(ButtonColorType.Normal) : Color.white;
-        image.color = colorType == ButtonColorType.Shadow ? Color.white : GetColor(ButtonColorType.Normal);
+        if(image != null) image.color = colorType == ButtonColorType.Shadow ? Color.white : GetColor(ButtonColorType.Normal);
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)
@@ -137,6 +137,7 @@ public class CustomButton : MonoBehaviour,
     private Color32 GetColor(ButtonColorType colorType)
     {
         var colorGroup = colorGroups[buttonColor];
+        if (colorGroup == null) return Color.white;
         switch (colorType)
         {
             case ButtonColorType.Normal: return colorGroup.color;
@@ -144,6 +145,15 @@ public class CustomButton : MonoBehaviour,
         }
         return Color.white;
     }
+
+    public void ChangeColorGroup(ButtonColor newColor)
+    {
+        if(buttonColor == newColor) return;
+        buttonColor = newColor;
+
+        ChangeTextColor(ButtonColorType.Normal);
+        if(shadow != null) shadow.effectColor = GetColor(ButtonColorType.Shadow);
+    } 
 }
 
 public enum ButtonColor

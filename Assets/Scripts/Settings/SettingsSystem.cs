@@ -195,7 +195,7 @@ public class Settings : MonoBehaviour
         for (int i = 0; i < panels.Count; i++)
         {
             panels[i].SetActive(i == index);
-            tabs[i].GetComponent<Shadow>().enabled = i == index;
+            tabs[i].GetComponent<CustomButton>().ChangeColorGroup(i == index ? ButtonColor.Gray : ButtonColor.Pink);
         }
     }
 
