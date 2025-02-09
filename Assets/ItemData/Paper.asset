@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d621259318cb1064a9f6b4bf1a4596a7, type: 3}
   m_Name: Paper
   m_EditorClassIdentifier: 
-  itemType: 0
+  itemType: 4
   itemName: Paper
   icon: {fileID: 8400000, guid: 1b8e84971adabfb44a1a3b42ea158b95, type: 2}
   itemPrefab: {fileID: 8968270579880434212, guid: 40d0f8028d1c2d24895fb029d2218cef,

@@ -25,7 +25,7 @@ public class TestingUtils : MonoBehaviour
         if (!testerUI.activeSelf) return;
 
         foreach (var item in items) Destroy(item);
-        foreach (var item in Enum.GetValues(typeof(ItemType)))
+        foreach (var item in ItemManager.GetAllItemData())
         {
             GameObject createdItem = Instantiate(prefabItem);
 
@@ -34,7 +34,7 @@ public class TestingUtils : MonoBehaviour
 
             var component = createdItem.GetComponent<StorageContentItem>();
 
-            component.Initialize((ItemType) item, 1, false);
+            component.Initialize(item.itemType, 1, false);
 
             items.Add(createdItem);
         }

@@ -57,7 +57,8 @@ public class ItemManager : MonoBehaviour
     public static string GetNameOf(ItemType type)
     {
         if (type == ItemType.None) return "Error";
-        return GetItemData(type).itemName;
+        var data = GetItemData(type);
+        return data == null ? "Error" : data.itemName;
     }
 
 
