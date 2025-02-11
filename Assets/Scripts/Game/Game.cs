@@ -17,11 +17,17 @@ public class Game : MonoBehaviour
         instance = this;
         shopGameObjects.ForEach(gameObject => gameObject.SetActive(false));
         factoryGameObjects.ForEach(gameObject => gameObject.SetActive(false));
+        if (PlayerManager.instance.gamePlayers.Count > 0) FindFirstObjectByType<PlayerMovement>().gameObject.SetActive(false);
     }
 
     void Start() {
         GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
-        if (localPlayer == null) return;
+        if (localPlayer == null)
+        {
+            shopGameObjects.ForEach(gameObject => gameObject.SetActive(true));
+            factoryGameObjects.ForEach(gameObject => gameObject.SetActive(true));
+            return;
+        }
         if(localPlayer.playerRole == PlayerRole.Shop) shopGameObjects.ForEach(gameObject => gameObject.SetActive(true));
         else factoryGameObjects.ForEach (gameObject => gameObject.SetActive(true));
     }
