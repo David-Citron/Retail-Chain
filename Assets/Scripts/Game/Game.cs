@@ -40,9 +40,11 @@ public class Game : NetworkBehaviour
     {
         PlayerManager.instance.gamePlayers.ForEach(gamePlayer =>
         {
-            if (!gamePlayer.isLocalPlayer) return;
-            int index = (int)gamePlayer.playerRole - 1;
+            gamePlayer.StartGame();
 
+            if (!gamePlayer.isLocalPlayer) return;
+
+            int index = (int)gamePlayer.playerRole - 1;
             cameras.ForEach(camera => camera.SetActive(cameras.IndexOf(camera) == index));
 
             Transform transformPosition = instance.spawnLocations[index].transform;
@@ -51,8 +53,6 @@ public class Game : NetworkBehaviour
 
             if (gamePlayer.playerRole == PlayerRole.Shop) factoryGameObjects.ForEach(gameObject => gameObject.SetActive(false));
             else shopGameObjects.ForEach(gameObject => gameObject.SetActive(false));
-
-            gamePlayer.StartGame();
         });
     }
 }

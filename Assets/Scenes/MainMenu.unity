@@ -3909,7 +3909,7 @@ MonoBehaviour:
   m_Content: {fileID: 1639892876}
   m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -9681,7 +9681,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 73dd65cac7d6f15439ba32f6da9eb658, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8aecd819c2b71174d8e2276580669eb0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

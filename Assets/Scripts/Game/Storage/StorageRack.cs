@@ -43,7 +43,7 @@ public class StorageRack : Interactable
             new Hint(Hint.GetHintButton(KeyCode.Space) + " TO INSERT", () => PlayerPickUp.IsHodlingItem())
         }));
 
-        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.OpenMenu) && isPlayerNear, collider => ToggleUI(), new Hint[] {
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear, collider => ToggleUI(), new Hint[] {
             new Hint(Hint.GetHintButton(KeyCode.E) + " TO OPEN STORAGE", () => !PlayerPickUp.IsHodlingItem())
         }));
     }

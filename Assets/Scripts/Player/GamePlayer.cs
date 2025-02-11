@@ -147,7 +147,6 @@ public class GamePlayer : NetworkBehaviour
 
         if(isLocalPlayer)
         {
-
             GetComponent<PlayerBank>().enabled = true;
             Destroy(GetComponent<LobbyAnimator>());
 
