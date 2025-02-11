@@ -7,9 +7,9 @@ public class StorageRack : Interactable
 {
     public static StorageRack instance;
 
-    private Dictionary<ItemType, int> storedItems = new Dictionary<ItemType, int>();
+    private Dictionary<ItemType, int> storedItems;
     [SerializeField] private List<GameObject> rackItems = new List<GameObject>();
-    private List<GameObject> contentItems = new List<GameObject>();
+    private List<GameObject> contentItems;
 
     public GameObject itemPrefab;
     public GameObject itemListContent;
@@ -17,17 +17,17 @@ public class StorageRack : Interactable
     public Button closeButton;
     private bool isPlayerNear;
 
-    private void Awake()
-    {
+    void Start() {
+        instance = this;
+
+        storedItems = new Dictionary<ItemType, int>();
+        contentItems = new List<GameObject>();
+
         GetComponent<Rigidbody>().isKinematic = true;
 
         BoxCollider collider = gameObject.AddComponent<BoxCollider>();
         collider.isTrigger = true;
         collider.size = new Vector3(80f, 50f, collider.size.z);
-    }
-
-    void Start() {
-        instance = this;
 
         closeButton.interactable = true;
         closeButton.onClick.RemoveAllListeners();
