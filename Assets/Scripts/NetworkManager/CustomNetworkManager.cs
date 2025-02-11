@@ -90,6 +90,11 @@ public class CustomNetworkManager : NetworkManager
     {
         base.OnServerSceneChanged(sceneName);
         if (ContractManager.instance != null) ContractManager.instance.InitializeFirstContract();
+    }
+
+    public override void OnClientSceneChanged()
+    {
+        base.OnClientSceneChanged();
         if (Game.instance != null) Game.instance.InitializePlayers();
     }
 
