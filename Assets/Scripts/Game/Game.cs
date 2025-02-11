@@ -1,8 +1,7 @@
-using Mirror;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Game : NetworkBehaviour
+public class Game : MonoBehaviour
 {
 
     public static Game instance;
@@ -44,12 +43,12 @@ public class Game : NetworkBehaviour
 
             if (!gamePlayer.isLocalPlayer) return;
 
-            int index = (int)gamePlayer.playerRole - 1;
+            int index = (int) gamePlayer.playerRole - 1;
             cameras.ForEach(camera => camera.SetActive(cameras.IndexOf(camera) == index));
 
-            Transform transformPosition = instance.spawnLocations[index].transform;
-            gamePlayer.transform.position = transformPosition.position;
-            gamePlayer.transform.rotation = transformPosition.rotation;
+            Transform transformPosition = spawnLocations[index].transform;
+            Debug.Log("POSITION: " + transformPosition.name);
+            gamePlayer.transform.SetPositionAndRotation(transformPosition.position, transformPosition.rotation);
 
             if (gamePlayer.playerRole == PlayerRole.Shop) factoryGameObjects.ForEach(gameObject => gameObject.SetActive(false));
             else shopGameObjects.ForEach(gameObject => gameObject.SetActive(false));
