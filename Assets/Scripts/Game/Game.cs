@@ -42,13 +42,14 @@ public class Game : MonoBehaviour
             gamePlayer.StartGame();
 
             int index = (int) gamePlayer.playerRole - 1;
-            cameras.ForEach(camera => camera.SetActive(cameras.IndexOf(camera) == index));
 
             Transform transformPosition = spawnLocations[index].transform;
             Debug.Log("POSITION: " + transformPosition.name);
             gamePlayer.transform.SetPositionAndRotation(transformPosition.position, transformPosition.rotation);
 
             if (!gamePlayer.isLocalPlayer) return;
+
+            cameras.ForEach(camera => camera.SetActive(cameras.IndexOf(camera) == index));
 
             if (gamePlayer.playerRole == PlayerRole.Shop) factoryGameObjects.ForEach(gameObject => gameObject.SetActive(false));
             else shopGameObjects.ForEach(gameObject => gameObject.SetActive(false));
