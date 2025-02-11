@@ -169,7 +169,7 @@ public class GamePlayer : NetworkBehaviour
             Rigidbody rb = player.GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.None;
 
-            Game.instance.Teleport(this);
+            Game.instance.InitializePlayer(this);
         } else
         {
             player.gameObject.SetActive(false);
