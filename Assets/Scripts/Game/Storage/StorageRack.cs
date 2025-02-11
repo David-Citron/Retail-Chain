@@ -5,7 +5,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
 public class StorageRack : Interactable
 {
-
     public static StorageRack instance;
 
     private Dictionary<ItemType, int> storedItems = new Dictionary<ItemType, int>();

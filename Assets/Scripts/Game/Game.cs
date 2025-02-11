@@ -51,8 +51,8 @@ public class Game : MonoBehaviour
 
             cameras.ForEach(camera => camera.SetActive(cameras.IndexOf(camera) == index));
 
-            if (gamePlayer.playerRole == PlayerRole.Shop) factoryGameObjects.ForEach(gameObject => gameObject.SetActive(false));
-            else shopGameObjects.ForEach(gameObject => gameObject.SetActive(false));
+            if (gamePlayer.playerRole == PlayerRole.Shop) factoryGameObjects.ForEach(gameObject => Destroy(gameObject));
+            else shopGameObjects.ForEach(gameObject => Destroy(gameObject));
         });
     }
 }
