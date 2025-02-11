@@ -15,6 +15,11 @@ public class Game : MonoBehaviour
     void Awake()
     {
         instance = this;
+
+        var gamePlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
+        if (gamePlayer == null) return;
+        if (gamePlayer.playerRole == PlayerRole.Shop) factoryGameObjects.ForEach(gameObject => Destroy(gameObject));
+        else shopGameObjects.ForEach(gameObject => Destroy(gameObject));
     }
 
     void Start() {
@@ -50,9 +55,6 @@ public class Game : MonoBehaviour
             if (!gamePlayer.isLocalPlayer) return;
 
             cameras.ForEach(camera => camera.SetActive(cameras.IndexOf(camera) == index));
-
-            if (gamePlayer.playerRole == PlayerRole.Shop) factoryGameObjects.ForEach(gameObject => Destroy(gameObject));
-            else shopGameObjects.ForEach(gameObject => Destroy(gameObject));
         });
     }
 }
