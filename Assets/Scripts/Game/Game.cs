@@ -1,7 +1,8 @@
+using Mirror;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Game : MonoBehaviour
+public class Game : NetworkBehaviour
 {
 
     public static Game instance;
@@ -35,18 +36,23 @@ public class Game : MonoBehaviour
     /// <summary>
     /// Teleports gameplayer to his start location
     /// </summary>
-    /// <param name="gamePlayer">The gameplayer that should be teleported</param>
-    public void InitializePlayer(GamePlayer gamePlayer)
+    public void InitializePlayers()
     {
-        int index = (int) gamePlayer.playerRole - 1;
+        PlayerManager.instance.gamePlayers.ForEach(gamePlayer =>
+        {
+            if (!gamePlayer.isLocalPlayer) return;
+            int index = (int)gamePlayer.playerRole - 1;
 
-        cameras.ForEach(camera => camera.SetActive(cameras.IndexOf(camera) == index));
+            cameras.ForEach(camera => camera.SetActive(cameras.IndexOf(camera) == index));
 
-        Transform transformPosition = instance.spawnLocations[index].transform;
-        gamePlayer.transform.position = transformPosition.position;
-        gamePlayer.transform.rotation = transformPosition.rotation;
+            Transform transformPosition = instance.spawnLocations[index].transform;
+            gamePlayer.transform.position = transformPosition.position;
+            gamePlayer.transform.rotation = transformPosition.rotation;
 
-        if(gamePlayer.playerRole == PlayerRole.Shop) factoryGameObjects.ForEach(gameObject => gameObject.SetActive(false));
-        else shopGameObjects.ForEach(gameObject => gameObject.SetActive(false));
+            if (gamePlayer.playerRole == PlayerRole.Shop) factoryGameObjects.ForEach(gameObject => gameObject.SetActive(false));
+            else shopGameObjects.ForEach(gameObject => gameObject.SetActive(false));
+
+            gamePlayer.StartGame();
+        });
     }
 }

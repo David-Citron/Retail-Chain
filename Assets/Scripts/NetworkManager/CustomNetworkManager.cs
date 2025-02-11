@@ -89,8 +89,8 @@ public class CustomNetworkManager : NetworkManager
     public override void OnServerSceneChanged(string sceneName)
     {
         base.OnServerSceneChanged(sceneName);
-        if (ContractManager.instance == null) { Debug.Log("ContractManager = null"); return; }
-        ContractManager.instance.InitializeFirstContract();
+        if (ContractManager.instance != null) ContractManager.instance.InitializeFirstContract();
+        if (Game.instance != null) Game.instance.InitializePlayers();
     }
 
     public override void OnServerReady(NetworkConnectionToClient conn)

@@ -2,7 +2,6 @@ using Mirror;
 using Steamworks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GamePlayer : NetworkBehaviour
@@ -30,16 +29,6 @@ public class GamePlayer : NetworkBehaviour
     [SerializeField] private Material[] bodyMaterials;
     [SerializeField] private RawImage lobbyLeaderCrown;
     [SerializeField] private Button kickButton;
-
-    private Scene scene;
-
-    private void Awake()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        SceneManager.sceneLoaded += OnSceneLoaded;
-
-        scene = SceneManager.GetActiveScene();
-    }
 
     void Start()
     {
@@ -168,8 +157,6 @@ public class GamePlayer : NetworkBehaviour
 
             Rigidbody rb = player.GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.None;
-
-            Game.instance.InitializePlayer(this);
         } else
         {
             player.gameObject.SetActive(false);
@@ -234,19 +221,5 @@ public class GamePlayer : NetworkBehaviour
         });
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.buildIndex == 0) return;
-
-        var oppositePlayer = PlayerManager.instance.GetOppositePlayer(this).GetValueOrDefault();
-        if (oppositePlayer == null)
-        {
-            //KICK TO LOBBY
-            return;
-        }
-
-        StartGame();
-    }
-    private void OnDestroy() => SceneManager.sceneLoaded -= OnSceneLoaded;
     public ulong GetSteamId() => steamID;
 }
