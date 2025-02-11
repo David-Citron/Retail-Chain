@@ -15,14 +15,15 @@ public class Game : MonoBehaviour
     void Awake()
     {
         instance = this;
-
-        var gamePlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
-        if (gamePlayer == null) return;
-        if (gamePlayer.playerRole == PlayerRole.Shop) factoryGameObjects.ForEach(gameObject => Destroy(gameObject));
-        else shopGameObjects.ForEach(gameObject => Destroy(gameObject));
+        shopGameObjects.ForEach(gameObject => gameObject.SetActive(false));
+        factoryGameObjects.ForEach(gameObject => gameObject.SetActive(false));
     }
 
     void Start() {
+        GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
+        if (localPlayer == null) return;
+        if(localPlayer.playerRole == PlayerRole.Shop) shopGameObjects.ForEach(gameObject => gameObject.SetActive(true));
+        else factoryGameObjects.ForEach (gameObject => gameObject.SetActive(true));
     }
 
     void Update() {}
@@ -49,12 +50,14 @@ public class Game : MonoBehaviour
             int index = (int) gamePlayer.playerRole - 1;
 
             Transform transformPosition = spawnLocations[index].transform;
-            Debug.Log("POSITION: " + transformPosition.name);
             gamePlayer.transform.SetPositionAndRotation(transformPosition.position, transformPosition.rotation);
 
             if (!gamePlayer.isLocalPlayer) return;
 
             cameras.ForEach(camera => camera.SetActive(cameras.IndexOf(camera) == index));
+
+            if (gamePlayer.playerRole == PlayerRole.Shop) factoryGameObjects.ForEach(gameObject => Destroy(gameObject));
+            else shopGameObjects.ForEach(gameObject => Destroy(gameObject));
         });
     }
 }
