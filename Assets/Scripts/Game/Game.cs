@@ -20,13 +20,14 @@ public class Game : MonoBehaviour
     }
 
     void Start() {
-        GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
-        if (localPlayer == null)
+        if (PlayerManager.instance == null)
         {
             shopGameObjects.ForEach(gameObject => gameObject.SetActive(true));
             factoryGameObjects.ForEach(gameObject => gameObject.SetActive(true));
             return;
         }
+
+        GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
         if(localPlayer.playerRole == PlayerRole.Shop) shopGameObjects.ForEach(gameObject => gameObject.SetActive(true));
         else factoryGameObjects.ForEach (gameObject => gameObject.SetActive(true));
     }
