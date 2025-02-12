@@ -16,7 +16,8 @@ public class IconCamera : MonoBehaviour
         Camera cam = GetComponent<Camera>();
         cam.enabled = true;
         cam.Render();
-        yield return new WaitForSeconds(3);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
         cam.gameObject.SetActive(false);
     }
 }
