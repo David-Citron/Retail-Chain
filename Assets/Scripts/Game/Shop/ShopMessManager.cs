@@ -39,7 +39,7 @@ public class ShopMessManager : MonoBehaviour
         Random random = new Random();
         new ActionTimer(() =>
         {
-            if (gameObject.IsDestroyed()) return;
+            if (gameObject == null) return;
             SpawnMess();
             StartCoroutine(StartMessTimer());
         }, random.Next(10, 50)).Run();

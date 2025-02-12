@@ -12,8 +12,8 @@ public class CircleTimer : MonoBehaviour
     [SerializeField] private TMP_Text text;
     [SerializeField] private GameObject doneMarker;
 
-    public int duration;
-    public int remainingDuration;
+    public float duration;
+    public float remainingDuration;
     public bool pause = false;
 
     private void Start()
@@ -24,7 +24,7 @@ public class CircleTimer : MonoBehaviour
         doneMarker.SetActive(false);
     }
 
-    public static void Start(int seconds)
+    public static void Start(float seconds)
     {
         instance.doneMarker.SetActive(false);
         instance.circleTimer.SetActive(true);
@@ -34,6 +34,8 @@ public class CircleTimer : MonoBehaviour
         instance.remainingDuration = seconds;
         instance.pause = false;
         instance.StartCoroutine(instance.UpdateTimer());
+
+        Debug.Log("Started for " + seconds);
     }
 
     private IEnumerator UpdateTimer()
