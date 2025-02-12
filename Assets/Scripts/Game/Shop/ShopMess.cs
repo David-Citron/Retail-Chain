@@ -13,7 +13,7 @@ public class ShopMess : Interactable
     {
         spawnedAt = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, gameObject => StartCleaning(),
-            new Hint(Hint.GetHintButton(KeyCode.Space) + " TO CLEAN", () => isPlayerNear && !isCleaning)));
+            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO CLEAN", () => isPlayerNear && !isCleaning)));
 
 
         BoxCollider boxCollider = GetComponent<BoxCollider>();

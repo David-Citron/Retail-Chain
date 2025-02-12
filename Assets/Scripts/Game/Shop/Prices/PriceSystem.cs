@@ -2,23 +2,34 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class PriceSystem : MonoBehaviour
+[RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
+public class PriceSystem : Interactable
 {
     private static PriceSystem instance;
 
     private List<GameObject> priceItems;
+
     [SerializeField] private GameObject contentList;
     [SerializeField] private GameObject priceItemPrefab;
     [SerializeField] private Button closeButton;
 
+    private bool isPlayerNear;
+
     void Start()
     {
         instance = this;
-
         priceItems = new List<GameObject>();
 
-        Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.PickUpItem), gameObject => UpdateContent()));
+        GetComponent<Rigidbody>().isKinematic = true;
 
+        BoxCollider collider = gameObject.AddComponent<BoxCollider>();
+        collider.isTrigger = true;
+        collider.size = new Vector3(80f, 50f, collider.size.z);
+
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear, gameObject => UpdateContent(),
+            new Hint(Hint.GetHintButton(ActionType.PickUpItem) + " TO MANAGE PRICES", () => isPlayerNear)));
+
+        closeButton.interactable = true;
         closeButton.onClick.RemoveAllListeners();
         closeButton.onClick.AddListener(() => UpdateContent());
     }
@@ -48,4 +59,8 @@ public class PriceSystem : MonoBehaviour
             priceItems.Add(createdItem);
         }
     }
+
+    public override string GetTag() => "CashierDesk";
+    public override bool IsPlayerNear() => isPlayerNear;
+    public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
 }

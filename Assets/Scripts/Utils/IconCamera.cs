@@ -1,18 +1,22 @@
+using System.Collections;
 using UnityEngine;
 
 public class IconCamera : MonoBehaviour
 {
-    // Start is called before the first frame update
+
     void Awake()
+    {
+        StartCoroutine(RenderCamera());
+    }
+
+    void Update() {}
+
+    public IEnumerator RenderCamera()
     {
         Camera cam = GetComponent<Camera>();
         cam.enabled = true;
         cam.Render();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        yield return new WaitForSeconds(3);
+        cam.gameObject.SetActive(false);
     }
 }

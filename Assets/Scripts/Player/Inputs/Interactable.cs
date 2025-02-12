@@ -7,8 +7,16 @@ public abstract class Interactable : MonoBehaviour
     public static List<Interaction> interactions = new List<Interaction>();
 
     public static void AddInteraction(Interaction interaction) => interactions.Add(interaction);
-    public static bool PressedKey(ActionType actionType) => Input.GetKeyDown(KeybindManager.instance.keybinds[actionType].positiveKey);
-    public static bool HoldingKey(ActionType actionType) => Input.GetKey(KeybindManager.instance.keybinds[actionType].positiveKey);
+    public static bool PressedKey(ActionType actionType)
+    {
+        var keys = KeybindManager.instance.keybinds[actionType];
+        return Input.GetKeyDown(keys.positiveKey) || Input.GetKeyDown(keys.positiveAltKey);
+    }
+    public static bool HoldingKey(ActionType actionType)
+    {
+        var keys = KeybindManager.instance.keybinds[actionType];
+        return Input.GetKey(keys.positiveKey) || Input.GetKey(keys.positiveAltKey);
+    }
 
     public List<Interaction> GetCurrentInteractions(string tag) => interactions.FindAll(interaction => interaction.tag != null && interaction.tag.Equals(GetTag()));
 

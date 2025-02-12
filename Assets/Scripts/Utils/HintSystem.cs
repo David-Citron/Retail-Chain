@@ -133,5 +133,5 @@ public class Hint
     /// <param name="predicate">The condition</param>
     /// <returns>Hint object</returns>
     public static Hint ShowWhile(string value, Func<bool> predicate) => new Hint(value, 0, predicate);
-    public static string GetHintButton(KeyCode button) => $"<sprite={KeybindManager.instance.spriteId[button]}>";
+    public static string GetHintButton(ActionType actionType) => $"<sprite={KeybindManager.instance.spriteId[KeybindManager.instance.keybinds[actionType].positiveKey]}>";
 }
