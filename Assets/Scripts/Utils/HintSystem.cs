@@ -78,6 +78,7 @@ public class HintSystem : MonoBehaviour
 
         textObject.transform.SetParent(transform);
         textObject.transform.localPosition = Vector3.zero;
+        textObject.transform.localScale = Vector3.one;
 
         TMP_Text tmpText = textObject.AddComponent<TextMeshProUGUI>();
 
