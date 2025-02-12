@@ -18,6 +18,7 @@ public class PriceItem : MonoBehaviour
         itemName.text = itemData.itemName;
         priceInput.text = "$" + itemData.sellPrice;
 
+        priceInput.characterValidation = TMP_InputField.CharacterValidation.Integer;
         priceInput.onValueChanged.AddListener(newValue =>
         {
             if (!int.TryParse(newValue, out int newPrice)) return;
