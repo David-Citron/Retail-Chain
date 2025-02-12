@@ -58,7 +58,7 @@ public class PlayerInputManager : MonoBehaviour
         if (interactable == null)
         {
             if (!entry) return;
-            if (isItem(collidedObject)) CustomInteractionHints(PlayerPickUp.GetInteractions(), collidedObject);
+            if (IsItem(collidedObject)) CustomInteractionHints(PlayerPickUp.GetInteractions(), collidedObject);
             return;
         }
 
@@ -91,5 +91,5 @@ public class PlayerInputManager : MonoBehaviour
         if(!interactable.IsPlayerNear()) interactable.GetCurrentInteractions(interactable.GetTag()).ForEach(interaction => interaction.hints.ForEach(hint => hint.isActive = false));
     }
 
-    private bool isItem(GameObject gameObject) => gameObject.tag != null && gameObject.tag.StartsWith("Item");
+    private bool IsItem(GameObject gameObject) => gameObject.tag != null && gameObject.tag.StartsWith("Item");
 }

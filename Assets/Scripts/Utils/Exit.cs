@@ -13,13 +13,11 @@ public class Exit : MonoBehaviour
     void Start()
     {
         Initialize();
+        Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.OpenMenu), pressedTime =>
+        exitUI.SetActive(!exitUI.activeSelf)));
     }
 
-    void Update()
-    {
-        if (!Input.GetKeyDown(KeyCode.Escape)) return;
-        exitUI.SetActive(!exitUI.activeSelf);
-    }
+    void Update() {}
 
 
     public void Initialize()

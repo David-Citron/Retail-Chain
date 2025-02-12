@@ -9,14 +9,12 @@ public class GameLayoutManager : MonoBehaviour
 
     public static GameLayoutManager instance;
 
-
     [SerializeField] private GameObject background;
     [SerializeField] private List<GameObject> layouts;
 
     [SerializeField] private GameObject playerInfoField;
     [SerializeField] private TMP_Text username;
     [SerializeField] private RawImage profilePicture;
-
 
     [SerializeField] private TMP_Text balance;
 
@@ -65,4 +63,6 @@ public enum LayoutType
 {
     ItemRack,
     DeliveryOffers,
+    Contract,
+    PriceSystem
 }

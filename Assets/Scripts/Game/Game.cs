@@ -17,7 +17,6 @@ public class Game : MonoBehaviour
         instance = this;
         shopGameObjects.ForEach(gameObject => gameObject.SetActive(false));
         factoryGameObjects.ForEach(gameObject => gameObject.SetActive(false));
-        if (PlayerManager.instance.gamePlayers.Count > 0) FindFirstObjectByType<PlayerMovement>().gameObject.SetActive(false);
     }
 
     void Start() {
