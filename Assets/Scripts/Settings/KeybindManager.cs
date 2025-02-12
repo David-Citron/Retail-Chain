@@ -16,7 +16,7 @@ public class KeybindManager : MonoBehaviour
     void Awake()
     {
         if (instance == null) instance = this;
-        else Destroy(this);
+        else Destroy(gameObject);
         DontDestroyOnLoad(gameObject);
         Initialize();
     }
