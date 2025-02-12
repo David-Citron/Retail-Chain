@@ -60,6 +60,13 @@ public class DeliveryOfferItem : MonoBehaviour
         amountInput.text = amountToBuy + "/" + deliveryOffer.itemAmount;
     }
 
+    private void SetAmount(int amount)
+    {
+        amountToBuy = 0;
+        amountInput.placeholder.name = amountToBuy + "/" + deliveryOffer.itemAmount;
+        amountInput.text = amountToBuy + "/" + deliveryOffer.itemAmount;
+    }
+
     private void UpdateAmount() => UpdateAmount(0);
 
     private void BuyItems()
@@ -67,7 +74,7 @@ public class DeliveryOfferItem : MonoBehaviour
         deliveryOffer.itemAmount = deliveryOffer.itemAmount - amountToBuy;
         StorageRack.instance.InsertItem(deliveryOffer.item.itemType, amountToBuy);
 
-        UpdateAmount();
+        SetAmount(0); //To set 0 to buy
 
         if (deliveryOffer.itemAmount > 0) return;
         GoodsDelivery.instance.UpdateOffers();

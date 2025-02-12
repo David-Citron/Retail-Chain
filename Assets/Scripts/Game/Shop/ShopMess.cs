@@ -30,14 +30,21 @@ public class ShopMess : Interactable
         float cleaningTime = (DateTimeOffset.Now.ToUnixTimeMilliseconds() - spawnedAt) / 2000f;
         cleaningTime = Mathf.Clamp(cleaningTime, 1, 6);
 
+        CircleTimer.Start((int) cleaningTime);
+        PlayerMovement.freeze = true;
+
         new ActionTimer(() => Input.GetKey(KeyCode.Space),
             () =>
             {
+                CircleTimer.Stop();
+                PlayerMovement.freeze = false;
                 gameObject.SetActive(false);
                 Destroy(gameObject);
                 PlayerInputManager.instance.collidersInRange.Remove(gameObject);
             },
             () => {
+                PlayerMovement.freeze = false;
+                CircleTimer.Stop();
                 isCleaning = false;
                 UpdateHints();
             }, cleaningTime, 1).Run();

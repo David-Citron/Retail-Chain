@@ -90,6 +90,12 @@ public abstract class Machine : Interactable, IMachine
 
     protected virtual void PickUp()
     {
+        if (PlayerPickUp.holdingItem != null)
+        {
+            Hint.Create("DROP CURRENT ITEM", 2);
+            return;
+        }
+
         InputInfo nearestInput = GetNearestSlot();
         if(inputPlaces.Count != 0 && resultPlace != null && (nearestInput == null || !nearestInput.IsReadyToPickUp())) return;
 
