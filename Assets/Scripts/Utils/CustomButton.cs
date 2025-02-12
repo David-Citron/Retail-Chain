@@ -21,6 +21,8 @@ public class CustomButton : MonoBehaviour,
     private TMP_Text buttonText;
     private Shadow shadow;
 
+    private bool disabled;
+
     private bool isPointerInside { get; set; }
     private bool isPointerDown { get; set; }
 
@@ -75,6 +77,7 @@ public class CustomButton : MonoBehaviour,
         switch (state)
         {
             case SelectionState.Highlighted:
+                if (disabled) return;
                 ChangeTextColor(ButtonColorType.Shadow);
                 break;
             case SelectionState.Normal:
@@ -153,7 +156,9 @@ public class CustomButton : MonoBehaviour,
 
         ChangeTextColor(ButtonColorType.Normal);
         if(shadow != null) shadow.effectColor = GetColor(ButtonColorType.Shadow);
-    } 
+    }
+
+    public void ToggleDisabled(bool value) => disabled = value;
 }
 
 public enum ButtonColor

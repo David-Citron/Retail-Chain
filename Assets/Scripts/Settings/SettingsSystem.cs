@@ -195,7 +195,10 @@ public class Settings : MonoBehaviour
         for (int i = 0; i < panels.Count; i++)
         {
             panels[i].SetActive(i == index);
-            tabs[i].GetComponent<CustomButton>().ChangeColorGroup(i == index ? ButtonColor.Gray : ButtonColor.Pink);
+
+            var customButton = tabs[i].GetComponent<CustomButton>();
+            customButton.ChangeColorGroup(i == index ? ButtonColor.Gray : ButtonColor.Pink);
+            customButton.ToggleDisabled(i == index);
         }
     }
 
