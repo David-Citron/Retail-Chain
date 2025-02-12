@@ -15,7 +15,7 @@ public class PriceItem : MonoBehaviour
     public void Initialize(ItemData itemData)
     {
         itemIcon.texture = itemData.icon;
-        itemName.text = itemData.name;
+        itemName.text = itemData.itemName;
         priceInput.text = "$" + itemData.sellPrice;
 
         priceInput.onValueChanged.AddListener(newValue =>

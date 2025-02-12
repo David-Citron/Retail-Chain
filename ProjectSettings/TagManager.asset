@@ -21,6 +21,7 @@ TagManager:
   - GoodsDelivery
   - ShopMess
   - DisplaySlot
+  - CashierRegister
   layers:
   - Default
   - TransparentFX
