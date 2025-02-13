@@ -26,7 +26,8 @@ public class Game : MonoBehaviour
             factoryGameObjects.ForEach(gameObject => gameObject.SetActive(true));
             return;
         }
-
+        GameObject testPlayer = FindFirstObjectByType<PlayerMovement>().gameObject;
+        if (testPlayer != null) testPlayer.SetActive(false);
         GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
         if(localPlayer.playerRole == PlayerRole.Shop) shopGameObjects.ForEach(gameObject => gameObject.SetActive(true));
         else factoryGameObjects.ForEach (gameObject => gameObject.SetActive(true));
