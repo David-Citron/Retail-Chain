@@ -18,8 +18,11 @@ public class LobbyDataEntry : MonoBehaviour
     public void UpdateList()
     {
         if (hostId == null) return;
+        SteamFriends.RequestUserInformation(hostId, false);
+
         profilePicture.texture = PlayerSteamUtils.GetSteamProfilePicture(hostId);
         username.text = PlayerSteamUtils.GetSteamUsername(hostId);
+
 
         joinButton.enabled = true;
         joinButton.onClick.RemoveAllListeners();

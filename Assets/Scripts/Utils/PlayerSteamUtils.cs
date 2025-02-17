@@ -34,7 +34,8 @@ public class PlayerSteamUtils : MonoBehaviour {
 
     private void OnPersonaStateChanged(PersonaStateChange_t callback)
     {
-        Debug.Log("Called for " + callback.m_ulSteamID);
+        if (!LayoutManager.Instance().GetValueOrDefault().lobbiesMenu.activeSelf) return;
+        SteamLobby.instance.GetLobbiesList();
     }
 
     public static CSteamID StringToCSteamID(string steamIdString)
@@ -50,12 +51,6 @@ public class PlayerSteamUtils : MonoBehaviour {
     }
 
     public static string GetSteamUsername(CSteamID steamId) => SteamFriends.GetFriendPersonaName(steamId);
-    public static void GetPersonaName(CSteamID steamId)
-    {
-        Debug.Log("Get Persona Name: " + SteamFriends.RequestUserInformation(steamId, true));
-
-    }
-
 
     public static Texture2D GetSteamProfilePicture(CSteamID steamId)
     {
