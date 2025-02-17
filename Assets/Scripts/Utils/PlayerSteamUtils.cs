@@ -1,4 +1,3 @@
-using Edgegap;
 using Steamworks;
 using UnityEngine;
 
@@ -7,12 +6,14 @@ public class PlayerSteamUtils : MonoBehaviour {
 
     protected static CSteamID localPlayerSteamId;
     protected Callback<AvatarImageLoaded_t> avatarImageLoaded;
+    protected Callback<PersonaStateChange_t> personaStateChanged;
 
     private void Start()
     {
         if (!SteamManager.Initialized) return;
         localPlayerSteamId = SteamUser.GetSteamID();
         avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
+        personaStateChanged = Callback<PersonaStateChange_t>.Create(OnPersonaStateChanged);
     }
 
     private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
@@ -22,9 +23,18 @@ public class PlayerSteamUtils : MonoBehaviour {
             if (layoutManager.mainMenu.activeSelf) layoutManager.UpdateMainMenuProfilePicture(callback.m_steamID);
         });
 
+        PlayerManager.instance.gamePlayers.ForEach(gamePlayer => {
+            Debug.Log("Updating " + callback.m_steamID.m_SteamID + " -- " + callback.m_iImage);
+            if (gamePlayer.GetSteamId() != callback.m_steamID.m_SteamID) return;
+            gamePlayer.UpdateUserInfo(callback.m_steamID);
+        });
 
-        PlayerManager.instance.gamePlayers.ForEach(gamePlayer => gamePlayer.UpdateUserInfo(callback.m_steamID));
         LobbiesListManager.instance.listOfLobbies.ForEach(lobbyEntry => lobbyEntry.GetComponent<LobbyDataEntry>().UpdateList());
+    }
+
+    private void OnPersonaStateChanged(PersonaStateChange_t callback)
+    {
+        Debug.Log("Called for " + callback.m_ulSteamID);
     }
 
     public static CSteamID StringToCSteamID(string steamIdString)
@@ -32,19 +42,20 @@ public class PlayerSteamUtils : MonoBehaviour {
         if (ulong.TryParse(steamIdString, out ulong steamId))
         {
             return new CSteamID(steamId);
-        }
-
-        else
+        } else
         {
             Debug.LogError("Invalid Steam ID format.");
             return CSteamID.Nil;
         }
     }
 
-    public static string GetSteamUsername(CSteamID steamId)
+    public static string GetSteamUsername(CSteamID steamId) => SteamFriends.GetFriendPersonaName(steamId);
+    public static void GetPersonaName(CSteamID steamId)
     {
-        return SteamFriends.GetFriendPersonaName(steamId);
+        Debug.Log("Get Persona Name: " + SteamFriends.RequestUserInformation(steamId, true));
+
     }
+
 
     public static Texture2D GetSteamProfilePicture(CSteamID steamId)
     {
