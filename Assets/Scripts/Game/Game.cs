@@ -22,12 +22,17 @@ public class Game : MonoBehaviour
     void Start() {
         if (PlayerManager.instance == null)
         {
+            Debug.Log("HEHREHRHEHREHERH");
+            if (FindFirstObjectByType<PlayerMovement>() != null)
+            {
+                GameObject testPlayer = FindFirstObjectByType<PlayerMovement>().gameObject;
+                if (testPlayer != null) testPlayer.SetActive(false);
+            }
+
             shopGameObjects.ForEach(gameObject => gameObject.SetActive(true));
             factoryGameObjects.ForEach(gameObject => gameObject.SetActive(true));
             return;
         }
-        //GameObject testPlayer = FindFirstObjectByType<PlayerMovement>().gameObject;
-        //if (testPlayer != null) testPlayer.SetActive(false);
         GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
         if(localPlayer.playerRole == PlayerRole.Shop) shopGameObjects.ForEach(gameObject => gameObject.SetActive(true));
         else factoryGameObjects.ForEach (gameObject => gameObject.SetActive(true));
