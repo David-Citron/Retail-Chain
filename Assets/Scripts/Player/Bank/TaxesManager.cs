@@ -13,6 +13,7 @@ public class TaxesManager : NetworkBehaviour
     {
         instance = this;
         syncDirection = SyncDirection.ServerToClient;
+        inflation = 1;
     }
 
     void Update() {}

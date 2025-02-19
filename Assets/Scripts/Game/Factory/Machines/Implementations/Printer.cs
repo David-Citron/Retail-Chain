@@ -20,8 +20,7 @@ public class Printer : Machine
 
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, collider => StartInteraction(), new Hint[] {
             new Hint("PRINTING..", () => machineState == MachineState.Working),
-            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO PRINT", () => machineState == MachineState.Ready),
-            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO INSERT", () => IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling),
+            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO PRINT", () => IsValid(PlayerPickUp.holdingItem) && machineState != MachineState.Done),
             new Hint("INVALID ITEM", () => !IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling)
         }));
     }
@@ -33,7 +32,7 @@ public class Printer : Machine
         base.ChangeMachineState(newState);
         doneIcon.gameObject.SetActive(newState == MachineState.Done);
         timeDisplay.gameObject.SetActive(newState != MachineState.Done);
-        timeDisplay.text = newState == MachineState.Idling ? "WAITING" : "READY";
+        timeDisplay.text = newState == MachineState.Idling ? "WAITING" : ConvertPassedTime(0);
     }
 
     protected override void StartTimer()
@@ -62,6 +61,15 @@ public class Printer : Machine
             time -= 60;
         }
         return (minutes > 9 ? minutes : "0" + minutes) + ":" + (time > 9 ? time : "0" + time);
+    }
+
+    protected override void StartInteraction()
+    {
+        if (machineState != MachineState.Ready) PutItem(PlayerPickUp.holdingItem);
+        if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", 1)) return;
+
+        StartTimer();
+        ChangeMachineState(MachineState.Working);
     }
 
     protected override bool IsValid(GameObject item) => ItemManager.GetItemType(item).GetValueOrDefault() == ItemType.EmptyBook;

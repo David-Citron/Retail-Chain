@@ -22,7 +22,6 @@ public class Game : MonoBehaviour
     void Start() {
         if (PlayerManager.instance == null)
         {
-            Debug.Log("HEHREHRHEHREHERH");
             if (FindFirstObjectByType<PlayerMovement>() != null)
             {
                 GameObject testPlayer = FindFirstObjectByType<PlayerMovement>().gameObject;

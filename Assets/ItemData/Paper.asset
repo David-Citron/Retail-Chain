@@ -18,6 +18,6 @@ MonoBehaviour:
   itemPrefab: {fileID: 8968270579880434212, guid: 40d0f8028d1c2d24895fb029d2218cef,
     type: 3}
   maxOfferAmount: 2
-  buyPrice: 0
-  sellPrice: 0
+  buyPrice: 40
+  sellPrice: 35
   sellable: 1

@@ -22,7 +22,8 @@ public class ItemManager : MonoBehaviour
     }
 
     public static List<ItemData> GetAllItemData() => instance.items;
-    public static List<ItemData> GetAllSellableItemData() => instance.items.FindAll(item => item.sellable);
+    public static List<ItemData> GetAllSellableItemData() => instance.items.FindAll(item => item.IsSellable());
+    public static List<ItemData> GetBuyableItemData() => instance.items.FindAll(item => item.IsBuyable());
 
     public static Item GetItemInfo(GameObject gameObject) => gameObject == null ? null : gameObject.GetComponent<Item>();
 

@@ -117,9 +117,11 @@ public class GoodsDelivery : Interactable
         deliveryOffers.Clear();
 
         System.Random random = new System.Random();
-        for(int i = 0; i < random.Next(2, 6); i++)
+
+        for (int i = 0; i < random.Next(2, 4); i++)
         {
-            deliveryOffers.Add(new DeliveryOffer(GetRandomType(random), random.Next(50, 150), random.Next(1, 4)));
+            ItemData data = GetRandomType(random);
+            deliveryOffers.Add(new DeliveryOffer(data, random.Next(data.buyPrice, TaxesManager.GetInflactionPrice(data.buyPrice)), random.Next(1, data.maxOfferAmount)));
         }
 
         elapsedTime = 0f;
@@ -146,9 +148,8 @@ public class GoodsDelivery : Interactable
     private ItemData GetRandomType(System.Random random)
     {
         List<ItemData> values = ItemManager.GetAllItemData();
-        int index = values.Count - 1;
-        var value = values[random.Next(index)];
-        while(deliveryOffers.Any(item => item.item == value)) value = values[random.Next(index)];
+        var value = values[random.Next(values.Count)];
+        while (deliveryOffers.Any(item => item.item == value)) value = values[random.Next(values.Count)];
         return value;
     }
 

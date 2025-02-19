@@ -12,5 +12,7 @@ public class ItemData : ScriptableObject
     public int buyPrice;
     public int sellPrice;
 
-    public bool sellable;
+
+    public bool IsBuyable() => buyPrice != 0;
+    public bool IsSellable() => sellPrice != 0;
 }

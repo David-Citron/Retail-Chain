@@ -43,7 +43,7 @@ public class Customer : MonoBehaviour
         List<ItemData> itemData = ItemManager.GetAllItemData();
         List<ItemType> validItemTypes = new List<ItemType>();
         itemData.ForEach(data => {
-            if (data.sellable) validItemTypes.Add(data.itemType);
+            if (data.IsSellable()) validItemTypes.Add(data.itemType);
         });
         int generatedIndex = Random.Range(0, validItemTypes.Count);
         desiredItem = validItemTypes[generatedIndex];
