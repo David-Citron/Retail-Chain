@@ -21,9 +21,13 @@ public class ContractManager : NetworkBehaviour
     };
 
     [SerializeField] private GameObject negotiationPanel;
+    [SerializeField] private GameObject waitingTab;
+    [SerializeField] private GameObject negotiationTab;
 
     private List<ContractItem> lastOfferContractItems;
     private ActionTimer negotiationTimer = null;
+
+    private OfferState negotiationState;
 
     // Start is called before the first frame update
     void Awake()
@@ -34,6 +38,7 @@ public class ContractManager : NetworkBehaviour
 
         instance = this;
         syncDirection = SyncDirection.ServerToClient;
+        negotiationState = OfferState.None;
         contracts = new List<Contract>();
         PlayerManager.instance.gamePlayers.ForEach(player =>
         {
@@ -127,6 +132,51 @@ public class ContractManager : NetworkBehaviour
         negotiationPanel.SetActive(false);
     }
 
+    private void NextNegotiationTab()
+    {
+        ChangeNegotiationTab(negotiationState == OfferState.MakeOffer ? OfferState.ShowOffer : OfferState.MakeOffer);
+    }
+
+    // Changes the tabs depending on the contract state
+    private void ChangeNegotiationTab(OfferState state)
+    {
+        GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
+        if (localPlayer == null)
+        {
+            Debug.LogError("Local player is not set");
+            return;
+        }
+        switch (state)
+        {
+            case OfferState.MakeOffer:
+                if (localPlayer.playerRole == PlayerRole.Factory)
+                {
+                    negotiationTab.SetActive(false);
+                    waitingTab.SetActive(true);
+                }
+                else
+                {
+                    negotiationTab.SetActive(true);
+                    waitingTab.SetActive(false);
+                }
+            return;
+            case OfferState.ShowOffer:
+                if (localPlayer.playerRole == PlayerRole.Shop)
+                {
+                    negotiationTab.SetActive(false);
+                    waitingTab.SetActive(true);
+                }else
+                {
+                    negotiationTab.SetActive(true);
+                    waitingTab.SetActive(false);
+                }
+            return;
+            default:
+                Debug.LogError("Offer state not set!");
+            return;
+        }
+    }
+
     [Command(requiresAuthority = false)]
     public void CmdSendNegotiationOffer(List<ContractItem> contractItems)
     {
@@ -154,6 +204,13 @@ public class ContractManager : NetworkBehaviour
         negotiationTimer.Stop();
         RpcHideNegotiationPanel();
     }
+}
+
+enum OfferState
+{
+    None,
+    MakeOffer,
+    ShowOffer
 }
 
 public static class ContractItemReaderWriter
