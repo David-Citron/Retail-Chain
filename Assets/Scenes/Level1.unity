@@ -2977,7 +2977,7 @@ GameObject:
   - component: {fileID: 577862815}
   - component: {fileID: 577862812}
   m_Layer: 0
-  m_Name: Contract
+  m_Name: ContractManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3049,7 +3049,8 @@ MonoBehaviour:
     quantityRemaining: 2
     fulfilled: 0
     price: 100
-  negotiationPanel: {fileID: 0}
+  waitingTab: {fileID: 0}
+  negotiationTab: {fileID: 0}
 --- !u!1 &580464782 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1625494359805926369, guid: cf5aa3ae8ec09df4a91cfafa5580b99a,

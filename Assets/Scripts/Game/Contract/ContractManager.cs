@@ -20,7 +20,6 @@ public class ContractManager : NetworkBehaviour
         new ContractItem(ItemType.Paper, 2, 100) 
     };
 
-    [SerializeField] private GameObject negotiationPanel;
     [SerializeField] private GameObject waitingTab;
     [SerializeField] private GameObject negotiationTab;
 
@@ -48,7 +47,6 @@ public class ContractManager : NetworkBehaviour
             localContract = contract;
             if (player.isServer) serverContract = contract;
         });
-        if (negotiationPanel != null) negotiationPanel.SetActive(false);
     }
 
     [Server]
@@ -113,23 +111,15 @@ public class ContractManager : NetworkBehaviour
     [ClientRpc]
     private void RpcShowNegotiationPanel()
     {
-        if (negotiationPanel == null)
-        {
-            Debug.LogWarning("Negotiation panel is null");
-            return;
-        }
-        negotiationPanel.SetActive(true);
+        if (!GameLayoutManager.instance.IsEnabled(LayoutType.Contract))
+            GameLayoutManager.instance.ToggleUI(LayoutType.Contract);
     }
 
     [ClientRpc]
     private void RpcHideNegotiationPanel()
     {
-        if (negotiationPanel == null)
-        {
-            Debug.LogWarning("Negotiation panel is null");
-            return;
-        }
-        negotiationPanel.SetActive(false);
+        if (GameLayoutManager.instance.IsEnabled(LayoutType.Contract))
+            GameLayoutManager.instance.ToggleUI(LayoutType.Contract);
     }
 
     private void NextNegotiationTab()
