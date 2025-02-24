@@ -70,6 +70,7 @@ public class Contract : NetworkBehaviour
                 return;
         }
         Debug.Log("Local contract checked successfully! Sending command to check contracts");
+        Debug.Log("Local contract status: " + status);
         ContractManager.instance.CmdCheckContracts();
     }
 
