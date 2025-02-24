@@ -2254,16 +2254,6 @@ MonoBehaviour:
     quantityRemaining: 1
     fulfilled: 0
     price: 50
-  - itemType: 2
-    quantity: 2
-    quantityRemaining: 2
-    fulfilled: 0
-    price: 60
-  - itemType: 4
-    quantity: 2
-    quantityRemaining: 2
-    fulfilled: 0
-    price: 100
   waitingTab: {fileID: 819799588}
   negotiationTab: {fileID: 1329673340}
   itemDataPrefab: {fileID: 4832409766206086323, guid: 81d68a8bf4377094884d492d40b4d3a7,
@@ -6570,7 +6560,7 @@ PrefabInstance:
     - target: {fileID: 9096548437731138778, guid: abb816de441697f44b9470be00a24872,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
