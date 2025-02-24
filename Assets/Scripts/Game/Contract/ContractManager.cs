@@ -24,7 +24,7 @@ public class ContractManager : NetworkBehaviour
     private List<ContractItem> lastOfferContractItems;
     private ActionTimer negotiationTimer = null;
 
-    private OfferState negotiationState;
+    [SerializeField] private OfferState negotiationState;
 
     private List<ContractItemData> currentItemData;
     [SerializeField] private GameObject itemDataPrefab;
@@ -117,6 +117,7 @@ public class ContractManager : NetworkBehaviour
     {
         if (!GameLayoutManager.instance.IsEnabled(LayoutType.Contract))
             GameLayoutManager.instance.ToggleUI(LayoutType.Contract);
+        ChangeNegotiationTab(negotiationState);
     }
 
     [ClientRpc]
