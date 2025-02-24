@@ -144,8 +144,9 @@ public class GamePlayer : NetworkBehaviour
     public void StartGame()
     {
         GetComponentInChildren<Canvas>().gameObject.SetActive(false);
+        GetComponent<Contract>().enabled = true;
 
-        if(isLocalPlayer)
+        if (isLocalPlayer)
         {
             GetComponent<PlayerBank>().enabled = true;
             Destroy(GetComponent<LobbyAnimator>());
@@ -153,8 +154,6 @@ public class GamePlayer : NetworkBehaviour
             player.GetComponent<PlayerInputManager>().enabled = true;
             player.GetComponent<PlayerMovement>().enabled = true;
             player.GetComponent<PlayerPickUp>().enabled = true;
-
-            GetComponent<Contract>().enabled = true;
 
             Rigidbody rb = player.GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.None;

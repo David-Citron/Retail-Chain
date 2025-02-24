@@ -113,7 +113,7 @@ public class StorageRack : Interactable
         {
             Contract localContract = ContractManager.instance.localContract;
             if (localContract == null) return;
-            if (!localContract.SubmitItem(itemType)) return;
+            if (!localContract.SubmitItem(data.contentType)) return;
             insertItem = false;
         }
 

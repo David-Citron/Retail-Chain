@@ -84,7 +84,7 @@ public class Contract : NetworkBehaviour
 
     public bool SubmitItem(ItemType itemType)
     {
-        foreach (var item in currentContractItems)
+        foreach (ContractItem item in currentContractItems)
         {
             if (item.itemType != itemType) continue;
             if (item.fulfilled) continue;
