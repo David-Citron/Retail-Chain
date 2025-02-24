@@ -12,6 +12,7 @@ public class ContractItemData : MonoBehaviour
     [SerializeField] private TMP_InputField priceInput;
     [SerializeField] private RawImage iconImage;
     [SerializeField] private TMP_Text itemText;
+    [SerializeField] private List<GameObject> extraButtons;
 
     // Start is called before the first frame update
     void Start()
@@ -29,20 +30,26 @@ public class ContractItemData : MonoBehaviour
     public void LoadData(ContractItem contractItem)
     {
         amountInput.text = "" + contractItem.quantity;
+        amountInput.interactable = false;
         priceInput.text = "" + contractItem.price;
+        priceInput.interactable = false;
         itemText.text = ItemManager.GetNameOf(contractItem.itemType);
         iconImage.texture = ItemManager.GetIcon(contractItem.itemType);
         type = contractItem.itemType;
+        extraButtons.ForEach(button => button.SetActive(false));
     }
 
     // This method is for initializing list without values - only icon and name
     public void LoadData(ItemType itemType)
     {
         amountInput.text = "0";
+        amountInput.interactable = true;
         priceInput.text = "0";
+        priceInput.interactable = true;
         itemText.text = ItemManager.GetNameOf(itemType);
         iconImage.texture = ItemManager.GetIcon(itemType);
         type = itemType;
+        extraButtons.ForEach(button => button.SetActive(true));
     }
 
     // Retrieve data from UI
@@ -50,7 +57,7 @@ public class ContractItemData : MonoBehaviour
     {
         string amount = amountInput.text;
         string price = priceInput.text;
-        ContractItem contractItem = new ContractItem(type, Int32.Parse(amount), Int32.Parse(price));
+        ContractItem contractItem = new ContractItem(type, int.Parse(amount), int.Parse(price));
         return contractItem;
     }
 }

@@ -28,6 +28,9 @@ public class ContractManager : NetworkBehaviour
 
     private OfferState negotiationState;
 
+    private List<ContractItemData> currentItemData;
+    [SerializeField] private GameObject itemDataPrefab;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -39,6 +42,7 @@ public class ContractManager : NetworkBehaviour
         syncDirection = SyncDirection.ServerToClient;
         negotiationState = OfferState.None;
         contracts = new List<Contract>();
+        currentItemData = new List<ContractItemData>();
         PlayerManager.instance.gamePlayers.ForEach(player =>
         {
             Contract contract = player.GetComponent<Contract>();
@@ -65,6 +69,7 @@ public class ContractManager : NetworkBehaviour
     [ClientRpc]
     private void RpcStartNewContract(List<ContractItem> contractItems, int time)
     {
+        negotiationState = OfferState.None;
         if (localContract == null)
         {
             Debug.LogError("Local contract is null"); return;
@@ -100,6 +105,7 @@ public class ContractManager : NetworkBehaviour
     [Server]
     private void StartNegotiation()
     {
+        negotiationState = OfferState.MakeOffer;
         RpcShowNegotiationPanel();
         negotiationTimer = new ActionTimer(() =>
         {
@@ -136,6 +142,11 @@ public class ContractManager : NetworkBehaviour
             Debug.LogError("Local player is not set");
             return;
         }
+        else if (localPlayer.playerRole == PlayerRole.Unassigned)
+        {
+            Debug.LogError("Local player's role is set to Unassigned!");
+            return;
+        }
         switch (state)
         {
             case OfferState.MakeOffer:
@@ -144,8 +155,9 @@ public class ContractManager : NetworkBehaviour
                     negotiationTab.SetActive(false);
                     waitingTab.SetActive(true);
                 }
-                else
+                else if (localPlayer.playerRole == PlayerRole.Shop)
                 {
+                    InitializeEmptyNegotiation();
                     negotiationTab.SetActive(true);
                     waitingTab.SetActive(false);
                 }
@@ -155,9 +167,11 @@ public class ContractManager : NetworkBehaviour
                 {
                     negotiationTab.SetActive(false);
                     waitingTab.SetActive(true);
-                }else
+                }
+                else if (localPlayer.playerRole == PlayerRole.Factory)
                 {
                     negotiationTab.SetActive(true);
+                    InitializeFilledNegotiation();
                     waitingTab.SetActive(false);
                 }
             return;
@@ -167,18 +181,42 @@ public class ContractManager : NetworkBehaviour
         }
     }
 
+    private void InitializeEmptyNegotiation()
+    {
+        List<ItemData> itemData = ItemManager.GetAllSellableItemData();
+        currentItemData.ForEach(i => Destroy(i.gameObject));
+        currentItemData.Clear();
+        itemData.ForEach(i => {
+            GameObject prefabInstance = Instantiate(itemDataPrefab);
+            ContractItemData script = prefabInstance.GetComponent<ContractItemData>();
+            currentItemData.Add(script);
+            script.LoadData(i.itemType);
+        });
+    }
+
+    private void InitializeFilledNegotiation()
+    {
+        currentItemData.ForEach(i => Destroy(i.gameObject));
+        currentItemData.Clear();
+        lastOfferContractItems.ForEach(i => {
+            GameObject prefabInstance = Instantiate(itemDataPrefab);
+            ContractItemData script = prefabInstance.GetComponent<ContractItemData>();
+            currentItemData.Add(script);
+            script.LoadData(i);
+        });
+    }
+
     [Command(requiresAuthority = false)]
     public void CmdSendNegotiationOffer(List<ContractItem> contractItems)
     {
-        // TODO
         RpcShowNegotiationOffer(contractItems);
     }
 
     [ClientRpc]
     public void RpcShowNegotiationOffer(List<ContractItem> contractItems)
     {
-        // TODO
         lastOfferContractItems = contractItems;
+        NextNegotiationTab();
     }
 
     [Command(requiresAuthority = false)]
@@ -193,6 +231,15 @@ public class ContractManager : NetworkBehaviour
     {
         negotiationTimer.Stop();
         RpcHideNegotiationPanel();
+    }
+
+    public void SendCurrentOffer()
+    {
+        List<ContractItem> contractItems = new List<ContractItem>();
+        currentItemData.ForEach(itemData => {
+            contractItems.Add(itemData.ReadData());
+        });
+        CmdSendNegotiationOffer(contractItems);
     }
 }
 
