@@ -34,6 +34,7 @@ public class PlayerSteamUtils : MonoBehaviour {
 
     private void OnPersonaStateChanged(PersonaStateChange_t callback)
     {
+        if (LayoutManager.Instance().GetValueOrDefault() == null) return;
         if (!LayoutManager.Instance().GetValueOrDefault().lobbiesMenu.activeSelf) return;
         SteamLobby.instance.GetLobbiesList();
     }
