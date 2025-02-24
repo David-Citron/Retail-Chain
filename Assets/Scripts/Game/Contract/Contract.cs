@@ -55,7 +55,13 @@ public class Contract : NetworkBehaviour
         {
             case PlayerRole.Factory:
                 bool allItemsFulfilled = true;
-                currentContractItems.ForEach(item => { if (!item.fulfilled) allItemsFulfilled = false; });
+                currentContractItems.ForEach(item => {
+                    if (!item.fulfilled)
+                    {
+                        allItemsFulfilled = false;
+                        Debug.Log("Item not fulfilled! Item type: " + item.itemType + " - Remaining: " + item.quantityRemaining);
+                    }
+                });
                 if (allItemsFulfilled) status = ContractStatus.Success;
                 else status = ContractStatus.Failed;
                 break;
