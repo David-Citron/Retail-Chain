@@ -10,7 +10,7 @@ public class ContractManager : NetworkBehaviour
     public Contract localContract = null;
     [SerializeField] private Contract serverContract = null;
 
-    private const int CONTRACT_TIME = 60;
+    private const int CONTRACT_TIME = 30;
     private const int NEGOTIATION_TIME = 120;
 
     [SerializeField] private List<ContractItem> initialContractItems = new List<ContractItem>() 
@@ -103,7 +103,6 @@ public class ContractManager : NetworkBehaviour
     [Server]
     private void StartNegotiation()
     {
-        negotiationState = OfferState.MakeOffer;
         RpcShowNegotiationPanel();
         negotiationTimer = new ActionTimer(() =>
         {
@@ -117,6 +116,7 @@ public class ContractManager : NetworkBehaviour
     {
         if (!GameLayoutManager.instance.IsEnabled(LayoutType.Contract))
             GameLayoutManager.instance.ToggleUI(LayoutType.Contract);
+        negotiationState = OfferState.MakeOffer;
         ChangeNegotiationTab(negotiationState);
     }
 
