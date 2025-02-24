@@ -20,6 +20,8 @@ public class ContractManager : NetworkBehaviour
 
     [SerializeField] private GameObject waitingTab;
     [SerializeField] private GameObject negotiationTab;
+    [SerializeField] private List<GameObject> factoryButtons;
+    [SerializeField] private List<GameObject> shopButtons;
 
     private List<ContractItem> lastOfferContractItems;
     private ActionTimer negotiationTimer = null;
@@ -128,6 +130,18 @@ public class ContractManager : NetworkBehaviour
             GameLayoutManager.instance.ToggleUI(LayoutType.Contract);
     }
 
+    [Command(requiresAuthority = false)]
+    private void CmdRequestNextTab()
+    {
+        RpcNextTab();
+    }
+
+    [ClientRpc]
+    private void RpcNextTab()
+    {
+        NextNegotiationTab();
+    }
+
     private void NextNegotiationTab()
     {
         ChangeNegotiationTab(negotiationState == OfferState.MakeOffer ? OfferState.ShowOffer : OfferState.MakeOffer);
@@ -183,6 +197,8 @@ public class ContractManager : NetworkBehaviour
 
     private void InitializeEmptyNegotiation()
     {
+        factoryButtons.ForEach(button => button.SetActive(false));
+        shopButtons.ForEach(button => button.SetActive(true));
         List<ItemData> itemData = ItemManager.GetAllSellableItemData();
         currentItemData.ForEach(i => Destroy(i.gameObject));
         currentItemData.Clear();
@@ -201,10 +217,12 @@ public class ContractManager : NetworkBehaviour
 
     private void InitializeFilledNegotiation()
     {
+        factoryButtons.ForEach(button => button.SetActive(true));
+        shopButtons.ForEach(button => button.SetActive(false));
         currentItemData.ForEach(i => Destroy(i.gameObject));
         currentItemData.Clear();
         lastOfferContractItems.ForEach(i => {
-            GameObject prefabInstance = Instantiate(itemDataPrefab);
+            GameObject prefabInstance = Instantiate(itemDataPrefab, itemDataParent.transform);
             ContractItemData script = prefabInstance.GetComponent<ContractItemData>();
             currentItemData.Add(script);
             script.LoadData(i);
@@ -229,6 +247,11 @@ public class ContractManager : NetworkBehaviour
     {
         EndNegotiation();
         RpcStartNewContract(lastOfferContractItems, CONTRACT_TIME);
+    }
+
+    public void DeclineContract()
+    {
+        CmdRequestNextTab();
     }
 
     [Server]
