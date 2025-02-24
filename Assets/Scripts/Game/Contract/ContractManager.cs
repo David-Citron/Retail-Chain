@@ -27,6 +27,7 @@ public class ContractManager : NetworkBehaviour
     [SerializeField] private OfferState negotiationState;
 
     private List<ContractItemData> currentItemData;
+    [SerializeField] private GameObject itemDataParent;
     [SerializeField] private GameObject itemDataPrefab;
 
     // Start is called before the first frame update
@@ -186,7 +187,7 @@ public class ContractManager : NetworkBehaviour
         currentItemData.ForEach(i => Destroy(i.gameObject));
         currentItemData.Clear();
         itemData.ForEach(i => {
-            GameObject prefabInstance = Instantiate(itemDataPrefab);
+            GameObject prefabInstance = Instantiate(itemDataPrefab, itemDataParent.transform);
             ContractItemData script = prefabInstance.GetComponent<ContractItemData>();
             if (script == null)
             {
