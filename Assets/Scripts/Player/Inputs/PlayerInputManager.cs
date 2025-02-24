@@ -88,7 +88,8 @@ public class PlayerInputManager : MonoBehaviour
         if (interactable == null) return;
         interactable.ToggleIsPlayerNear();
 
-        if(!interactable.IsPlayerNear()) interactable.GetCurrentInteractions(interactable.GetTag()).ForEach(interaction => interaction.hints.ForEach(hint => hint.isActive = false));
+        if (interactable.IsPlayerNear()) return;
+        interactable.GetCurrentInteractions(interactable.GetTag()).ForEach(interaction => interaction.hints.ForEach(hint => hint.isActive = false));
     }
 
     private bool IsItem(GameObject gameObject) => gameObject.tag != null && gameObject.tag.StartsWith("Item");

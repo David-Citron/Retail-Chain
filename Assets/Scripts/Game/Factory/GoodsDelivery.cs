@@ -147,7 +147,7 @@ public class GoodsDelivery : Interactable
 
     private ItemData GetRandomType(System.Random random)
     {
-        List<ItemData> values = ItemManager.GetAllItemData();
+        List<ItemData> values = ItemManager.GetBuyableItemData();
         var value = values[random.Next(values.Count)];
         while (deliveryOffers.Any(item => item.item == value)) value = values[random.Next(values.Count)];
         return value;

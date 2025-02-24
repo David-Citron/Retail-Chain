@@ -7,7 +7,7 @@ public class ContractManager : NetworkBehaviour
     public static ContractManager instance;
 
     [SerializeField] private List<Contract> contracts;
-    [SerializeField] private Contract localContract = null;
+    public Contract localContract = null;
     [SerializeField] private Contract serverContract = null;
 
     private const int CONTRACT_TIME = 10;

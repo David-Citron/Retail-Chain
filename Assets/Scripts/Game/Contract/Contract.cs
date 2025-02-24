@@ -4,7 +4,7 @@ using Mirror;
 
 public class Contract : NetworkBehaviour
 {
-    public List<ContractItem> currentContractItems { get; private set; } = null;
+    public List<ContractItem> currentContractItems { get; private set; }
     private PlayerRole ownerRole = PlayerRole.Unassigned;
     private PlayerBank ownerBank;
     [SyncVar(hook = nameof(HookStatus))]
@@ -71,5 +71,18 @@ public class Contract : NetworkBehaviour
         }
         Debug.Log("Local contract checked successfully! Sending command to check contracts");
         ContractManager.instance.CmdCheckContracts();
+    }
+
+    public bool SubmitItem(ItemType itemType)
+    {
+        foreach (var item in currentContractItems)
+        {
+            if (item.itemType != itemType) continue;
+            if (item.fulfilled) continue;
+            item.ItemSubmitted();
+            return true;
+        }
+
+        return false;
     }
 }

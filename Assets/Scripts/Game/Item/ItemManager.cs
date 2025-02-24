@@ -5,9 +5,10 @@ using UnityEngine;
 public class ItemManager : MonoBehaviour
 {
     private static ItemManager instance;
-    [SerializeField] private List<ItemData> items = new List<ItemData>();
+    [SerializeField] private List<ItemData> items;
 
-    void Start() { instance = this; }
+    void Awake() { instance = this; }
+
     void Update() {}
 
 
@@ -22,8 +23,8 @@ public class ItemManager : MonoBehaviour
     }
 
     public static List<ItemData> GetAllItemData() => instance.items;
-    public static List<ItemData> GetAllSellableItemData() => instance.items.FindAll(item => item.IsSellable());
-    public static List<ItemData> GetBuyableItemData() => instance.items.FindAll(item => item.IsBuyable());
+    public static List<ItemData> GetAllSellableItemData() => GetAllItemData().FindAll(item => item.IsSellable());
+    public static List<ItemData> GetBuyableItemData() => GetAllItemData().FindAll(item => item.IsBuyable());
 
     public static Item GetItemInfo(GameObject gameObject) => gameObject == null ? null : gameObject.GetComponent<Item>();
 
@@ -70,5 +71,5 @@ public class ItemManager : MonoBehaviour
         return GetItemData(type).icon;
     }
 
-    public static ItemData GetItemData(ItemType itemType) => instance.items.Find(item => item.itemType == itemType);
+    public static ItemData GetItemData(ItemType itemType) => GetAllItemData().Find(item => item.itemType == itemType);
 }

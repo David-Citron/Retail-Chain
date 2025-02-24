@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Shadow))]
+[RequireComponent(typeof(Button), typeof(Shadow), typeof(Image))]
 public class CustomButton : MonoBehaviour,
         IPointerDownHandler, IPointerUpHandler,
         IPointerEnterHandler, IPointerExitHandler,

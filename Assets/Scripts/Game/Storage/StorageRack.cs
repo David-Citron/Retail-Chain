@@ -100,13 +100,24 @@ public class StorageRack : Interactable
     public void InsertGameObject(GameObject gameObject)
     {
         ItemType itemType = ItemManager.GetItemType(gameObject).GetValueOrDefault();
-        
+        Item data = ItemManager.GetItemInfo(gameObject);
+
         PlayerPickUp.Instance().IfPresent(pickUp =>
         {
             pickUp.DropHoldingItem();
             Destroy(gameObject);
         });
 
+        bool insertItem = true;
+        if(data != null && data.contentType != ItemType.None)
+        {
+            Contract localContract = ContractManager.instance.localContract;
+            if (localContract == null) return;
+            if (!localContract.SubmitItem(itemType)) return;
+            insertItem = false;
+        }
+
+        if (!insertItem) return;
         InsertItem(itemType, 1);
     }
 

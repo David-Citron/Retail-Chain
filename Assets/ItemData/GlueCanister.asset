@@ -17,7 +17,6 @@ MonoBehaviour:
   icon: {fileID: 8400000, guid: b0dea9914cda7724a872a436bc1deff1, type: 2}
   itemPrefab: {fileID: 3290485508082759740, guid: 3ef47ac46eafb4d499c62ad3f94c1c57,
     type: 3}
-  maxOfferAmount: 0
+  maxOfferAmount: 2
   buyPrice: 35
   sellPrice: 45
-  sellable: 1
