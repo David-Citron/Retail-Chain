@@ -188,6 +188,11 @@ public class ContractManager : NetworkBehaviour
         itemData.ForEach(i => {
             GameObject prefabInstance = Instantiate(itemDataPrefab);
             ContractItemData script = prefabInstance.GetComponent<ContractItemData>();
+            if (script == null)
+            {
+                Debug.LogError("Script is set to null!");
+                return;
+            }
             currentItemData.Add(script);
             script.LoadData(i.itemType);
         });
