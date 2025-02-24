@@ -130,12 +130,6 @@ public class ContractManager : NetworkBehaviour
             GameLayoutManager.instance.ToggleUI(LayoutType.Contract);
     }
 
-    [Command(requiresAuthority = false)]
-    private void CmdRequestNextTab()
-    {
-        RpcNextTab();
-    }
-
     [ClientRpc]
     private void RpcNextTab()
     {
@@ -144,7 +138,8 @@ public class ContractManager : NetworkBehaviour
 
     private void NextNegotiationTab()
     {
-        ChangeNegotiationTab(negotiationState == OfferState.MakeOffer ? OfferState.ShowOffer : OfferState.MakeOffer);
+        negotiationState = (negotiationState == OfferState.MakeOffer ? OfferState.ShowOffer : OfferState.MakeOffer);
+        ChangeNegotiationTab(negotiationState);
     }
 
     // Changes the tabs depending on the contract state
@@ -249,9 +244,10 @@ public class ContractManager : NetworkBehaviour
         RpcStartNewContract(lastOfferContractItems, CONTRACT_TIME);
     }
 
+    [Command(requiresAuthority = false)]
     public void DeclineContract()
     {
-        CmdRequestNextTab();
+        RpcNextTab();
     }
 
     [Server]
