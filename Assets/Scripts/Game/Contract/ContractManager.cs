@@ -10,14 +10,12 @@ public class ContractManager : NetworkBehaviour
     public Contract localContract = null;
     [SerializeField] private Contract serverContract = null;
 
-    private const int CONTRACT_TIME = 10;
+    private const int CONTRACT_TIME = 60;
     private const int NEGOTIATION_TIME = 120;
 
     [SerializeField] private List<ContractItem> initialContractItems = new List<ContractItem>() 
     {
-        new ContractItem(ItemType.Book, 1, 50), 
-        new ContractItem(ItemType.GlueCanister, 2, 60), 
-        new ContractItem(ItemType.Paper, 2, 100) 
+        new ContractItem(ItemType.Book, 1, 50),
     };
 
     [SerializeField] private GameObject waitingTab;

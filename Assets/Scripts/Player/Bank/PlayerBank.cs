@@ -5,7 +5,10 @@ public class PlayerBank : MonoBehaviour
     private int balance;
     private int income; //This is income before next contract, after that it will be reset to 0.
 
-    void Start() {}
+    void Start() 
+    {
+        balance = 10000;
+    }
 
     void Update() {}
 
