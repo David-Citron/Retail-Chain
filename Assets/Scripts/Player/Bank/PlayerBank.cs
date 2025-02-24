@@ -12,7 +12,6 @@ public class PlayerBank : MonoBehaviour
 
     void Update() {}
 
-
     /// <summary>
     /// Adds balance to player's bank.
     /// </summary>
@@ -67,6 +66,7 @@ public class PlayerBank : MonoBehaviour
 
     private void UpdateMenu()
     {
+        if (GameLayoutManager.instance == null) return;
         GameLayoutManager.instance.UpdateBalance(GetBalance());
     }
 }

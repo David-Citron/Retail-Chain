@@ -154,6 +154,8 @@ public class GamePlayer : NetworkBehaviour
             player.GetComponent<PlayerMovement>().enabled = true;
             player.GetComponent<PlayerPickUp>().enabled = true;
 
+            player.GetComponent<Contract>().enabled = true;
+
             Rigidbody rb = player.GetComponent<Rigidbody>();
             rb.constraints = RigidbodyConstraints.None;
         } else
