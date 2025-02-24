@@ -5,7 +5,7 @@ using Mirror;
 public class Contract : NetworkBehaviour
 {
     public List<ContractItem> currentContractItems { get; private set; }
-    private PlayerRole ownerRole = PlayerRole.Unassigned;
+    [SerializeField] private PlayerRole ownerRole = PlayerRole.Unassigned;
     private PlayerBank ownerBank;
     [SyncVar(hook = nameof(HookStatus))]
     public ContractStatus status = ContractStatus.Unknown;
