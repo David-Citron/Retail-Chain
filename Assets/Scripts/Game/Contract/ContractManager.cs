@@ -73,7 +73,8 @@ public class ContractManager : NetworkBehaviour
         negotiationState = OfferState.None;
         if (localContract == null)
         {
-            Debug.LogError("Local contract is null"); return;
+            Debug.LogError("Local contract is null"); 
+            return;
         }
         localContract.StartNewContract(contractItems, time);
     }
@@ -99,19 +100,14 @@ public class ContractManager : NetworkBehaviour
             StartNegotiation();
             return;
         }
-        Debug.LogError("Game over!");
-        // TODO
+        Game.instance.EndGame();
     }
 
     [Server]
     private void StartNegotiation()
     {
         RpcShowNegotiationPanel();
-        negotiationTimer = new ActionTimer(() =>
-        {
-            // TODO: game ends
-            Debug.Log("Game ends! Not negotiated!");
-        }, NEGOTIATION_TIME).Run();
+        negotiationTimer = new ActionTimer(() => Game.instance.EndGame(), NEGOTIATION_TIME).Run();
     }
 
     [ClientRpc]
