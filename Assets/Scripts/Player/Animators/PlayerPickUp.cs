@@ -37,7 +37,7 @@ public class PlayerPickUp : MonoBehaviour
         itemGameObject.transform.localPosition = Vector3.zero;
         itemGameObject.transform.localRotation = Quaternion.Euler(-90, 0, -90);
 
-        PlayerInputManager.instance.collidersInRange.Remove(holdingItem);
+        PlayerInputManager.instance.RemoveCollider(holdingItem);
         PlayerInputManager.CustomInteractionHints(GetInteractions(), holdingItem);
     }
 

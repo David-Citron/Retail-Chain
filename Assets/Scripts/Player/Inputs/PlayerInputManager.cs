@@ -4,9 +4,9 @@ using UnityEngine;
 public class PlayerInputManager : MonoBehaviour
 {
     public static PlayerInputManager instance;
+    private static bool freeze;
 
-    [System.NonSerialized]
-    public List<GameObject> collidersInRange;
+    private List<GameObject> collidersInRange;
 
     private void Start() {
         instance = this;
@@ -17,19 +17,20 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (!Input.anyKeyDown) return;
 
+        List<GameObject> colliders = GetColliders();
         GameObject nearestItem = null;
-        if (GetColliders().Count > 0)
+        if (colliders.Count > 0)
         {
-            nearestItem = GetColliders()[0];
+            nearestItem = colliders[0];
             if (nearestItem == null) return;
 
             float nearestItemDistance = Vector3.Distance(transform.position, nearestItem.transform.position);
-            for (int i = 0; i < GetColliders().Count; i++)
+            for (int i = 0; i < colliders.Count; i++)
             {
-                float currentItemDistance = Vector3.Distance(transform.position, GetColliders()[i].transform.position);
+                float currentItemDistance = Vector3.Distance(transform.position, colliders[i].transform.position);
                 if (currentItemDistance > nearestItemDistance) break;
                 nearestItemDistance = currentItemDistance;
-                nearestItem = GetColliders()[i];
+                nearestItem = colliders[i];
             }
         }
 
@@ -96,9 +97,12 @@ public class PlayerInputManager : MonoBehaviour
     }
 
     private bool IsItem(GameObject gameObject) => gameObject.tag != null && gameObject.tag.StartsWith("Item");
+    public void RemoveCollider(GameObject gameObject) => collidersInRange.Remove(gameObject);
     public List<GameObject> GetColliders()
     {
         collidersInRange.RemoveAll(item => item == null);
         return collidersInRange;
     }
+
+    public static void SetFreeze(bool newValue) => freeze = newValue;
 }

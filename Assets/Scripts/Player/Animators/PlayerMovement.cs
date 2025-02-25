@@ -3,8 +3,6 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    public static bool freeze = false;
-
     public float speed = 4f;
     public float rotationSpeed = 8f;
 
@@ -12,7 +10,6 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     private Vector3 movementInput;
 
-    private Vector3 forward, right;
     private Vector3 moveDirection;
     private float horizontal, vertical;
 
@@ -27,9 +24,6 @@ public class PlayerMovement : MonoBehaviour
 
         rb.freezeRotation = true;
 
-        forward = transform.forward;
-        right = transform.right;
-
         //Rotate player 90? on Y axis to face correct direction
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -40,7 +34,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (freeze) return;
         horizontal = KeybindManager.instance.keybinds[ActionType.HorizontalInput].CalculateAxis();
         vertical = KeybindManager.instance.keybinds[ActionType.VerticalInput].CalculateAxis();
     }
@@ -73,7 +66,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
-        if (freeze) return;
         Vector3 inputDirection = new Vector3(horizontal, 0f, vertical).normalized;
 
         // If hitting a wall, project movement along the wall's plane
@@ -88,7 +80,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void RotatePlayer()
     {
-        if (freeze) return;
         movementInput = new Vector3(horizontal, 0f, vertical).normalized;
 
         if (movementInput.magnitude >= 0.1f)

@@ -23,7 +23,8 @@ public class GameLayoutManager : MonoBehaviour
     {
         instance = this;
 
-        UpdatePlayer();
+        username.text = PlayerSteamUtils.GetSteamUsername(SteamUser.GetSteamID());
+        profilePicture.texture = PlayerSteamUtils.GetSteamProfilePicture(SteamUser.GetSteamID());
     }
 
     void Update()
@@ -51,14 +52,7 @@ public class GameLayoutManager : MonoBehaviour
 
     public bool IsEnabled(LayoutType layoutType) => layouts[(int)layoutType] != null && layouts[(int)layoutType].activeSelf;
 
-    private void UpdatePlayer()
-    {
-        username.text = PlayerSteamUtils.GetSteamUsername(SteamUser.GetSteamID());
-        profilePicture.texture = PlayerSteamUtils.GetSteamProfilePicture(SteamUser.GetSteamID());
-        UpdateBalance();
-    }
-
-    public void UpdateBalance(int amount) => balance.text = amount.ToString("N0", CultureInfo.InvariantCulture);
+    public void UpdateBalance(int amount) => balance.text = "$" + amount.ToString("N0", CultureInfo.InvariantCulture);
     public void UpdateBalance() => UpdateBalance(PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault().bankAccount.GetBalance());
 }
 
@@ -67,5 +61,7 @@ public enum LayoutType
     ItemRack,
     DeliveryOffers,
     Contract,
-    PriceSystem
+    PriceSystem,
+    GameOver,
+    Exit
 }

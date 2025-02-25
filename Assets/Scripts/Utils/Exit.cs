@@ -4,8 +4,6 @@ using UnityEngine.UI;
 public class Exit : MonoBehaviour
 {
 
-    public GameObject exitUI;
-
     public Button backButton;
     public Button settingsButton;
     public Button exitButton;
@@ -14,11 +12,10 @@ public class Exit : MonoBehaviour
     {
         Initialize();
         Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.OpenMenu), pressedTime =>
-        exitUI.SetActive(!exitUI.activeSelf)));
+        GameLayoutManager.instance.ToggleUI(LayoutType.Exit)));
     }
 
     void Update() {}
-
 
     public void Initialize()
     {
@@ -30,10 +27,7 @@ public class Exit : MonoBehaviour
         settingsButton.onClick.RemoveAllListeners();
         exitButton.onClick.RemoveAllListeners();
 
-        backButton.onClick.AddListener(() =>
-        {
-            exitUI.SetActive(!exitUI.activeSelf);
-        });
+        backButton.onClick.AddListener(() => GameLayoutManager.instance.ToggleUI(LayoutType.Exit));
 
 
         exitButton.onClick.AddListener(() =>

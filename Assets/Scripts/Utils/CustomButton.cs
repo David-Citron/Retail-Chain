@@ -15,6 +15,7 @@ public class CustomButton : MonoBehaviour,
     private static Dictionary<ButtonColor, ColorGroup> colorGroups = new Dictionary<ButtonColor, ColorGroup>();
 
     public ButtonColor buttonColor;
+    public bool ignoreColors;
 
     private Button button;
     private Image image;
@@ -41,10 +42,14 @@ public class CustomButton : MonoBehaviour,
         image = GetComponent<Image>();
 
         button.interactable = true;
-        button.transition = Selectable.Transition.SpriteSwap;
-        SpriteState spriteState = button.spriteState;
-        spriteState.highlightedSprite = image.sprite;
-        button.spriteState = spriteState;
+
+        if(!ignoreColors)
+        {
+            button.transition = Selectable.Transition.SpriteSwap;
+            SpriteState spriteState = button.spriteState;
+            spriteState.highlightedSprite = image.sprite;
+            button.spriteState = spriteState;
+        }
 
         shadow.effectDistance = new Vector2(10, -10);
         shadow.effectColor = GetColor(ButtonColorType.Shadow);
@@ -52,10 +57,8 @@ public class CustomButton : MonoBehaviour,
         ChangeTextColor(ButtonColorType.Normal);
     }
 
-    private void OnDisable()
-    {
-        ChangeTextColor(ButtonColorType.Normal);
-    }
+    private void OnDisable() => ChangeTextColor(ButtonColorType.Normal);
+    
 
     protected enum SelectionState
     {
@@ -92,8 +95,8 @@ public class CustomButton : MonoBehaviour,
     /// <param name="color">New color</param>
     private void ChangeTextColor(ButtonColorType colorType)
     {
-        if (buttonText != null) buttonText.color = colorType == ButtonColorType.Shadow ? GetColor(ButtonColorType.Normal) : Color.white;
-        if(image != null) image.color = colorType == ButtonColorType.Shadow ? Color.white : GetColor(ButtonColorType.Normal);
+        if (buttonText != null && !ignoreColors) buttonText.color = colorType == ButtonColorType.Shadow ? GetColor(ButtonColorType.Normal) : Color.white;
+        if(image != null && !ignoreColors) image.color = colorType == ButtonColorType.Shadow ? Color.white : GetColor(ButtonColorType.Normal);
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)
@@ -151,7 +154,7 @@ public class CustomButton : MonoBehaviour,
 
     public void ChangeColorGroup(ButtonColor newColor)
     {
-        if(buttonColor == newColor) return;
+        if(buttonColor == newColor || ignoreColors) return;
         buttonColor = newColor;
 
         ChangeTextColor(ButtonColorType.Normal);

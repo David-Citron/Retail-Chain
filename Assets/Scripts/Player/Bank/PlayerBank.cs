@@ -7,7 +7,8 @@ public class PlayerBank : MonoBehaviour
 
     void Start() 
     {
-        AddBalance(1000);
+        balance = 1000;
+        UpdateMenu();
     }
 
     void Update() {}
