@@ -1,6 +1,4 @@
-<div style="width: 100%; display: flex; justify-content: center">
-    <img src="Assets/Textures/Logo-var2.png" alt="Retail-Chain logo" style="width: 100px; height: auto;">
-</div>
+<img src="Assets/Textures/Logo-var2.png" alt="Retail-Chain logo" style="width: 100px; height: auto;">
 
 # Retail Chain
 
