@@ -5,6 +5,7 @@ public class PlayerInputManager : MonoBehaviour
 {
     public static PlayerInputManager instance;
 
+    [System.NonSerialized]
     public List<GameObject> collidersInRange;
 
     private void Start() {
@@ -17,18 +18,18 @@ public class PlayerInputManager : MonoBehaviour
         if (!Input.anyKeyDown) return;
 
         GameObject nearestItem = null;
-        if (collidersInRange.Count > 0)
+        if (GetColliders().Count > 0)
         {
-            nearestItem = collidersInRange[0];
+            nearestItem = GetColliders()[0];
             if (nearestItem == null) return;
 
             float nearestItemDistance = Vector3.Distance(transform.position, nearestItem.transform.position);
-            for (int i = 0; i < collidersInRange.Count; i++)
+            for (int i = 0; i < GetColliders().Count; i++)
             {
-                float currentItemDistance = Vector3.Distance(transform.position, collidersInRange[i].transform.position);
+                float currentItemDistance = Vector3.Distance(transform.position, GetColliders()[i].transform.position);
                 if (currentItemDistance > nearestItemDistance) break;
                 nearestItemDistance = currentItemDistance;
-                nearestItem = collidersInRange[i];
+                nearestItem = GetColliders()[i];
             }
         }
 
@@ -41,14 +42,16 @@ public class PlayerInputManager : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.Equals(PlayerPickUp.holdingItem)) return; //Ensure that the holding item is not in collider.
-        collidersInRange.Add(other.gameObject);
+        GetColliders().Add(other.gameObject);
         UpdateInteractable(other.gameObject);
         UpdateHints(other.gameObject, true);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        collidersInRange.Remove(other.gameObject);
+        if (!GetColliders().Contains(other.gameObject) || other.gameObject == null) return;
+
+        GetColliders().Remove(other.gameObject);
         UpdateInteractable(other.gameObject);
     }
 
@@ -73,7 +76,7 @@ public class PlayerInputManager : MonoBehaviour
             {
                 hint.addiotionalPredicate = () =>
                 {
-                    var list = new List<GameObject>(instance.collidersInRange);
+                    var list = new List<GameObject>(instance.GetColliders());
                     return PlayerPickUp.holdingItem != null || list.Contains(gameObject);
                 };
                 if (hint.predicate == null || !hint.predicate.Invoke()) return;
@@ -93,4 +96,9 @@ public class PlayerInputManager : MonoBehaviour
     }
 
     private bool IsItem(GameObject gameObject) => gameObject.tag != null && gameObject.tag.StartsWith("Item");
+    public List<GameObject> GetColliders()
+    {
+        collidersInRange.RemoveAll(item => item == null);
+        return collidersInRange;
+    }
 }

@@ -34,8 +34,6 @@ public class CircleTimer : MonoBehaviour
         instance.remainingDuration = seconds;
         instance.pause = false;
         instance.StartCoroutine(instance.UpdateTimer());
-
-        Debug.Log("Started for " + seconds);
     }
 
     private IEnumerator UpdateTimer()
@@ -48,24 +46,20 @@ public class CircleTimer : MonoBehaviour
 
             float elapsed = 0f;
 
-            // Smoothly update the fill amount over 1 second
             while (elapsed < 1f)
             {
                 if (pause) yield break;
 
                 elapsed += Time.unscaledDeltaTime;
 
-                // Calculate fill based on total elapsed time relative to total duration
                 float totalElapsedTime = totalDuration - remainingDuration + elapsed;
                 fill.fillAmount = Mathf.InverseLerp(0, totalDuration, totalElapsedTime);
 
-                // Use the current remaining duration for the text
                 text.text = $"{(remainingDuration / 60):00}:{(remainingDuration % 60):00}";
 
-                yield return null; // Wait for the next frame
+                yield return null;
             }
 
-            // Decrement the remaining duration after the smooth transition
             remainingDuration--;
         }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class ShopMess : Interactable
 {
+    private Interaction interaction;
 
     private bool isPlayerNear;
     private long spawnedAt;
@@ -12,9 +13,10 @@ public class ShopMess : Interactable
     void Start()
     {
         spawnedAt = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, gameObject => StartCleaning(),
-            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO CLEAN", () => isPlayerNear && !isCleaning)));
+        interaction = new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, gameObject => StartCleaning(),
+            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO CLEAN", () => isPlayerNear && !isCleaning));
 
+        AddInteraction(interaction);
 
         BoxCollider boxCollider = GetComponent<BoxCollider>();
         boxCollider.enabled = true;
@@ -28,7 +30,7 @@ public class ShopMess : Interactable
         isCleaning = true;
 
         float cleaningTime = (DateTimeOffset.Now.ToUnixTimeMilliseconds() - spawnedAt) / 2000f;
-        cleaningTime = Mathf.Clamp(cleaningTime, 1, 6);
+        cleaningTime = (int) Mathf.Clamp(cleaningTime, 1, 6);
 
         CircleTimer.Start(cleaningTime);
         PlayerMovement.freeze = true;
@@ -45,11 +47,11 @@ public class ShopMess : Interactable
 
     private void DestroyMess()
     {
-        CircleTimer.Stop();
-        PlayerMovement.freeze = false;
-        if (this == null) return;
-
         gameObject.SetActive(false);
+        PlayerMovement.freeze = false;
+        interactions.Remove(interaction);
+
+        if (this == null) return;
 
         PlayerInputManager.instance.collidersInRange.Remove(gameObject);
         Destroy(gameObject);

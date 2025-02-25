@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Globalization;
 
 public class GameLayoutManager : MonoBehaviour
 {
@@ -54,9 +55,11 @@ public class GameLayoutManager : MonoBehaviour
     {
         username.text = PlayerSteamUtils.GetSteamUsername(SteamUser.GetSteamID());
         profilePicture.texture = PlayerSteamUtils.GetSteamProfilePicture(SteamUser.GetSteamID());
+        UpdateBalance();
     }
 
-    public void UpdateBalance(int amount) => balance.text = amount.ToString();
+    public void UpdateBalance(int amount) => balance.text = amount.ToString("N0", CultureInfo.InvariantCulture);
+    public void UpdateBalance() => UpdateBalance(PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault().bankAccount.GetBalance());
 }
 
 public enum LayoutType

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = System.Random;
 
@@ -42,7 +41,7 @@ public class ShopMessManager : MonoBehaviour
             if (gameObject == null) return;
             SpawnMess();
             StartCoroutine(StartMessTimer());
-        }, random.Next(10, 50)).Run();
+        }, random.Next(10, 15)).Run();
     }
 
     private List<GameObject> GetAvailablePlaces() => messPlaces.FindAll(place => place.transform.childCount == 0);

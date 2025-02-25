@@ -53,6 +53,8 @@ public class Printer : Machine
 
     private string ConvertPassedTime(float passedTime)
     {
+        if(currentRecipe == null) return "";
+        
         int time = currentRecipe.time - (int) passedTime;
         int minutes = 0;
         while(time > 60)
