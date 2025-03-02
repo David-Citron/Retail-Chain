@@ -5,7 +5,7 @@ public class ContractItem
     public int quantity;
     public int quantityRemaining;
     public bool fulfilled;
-    public int price;
+    public int price; // Price per 1 unit
 
     /// <summary>
     /// Creates ContractItem.

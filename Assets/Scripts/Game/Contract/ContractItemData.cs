@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -23,7 +24,6 @@ public class ContractItemData : MonoBehaviour
         amount = 0;
         price = 0;
         sum = 0;
-        UpdateAmountField();
     }
 
     // Update is called once per frame
@@ -36,8 +36,8 @@ public class ContractItemData : MonoBehaviour
     public void LoadData(ContractItem contractItem)
     {
         type = contractItem.itemType;
-        if (amount < 0) amount = 0;
-        else if (amount > 255) amount = 255;
+        if (contractItem.quantity < 0) contractItem.quantity = 0;
+        else if (contractItem.quantity > 255) contractItem.quantity = 255;
         amount = (byte)contractItem.quantity;
         price = contractItem.price;
         CalculateSum();
@@ -118,6 +118,6 @@ public class ContractItemData : MonoBehaviour
     public void UpdateAmountField() => amountInput.text = "" + amount;
     public void UpdatePriceField() => priceInput.text = "" + price;
 
-    public void CalculateSum() => sum = price * amount;
+    public void CalculateSum() => sum = price * (int)amount;
     public void UpdateSum() => sumText.text = "" + sum;
 }
