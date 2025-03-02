@@ -32,11 +32,22 @@ public class Exit : MonoBehaviour
 
         exitButton.onClick.AddListener(() =>
         {
+            Leave();
+            /*
             PlayerManager.instance.GetLocalGamePlayer().IfPresent(gamePlayer =>
             {
                 if (gamePlayer.isServer && gamePlayer.isClient) CustomNetworkManager.singleton.StopHost();
                 else CustomNetworkManager.singleton.StopClient();
-            });
+            });*/
         });
+    }
+
+    public static void Leave()
+    {
+        if (CustomNetworkManager.instance == null) return;
+        if (PlayerManager.instance == null) return;
+        GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
+        if (localPlayer.isClientOnly) CustomNetworkManager.instance.StopClient();
+        else if (localPlayer.isClient) CustomNetworkManager.instance.StopHost();
     }
 }

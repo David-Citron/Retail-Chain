@@ -101,14 +101,14 @@ public class ContractManager : NetworkBehaviour
             StartNegotiation();
             return;
         }
-        Game.instance.EndGame();
+        RpcEndGame();
     }
 
     [Server]
     private void StartNegotiation()
     {
         RpcShowNegotiationPanel();
-        negotiationTimer = new ActionTimer(() => Game.instance.EndGame(), NEGOTIATION_TIME).Run();
+        negotiationTimer = new ActionTimer(() => RpcEndGame(), NEGOTIATION_TIME).Run();
     }
 
     [ClientRpc]
@@ -261,6 +261,13 @@ public class ContractManager : NetworkBehaviour
             contractItems.Add(itemData.ReadData());
         });
         CmdSendNegotiationOffer(contractItems);
+    }
+
+    [ClientRpc]
+    private void RpcEndGame()
+    {
+        if (Game.instance == null) return;
+        Game.instance.EndGame();
     }
 }
 
