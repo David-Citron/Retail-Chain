@@ -228,6 +228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonColor: 0
+  ignoreColors: 0
 --- !u!114 &4056245574827478062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,7 +273,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6287649489259055865}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1813728941396089883}
+        m_TargetAssemblyTypeName: ContractItemData, Assembly-CSharp
+        m_MethodName: IncreaseAmount
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6176129688356059508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,6 +299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonColor: 0
+  ignoreColors: 0
 --- !u!114 &5511707493936813982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1266,6 +1280,7 @@ MonoBehaviour:
   extraButtons:
   - {fileID: 1377538436797045340}
   - {fileID: 8909687993664727096}
+  sumText: {fileID: 2727556031706680864}
 --- !u!1 &5335719799164489036
 GameObject:
   m_ObjectHideFlags: 0
@@ -1392,20 +1407,32 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 2
   m_RegexValue: 
   m_GlobalPointSize: 14
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1813728941396089883}
+        m_TargetAssemblyTypeName: ContractItemData, Assembly-CSharp
+        m_MethodName: ReadAmount
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -2121,7 +2148,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1438017962776038471}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1813728941396089883}
+        m_TargetAssemblyTypeName: ContractItemData, Assembly-CSharp
+        m_MethodName: DecreaseAmount
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &314233203163157014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2135,6 +2174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonColor: 0
+  ignoreColors: 0
 --- !u!114 &5652268452928113250
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -18,7 +18,10 @@ public class ContractItem
         this.quantity = quantity;
         this.price = price;
         quantityRemaining = quantity;
-        fulfilled = false;
+        if (quantityRemaining > 0) 
+            fulfilled = false;
+        else 
+            fulfilled = true;
     }
 
     public ContractItem() { }
