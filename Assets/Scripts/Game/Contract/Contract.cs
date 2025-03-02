@@ -21,6 +21,7 @@ public class Contract : NetworkBehaviour
         {
             ownerRole = localPlayer.playerRole;
             ownerBank = localPlayer.bankAccount;
+            if (ownerBank == null) Debug.LogError("Local player's BankAccount is null!");
         }, () => Debug.LogError("Local player was not found"));
     }
 
