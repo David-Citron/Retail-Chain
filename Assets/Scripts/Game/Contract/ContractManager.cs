@@ -98,10 +98,17 @@ public class ContractManager : NetworkBehaviour
         if (contractSuccess)
         {
             Debug.Log("Contract was finished successfully!");
+            RpcFinishContract();
             StartNegotiation();
             return;
         }
         RpcEndGame();
+    }
+
+    [ClientRpc]
+    private void RpcFinishContract()
+    {
+        localContract.FinalizeContract();
     }
 
     [Server]

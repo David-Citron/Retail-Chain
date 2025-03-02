@@ -6,7 +6,6 @@ public class Contract : NetworkBehaviour
 {
     public List<ContractItem> currentContractItems { get; private set; }
     [SerializeField] private PlayerRole ownerRole = PlayerRole.Unassigned;
-    private PlayerBank ownerBank;
     [SyncVar(hook = nameof(HookStatus))]
     public ContractStatus status = ContractStatus.Unknown;
 
@@ -20,8 +19,6 @@ public class Contract : NetworkBehaviour
         PlayerManager.instance.GetLocalGamePlayer().IfPresentOrElse(localPlayer =>
         {
             ownerRole = localPlayer.playerRole;
-            ownerBank = localPlayer.bankAccount;
-            if (ownerBank == null) Debug.LogError("Local player's BankAccount is null!");
         }, () => Debug.LogError("Local player was not found"));
     }
 
@@ -69,8 +66,20 @@ public class Contract : NetworkBehaviour
             case PlayerRole.Shop:
                 int sum = 0;
                 currentContractItems.ForEach(item => sum += item.price);
-                if (ownerBank.GetBalance() >= sum) status = ContractStatus.Success;
-                else status = ContractStatus.Failed;
+                if (PlayerManager.instance == null)
+                {
+                    Debug.LogError("PlayerManager is null!");
+                    status = ContractStatus.Failed;
+                }
+                PlayerManager.instance.GetLocalGamePlayer().IfPresentOrElse(localPlayer =>
+                {
+                    if (localPlayer.bankAccount.GetBalance() >= sum) status = ContractStatus.Success;
+                    else status = ContractStatus.Failed;
+                }, () =>
+                {
+                    Debug.LogError("Local game player was not found!");
+                    status = ContractStatus.Failed;
+                });
                 break;
             default:
                 Debug.LogError("Player role is not assigned correctly");
@@ -79,6 +88,36 @@ public class Contract : NetworkBehaviour
         Debug.Log("Local contract checked successfully! Sending command to check contracts");
         Debug.Log("Local contract status: " + status);
         ContractManager.instance.CmdCheckContracts();
+    }
+
+    public void FinalizeContract()
+    {
+        if (PlayerManager.instance == null)
+        {
+            Debug.LogError("PlayerManager is null!");
+            return;
+        }
+        GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
+        if (PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault() == null)
+        {
+            Debug.LogError("Local GamePlayer not found!");
+            return;
+        }
+        int sum = 0;
+        currentContractItems.ForEach(item => sum += item.price);
+        switch (ownerRole)
+        {
+            case PlayerRole.Factory:
+                localPlayer.bankAccount.AddBalance(sum);
+                break;
+            case PlayerRole.Shop:
+                localPlayer.bankAccount.RemoveBalance(sum);
+                // TODO - add items to shop's storage
+                break;
+            default:
+                Debug.LogError("Player role is not assigned correctly!");
+                return;
+        }
     }
 
     public bool SubmitItem(ItemType itemType)
