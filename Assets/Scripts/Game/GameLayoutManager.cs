@@ -4,11 +4,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Globalization;
+using System;
 
 public class GameLayoutManager : MonoBehaviour
 {
 
     public static GameLayoutManager instance;
+    public static bool isOpened; //If any UI is opened it is true, otherwise its false.
 
     [SerializeField] private GameObject background;
     [SerializeField] private List<GameObject> layouts;
@@ -42,15 +44,33 @@ public class GameLayoutManager : MonoBehaviour
         GameObject gameObject = layouts[(int)layoutType];
         if (gameObject == null) return false;
 
-        background.SetActive(!background.activeSelf);
         gameObject.SetActive(!gameObject.activeSelf);
+        background.SetActive(gameObject.activeSelf);
 
         playerInfoField.SetActive(!background.activeSelf);
-
+        isOpened = gameObject.activeSelf;
         return gameObject.activeSelf;
     }
 
     public bool IsEnabled(LayoutType layoutType) => layouts[(int)layoutType] != null && layouts[(int)layoutType].activeSelf;
+
+    /// <summary>
+    /// Closes any opened UIs except Contract.
+    /// </summary>
+    /// <returns>true if any UI was closed, otherwise false</returns>
+    public bool CloseOpenedUI()
+    {
+        bool closedAny = false;
+        foreach (LayoutType layouType in Enum.GetValues(typeof(LayoutType)))
+        {
+            if (layouType == LayoutType.Contract) continue;
+            if (!IsEnabled(layouType)) continue;
+            ToggleUI(layouType);
+            closedAny = true;
+        }
+
+        return closedAny;
+    }
 
     public void UpdateBalance(int amount) => balance.text = "$" + amount.ToString("N0", CultureInfo.InvariantCulture);
     public void UpdateBalance() => UpdateBalance(PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault().bankAccount.GetBalance());

@@ -26,8 +26,6 @@ public class ActionKeybind
         this.sensitivity = sensitivity;
         axis = 0;
     }
-
-    public bool GetInput() => Input.GetKeyDown(positiveKey) || (positiveAltKey != KeyCode.None && Input.GetKeyDown(positiveAltKey));
     
     public float CalculateAxis()
     {
@@ -68,5 +66,9 @@ public class ActionKeybind
         return axis;
     }
 
-    private bool KeyPressed(KeyCode key, KeyCode alt) => (key != KeyCode.None && Input.GetKey(key)) || (alt != KeyCode.None && Input.GetKey(alt));
+    private bool KeyPressed(KeyCode key, KeyCode alt)
+    {
+        if (GameLayoutManager.isOpened) return false;
+        return (key != KeyCode.None && Input.GetKey(key)) || (alt != KeyCode.None && Input.GetKey(alt));
+    }
 }

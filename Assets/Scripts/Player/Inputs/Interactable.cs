@@ -7,13 +7,18 @@ public abstract class Interactable : MonoBehaviour
     public static List<Interaction> interactions = new List<Interaction>();
 
     public static void AddInteraction(Interaction interaction) => interactions.Add(interaction);
-    public static bool PressedKey(ActionType actionType)
+    public static bool PressedKey(ActionType actionType, bool ignoreCheck)
     {
+        if (!ignoreCheck && GameLayoutManager.isOpened) return false;
         var keys = KeybindManager.instance.keybinds[actionType];
         return Input.GetKeyDown(keys.positiveKey) || Input.GetKeyDown(keys.positiveAltKey);
     }
+
+    public static bool PressedKey(ActionType actionType) => PressedKey(actionType, false);
+
     public static bool HoldingKey(ActionType actionType)
     {
+        if (GameLayoutManager.isOpened) return false;
         var keys = KeybindManager.instance.keybinds[actionType];
         return Input.GetKey(keys.positiveKey) || Input.GetKey(keys.positiveAltKey);
     }
@@ -54,9 +59,9 @@ public class Interaction
         this.hints.AddRange(hints);
     }
 
-    public Interaction(string tag, Func<bool> prediction, Action<GameObject> onInteract, Hint hint) : this(tag, prediction, onInteract, new Hint[] {hint}) { }
-    public Interaction(Func<bool> prediction, Action<GameObject> onInteract, Hint hint) : this(null, prediction, onInteract, new Hint[] { hint }) { }
-    public Interaction(Func<bool> prediction, Action<GameObject> onInteract) : this(null, prediction, onInteract, new Hint[] { }) { }
+    public Interaction(string tag, Func<bool> prediction, Action<GameObject> onInteract, Hint hint) : this(tag, prediction, onInteract, new Hint[] {hint}) {}
+    public Interaction(Func<bool> prediction, Action<GameObject> onInteract, Hint hint) : this(null, prediction, onInteract, new Hint[] { hint }) {}
+    public Interaction(Func<bool> prediction, Action<GameObject> onInteract) : this(null, prediction, onInteract, new Hint[] {}) {}
 }
 
 [Serializable]

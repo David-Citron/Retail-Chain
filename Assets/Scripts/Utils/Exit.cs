@@ -11,8 +11,11 @@ public class Exit : MonoBehaviour
     void Start()
     {
         Initialize();
-        Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.OpenMenu), pressedTime =>
-        GameLayoutManager.instance.ToggleUI(LayoutType.Exit)));
+        Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.OpenMenu, true), item =>
+        {
+            if (GameLayoutManager.instance.CloseOpenedUI()) return;
+            GameLayoutManager.instance.ToggleUI(LayoutType.Exit);
+        }));
     }
 
     void Update() {}
@@ -30,16 +33,7 @@ public class Exit : MonoBehaviour
         backButton.onClick.AddListener(() => GameLayoutManager.instance.ToggleUI(LayoutType.Exit));
 
 
-        exitButton.onClick.AddListener(() =>
-        {
-            Leave();
-            /*
-            PlayerManager.instance.GetLocalGamePlayer().IfPresent(gamePlayer =>
-            {
-                if (gamePlayer.isServer && gamePlayer.isClient) CustomNetworkManager.singleton.StopHost();
-                else CustomNetworkManager.singleton.StopClient();
-            });*/
-        });
+        exitButton.onClick.AddListener(() => Leave());
     }
 
     public static void Leave()

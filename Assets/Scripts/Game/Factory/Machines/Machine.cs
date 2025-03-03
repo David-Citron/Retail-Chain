@@ -145,7 +145,6 @@ public abstract class Machine : Interactable, IMachine
 
         if (machineState != MachineState.Working && PlayAnimation())
         {
-            PlayerInputManager.SetFreeze(false);
             PlayerPickUp.Instance().IfPresent(pikUp => pikUp.animator.SetBool("working", false));
         }
 
@@ -160,7 +159,6 @@ public abstract class Machine : Interactable, IMachine
                 if(PlayAnimation())
                 {
                     PlayerPickUp.Instance().IfPresent(pikUp => pikUp.animator.SetBool("working", true));
-                    PlayerInputManager.SetFreeze(true);
                     CircleTimer.Start(currentRecipe.time);
                 }
 

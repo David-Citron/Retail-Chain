@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerInputManager : MonoBehaviour
 {
     public static PlayerInputManager instance;
-    private static bool freeze;
 
     private List<GameObject> collidersInRange;
 
@@ -103,6 +102,4 @@ public class PlayerInputManager : MonoBehaviour
         collidersInRange.RemoveAll(item => item == null);
         return collidersInRange;
     }
-
-    public static void SetFreeze(bool newValue) => freeze = newValue;
 }

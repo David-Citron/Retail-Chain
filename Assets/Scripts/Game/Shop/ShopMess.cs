@@ -33,12 +33,10 @@ public class ShopMess : Interactable
         cleaningTime = (int) Mathf.Clamp(cleaningTime, 1, 6);
 
         CircleTimer.Start(cleaningTime);
-        PlayerInputManager.SetFreeze(true);
 
         new ActionTimer(() => Input.GetKey(KeyCode.Space),
             () => DestroyMess(),
             () => {
-                PlayerInputManager.SetFreeze(false);
                 CircleTimer.Stop();
                 isCleaning = false;
                 UpdateHints();
@@ -48,7 +46,6 @@ public class ShopMess : Interactable
     private void DestroyMess()
     {
         gameObject.SetActive(false);
-        PlayerInputManager.SetFreeze(false);
         interactions.Remove(interaction);
 
         if (this == null) return;
