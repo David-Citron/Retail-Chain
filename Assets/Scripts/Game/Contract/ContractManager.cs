@@ -148,6 +148,11 @@ public class ContractManager : NetworkBehaviour
     {
         if (GameLayoutManager.instance.IsEnabled(LayoutType.Contract))
             GameLayoutManager.instance.ToggleUI(LayoutType.Contract);
+        if (localTimer != null)
+        {
+            localTimer.Stop();
+            localTimer = null;
+        }
     }
 
     [ClientRpc]

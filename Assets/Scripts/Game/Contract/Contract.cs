@@ -102,6 +102,11 @@ public class Contract : NetworkBehaviour
 
     public void FinalizeContract()
     {
+        if (timer != null)
+        {
+            timer.Stop();
+            timer = null;
+        }
         if (PlayerManager.instance == null)
         {
             Debug.LogError("PlayerManager is null!");
