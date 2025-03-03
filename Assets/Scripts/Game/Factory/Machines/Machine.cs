@@ -223,7 +223,7 @@ public abstract class Machine : Interactable, IMachine
         item.transform.localRotation = Quaternion.Euler(0, 0, 90);
     }
 
-    internal InputInfo GetNearestSlot()
+    protected InputInfo GetNearestSlot()
     {
         if (!isPlayerNear || inputPlaces.Count == 0) return new InputInfo(); //If the inputs are 0.
 
@@ -272,7 +272,7 @@ public enum MachineState
     Done, //When the item is done - ready to pick up
 }
 
-internal class InputInfo
+public class InputInfo
 {
     public GameObject inputPlace { get; private set; }
     public bool isInValidDistance { get; private set; }

@@ -63,7 +63,7 @@ public class GameLayoutManager : MonoBehaviour
         bool closedAny = false;
         foreach (LayoutType layouType in Enum.GetValues(typeof(LayoutType)))
         {
-            if (layouType == LayoutType.Contract) continue;
+            if (layouType == LayoutType.Contract || layouType == LayoutType.GameOver) continue;
             if (!IsEnabled(layouType)) continue;
             ToggleUI(layouType);
             closedAny = true;

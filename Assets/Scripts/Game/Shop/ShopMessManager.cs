@@ -9,6 +9,8 @@ public class ShopMessManager : MonoBehaviour
     [SerializeField] private List<GameObject> messPlaces = new List<GameObject>();
     [SerializeField] private GameObject messGameObject;
 
+    private ActionTimer currenTimer;
+
     void Start()
     {
         StartCoroutine(StartMessTimer());
@@ -36,12 +38,17 @@ public class ShopMessManager : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(2f);
         Random random = new Random();
-        new ActionTimer(() =>
+        currenTimer = new ActionTimer(() =>
         {
             if (gameObject == null) return;
             SpawnMess();
             StartCoroutine(StartMessTimer());
         }, random.Next(10, 15)).Run();
+    }
+
+    private void OnDestroy()
+    {
+        currenTimer.Stop();
     }
 
     private List<GameObject> GetAvailablePlaces() => messPlaces.FindAll(place => place.transform.childCount == 0);
