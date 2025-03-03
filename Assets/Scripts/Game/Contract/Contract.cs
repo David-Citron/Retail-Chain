@@ -8,6 +8,7 @@ public class Contract : NetworkBehaviour
     [SerializeField] private PlayerRole ownerRole = PlayerRole.Unassigned;
     [SyncVar(hook = nameof(HookStatus))]
     public ContractStatus status = ContractStatus.Unknown;
+    private ActionTimer timer = null;
 
     private void Start()
     {
@@ -32,10 +33,10 @@ public class Contract : NetworkBehaviour
         }
         status = ContractStatus.Pending;
         currentContractItems = newContractItems;
-        new ActionTimer(() => 
+        timer = new ActionTimer(() => 
         {
             CheckContractStatus();
-        }, newContractTime, 1).Run();
+        }, newContractTime).Run();
     }
 
     public void HookStatus(ContractStatus oldValue, ContractStatus newValue)
@@ -134,5 +135,11 @@ public class Contract : NetworkBehaviour
         }
 
         return false;
+    }
+
+    private void OnDestroy()
+    {
+        if (timer == null) return;
+        timer.Stop();    
     }
 }
