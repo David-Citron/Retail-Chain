@@ -35,12 +35,10 @@ public class Contract : NetworkBehaviour
         status = ContractStatus.Pending;
         currentContractItems = newContractItems;
         ReloadRemainingContractDataUI();
+        ReloadTimeUI(newContractTime, 0);
         timer = new ActionTimer(actionTimer => 
         {
-            if (ContractManager.instance.remainingContractItemsTimer == null) return;
-            int remainingDuration = (newContractTime - (int)actionTimer.passedTime);
-            ContractManager.instance.remainingContractItemsTimer.text = $"{(remainingDuration / 60):00}:{(remainingDuration % 60):00}";
-            
+            ReloadTimeUI(newContractTime, (int)actionTimer.passedTime);
         }, () => 
         {
             CheckContractStatus();
@@ -144,6 +142,13 @@ public class Contract : NetworkBehaviour
         }
 
         return false;
+    }
+
+    public void ReloadTimeUI(int contractTime, int passedTime)
+    {
+        if (ContractManager.instance.remainingContractItemsTimer == null) return;
+        int remainingDuration = (contractTime - passedTime);
+        ContractManager.instance.remainingContractItemsTimer.text = $"{(remainingDuration / 60):00}:{(remainingDuration % 60):00}";
     }
 
     public void ReloadRemainingContractDataUI()

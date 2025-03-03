@@ -132,15 +132,10 @@ public class ContractManager : NetworkBehaviour
     [ClientRpc]
     private void RpcShowNegotiationPanel()
     {
+        ReloadNegotiationTime(0f);
         localTimer = new ActionTimer(timer => 
         {
-            if (waitingTimeImage != null)
-                waitingTimeImage.fillAmount = timer.passedTime / NEGOTIATION_TIME;
-            if (waitingTimeText != null)
-            {
-                int remainingDuration = (NEGOTIATION_TIME - (int)timer.passedTime);
-                waitingTimeText.text = $"{(remainingDuration / 60):00}:{(remainingDuration % 60):00}";
-            }
+            ReloadNegotiationTime(timer.passedTime);
         }, null, null, NEGOTIATION_TIME, 1).Run();
         if (!GameLayoutManager.instance.IsEnabled(LayoutType.Contract))
             GameLayoutManager.instance.ToggleUI(LayoutType.Contract);
@@ -299,6 +294,17 @@ public class ContractManager : NetworkBehaviour
             negotiationTimer.Stop();
         if (Game.instance == null) return;
         Game.instance.EndGame();
+    }
+
+    private void ReloadNegotiationTime(float passedTime)
+    {
+        if (waitingTimeImage != null)
+            waitingTimeImage.fillAmount = 1 - (float)(passedTime / NEGOTIATION_TIME);
+        if (waitingTimeText != null)
+        {
+            int remainingDuration = (NEGOTIATION_TIME - (int)passedTime);
+            waitingTimeText.text = $"{(remainingDuration / 60):00}:{(remainingDuration % 60):00}";
+        }
     }
 
     private void OnDestroy()
