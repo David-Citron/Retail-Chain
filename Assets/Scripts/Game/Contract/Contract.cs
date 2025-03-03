@@ -44,6 +44,9 @@ public class Contract : NetworkBehaviour
         {
             Debug.Log("Hook caught! Sending command to check contracts");
             ContractManager.instance.CmdCheckContracts();
+        } else
+        {
+            Debug.LogError("Hook caught but the ContractStatus is invalid!");
         }
     }
 

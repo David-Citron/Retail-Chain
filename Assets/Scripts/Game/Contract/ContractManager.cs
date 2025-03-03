@@ -92,7 +92,7 @@ public class ContractManager : NetworkBehaviour
         });
         if (contractNotFinished)
         {
-            Debug.LogError("Contract is not finished yet");
+            Debug.Log("Contract is not finished yet");
             return;
         }
         if (contractSuccess)
@@ -102,6 +102,7 @@ public class ContractManager : NetworkBehaviour
             StartNegotiation();
             return;
         }
+        Debug.LogWarning("Contract was NOT finished successfully!");
         RpcEndGame();
     }
 
@@ -273,6 +274,9 @@ public class ContractManager : NetworkBehaviour
     [ClientRpc]
     private void RpcEndGame()
     {
+        Debug.Log("RpcEndGame called!");
+        if (negotiationTimer != null)
+            negotiationTimer.Stop();
         if (Game.instance == null) return;
         Game.instance.EndGame();
     }
