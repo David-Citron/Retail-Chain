@@ -24,6 +24,7 @@ public class GameLayoutManager : MonoBehaviour
     void Start()
     {
         instance = this;
+        isOpened = false;
 
         username.text = PlayerSteamUtils.GetSteamUsername(SteamUser.GetSteamID());
         profilePicture.texture = PlayerSteamUtils.GetSteamProfilePicture(SteamUser.GetSteamID());

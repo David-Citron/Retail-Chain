@@ -4,7 +4,12 @@ using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour
 {
-    public static List<Interaction> interactions = new List<Interaction>();
+    public static List<Interaction> interactions;
+
+    void Awake()
+    {
+        interactions = new List<Interaction>();
+    }
 
     public static void AddInteraction(Interaction interaction) => interactions.Add(interaction);
     public static bool PressedKey(ActionType actionType, bool ignoreCheck)

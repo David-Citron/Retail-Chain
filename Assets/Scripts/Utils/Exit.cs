@@ -13,6 +13,7 @@ public class Exit : MonoBehaviour
         Initialize();
         Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.OpenMenu, true), item =>
         {
+            Debug.Log("Called ESC");
             if (GameLayoutManager.instance.CloseOpenedUI()) return;
             GameLayoutManager.instance.ToggleUI(LayoutType.Exit);
         }));

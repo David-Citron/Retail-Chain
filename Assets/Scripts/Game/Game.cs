@@ -43,6 +43,7 @@ public class Game : MonoBehaviour
     {
 
         GameLayoutManager.instance.ToggleUI(LayoutType.GameOver);
+
         /*
          
         When the game ends show player his game statistics and at the bottom of it "BACK TO LOBBY"
