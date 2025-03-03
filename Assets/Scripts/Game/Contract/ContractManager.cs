@@ -3,6 +3,7 @@ using UnityEngine;
 using Mirror;
 using System.Net;
 using TMPro;
+using UnityEngine.UI;
 
 public class ContractManager : NetworkBehaviour
 {
@@ -27,6 +28,7 @@ public class ContractManager : NetworkBehaviour
 
     private List<ContractItem> lastOfferContractItems;
     private ActionTimer negotiationTimer = null;
+    private ActionTimer localTimer = null;
 
     [SerializeField] private OfferState negotiationState;
 
@@ -37,6 +39,9 @@ public class ContractManager : NetworkBehaviour
     public GameObject remainingContractItemsContainer;
     public GameObject remainingContractItemPrefab;
     public TMP_Text remainingContractItemsTimer;
+
+    [SerializeField] private Image waitingTimeImage;
+    [SerializeField] private TMP_Text waitingTimeText;
 
     // Start is called before the first frame update
     void Awake()
@@ -127,6 +132,16 @@ public class ContractManager : NetworkBehaviour
     [ClientRpc]
     private void RpcShowNegotiationPanel()
     {
+        localTimer = new ActionTimer(timer => 
+        {
+            if (waitingTimeImage != null)
+                waitingTimeImage.fillAmount = timer.passedTime / NEGOTIATION_TIME;
+            if (waitingTimeText != null)
+            {
+                int remainingDuration = (NEGOTIATION_TIME - (int)timer.passedTime);
+                waitingTimeText.text = $"{(remainingDuration / 60):00}:{(remainingDuration % 60):00}";
+            }
+        }, null, null, NEGOTIATION_TIME, 1).Run();
         if (!GameLayoutManager.instance.IsEnabled(LayoutType.Contract))
             GameLayoutManager.instance.ToggleUI(LayoutType.Contract);
         negotiationState = OfferState.MakeOffer;
@@ -284,6 +299,12 @@ public class ContractManager : NetworkBehaviour
             negotiationTimer.Stop();
         if (Game.instance == null) return;
         Game.instance.EndGame();
+    }
+
+    private void OnDestroy()
+    {
+        if (negotiationTimer != null) negotiationTimer.Stop();
+        if (localTimer != null) localTimer.Stop();
     }
 }
 

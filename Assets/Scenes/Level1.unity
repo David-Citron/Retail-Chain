@@ -3765,6 +3765,8 @@ MonoBehaviour:
   remainingContractItemPrefab: {fileID: 4510104403340959622, guid: e6781a550b542344e864bacec747569e,
     type: 3}
   remainingContractItemsTimer: {fileID: 1688651326}
+  waitingTimeImage: {fileID: 1569754302}
+  waitingTimeText: {fileID: 10023499}
 --- !u!1 &580464782 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1625494359805926369, guid: cf5aa3ae8ec09df4a91cfafa5580b99a,
@@ -12233,8 +12235,8 @@ RectTransform:
   - {fileID: 597853092}
   - {fileID: 252835090}
   - {fileID: 1389412870}
-  - {fileID: 1353372504}
   - {fileID: 1193631300}
+  - {fileID: 1353372504}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
