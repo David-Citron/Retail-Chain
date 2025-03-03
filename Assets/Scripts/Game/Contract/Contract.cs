@@ -34,6 +34,7 @@ public class Contract : NetworkBehaviour
         }
         status = ContractStatus.Pending;
         currentContractItems = newContractItems;
+        ReloadRemainingContractDataUI();
         timer = new ActionTimer(actionTimer => 
         {
             if (ContractManager.instance.remainingContractItemsTimer == null) return;
@@ -138,6 +139,7 @@ public class Contract : NetworkBehaviour
             if (item.itemType != itemType) continue;
             if (item.fulfilled) continue;
             item.ItemSubmitted();
+            ReloadRemainingContractDataUI();
             return true;
         }
 
@@ -173,6 +175,6 @@ public class Contract : NetworkBehaviour
     private void OnDestroy()
     {
         if (timer == null) return;
-        timer.Stop();    
+        timer.Stop();
     }
 }
