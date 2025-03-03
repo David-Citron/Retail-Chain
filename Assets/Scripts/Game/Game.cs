@@ -15,6 +15,9 @@ public class Game : MonoBehaviour
     void Awake()
     {
         instance = this;
+
+        Interactable.interactions = new List<Interaction>();
+
         shopGameObjects.ForEach(gameObject => gameObject.SetActive(false));
         factoryGameObjects.ForEach(gameObject => gameObject.SetActive(false));
     }
@@ -41,7 +44,7 @@ public class Game : MonoBehaviour
 
     public void EndGame()
     {
-
+        GameLayoutManager.instance.CloseOpenedUI();
         GameLayoutManager.instance.ToggleUI(LayoutType.GameOver);
 
         /*
