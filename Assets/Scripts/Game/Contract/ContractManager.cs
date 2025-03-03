@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using System.Net;
+using TMPro;
 
 public class ContractManager : NetworkBehaviour
 {
@@ -32,6 +33,10 @@ public class ContractManager : NetworkBehaviour
     private List<ContractItemData> currentItemData;
     [SerializeField] private GameObject itemDataParent;
     [SerializeField] private GameObject itemDataPrefab;
+
+    public GameObject remainingContractItemsContainer;
+    public GameObject remainingContractItemPrefab;
+    public TMP_Text remainingContractItemsTimer;
 
     // Start is called before the first frame update
     void Awake()

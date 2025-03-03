@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
 public class Contract : NetworkBehaviour
 {
@@ -33,10 +34,16 @@ public class Contract : NetworkBehaviour
         }
         status = ContractStatus.Pending;
         currentContractItems = newContractItems;
-        timer = new ActionTimer(() => 
+        timer = new ActionTimer(actionTimer => 
+        {
+            if (ContractManager.instance.remainingContractItemsTimer == null) return;
+            int remainingDuration = (newContractTime - (int)actionTimer.passedTime);
+            ContractManager.instance.remainingContractItemsTimer.text = $"{(remainingDuration / 60):00}:{(remainingDuration % 60):00}";
+            
+        }, () => 
         {
             CheckContractStatus();
-        }, newContractTime).Run();
+        }, null, newContractTime, 1).Run();
     }
 
     public void HookStatus(ContractStatus oldValue, ContractStatus newValue)
@@ -135,6 +142,32 @@ public class Contract : NetworkBehaviour
         }
 
         return false;
+    }
+
+    public void ReloadRemainingContractDataUI()
+    {
+        GameObject container = ContractManager.instance.remainingContractItemsContainer;
+
+        // Clear current records
+        for (int i = 0; i < container.transform.childCount; i++)
+        {
+            Destroy(container.transform.GetChild(i).gameObject);
+        }
+
+        if (ContractManager.instance.remainingContractItemPrefab == null) return;
+        if (ContractManager.instance.remainingContractItemsContainer == null) return;
+
+        currentContractItems.ForEach(item => 
+        {
+            if (item.quantity == 0) return;
+            GameObject instance = Instantiate(ContractManager.instance.remainingContractItemPrefab, ContractManager.instance.remainingContractItemsContainer.transform);
+            RemainingContractData script = instance.GetComponent<RemainingContractData>();
+            if (script == null)
+            {
+                Debug.LogError("Script was not found in the instance!");
+            }
+            script.LoadData(item);
+        });
     }
 
     private void OnDestroy()
