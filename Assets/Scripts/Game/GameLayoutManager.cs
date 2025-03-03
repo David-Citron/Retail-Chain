@@ -35,12 +35,14 @@ public class GameLayoutManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Activates UI based on the given layout type, returns if the ui is enabled or disabled.
+    /// Activates UI based on the given layout type.
     /// </summary>
     /// <param name="layoutType"></param>
-    /// <returns></returns>
+    /// <returns>returns if the ui is enabled or disabled</returns>
     public bool ToggleUI(LayoutType layoutType)
     {
+        if (IsEnabled(LayoutType.GameOver)) return false;
+
         GameObject gameObject = layouts[(int)layoutType];
         if (gameObject == null) return false;
 
