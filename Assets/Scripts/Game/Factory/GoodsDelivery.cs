@@ -23,7 +23,7 @@ public class GoodsDelivery : Interactable
     private bool isMoving;
     private bool isPlayerNear;
 
-    private const int TIME_BEFORE_DELIVERY = 5; //Every 55 seconds.
+    private const int TIME_BEFORE_DELIVERY = 5; //Every 35 seconds.
 
     void Start()
     {
@@ -115,6 +115,8 @@ public class GoodsDelivery : Interactable
     private void GenerateOffers()
     {
         deliveryOffers.Clear();
+        elapsedTime = 0f;
+        isMoving = true;
 
         System.Random random = new System.Random();
 
@@ -123,9 +125,6 @@ public class GoodsDelivery : Interactable
             ItemData data = GetRandomType(random);
             deliveryOffers.Add(new DeliveryOffer(data, random.Next(data.buyPrice, TaxesManager.GetInflactionPrice(data.buyPrice)), random.Next(1, data.maxOfferAmount)));
         }
-
-        elapsedTime = 0f;
-        isMoving = true;
     }
 
     private void ClearOffers()

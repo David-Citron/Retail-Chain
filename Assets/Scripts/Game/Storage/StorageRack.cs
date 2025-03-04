@@ -31,10 +31,7 @@ public class StorageRack : Interactable
 
         closeButton.interactable = true;
         closeButton.onClick.RemoveAllListeners();
-        closeButton.onClick.AddListener(() =>
-        {
-            ToggleUI();
-        });
+        closeButton.onClick.AddListener(() => ToggleUI());
 
         UpdateRackItems();
 
@@ -86,14 +83,14 @@ public class StorageRack : Interactable
         }
 
         UpdateHints();
-
         if (storedItems.ContainsKey(itemType))
         {
             storedItems[itemType] = GetStoredAmountOf(itemType) + amount;
+            UpdateRackItems();
             return;
         }
 
-        storedItems.Add(itemType, GetStoredAmountOf(itemType) + amount);
+        storedItems.Add(itemType, amount);
         UpdateRackItems();
     }
 

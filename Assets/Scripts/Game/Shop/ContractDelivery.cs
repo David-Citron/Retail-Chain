@@ -24,20 +24,21 @@ public class ContractDelivery : MonoBehaviour
 
     public void DeliverItems(List<ContractItem> items)
     {
-        isMoving = true;
         isActive = true;
+        isMoving = true;
 
-        Hint.Create("UNLOADING GOODS..", 5);
-        int lastUnloaded = 0;
+        Hint.Create("UNLOADING GOODS..", 2);
+        foreach (var item in items)
+        {
+            if(item.quantity == 0) continue;
+            StorageRack.instance.InsertItem(item.itemType, item.quantity);
+        }
+
         new ActionTimer(() =>
         {
-            if (lastUnloaded > items.Count) return;
-            ContractItem item = items[lastUnloaded];
-            StorageRack.instance.InsertItem(item.itemType, item.quantity);
-
-            isMoving = false;
             isActive = false;
-        }, () => Hint.Create("GOODS ARE IN STORAGE", 2), items.Count, 1);
+            isMoving = true;
+        }, 3).Run();
     }
 
     private void PlayTruckAnimation(bool inAnimation)
@@ -56,7 +57,7 @@ public class ContractDelivery : MonoBehaviour
         elapsedTime += Time.fixedDeltaTime;
         float t = elapsedTime / 50f;
 
-        float newZ = Mathf.Lerp(vehicle.transform.localPosition.z, inAnimation ? -5.8f : -8, t);
-        vehicle.transform.localPosition = new Vector3(vehicle.transform.localPosition.x, vehicle.transform.localPosition.y, newZ);
+        float newX = Mathf.Lerp(vehicle.transform.localPosition.x, inAnimation ? 5.85f : 7.75f, t);
+        vehicle.transform.localPosition = new Vector3(newX, vehicle.transform.localPosition.y, vehicle.transform.localPosition.z);
     }
 }
