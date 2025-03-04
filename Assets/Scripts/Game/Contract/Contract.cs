@@ -101,11 +101,6 @@ public class Contract : NetworkBehaviour
 
     public void FinalizeContract()
     {
-        if (timer != null)
-        {
-            timer.Stop();
-            timer = null;
-        }
         if (PlayerManager.instance == null)
         {
             Debug.LogError("PlayerManager is null!");
@@ -179,6 +174,15 @@ public class Contract : NetworkBehaviour
             }
             script.LoadData(item);
         });
+    }
+
+    public void OnContractUIClose()
+    {
+        if (timer != null)
+        {
+            timer.Stop();
+            timer = null;
+        }
     }
 
     private void OnDestroy()

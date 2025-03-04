@@ -153,6 +153,7 @@ public class ContractManager : NetworkBehaviour
             localTimer.Stop();
             localTimer = null;
         }
+        localContract.OnContractUIClose();
     }
 
     [ClientRpc]
