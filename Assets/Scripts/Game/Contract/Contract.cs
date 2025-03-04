@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
 public class Contract : NetworkBehaviour
 {
@@ -127,7 +126,7 @@ public class Contract : NetworkBehaviour
                 break;
             case PlayerRole.Shop:
                 localPlayer.bankAccount.RemoveBalance(sum);
-                // TODO - add items to shop's storage
+                ContractDelivery.instance.DeliverItems(currentContractItems);
                 break;
             default:
                 Debug.LogError("Player role is not assigned correctly!");
