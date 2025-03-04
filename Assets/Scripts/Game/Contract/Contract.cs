@@ -171,8 +171,19 @@ public class Contract : NetworkBehaviour
             if (script == null)
             {
                 Debug.LogError("Script was not found in the instance!");
+                return;
             }
-            script.LoadData(item);
+            if (PlayerManager.instance == null)
+            {
+                Debug.LogError("Player manager instance is null!");
+                return;
+            }
+            if (PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault() == null)
+            {
+                Debug.LogError("Local player is null!");
+                return;
+            }
+            script.LoadData(item, PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault().playerRole);
         });
     }
 
