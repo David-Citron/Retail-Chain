@@ -7,9 +7,7 @@ public class Customer : MonoBehaviour
 {
     [SerializeField] private ItemType desiredItem = ItemType.None;
     [SerializeField] private NavMeshAgent agent = null;
-    private Transform targetTransform;
-    private List<Transform> pathPoints = new List<Transform>();
-    private int currentPathIndex = 0;
+    private Transform currentTarget;
 
     void Awake()
     {
@@ -23,19 +21,20 @@ public class Customer : MonoBehaviour
             }
         }
         GenerateOffer();
-        GeneratePath();
+        TestTarget();
+        //FindTarget(); TODOODODODOODDOO
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void GenerateOffer()
@@ -49,39 +48,65 @@ public class Customer : MonoBehaviour
         desiredItem = validItemTypes[generatedIndex];
     }
 
-    private void GeneratePath()
+    private void FindTarget()
     {
-        currentPathIndex = 0;
-        CustomerManager.instance.displayTables.ForEach(table =>
+        Transform target = CustomerManager.instance.GetDisplayTableWithItem(desiredItem);
+        if (target == null)
         {
-            pathPoints.Add(table.transform);
-        });
+            Debug.Log("No path found!");
+            return;
+        }
+        currentTarget = target;
+        agent.SetDestination(target.position);
+        StartCoroutine(WaitForArrival());
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void TestTarget()
     {
-        float time = Random.Range(3f, 6f);
-        if (other.gameObject == targetTransform.gameObject)
+        Transform target = CustomerManager.instance.displayTablePoints[0].transform;
+        currentTarget = target;
+        agent.SetDestination(target.position);
+        StartCoroutine(WaitForArrival());
+    }
+
+    private IEnumerator WaitForArrival()
+    {
+        yield return new WaitUntil(() =>
+            !agent.pathPending &&
+            agent.remainingDistance <= agent.stoppingDistance &&
+            agent.velocity.sqrMagnitude < 0.1f
+        );
+        ArrivedToDestination();
+    }
+
+    private void ArrivedToDestination()
+    {
+        Debug.LogWarning("ARRIVED!!!!!!");
+        if (currentTarget != null)
         {
-            new ActionTimer(() => {
-                NextMove();
-            }, time);
+            StartCoroutine(LookAtTarget(currentTarget));
         }
     }
 
-    public void SetTarget(Transform newTarget)
+    private IEnumerator LookAtTarget(Transform target)
     {
-        targetTransform = newTarget;
-        agent.SetDestination(targetTransform.position);
-    }
+        float duration = 0.5f;
+        float elapsed = 0f;
+        Quaternion startRotation = transform.rotation;
 
-    private void NextMove()
-    {
-        currentPathIndex++;
-        if (currentPathIndex < pathPoints.Count)
-            SetTarget(pathPoints[currentPathIndex]);
-        else
-            Leave();
+        Vector3 direction = target.position - transform.position;
+        direction.y = 0;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+
+        while (elapsed < duration)
+        {
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.rotation = targetRotation;
     }
 
     private void Leave()

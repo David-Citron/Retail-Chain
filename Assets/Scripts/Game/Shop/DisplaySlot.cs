@@ -90,6 +90,7 @@ public class DisplaySlot : Interactable
         return new InputInfo(nearestSlot, nearestItemDistance <= 1f, nearestSlot.transform.childCount != 0);
     }
 
+    public List<GameObject> GetCurrentItems() => currentItems;
     public override string GetTag() => "DisplaySlot";
     public override bool IsPlayerNear() => isPlayerNear;
     public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
