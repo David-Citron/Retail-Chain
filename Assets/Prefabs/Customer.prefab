@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7054211208434303146}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 5043499663496152277}
   - component: {fileID: 153455415713415802}
   - component: {fileID: -9003088545936843862}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Customer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 6853490569390603525}
   - component: {fileID: 6986643994522609966}
   - component: {fileID: 389708546233171046}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Robot Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 833084721430147448}
   - component: {fileID: 7077192602610010778}
   - component: {fileID: 2008332365191694423}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Robot Camera Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}

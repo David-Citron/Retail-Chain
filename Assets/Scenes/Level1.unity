@@ -10215,7 +10215,7 @@ PrefabInstance:
     - target: {fileID: 8794258009948409576, guid: abb816de441697f44b9470be00a24872,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.34
+      value: 11.29
       objectReference: {fileID: 0}
     - target: {fileID: 8794258009948409576, guid: abb816de441697f44b9470be00a24872,
         type: 3}
@@ -10225,7 +10225,7 @@ PrefabInstance:
     - target: {fileID: 8794258009948409576, guid: abb816de441697f44b9470be00a24872,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.04
+      value: 0.64
       objectReference: {fileID: 0}
     - target: {fileID: 8794258009948409576, guid: abb816de441697f44b9470be00a24872,
         type: 3}
@@ -15361,6 +15361,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1799911255}
   m_CullTransparentMesh: 1
+--- !u!1 &1807812861 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3625742398581527371, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
+    type: 3}
+  m_PrefabInstance: {fileID: 2032589806}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1807812866
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1807812861}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.0000002, y: 4.2, z: 0.0000002145767}
+  m_Center: {x: 0.5, y: 0.10000001, z: -0.000000011920928}
 --- !u!1 &1812371453
 GameObject:
   m_ObjectHideFlags: 0
@@ -15428,7 +15455,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 823
+    m_Bits: 3895
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
@@ -17969,6 +17996,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 203661563}
+    - targetCorrespondingSourceObject: {fileID: 3625742398581527371, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1807812866}
     - targetCorrespondingSourceObject: {fileID: 2346713125457314647, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
         type: 3}
       insertIndex: -1
@@ -18452,7 +18483,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 3895
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -18660,7 +18691,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 3895
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

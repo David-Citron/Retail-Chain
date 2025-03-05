@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4573861861564134750}
   - component: {fileID: 9040677014484104555}
   - component: {fileID: 3039412937097473960}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 2630188148855725635}
   - component: {fileID: 1522776568319141837}
   - component: {fileID: 3180862447026990219}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player Glasses
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 2237504289818646263}
   - component: {fileID: 8075561823537786621}
   - component: {fileID: 5468839364887426504}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player hand R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 304813167912778572}
   - component: {fileID: 5926461047388752796}
   - component: {fileID: 1400038026817925392}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player hand L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -341,7 +341,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2618285711117053072}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -374,7 +374,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3790237242286681438}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -407,7 +407,7 @@ GameObject:
   - component: {fileID: 7548892043578322166}
   - component: {fileID: 7340485319135814212}
   - component: {fileID: 7374182943197227505}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -494,7 +494,7 @@ GameObject:
   - component: {fileID: 1903670620983109312}
   - component: {fileID: 3484351026546945163}
   - component: {fileID: 2511243137615183858}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -602,7 +602,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34dc01dff4f28b64a9d3644df9d8739b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collidersInRange: []
 --- !u!114 &3484351026546945163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -641,7 +640,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6722035056678899339}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Hands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
