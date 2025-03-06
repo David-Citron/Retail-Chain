@@ -69,24 +69,14 @@ public class PlayerMovement : MonoBehaviour
         Vector3 inputDirection = new Vector3(horizontal, 0f, vertical).normalized;
 
         // If hitting a wall, project movement along the wall's plane
-        /*if (lastWallNormal != Vector3.zero)
-        {
-            inputDirection = Vector3.ProjectOnPlane(inputDirection, lastWallNormal).normalized;
-        }*/
         if (lastWallNormal != Vector3.zero)
         {
             Vector3 projectedDirection = Vector3.ProjectOnPlane(inputDirection, lastWallNormal).normalized;
 
             // Allow movement away from the wall
             float dot = Vector3.Dot(inputDirection, lastWallNormal);
-            if (dot > 0) // If moving away from the wall, allow full movement
-            {
-                inputDirection = inputDirection.normalized;
-            }
-            else // If moving into the wall, use projected movement
-            {
-                inputDirection = projectedDirection;
-            }
+            if (dot > 0) inputDirection = inputDirection.normalized;
+            else inputDirection = projectedDirection;
         }
 
         moveDirection = inputDirection * speed;
