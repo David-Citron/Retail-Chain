@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -264,6 +264,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 10023497}
   m_CullTransparentMesh: 1
+--- !u!1 &39143613
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 39143614}
+  m_Layer: 9
+  m_Name: CustomerPoint1.2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &39143614
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39143613}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.358, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1218247751}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &73998966 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -463794036176171685, guid: 7ae44ffea1806b746bb638654913ddb6,
@@ -1373,6 +1404,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.31999996, y: 0.010000012, z: 0.4}
   m_Center: {x: -0.000000015050173, y: 0.805, z: 0.20000003}
+--- !u!1 &210754544
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 210754545}
+  m_Layer: 9
+  m_Name: CustomerPoint2.2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &210754545
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210754544}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: -0.856, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1101466981}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &221974120
 GameObject:
   m_ObjectHideFlags: 0
@@ -4273,7 +4335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 612012344}
   m_Layer: 9
-  m_Name: CustomerPoint3
+  m_Name: CustomerPoint3.1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5383,7 +5445,7 @@ GameObject:
   m_Component:
   - component: {fileID: 785567119}
   m_Layer: 9
-  m_Name: CustomerPoint2
+  m_Name: CustomerPoint2.1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5656,7 +5718,7 @@ GameObject:
   m_Component:
   - component: {fileID: 821200203}
   m_Layer: 9
-  m_Name: CustomerPoint1
+  m_Name: CustomerPoint1.1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6325,6 +6387,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 878599500}
   m_CullTransparentMesh: 1
+--- !u!1 &882286247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 882286248}
+  m_Layer: 9
+  m_Name: CustomerPoint3.2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &882286248
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882286247}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.899, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1472323419}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &895081012
 GameObject:
   m_ObjectHideFlags: 0
@@ -8816,6 +8909,9 @@ MonoBehaviour:
   inputSlots:
   - {fileID: 1859688985}
   - {fileID: 558594382}
+  customerPoints:
+  - {fileID: 785567119}
+  - {fileID: 210754545}
 --- !u!65 &1101466985
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9319,6 +9415,9 @@ MonoBehaviour:
   inputSlots:
   - {fileID: 1656666714}
   - {fileID: 415576325}
+  customerPoints:
+  - {fileID: 821200203}
+  - {fileID: 39143614}
 --- !u!65 &1218247755
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12003,6 +12102,9 @@ MonoBehaviour:
   inputSlots:
   - {fileID: 302496508}
   - {fileID: 2076607317}
+  customerPoints:
+  - {fileID: 612012344}
+  - {fileID: 882286248}
 --- !u!65 &1472323423
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13319,6 +13421,7 @@ MonoBehaviour:
   inputSlots:
   - {fileID: 1651049853}
   - {fileID: 1651049852}
+  customerPoints: []
 --- !u!65 &1610621648
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14120,6 +14223,7 @@ MonoBehaviour:
   inputSlots:
   - {fileID: 1651049856}
   - {fileID: 1651049855}
+  customerPoints: []
 --- !u!65 &1651049862
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14183,6 +14287,7 @@ MonoBehaviour:
   inputSlots:
   - {fileID: 1651049859}
   - {fileID: 1651049858}
+  customerPoints: []
 --- !u!65 &1651049865
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18453,14 +18558,26 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 821200203}
+    - targetCorrespondingSourceObject: {fileID: 6363349013561442391, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 39143614}
     - targetCorrespondingSourceObject: {fileID: -2784924562030397265, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 785567119}
+    - targetCorrespondingSourceObject: {fileID: -2784924562030397265, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 210754545}
     - targetCorrespondingSourceObject: {fileID: 1649998437549788673, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 612012344}
+    - targetCorrespondingSourceObject: {fileID: 1649998437549788673, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 882286248}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -927005563312610005, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
         type: 3}

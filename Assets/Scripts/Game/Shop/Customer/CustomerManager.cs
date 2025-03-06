@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class CustomerManager : MonoBehaviour
 {
@@ -59,15 +56,26 @@ public class CustomerManager : MonoBehaviour
         Transform target = null;
         for (int i = 0; i < displayTables.Count - 1; i++)
         {
-            displayTables[i].GetCurrentItems().ForEach(item =>
+            List<GameObject> slots = displayTables[i].GetCurrentItems();
+            for (int j = 0; j < slots.Count - 1; j++)
             {
-                ItemManager.GetItemType(item).IfPresent(itemType =>
+                ItemType itemType = ItemManager.GetItemType(slots[i]).GetValueOrDefault();
+                if (targetItemType == itemType)
                 {
-                    if (targetItemType == itemType)
-                        target = displayTablePoints[i].transform;
-                });
-            });
+                    target = displayTables[i].customerPoints[j];
+                    break;
+                }
+            }
         }
+        return target;
+    }
+
+    public Transform GetRandomDisplayTable()
+    {
+        Transform target = null;
+        int randomNumberTable = Random.Range(0, displayTables.Count);
+        int randomNumberSlot = Random.Range(0, displayTables[randomNumberTable].GetCurrentItems().Count);
+        target = displayTables[randomNumberTable].customerPoints[randomNumberSlot];
         return target;
     }
 }

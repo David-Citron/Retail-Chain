@@ -9,6 +9,9 @@ public class Customer : MonoBehaviour
     [SerializeField] private NavMeshAgent agent = null;
     private Transform currentTarget;
 
+    private int stepsCount = 0;
+    private ActionTimer timer = null;
+
     void Awake()
     {
         if (agent == null)
@@ -20,9 +23,10 @@ public class Customer : MonoBehaviour
                 return;
             }
         }
+        stepsCount = 0;
         GenerateOffer();
-        TestTarget();
-        //FindTarget(); TODOODODODOODDOO
+        //TestTarget();
+        FindTarget(); //TODOODODODOODDOO
     }
 
     // Start is called before the first frame update
@@ -50,14 +54,16 @@ public class Customer : MonoBehaviour
 
     private void FindTarget()
     {
+        if (stepsCount >= 3)
+            Leave();
         Transform target = CustomerManager.instance.GetDisplayTableWithItem(desiredItem);
-        if (target == null)
+        while (target == null || (target != null && currentTarget.position == target.position))
         {
-            Debug.Log("No path found!");
-            return;
+            target = CustomerManager.instance.GetRandomDisplayTable();
         }
         currentTarget = target;
         agent.SetDestination(target.position);
+        stepsCount++;
         StartCoroutine(WaitForArrival());
     }
 
@@ -77,6 +83,7 @@ public class Customer : MonoBehaviour
             agent.velocity.sqrMagnitude < 0.1f
         );
         ArrivedToDestination();
+        timer = new ActionTimer(() => FindTarget(), 5).Run();
     }
 
     private void ArrivedToDestination()

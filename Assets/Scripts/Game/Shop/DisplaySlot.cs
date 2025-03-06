@@ -6,6 +6,7 @@ public class DisplaySlot : Interactable
 {
 
     [SerializeField] private List<GameObject> inputSlots;
+    [SerializeField] public List<Transform> customerPoints;
     private List<GameObject> currentItems;
 
     private bool isPlayerNear;
