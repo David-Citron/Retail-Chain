@@ -40,7 +40,15 @@ public class Game : MonoBehaviour
             factoryGameObjects.ForEach(gameObject => gameObject.SetActive(true));
             return;
         }
-        Debug.LogWarning("PlayerManager is not null");
+        PlayerMovement[] scripts = FindObjectsOfType<PlayerMovement>();
+        for (int i = 0; i < FindObjectsOfType<PlayerMovement>().Length; i++)
+        {
+            if (scripts[i].transform.GetComponentInParent<GamePlayer>() == null)
+            {
+                Debug.LogWarning("Test player deleted");
+                Destroy(scripts[i].gameObject);
+            }
+        }
         GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
         if(localPlayer.playerRole == PlayerRole.Shop) shopGameObjects.ForEach(gameObject => gameObject.SetActive(true));
         else factoryGameObjects.ForEach (gameObject => gameObject.SetActive(true));
