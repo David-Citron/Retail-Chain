@@ -30,6 +30,7 @@ public class Customer : MonoBehaviour
         stepsCount = 0;
         inventory = ItemType.None;
         GenerateOffer();
+        Debug.Log("New customer wants: " + desiredItem);
         FindTarget();
     }
 
@@ -55,14 +56,14 @@ public class Customer : MonoBehaviour
 
     private void FindTarget()
     {
-        if (stepsCount >= 3)
-        {
-            Leave();
-            return;
-        }
         if (inventory == desiredItem)
         {
             Debug.LogWarning("Going to cash register!!!");
+            return;
+        }
+        if (stepsCount >= 3)
+        {
+            Leave();
             return;
         }
         Transform previousTarget = currentTarget;
@@ -72,13 +73,8 @@ public class Customer : MonoBehaviour
         DisplaySlot slot = null;
         if (CustomerManager.instance.TryFindDisplaySlot(desiredItem, out slot, out target))
         {
-            Debug.LogWarning("Desired item: " + desiredItem + " FOUND SUCCESSFULLY!");
             currentTarget = target;
             currentTargetSlot = slot;
-        }
-        else
-        {
-            Debug.LogWarning("Desired item: " + desiredItem + " NOT FOUND!");
         }
         while (target == null && currentTarget == null)
         {

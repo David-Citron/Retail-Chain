@@ -85,8 +85,7 @@ public class CustomerManager : MonoBehaviour
                 ItemType itemType = ItemManager.GetItemType(slots[j]).GetValueOrDefault();
                 if (targetItemType == itemType)
                 {
-                    Debug.Log("ITEMFOUND!!!");
-                    targetTransform = displayTables[i].customerPoints[j]; // TODO chyba - potøebuje se nastavit správné místo => nemusí být stejný index Item slotu a Itemu
+                    targetTransform = displayTables[i].GetItemFromSlot(slots[j]).transform;
                     displaySlot = displayTables[i];
                     return true;
                 }
