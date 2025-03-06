@@ -24,8 +24,12 @@ public class DisplaySlot : Interactable
     {
         currentItems = new List<GameObject>();
 
-        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, gameObject => PutItem(PlayerPickUp.holdingItem), 
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear && GetNearestSlot().isInValidDistance, gameObject => PutItem(PlayerPickUp.holdingItem), 
             new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO ADD ITEM", () => PlayerPickUp.IsHodlingItem() && GetNearestSlot().isInValidDistance)));
+
+
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear && GetNearestSlot().isInValidDistance, gameObject => PickUp(),
+            new Hint(Hint.GetHintButton(ActionType.PickUpItem) + " TO PICK UP", () => !PlayerPickUp.IsHodlingItem() && GetNearestSlot().IsReadyToPickUp())));
     }
 
     void Update()
@@ -33,6 +37,25 @@ public class DisplaySlot : Interactable
         InputInfo inputInfo = GetNearestSlot();
         if (inputInfo == null || !inputInfo.isInValidDistance) return;
         UpdateHints();
+    }
+
+    private void PickUp()
+    {
+
+        if (PlayerPickUp.holdingItem != null)
+        {
+            Hint.Create("DROP CURRENT ITEM", 2);
+            return;
+        }
+
+        InputInfo nearestInput = GetNearestSlot();
+        if (nearestInput == null || !nearestInput.IsReadyToPickUp()) return;
+
+
+        if (currentItems.Count <= 0 || CooldownHandler.IsUnderCreateIfNot("displaySlot_pickUp", 1)) return;
+        var item = currentItems[currentItems.Count - 1];
+        PlayerPickUp.Instance().IfPresent(handler => handler.PickUp(item));
+        currentItems.Remove(item);
     }
 
     private void PutItem(GameObject item)
@@ -60,11 +83,6 @@ public class DisplaySlot : Interactable
         rigidbody.isKinematic = true;
         item.transform.localPosition = Vector3.zero;
         item.transform.localRotation = Quaternion.Euler(0, 0, 90);
-    }
-
-    public void AddItem()
-    {
-
     }
 
     internal InputInfo GetNearestSlot()
