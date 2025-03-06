@@ -52,7 +52,7 @@ public class Contract : NetworkBehaviour
             ContractManager.instance.CmdCheckContracts();
         } else
         {
-            Debug.LogError("Hook caught but the ContractStatus is invalid!");
+            Debug.Log("Hook caught but the ContractStatus is invalid!"); // This is expected at the beginning
         }
     }
 
