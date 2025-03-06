@@ -28,6 +28,7 @@ public class Game : MonoBehaviour
     void Start() {
         if (PlayerManager.instance == null)
         {
+            Debug.LogWarning("PlayerManager is null");
             int numberOfPlayersFound = FindObjectsOfType<PlayerMovement>().Length;
             if (numberOfPlayersFound == 1)
             {
@@ -39,6 +40,7 @@ public class Game : MonoBehaviour
             factoryGameObjects.ForEach(gameObject => gameObject.SetActive(true));
             return;
         }
+        Debug.LogWarning("PlayerManager is not null");
         GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
         if(localPlayer.playerRole == PlayerRole.Shop) shopGameObjects.ForEach(gameObject => gameObject.SetActive(true));
         else factoryGameObjects.ForEach (gameObject => gameObject.SetActive(true));
