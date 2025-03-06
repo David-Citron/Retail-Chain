@@ -6,6 +6,8 @@ public class Game : MonoBehaviour
 
     public static Game instance;
 
+    public static List<ActionTimer> timers;
+
     [SerializeField] private List<GameObject> cameras;
     [SerializeField] private List<GameObject> spawnLocations; //Spawn locations for players
 
@@ -15,6 +17,7 @@ public class Game : MonoBehaviour
     void Awake()
     {
         instance = this;
+        timers = new List<ActionTimer>();
 
         Interactable.interactions = new List<Interaction>();
 
@@ -44,6 +47,7 @@ public class Game : MonoBehaviour
 
     public void EndGame()
     {
+        timers.ForEach(timer => timer.Stop());
         GameLayoutManager.instance.CloseOpenedUI();
         GameLayoutManager.instance.ToggleUI(LayoutType.GameOver);
 

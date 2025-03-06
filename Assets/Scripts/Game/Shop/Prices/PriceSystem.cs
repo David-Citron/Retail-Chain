@@ -27,6 +27,10 @@ public class PriceSystem : Interactable
         closeButton.interactable = true;
         closeButton.onClick.RemoveAllListeners();
         closeButton.onClick.AddListener(() => UpdateContent(false));
+
+        BoxCollider collider = GetComponent<BoxCollider>();
+        collider.isTrigger = true;
+
     }
 
     void Update() {}

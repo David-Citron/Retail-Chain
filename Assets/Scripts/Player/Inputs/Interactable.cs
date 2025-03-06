@@ -9,7 +9,7 @@ public abstract class Interactable : MonoBehaviour
     public static void AddInteraction(Interaction interaction) => interactions.Add(interaction);
     public static bool PressedKey(ActionType actionType, bool ignoreCheck)
     {
-        if (!ignoreCheck && GameLayoutManager.isOpened) return false;
+        if (!ignoreCheck && GameLayoutManager.isOpened || PlayerInputManager.isInteracting) return false;
         var keys = KeybindManager.instance.keybinds[actionType];
         return Input.GetKeyDown(keys.positiveKey) || Input.GetKeyDown(keys.positiveAltKey);
     }
@@ -18,7 +18,7 @@ public abstract class Interactable : MonoBehaviour
 
     public static bool HoldingKey(ActionType actionType)
     {
-        if (GameLayoutManager.isOpened) return false;
+        if (GameLayoutManager.isOpened || PlayerInputManager.isInteracting) return false;
         var keys = KeybindManager.instance.keybinds[actionType];
         return Input.GetKey(keys.positiveKey) || Input.GetKey(keys.positiveAltKey);
     }

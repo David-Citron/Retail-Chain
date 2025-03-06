@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-using System.Net;
 using TMPro;
 using UnityEngine.UI;
 
@@ -311,12 +310,6 @@ public class ContractManager : NetworkBehaviour
             int remainingDuration = (NEGOTIATION_TIME - (int)passedTime);
             waitingTimeText.text = $"{(remainingDuration / 60):00}:{(remainingDuration % 60):00}";
         }
-    }
-
-    private void OnDestroy()
-    {
-        if (negotiationTimer != null) negotiationTimer.Stop();
-        if (localTimer != null) localTimer.Stop();
     }
 }
 

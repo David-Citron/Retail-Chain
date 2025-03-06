@@ -6,10 +6,7 @@ using Random = System.Random;
 public class ShopMessManager : MonoBehaviour
 {
 
-    [SerializeField] private List<GameObject> messPlaces = new List<GameObject>();
-    [SerializeField] private GameObject messGameObject;
-
-    private ActionTimer currenTimer;
+    [SerializeField] private List<GameObject> messes;
 
     void Start()
     {
@@ -22,15 +19,10 @@ public class ShopMessManager : MonoBehaviour
     {
         Random random = new Random();
 
-        var availablePlaces = GetAvailablePlaces();
-        var available = availablePlaces.Count - 1;
-        if (available < 0) return;
-        var selectedPlace = GetAvailablePlaces()[random.Next(available)];
-
-        GameObject mess = Instantiate(messGameObject);
-        mess.transform.parent = selectedPlace.transform;
-        mess.transform.localPosition = Vector3.zero;
-        mess.AddComponent<ShopMess>();
+        var availableMesses = GetAvailablePlaces();
+        var count = availableMesses.Count - 1;
+        if (count < 0) return;
+        GetAvailablePlaces()[random.Next(count)].GetComponent<ShopMess>().ShowMess();
     }
 
 
@@ -38,18 +30,13 @@ public class ShopMessManager : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(2f);
         Random random = new Random();
-        currenTimer = new ActionTimer(() =>
+        new ActionTimer(() =>
         {
             if (gameObject == null) return;
             SpawnMess();
             StartCoroutine(StartMessTimer());
-        }, random.Next(10, 15)).Run();
+        }, random.Next(10, 40)).Run();
     }
 
-    private void OnDestroy()
-    {
-        currenTimer.Stop();
-    }
-
-    private List<GameObject> GetAvailablePlaces() => messPlaces.FindAll(place => place.transform.childCount == 0);
+    private List<GameObject> GetAvailablePlaces() => messes.FindAll(place => !place.activeSelf);
 }

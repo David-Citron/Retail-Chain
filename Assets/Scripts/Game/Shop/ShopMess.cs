@@ -4,19 +4,16 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class ShopMess : Interactable
 {
-    private Interaction interaction;
 
     private bool isPlayerNear;
-    private long spawnedAt;
     private bool isCleaning;
+
+    private long spawnedAt;//When player stop cleaning new time will be saved.
 
     void Start()
     {
-        spawnedAt = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        interaction = new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, gameObject => StartCleaning(),
-            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO CLEAN", () => isPlayerNear && !isCleaning));
-
-        AddInteraction(interaction);
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear && isActiveAndEnabled, gameObject => StartCleaning(),
+            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO CLEAN", () => isPlayerNear && !isCleaning)));
 
         BoxCollider boxCollider = GetComponent<BoxCollider>();
         boxCollider.enabled = true;
@@ -27,10 +24,11 @@ public class ShopMess : Interactable
 
     private void StartCleaning()
     {
+        PlayerInputManager.isInteracting = true;
         isCleaning = true;
 
         float cleaningTime = (DateTimeOffset.Now.ToUnixTimeMilliseconds() - spawnedAt) / 2000f;
-        cleaningTime = (int) Mathf.Clamp(cleaningTime, 1, 6);
+        cleaningTime = (int) Mathf.Clamp(cleaningTime, 1, 5);
 
         CircleTimer.Start(cleaningTime);
 
@@ -39,19 +37,24 @@ public class ShopMess : Interactable
             () => {
                 CircleTimer.Stop();
                 isCleaning = false;
+                PlayerInputManager.isInteracting = false;
                 UpdateHints();
             }, cleaningTime, 1).Run();
     }
 
+    public void ShowMess()
+    {
+        if (gameObject.activeSelf) return;
+        gameObject.SetActive(true);
+        spawnedAt = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+    }
+
     private void DestroyMess()
     {
+        ToggleIsPlayerNear();//When turning mess, the script is not on so that means we have to run this manually.
         gameObject.SetActive(false);
-        interactions.Remove(interaction);
-
-        if (this == null) return;
-
-        PlayerInputManager.instance.RemoveCollider(gameObject);
-        Destroy(gameObject);
+        isCleaning = false;
+        PlayerInputManager.isInteracting = false;
     }
 
     public override string GetTag() => "ShopMess";

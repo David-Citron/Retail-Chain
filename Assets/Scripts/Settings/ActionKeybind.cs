@@ -68,7 +68,7 @@ public class ActionKeybind
 
     private bool KeyPressed(KeyCode key, KeyCode alt)
     {
-        if (GameLayoutManager.isOpened) return false;
+        if (GameLayoutManager.isOpened || PlayerInputManager.isInteracting) return false;
         return (key != KeyCode.None && Input.GetKey(key)) || (alt != KeyCode.None && Input.GetKey(alt));
     }
 }

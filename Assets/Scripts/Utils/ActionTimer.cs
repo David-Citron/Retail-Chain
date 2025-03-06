@@ -25,6 +25,9 @@ public class ActionTimer
         this.onUpdate = onUpdate;
         this.onComplete = onComplete;
         this.onFail = onFail;
+
+        if (Game.timers == null) return;
+        Game.timers.Add(this);
     }
 
     public ActionTimer(Action<ActionTimer> onUpdate, Action onComplete, Action onFail, float totalTime, float howOften) : this(null, onUpdate, onComplete, onFail, totalTime, howOften) { }
@@ -57,6 +60,8 @@ public class ActionTimer
 
     private IEnumerator RunAction()
     {
+        if (ended) Game.timers.Remove(this);
+
         while (passedTime < totalTime)
         {
             if (ended) yield break;

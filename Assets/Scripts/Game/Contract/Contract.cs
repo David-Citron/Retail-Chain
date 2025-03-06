@@ -195,10 +195,4 @@ public class Contract : NetworkBehaviour
             timer = null;
         }
     }
-
-    private void OnDestroy()
-    {
-        if (timer == null) return;
-        timer.Stop();
-    }
 }
