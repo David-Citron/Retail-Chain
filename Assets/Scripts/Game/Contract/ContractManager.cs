@@ -54,6 +54,10 @@ public class ContractManager : NetworkBehaviour
         negotiationState = OfferState.None;
         contracts = new List<Contract>();
         currentItemData = new List<ContractItemData>();
+        if (PlayerManager.instance == null)
+            Destroy(instance);
+        if (PlayerManager.instance.gamePlayers.Count == 0)
+            Destroy(instance);
         PlayerManager.instance.gamePlayers.ForEach(player =>
         {
             Contract contract = player.GetComponent<Contract>();
@@ -286,8 +290,16 @@ public class ContractManager : NetworkBehaviour
     {
         List<ContractItem> contractItems = new List<ContractItem>();
         currentItemData.ForEach(itemData => {
-            contractItems.Add(itemData.ReadData());
+            ContractItem data = itemData.ReadData();
+            if (data.quantity <= 0) return;
+            contractItems.Add(data);
         });
+        if (contractItems.Count == 0)
+        {
+            Debug.LogWarning("No contract items send!");
+            // TODO: add warning to player?
+            return;
+        }
         CmdSendNegotiationOffer(contractItems);
     }
 

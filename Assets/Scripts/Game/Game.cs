@@ -28,10 +28,11 @@ public class Game : MonoBehaviour
     void Start() {
         if (PlayerManager.instance == null)
         {
-            if (FindFirstObjectByType<PlayerMovement>() != null)
+            int numberOfPlayersFound = FindObjectsOfType<PlayerMovement>().Length;
+            if (numberOfPlayersFound == 1)
             {
                 GameObject testPlayer = FindFirstObjectByType<PlayerMovement>().gameObject;
-                if (testPlayer != null) testPlayer.SetActive(false);
+                if (testPlayer != null) testPlayer.SetActive(true);
             }
 
             shopGameObjects.ForEach(gameObject => gameObject.SetActive(true));

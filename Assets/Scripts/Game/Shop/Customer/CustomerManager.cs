@@ -10,21 +10,24 @@ public class CustomerManager : MonoBehaviour
     [SerializeField] private List<GameObject> payQueue;
     [SerializeField] private List<Customer> customersActive;
 
-    [SerializeField] public List<Transform> displayTablePoints; // shouldn't be public TODO
     [SerializeField] private List<DisplaySlot> displayTables;
 
-    [SerializeField] private Transform customerSpawnPoint;
+    [SerializeField] public Transform customerSpawnPoint;
+
+    List<ActionTimer> timers;
 
     void Awake()
     {
         if (instance == null) instance = this;
         else Destroy(this);
+        timers = new List<ActionTimer>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         SpawnNewCustomer();
+        CreateNewCustomerTimer();
     }
 
     // Update is called once per frame
@@ -51,31 +54,55 @@ public class CustomerManager : MonoBehaviour
         customersActive.Add(customer);
     }
 
-    public Transform GetDisplayTableWithItem(ItemType targetItemType)
+    public void CustomerLeaving()
     {
-        Transform target = null;
-        for (int i = 0; i < displayTables.Count - 1; i++)
+        Debug.Log("Callback for leaving called!");
+        CreateNewCustomerTimer();
+    }
+
+    private void CreateNewCustomerTimer()
+    {
+        float time = Random.Range(3.0f, 7.0f);
+        ActionTimer timer = null;
+        timer = new ActionTimer(() =>
+        {
+            SpawnNewCustomer();
+            timer.Stop();
+            timers.Remove(timer);
+        }, 5).Run();
+        timers.Add(timer);
+    }
+
+    public bool TryFindDisplaySlot(ItemType targetItemType, out DisplaySlot displaySlot, out Transform targetTransform)
+    {
+        targetTransform = null;
+        displaySlot = null;
+        for (int i = 0; i < displayTables.Count; i++)
         {
             List<GameObject> slots = displayTables[i].GetCurrentItems();
-            for (int j = 0; j < slots.Count - 1; j++)
+            for (int j = 0; j < slots.Count; j++)
             {
-                ItemType itemType = ItemManager.GetItemType(slots[i]).GetValueOrDefault();
+                ItemType itemType = ItemManager.GetItemType(slots[j]).GetValueOrDefault();
                 if (targetItemType == itemType)
                 {
-                    target = displayTables[i].customerPoints[j];
-                    break;
+                    Debug.Log("ITEMFOUND!!!");
+                    targetTransform = displayTables[i].customerPoints[j]; // TODO chyba - potøebuje se nastavit správné místo => nemusí být stejný index Item slotu a Itemu
+                    displaySlot = displayTables[i];
+                    return true;
                 }
             }
         }
-        return target;
+        return false;
     }
 
-    public Transform GetRandomDisplayTable()
+    public bool TryFindRandomDisplaySlot(out DisplaySlot displaySlot, out Transform targetTransform)
     {
-        Transform target = null;
+        targetTransform = null;
+        displaySlot = null;
         int randomNumberTable = Random.Range(0, displayTables.Count);
-        int randomNumberSlot = Random.Range(0, displayTables[randomNumberTable].GetCurrentItems().Count);
-        target = displayTables[randomNumberTable].customerPoints[randomNumberSlot];
-        return target;
+        int randomNumberSlot = Random.Range(0, displayTables[randomNumberTable].customerPoints.Count);
+        targetTransform = displayTables[randomNumberTable].customerPoints[randomNumberSlot];
+        displaySlot = displayTables[randomNumberTable];
+        return targetTransform != null && displaySlot != null;
     }
 }

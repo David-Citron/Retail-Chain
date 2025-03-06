@@ -8,9 +8,13 @@ public class Customer : MonoBehaviour
     [SerializeField] private ItemType desiredItem = ItemType.None;
     [SerializeField] private NavMeshAgent agent = null;
     private Transform currentTarget;
+    private DisplaySlot currentTargetSlot;
+    private ItemType inventory;
 
     private int stepsCount = 0;
     private ActionTimer timer = null;
+
+    [SerializeField] private bool leaving = false;
 
     void Awake()
     {
@@ -24,9 +28,9 @@ public class Customer : MonoBehaviour
             }
         }
         stepsCount = 0;
+        inventory = ItemType.None;
         GenerateOffer();
-        //TestTarget();
-        FindTarget(); //TODOODODODOODDOO
+        FindTarget();
     }
 
     // Start is called before the first frame update
@@ -43,11 +47,8 @@ public class Customer : MonoBehaviour
 
     private void GenerateOffer()
     {
-        List<ItemData> itemData = ItemManager.GetAllItemData();
         List<ItemType> validItemTypes = new List<ItemType>();
-        itemData.ForEach(data => {
-            if (data.IsSellable()) validItemTypes.Add(data.itemType);
-        });
+        ItemManager.GetAllSellableItemData().ForEach(data => validItemTypes.Add(data.itemType));
         int generatedIndex = Random.Range(0, validItemTypes.Count);
         desiredItem = validItemTypes[generatedIndex];
     }
@@ -55,23 +56,44 @@ public class Customer : MonoBehaviour
     private void FindTarget()
     {
         if (stepsCount >= 3)
-            Leave();
-        Transform target = CustomerManager.instance.GetDisplayTableWithItem(desiredItem);
-        while (target == null || (target != null && currentTarget.position == target.position))
         {
-            target = CustomerManager.instance.GetRandomDisplayTable();
+            Leave();
+            return;
+        }
+        if (inventory == desiredItem)
+        {
+            Debug.LogWarning("Going to cash register!!!");
+            return;
+        }
+        Transform previousTarget = currentTarget;
+        currentTarget = null;
+        currentTargetSlot = null;
+        Transform target = null;
+        DisplaySlot slot = null;
+        if (CustomerManager.instance.TryFindDisplaySlot(desiredItem, out slot, out target))
+        {
+            Debug.LogWarning("Desired item: " + desiredItem + " FOUND SUCCESSFULLY!");
+            currentTarget = target;
+            currentTargetSlot = slot;
+        }
+        else
+        {
+            Debug.LogWarning("Desired item: " + desiredItem + " NOT FOUND!");
+        }
+        while (target == null && currentTarget == null)
+        {
+            Debug.LogWarning("SEARCHING FOR RANDOM");
+            if (!CustomerManager.instance.TryFindRandomDisplaySlot(out slot, out target))
+            {
+                Debug.Log("No random target found!");
+                return;
+            }
+            if (previousTarget == null) break;
+            if (previousTarget.position == target.position) target = null;
         }
         currentTarget = target;
         agent.SetDestination(target.position);
         stepsCount++;
-        StartCoroutine(WaitForArrival());
-    }
-
-    private void TestTarget()
-    {
-        Transform target = CustomerManager.instance.displayTablePoints[0].transform;
-        currentTarget = target;
-        agent.SetDestination(target.position);
         StartCoroutine(WaitForArrival());
     }
 
@@ -82,13 +104,37 @@ public class Customer : MonoBehaviour
             agent.remainingDistance <= agent.stoppingDistance &&
             agent.velocity.sqrMagnitude < 0.1f
         );
+        if (leaving)
+        {
+            Debug.Log("Leaving!");
+            Optional<CustomerManager>.Of(CustomerManager.instance).IfPresent(manager => manager.CustomerLeaving());
+            Destroy(gameObject);
+            yield break;
+        }
         ArrivedToDestination();
-        timer = new ActionTimer(() => FindTarget(), 5).Run();
+        timer = new ActionTimer(() => 
+        {
+            TryTakeItem();
+            timer = new ActionTimer(() => FindTarget(), 2).Run();
+        }, 2).Run();
+    }
+
+    private void TryTakeItem()
+    {
+        if (currentTargetSlot == null)
+            return;
+        GameObject slot = currentTargetSlot.FindClosestItemSlot(transform.position);
+        if (slot != null && currentTargetSlot.GetItemFromSlot(slot).itemType == desiredItem)
+        {
+            currentTargetSlot.RemoveItemFromSlot(slot);
+            inventory = desiredItem;
+            return;
+        }
+        return;
     }
 
     private void ArrivedToDestination()
     {
-        Debug.LogWarning("ARRIVED!!!!!!");
         if (currentTarget != null)
         {
             StartCoroutine(LookAtTarget(currentTarget));
@@ -119,5 +165,8 @@ public class Customer : MonoBehaviour
     private void Leave()
     {
         Debug.LogWarning("Customer wants to leave");
+        leaving = true;
+        agent.SetDestination(CustomerManager.instance.customerSpawnPoint.position);
+        StartCoroutine(WaitForArrival());
     }
 }

@@ -109,6 +109,48 @@ public class DisplaySlot : Interactable
         return new InputInfo(nearestSlot, nearestItemDistance <= 1f, nearestSlot.transform.childCount != 0);
     }
 
+    public GameObject FindClosestItemSlot(Vector3 positionOrigin)
+    {
+        GameObject result = null;
+        if (inputSlots.Count == 0)
+        {
+            Debug.LogWarning("There are no input slots in the DisplaySlot!");
+            return result;
+        }
+
+        result = inputSlots[0];
+        float nearestDistance = Vector3.Distance(positionOrigin, inputSlots[0].transform.position);
+        for (int i = 1; i < inputSlots.Count; i++)
+        {
+            float currentDistance = Vector3.Distance(positionOrigin, inputSlots[i].transform.position);
+            if (currentDistance > nearestDistance) break;
+            nearestDistance = currentDistance;
+            result = inputSlots[i];
+        }
+
+        return result;
+    }
+
+    public bool RemoveItemFromSlot(GameObject slot)
+    {
+        Transform item = slot.transform.GetChild(0);
+        if (item == null)
+            return false;
+        if (item.gameObject == null)
+            return false;
+        Destroy(item.gameObject);
+        return true;
+    }
+
+    public Item GetItemFromSlot(GameObject slot)
+    {
+        Item item = null;
+        item = slot.GetComponentInChildren<Item>();
+        if (item == null)
+            return null;
+        return item;
+    }
+
     public List<GameObject> GetCurrentItems() => currentItems;
     public override string GetTag() => "DisplaySlot";
     public override bool IsPlayerNear() => isPlayerNear;
