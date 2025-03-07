@@ -20,7 +20,7 @@ public class LobbiesListManager : MonoBehaviour {
 
     public void ShowLobbies()
     {
-        MenuManager.instance.ToggleUI("LobbiesList");
+        MenuManager.instance.Open("LobbiesList");
         DestroyLobbies();
         StartCoroutine(UpdateLobbyList());
     }

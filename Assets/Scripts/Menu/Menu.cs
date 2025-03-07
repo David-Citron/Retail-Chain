@@ -20,7 +20,7 @@ public class Menu : MonoBehaviour
         if (closeButton == null) return;
         closeButton.interactable = true;
         closeButton.onClick.RemoveAllListeners();
-        closeButton.onClick.AddListener(() => MenuManager.instance.ToggleUI(GetName(), false));
+        closeButton.onClick.AddListener(() => Close());
     }
 
     void Update() { }

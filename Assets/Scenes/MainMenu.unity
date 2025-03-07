@@ -8153,7 +8153,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1271244219}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: ToggleUI
+        m_MethodName: Open
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -23,7 +23,7 @@ public class CustomNetworkManager : NetworkManager
         PlayerManager.instance.Reset();
         Hint.Create("Welcome to RetailChain.", 5);
 
-        MenuManager.instance.ToggleUI("LobbyPanel");
+        MenuManager.instance.Open("LobbyPanel");
     }
 
     public override void OnClientDisconnect()
