@@ -175,11 +175,25 @@ public class Customer : MonoBehaviour
         transform.rotation = targetRotation;
     }
 
-    private void Leave()
+    public void Leave()
     {
-        Debug.LogWarning("Customer wants to leave");
         wantsToLeave = true;
         agent.SetDestination(CustomerManager.instance.customerSpawnPoint.position);
         StartCoroutine(WaitForArrival());
+    }
+
+    public void Pay()
+    {
+        wantToPay = false;
+        Leave();
+    }
+
+    private void OnDestroy()
+    {
+        if (timer != null)
+        {
+            timer.Stop();
+            timer = null;
+        }
     }
 }
