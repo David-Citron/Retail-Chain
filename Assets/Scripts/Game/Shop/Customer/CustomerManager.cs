@@ -269,4 +269,6 @@ public class CustomerManager : MonoBehaviour
         GameObject itemSlot = customerPoints[i].itemSlot;
         return customerPoints[i].displayTable.RemoveItemFromSlot(customerPoints[i].itemSlot);
     }
+
+    public Customer FirstCustomerInQueue() => queuePoints[0].reservedCustomer;
 }
