@@ -71,4 +71,5 @@ public class Menu : MonoBehaviour
 
     private int GetActiveIndex() => pages.FindIndex(page => page.activeSelf);
     public string GetName() => gameObject.name;
+    public bool IsCloseable() => closeable;
 }

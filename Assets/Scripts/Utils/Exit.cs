@@ -11,10 +11,8 @@ public class Exit : MonoBehaviour
     void Start()
     {
         Initialize();
-        Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.OpenMenu, true), item =>
-        {
-            if (GameLayoutManager.instance.CloseOpenedUI()) return;
-            GameLayoutManager.instance.ToggleUI(LayoutType.Exit);
+        Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.OpenMenu, true), item => {
+            if (!MenuManager.instance.CloseCurrent()) MenuManager.instance.Open("Exit");
         }));
 
        // Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.Help), item => { }));
@@ -32,7 +30,7 @@ public class Exit : MonoBehaviour
         settingsButton.onClick.RemoveAllListeners();
         exitButton.onClick.RemoveAllListeners();
 
-        backButton.onClick.AddListener(() => GameLayoutManager.instance.ToggleUI(LayoutType.Exit));
+        backButton.onClick.AddListener(() => MenuManager.instance.ToggleUI("Exit"));
 
 
         exitButton.onClick.AddListener(() => Leave());

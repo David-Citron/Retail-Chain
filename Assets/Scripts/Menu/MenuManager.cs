@@ -10,6 +10,8 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] private GameObject background;
 
+    private Menu current; //Menu that is currently opened.
+
     void Awake()
     {
         instance = this;
@@ -41,17 +43,17 @@ public class MenuManager : MonoBehaviour
     /// Toggles UI based on the name and closes all active menus before open.
     /// </summary>
     /// <param name="uiName">The UI name</param>
-    public void ToggleUI(string uiName) => ToggleUI(uiName, true);
+    public bool ToggleUI(string uiName) => ToggleUI(uiName, true);
 
     /// <summary>
     /// Toggles UI based on the name.
     /// </summary>
     /// <param name="uiName">The UI name</param>
-    public void ToggleUI(string uiName, bool closeAll)
+    public bool ToggleUI(string uiName, bool closeAll)
     {
         if(!menus.TryGetValue(uiName, out Menu menu)) {
             Debug.LogWarning("Cannot find UI that you are trying to open.");
-            return;
+            return false;
         }
 
         if(closeAll) CloseAll();
@@ -59,6 +61,7 @@ public class MenuManager : MonoBehaviour
 
         bool isOpened = menu.IsOpened();
         if(background != null) background.SetActive(isOpened);
+        return isOpened;
 ;    }
 
     /// <summary>
@@ -73,8 +76,21 @@ public class MenuManager : MonoBehaviour
             return;
         }
 
+        if (background != null) background.SetActive(true);
         CloseAll();
         menu.Open();
+    }
+
+    /// <summary>
+    /// Closes currently opened UI.
+    /// </summary>
+    /// <returns>true if any menu was closed, otherwise false</returns>
+    public bool CloseCurrent()
+    {
+        if (current == null || !current.IsCloseable()) return false;
+        if (background != null) background.SetActive(false);
+        current.Close();
+        return true;
     }
 
     public void Close(string uiName)

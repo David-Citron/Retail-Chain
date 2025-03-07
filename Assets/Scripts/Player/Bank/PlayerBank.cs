@@ -67,7 +67,7 @@ public class PlayerBank : MonoBehaviour
 
     private void UpdateMenu()
     {
-        if (GameLayoutManager.instance == null) return;
-        GameLayoutManager.instance.UpdateBalance(GetBalance());
+        if (Game.instance == null) return;
+        Game.instance.UpdateBalance(GetBalance());
     }
 }

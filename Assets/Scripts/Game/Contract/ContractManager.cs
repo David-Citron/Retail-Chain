@@ -140,8 +140,9 @@ public class ContractManager : NetworkBehaviour
         {
             ReloadNegotiationTime(timer.passedTime);
         }, null, null, NEGOTIATION_TIME, 1).Run();
-        if (!GameLayoutManager.instance.IsEnabled(LayoutType.Contract))
-            GameLayoutManager.instance.ToggleUI(LayoutType.Contract);
+
+        MenuManager.instance.Open("Contract");
+
         negotiationState = OfferState.MakeOffer;
         ChangeNegotiationTab(negotiationState);
     }
@@ -149,8 +150,7 @@ public class ContractManager : NetworkBehaviour
     [ClientRpc]
     private void RpcHideNegotiationPanel()
     {
-        if (GameLayoutManager.instance.IsEnabled(LayoutType.Contract))
-            GameLayoutManager.instance.ToggleUI(LayoutType.Contract);
+        MenuManager.instance.Close("Contract");
         if (localTimer != null)
         {
             localTimer.Stop();

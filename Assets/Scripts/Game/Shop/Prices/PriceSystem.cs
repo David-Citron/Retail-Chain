@@ -43,7 +43,7 @@ public class PriceSystem : Interactable
 
     public void UpdateContent(bool update)
     {
-        if (!update && !GameLayoutManager.instance.ToggleUI(LayoutType.PriceSystem)) return;
+        if (!update && !MenuManager.instance.ToggleUI("PriceSystem")) return;
         priceItems.ForEach(item => Destroy(item));
         foreach (var item in ItemManager.GetAllSellableItemData())
         {

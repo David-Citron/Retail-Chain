@@ -1,5 +1,9 @@
+using Steamworks;
 using System.Collections.Generic;
+using System.Globalization;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
@@ -7,6 +11,10 @@ public class Game : MonoBehaviour
     public static Game instance;
 
     public static List<ActionTimer> timers;
+
+    [SerializeField] private TMP_Text username;
+    [SerializeField] private RawImage profilePicture;
+    [SerializeField] private TMP_Text balance;
 
     [SerializeField] private List<GameObject> cameras;
     [SerializeField] private List<GameObject> spawnLocations; //Spawn locations for players
@@ -18,6 +26,9 @@ public class Game : MonoBehaviour
     {
         instance = this;
         timers = new List<ActionTimer>();
+
+        username.text = PlayerSteamUtils.GetSteamUsername(SteamUser.GetSteamID());
+        profilePicture.texture = PlayerSteamUtils.GetSteamProfilePicture(SteamUser.GetSteamID());
 
         Interactable.interactions = new List<Interaction>();
 
@@ -59,8 +70,7 @@ public class Game : MonoBehaviour
     public void EndGame()
     {
         EndTimers();
-        GameLayoutManager.instance.CloseOpenedUI();
-        GameLayoutManager.instance.ToggleUI(LayoutType.GameOver);
+        MenuManager.instance.Open("GameOver");
 
         /*
          
@@ -95,4 +105,7 @@ public class Game : MonoBehaviour
             else shopGameObjects.ForEach(gameObject => Destroy(gameObject));
         });
     }
+
+    public void UpdateBalance(int amount) => balance.text = "$" + amount.ToString("N0", CultureInfo.InvariantCulture);
+    public void UpdateBalance() => UpdateBalance(PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault().bankAccount.GetBalance());
 }

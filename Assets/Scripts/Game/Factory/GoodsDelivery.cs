@@ -53,7 +53,7 @@ public class GoodsDelivery : Interactable
 
     private void ToggleOffersUI()
     {
-        if (!GameLayoutManager.instance.ToggleUI(LayoutType.DeliveryOffers) || !IsActive()) return;
+        if (!MenuManager.instance.ToggleUI("DeliveryOffers") || !IsActive()) return;
         UpdateOffers();
     }
 
@@ -129,7 +129,7 @@ public class GoodsDelivery : Interactable
 
     private void ClearOffers()
     {
-        if (GameLayoutManager.instance.IsEnabled(LayoutType.DeliveryOffers)) ToggleOffersUI();
+        if (MenuManager.instance.IsOpened("DeliveryOffers")) ToggleOffersUI();
 
         foreach (var offer in deliveryOffers)
         {
