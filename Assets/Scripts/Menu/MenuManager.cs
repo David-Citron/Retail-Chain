@@ -79,9 +79,9 @@ public class MenuManager : MonoBehaviour
             return;
         }
 
-        if (background != null) background.SetActive(true);
         CloseAll();
         menu.Open();
+        if (background != null) background.SetActive(true);
     }
 
     /// <summary>
@@ -90,8 +90,8 @@ public class MenuManager : MonoBehaviour
     /// <param name="menu">The menu</param>
     public void Close(Menu menu)
     {
-        if (background != null) background.SetActive(false);
         menu.Close();
+        if (background != null) background.SetActive(false);
     }
 
 
