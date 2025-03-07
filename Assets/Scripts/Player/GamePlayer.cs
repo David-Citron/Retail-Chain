@@ -136,8 +136,10 @@ public class GamePlayer : NetworkBehaviour
 
         if (!isLocalPlayer) return;
 
-        LobbyHandler.instance.readyButton.gameObject.SetActive(!isReady);
-        LobbyHandler.instance.readyCancelButton.gameObject.SetActive(isReady);
+        LobbyHandler handler = LobbyHandler.instance;
+        if (handler == null) return;
+        handler.readyButton.gameObject.SetActive(!isReady);
+        handler.readyCancelButton.gameObject.SetActive(isReady);
     }
 
     public void StartGame()
