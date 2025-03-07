@@ -50,13 +50,13 @@ public class StorageRack : Interactable
     {
         if (PlayerPickUp.holdingItem != null) return;
 
-        if(storedItems.Count <= 0 && !MenuManager.instance.IsOpened("ItemRack"))
+        if(storedItems.Count <= 0 && !MenuManager.instance.IsOpened("StorageRack"))
         {
             Hint.ShowWhile("NO ITEMS IN STORAGE", () => storedItems.Count <= 0 && isPlayerNear);
             return;
         }
 
-        if (!MenuManager.instance.ToggleUI("ItemRack")) return;
+        if (!MenuManager.instance.ToggleUI("StorageRack")) return;
 
         foreach (var item in contentItems) Destroy(item);
         foreach (var item in storedItems.Keys)
