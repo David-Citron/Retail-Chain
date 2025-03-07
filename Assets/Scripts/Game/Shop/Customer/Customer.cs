@@ -68,6 +68,7 @@ public class Customer : MonoBehaviour
             }
             currentTarget = point.point;
             currentTargetSlot = point.displayTable;
+            wantToPay = true;
             agent.SetDestination(currentTarget.position);
             StartCoroutine(WaitForArrival());
             return;
@@ -111,6 +112,11 @@ public class Customer : MonoBehaviour
             agent.remainingDistance <= agent.stoppingDistance &&
             agent.velocity.sqrMagnitude < 0.1f
         );
+        if (wantToPay)
+        {
+            Debug.Log("Waiting in queue");
+            yield break;
+        }
         if (wantsToLeave)
         {
             Debug.Log("Leaving!");
