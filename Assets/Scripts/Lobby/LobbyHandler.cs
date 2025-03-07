@@ -9,6 +9,7 @@ public class LobbyHandler : MonoBehaviour
     public static LobbyHandler instance;
 
     //Main Menu
+    [SerializeField] public Button createLobbyButton;
     [SerializeField] private RawImage mainMenuProfilePicture;
     [SerializeField] private TMP_Text mainMenuUsername;
 
@@ -28,12 +29,19 @@ public class LobbyHandler : MonoBehaviour
     void Start()
     {
         instance = this;
+        UpdateCreateLobbyButton();
 
         if (!SteamManager.Initialized) return;
         UpdateMainMenuProfilePicture(SteamUser.GetSteamID());
     }
 
     void Update() {}
+
+    public void UpdateCreateLobbyButton()
+    {
+        createLobbyButton.onClick.RemoveAllListeners();
+        createLobbyButton.onClick.AddListener(() => SteamLobby.instance.HostLobby());
+    }
 
     public void UpdateMainMenuProfilePicture(CSteamID id)
     {
