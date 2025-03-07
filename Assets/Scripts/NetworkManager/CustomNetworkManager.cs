@@ -35,7 +35,7 @@ public class CustomNetworkManager : NetworkManager
         PlayerManager.instance.Reset();
 
         SteamLobby.instance.LeaveLobby();
-        LobbyHandler.instance.HideLoadingScreen();
+        if (LobbyHandler.instance != null) LobbyHandler.instance.HideLoadingScreen();
     }
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
@@ -46,7 +46,7 @@ public class CustomNetworkManager : NetworkManager
         if (PlayerManager.instance.gamePlayers.Count == 0) return;
 
         PlayerManager.instance.PlayerDisconnected(conn.connectionId); // Remove player from PlayerManager
-        LobbyHandler.instance.swapButton.gameObject.SetActive(false);
+        if(LobbyHandler.instance != null) LobbyHandler.instance.swapButton.gameObject.SetActive(false);
 
         // Handle Lobby disconnect - Stop hosting once the host leaves
         if (PlayerManager.instance.gamePlayers.Count == 0 && SceneManager.GetActiveScene().buildIndex == 0)
