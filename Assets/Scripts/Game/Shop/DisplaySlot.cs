@@ -151,6 +151,7 @@ public class DisplaySlot : Interactable
         return item;
     }
 
+    public List<GameObject> GetSlots() => inputSlots;
     public List<GameObject> GetCurrentItems() => currentItems;
     public override string GetTag() => "DisplaySlot";
     public override bool IsPlayerNear() => isPlayerNear;

@@ -6,13 +6,16 @@ public class CustomerManager : MonoBehaviour
     public static CustomerManager instance = null;
 
     [SerializeField] private GameObject customerPrefab;
-    [SerializeField] private List<GameObject> browsingPoints;
-    [SerializeField] private List<GameObject> payQueue;
     [SerializeField] private List<Customer> customersActive;
 
     [SerializeField] private List<DisplaySlot> displayTables;
 
     [SerializeField] public Transform customerSpawnPoint;
+
+    [SerializeField] private List<Transform> queuePointsTransforms;
+
+    private List<CustomerPoint> customerPoints;
+    private List<CustomerPoint> queuePoints;
 
     List<ActionTimer> timers;
 
@@ -21,6 +24,9 @@ public class CustomerManager : MonoBehaviour
         if (instance == null) instance = this;
         else Destroy(this);
         timers = new List<ActionTimer>();
+        customerPoints = new List<CustomerPoint>();
+        queuePoints = new List<CustomerPoint>();
+        CreateCustomerPoints();
     }
 
     // Start is called before the first frame update
@@ -34,6 +40,34 @@ public class CustomerManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void CreateCustomerPoints()
+    {
+        customerPoints.Clear();
+        queuePoints.Clear();
+        // Find display table points
+        for (int i = 0; i < displayTables.Count; i++)
+        {
+            if (displayTables[i] == null)
+            {
+                Debug.LogWarning("Display table is null!");
+                continue;
+            }
+            List<GameObject> slots = displayTables[i].GetSlots();
+            for (int j = 0; j < slots.Count; j++)
+            {
+                CustomerPoint newPoint = new CustomerPoint(displayTables[i].customerPoints[j].transform, displayTables[i], displayTables[i].GetSlots()[j]);
+                customerPoints.Add(newPoint);
+            }
+        }
+        // Find queue points
+        for (int i = 0; i < queuePointsTransforms.Count; i++)
+        {
+            Debug.Log("ADDING CUSTOMER QUEUE POINT");
+            CustomerPoint newPoint = new CustomerPoint(queuePointsTransforms[i]);
+            queuePoints.Add(newPoint);
+        }
     }
 
     private void SpawnNewCustomer()
@@ -77,18 +111,17 @@ public class CustomerManager : MonoBehaviour
     {
         targetTransform = null;
         displaySlot = null;
-        for (int i = 0; i < displayTables.Count; i++)
+        for (int i = 0; i < customerPoints.Count; i++)
         {
-            List<GameObject> slots = displayTables[i].GetCurrentItems();
-            for (int j = 0; j < slots.Count; j++)
+            Item foundItem = customerPoints[i].displayTable.GetItemFromSlot(customerPoints[i].itemSlot);
+            if (foundItem == null)
+                continue;
+            ItemType itemType = foundItem.itemType;
+            if (targetItemType == itemType)
             {
-                ItemType itemType = ItemManager.GetItemType(slots[j]).GetValueOrDefault();
-                if (targetItemType == itemType)
-                {
-                    targetTransform = displayTables[i].GetItemFromSlot(slots[j]).transform;
-                    displaySlot = displayTables[i];
-                    return true;
-                }
+                targetTransform = customerPoints[i].point;
+                displaySlot = customerPoints[i].displayTable;
+                return true;
             }
         }
         return false;
@@ -98,10 +131,46 @@ public class CustomerManager : MonoBehaviour
     {
         targetTransform = null;
         displaySlot = null;
-        int randomNumberTable = Random.Range(0, displayTables.Count);
-        int randomNumberSlot = Random.Range(0, displayTables[randomNumberTable].customerPoints.Count);
-        targetTransform = displayTables[randomNumberTable].customerPoints[randomNumberSlot];
-        displaySlot = displayTables[randomNumberTable];
-        return targetTransform != null && displaySlot != null;
+
+        List<CustomerPoint> availablePoints = new List<CustomerPoint>();
+
+        for (int i = 0; i < customerPoints.Count; i++)
+        {
+            if (customerPoints[i].reserved)
+                continue;
+            availablePoints.Add(customerPoints[i]);
+        }
+
+        if (availablePoints.Count == 0)
+        {
+            Debug.LogError("There are no available points!!!");
+            return false;
+        }
+
+        int randomNumber = Random.Range(0, availablePoints.Count);
+        targetTransform = availablePoints[randomNumber].point;
+        displaySlot = availablePoints[randomNumber].displayTable;
+        return true;
+    }
+
+    public CustomerPoint FindAvailableQueuePoint(Customer customer)
+    {
+        CustomerPoint customerPoint = null;
+        bool found = false;
+        for (int i = 0; i < queuePoints.Count; i++)
+        {
+            if (queuePoints[i].reserved)
+                continue;
+            queuePoints[i].reserved = true;
+            customerPoint = queuePoints[i];
+            found = true;
+            break;
+        }
+        if (!found)
+        {
+            Debug.LogWarning("No available queue points found!");
+            return null; // TODO
+        }
+        return customerPoint;
     }
 }

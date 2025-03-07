@@ -14,7 +14,8 @@ public class Customer : MonoBehaviour
     private int stepsCount = 0;
     private ActionTimer timer = null;
 
-    [SerializeField] private bool leaving = false;
+    [SerializeField] private bool wantsToLeave = false;
+    [SerializeField] private bool wantToPay = false;
 
     void Awake()
     {
@@ -59,6 +60,16 @@ public class Customer : MonoBehaviour
         if (inventory == desiredItem)
         {
             Debug.LogWarning("Going to cash register!!!");
+            CustomerPoint point = CustomerManager.instance.FindAvailableQueuePoint(this);
+            if (point == null)
+            {
+                Debug.LogError("No available point found!!!");
+                return;
+            }
+            currentTarget = point.point;
+            currentTargetSlot = point.displayTable;
+            agent.SetDestination(currentTarget.position);
+            StartCoroutine(WaitForArrival());
             return;
         }
         if (stepsCount >= 3)
@@ -100,7 +111,7 @@ public class Customer : MonoBehaviour
             agent.remainingDistance <= agent.stoppingDistance &&
             agent.velocity.sqrMagnitude < 0.1f
         );
-        if (leaving)
+        if (wantsToLeave)
         {
             Debug.Log("Leaving!");
             Optional<CustomerManager>.Of(CustomerManager.instance).IfPresent(manager => manager.CustomerLeaving());
@@ -161,7 +172,7 @@ public class Customer : MonoBehaviour
     private void Leave()
     {
         Debug.LogWarning("Customer wants to leave");
-        leaving = true;
+        wantsToLeave = true;
         agent.SetDestination(CustomerManager.instance.customerSpawnPoint.position);
         StartCoroutine(WaitForArrival());
     }
