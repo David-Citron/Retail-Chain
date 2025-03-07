@@ -11291,9 +11291,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce407d1bff864763a43324765d808f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  username: {fileID: 0}
-  profilePicture: {fileID: 0}
-  balance: {fileID: 0}
+  username: {fileID: 1440478607}
+  profilePicture: {fileID: 102256337}
+  balance: {fileID: 2078376578}
   cameras:
   - {fileID: 2078910974}
   - {fileID: 2116014309}
