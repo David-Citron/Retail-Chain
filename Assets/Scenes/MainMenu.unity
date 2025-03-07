@@ -12247,7 +12247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6eedb56c7142bb4aaecd64afe890ec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  createLobbyButton: {fileID: 0}
+  createLobbyButton: {fileID: 1295225152}
   mainMenuProfilePicture: {fileID: 508668008}
   mainMenuUsername: {fileID: 1139909142}
   swapButton: {fileID: 1570952203}
