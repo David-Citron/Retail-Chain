@@ -54,7 +54,7 @@ public abstract class Machine : Interactable, IMachine
     protected virtual void OnStart()
     {
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear, collider => PickUp(), 
-            new Hint(Hint.GetHintButton(ActionType.PickUpItem) + " TO PICK UP", () => PlayerPickUp.GetHoldingType() == ItemType.None && (machineState == MachineState.Done || machineState == MachineState.Ready) && GetNearestSlot().IsReadyToPickUp())
+            new Hint(Hint.GetHintButton(ActionType.PickUpItem) + " TO PICK UP", () => !PlayerPickUp.IsHodlingItem() && machineState != MachineState.Working && GetNearestSlot().IsReadyToPickUp())
         ));
 
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, collider => StartInteraction(), new Hint[] {
@@ -90,9 +90,9 @@ public abstract class Machine : Interactable, IMachine
 
     protected virtual void PickUp()
     {
-        if (PlayerPickUp.holdingItem != null)
+        if (PlayerPickUp.IsHodlingItem())
         {
-            Hint.Create("DROP CURRENT ITEM", 2);
+            Hint.Create("DROP CURRENT ITEM", 1);
             return;
         }
 
@@ -108,7 +108,10 @@ public abstract class Machine : Interactable, IMachine
         }
 
         if (machineState == MachineState.Working || currentItems.Count <= 0 || CooldownHandler.IsUnderCreateIfNot(machineType + "_pickUp", 1)) return;
-        var item = currentItems[currentItems.Count - 1];
+
+        var item = nearestInput.inputPlace.gameObject.transform.GetChild(0).gameObject;
+        if (item == null) return;
+
         PlayerPickUp.Instance().IfPresent(handler => handler.PickUp(item));
         currentItems.Remove(item);
         ChangeMachineState(MachineState.Idling);

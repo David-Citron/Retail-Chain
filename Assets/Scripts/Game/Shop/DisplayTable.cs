@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
-public class DisplaySlot : Interactable
+public class DisplayTable : Interactable
 {
 
     [SerializeField] private List<GameObject> inputSlots;
@@ -54,7 +54,8 @@ public class DisplaySlot : Interactable
 
 
         if (currentItems.Count <= 0 || CooldownHandler.IsUnderCreateIfNot("displaySlot_pickUp", 1)) return;
-        var item = currentItems[currentItems.Count - 1];
+        var item = nearestInput.inputPlace.gameObject.transform.GetChild(0).gameObject;
+        if (item == null) return;
         PlayerPickUp.Instance().IfPresent(handler => handler.PickUp(item));
         currentItems.Remove(item);
     }

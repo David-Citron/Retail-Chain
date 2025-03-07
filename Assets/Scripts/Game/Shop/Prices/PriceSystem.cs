@@ -24,6 +24,10 @@ public class PriceSystem : Interactable
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear, gameObject => UpdateContent(false),
             new Hint(Hint.GetHintButton(ActionType.PickUpItem) + " TO MANAGE PRICES", () => isPlayerNear)));
 
+
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, i => { },
+            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO TAKE MONEY", () => isPlayerNear)));
+
         closeButton.interactable = true;
         closeButton.onClick.RemoveAllListeners();
         closeButton.onClick.AddListener(() => UpdateContent(false));

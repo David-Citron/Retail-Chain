@@ -8,7 +8,7 @@ public class CustomerManager : MonoBehaviour
     [SerializeField] private GameObject customerPrefab;
     [SerializeField] private List<Customer> customersActive;
 
-    [SerializeField] private List<DisplaySlot> displayTables;
+    [SerializeField] private List<DisplayTable> displayTables;
 
     [SerializeField] public Transform customerSpawnPoint;
 

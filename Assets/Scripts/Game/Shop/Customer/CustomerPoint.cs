@@ -3,7 +3,7 @@ using UnityEngine;
 public class CustomerPoint
 {
     public Transform point;
-    public DisplaySlot displayTable;
+    public DisplayTable displayTable;
     public GameObject itemSlot;
     public bool reserved;
     public Customer reservedCustomer;
@@ -11,7 +11,7 @@ public class CustomerPoint
     /// <summary>
     /// Creates a new CustomerPoint which is not reserved
     /// </summary>
-    public CustomerPoint(Transform point, DisplaySlot displayTable, GameObject itemSlot)
+    public CustomerPoint(Transform point, DisplayTable displayTable, GameObject itemSlot)
     {
         this.point = point;
         this.displayTable = displayTable;
@@ -23,7 +23,7 @@ public class CustomerPoint
     /// <summary>
     /// Creates a new CustomerPoint and allows specifying reservation
     /// </summary>
-    public CustomerPoint(Transform point, DisplaySlot displayTable, GameObject itemSlot, bool reserved, Customer reservedCustomer)
+    public CustomerPoint(Transform point, DisplayTable displayTable, GameObject itemSlot, bool reserved, Customer reservedCustomer)
     {
         this.point = point;
         this.displayTable = displayTable;
