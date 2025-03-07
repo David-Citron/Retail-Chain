@@ -51,7 +51,7 @@ public class MenuManager : MonoBehaviour
     /// <param name="uiName">The UI name</param>
     public bool ToggleUI(string uiName, bool closeAll)
     {
-        if (current != null && !current.IsCloseable()) return false; //If the current menu is not closeable then return.
+        if (closeAll && current != null && !current.IsCloseable()) return false; //If the current menu is not closeable then return.
 
         if (!menus.TryGetValue(uiName, out Menu menu)) {
             Debug.LogWarning("Cannot find UI that you are trying to open.");
