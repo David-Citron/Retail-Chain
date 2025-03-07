@@ -73,5 +73,6 @@ public enum ActionType
     PickUpItem,
     DropItem,
     OpenMenu,
-    Interaction
+    Interaction,
+    Help
 }
