@@ -18,7 +18,7 @@ public abstract class Interactable : MonoBehaviour
 
     public static bool HoldingKey(ActionType actionType)
     {
-        if (GameLayoutManager.isOpened || PlayerInputManager.isInteracting) return false;
+        if (GameLayoutManager.isOpened) return false;
         var keys = KeybindManager.instance.keybinds[actionType];
         return Input.GetKey(keys.positiveKey) || Input.GetKey(keys.positiveAltKey);
     }

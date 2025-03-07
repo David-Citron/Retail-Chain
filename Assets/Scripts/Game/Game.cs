@@ -58,7 +58,7 @@ public class Game : MonoBehaviour
 
     public void EndGame()
     {
-        timers.ForEach(timer => timer.Stop());
+        EndTimers();
         GameLayoutManager.instance.CloseOpenedUI();
         GameLayoutManager.instance.ToggleUI(LayoutType.GameOver);
 
@@ -69,6 +69,9 @@ public class Game : MonoBehaviour
          
          */
     }
+
+    public void EndTimers() => timers.ForEach(timer => timer.Stop());
+    
 
     /// <summary>
     /// Teleports gameplayer to his start location

@@ -104,7 +104,7 @@ public class SteamLobby : MonoBehaviour
         Debug.Log("Leaving lobby " + LobbyId);
         SteamMatchmaking.LeaveLobby(LobbyId);
 
-        MenuManager.instance.Open("MainMenu");
+        if(MenuManager.instance != null) MenuManager.instance.Open("MainMenu");
 
         if (SceneManager.GetActiveScene().buildIndex == 0) return;
         SceneManager.LoadScene(0);

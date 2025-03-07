@@ -31,7 +31,7 @@ public class CustomNetworkManager : NetworkManager
         Debug.LogWarning("Client disconnected");
         base.OnClientDisconnect();
 
-        if(SceneManager.GetActiveScene().buildIndex == 1 && Game.instance != null) Game.instance.EndGame();
+        if(SceneManager.GetActiveScene().buildIndex == 1 && Game.instance != null) Game.instance.EndTimers();
         PlayerManager.instance.Reset();
 
         SteamLobby.instance.LeaveLobby();
@@ -63,7 +63,6 @@ public class CustomNetworkManager : NetworkManager
             if (conn.connectionId == stopHost) return;
             Debug.LogWarning("One player left the lobby - Stopping Host");
             stopHost = conn.connectionId;
-            if (Game.instance != null) Game.instance.EndGame();
             StopHost();
             return;
         }

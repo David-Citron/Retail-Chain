@@ -63,7 +63,7 @@ public class PlayerManager : MonoBehaviour
             gamePlayers.Remove(gamePlayer);
         });
 
-        if (gamePlayers.Count != 0) LobbyHandler.instance.UpdateInvitePlayerButton(gamePlayers[0]);
+        if (gamePlayers.Count != 0 && LobbyHandler.instance != null) LobbyHandler.instance.UpdateInvitePlayerButton(gamePlayers[0]);
     }
 
     /// <summary>

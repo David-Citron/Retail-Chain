@@ -32,7 +32,7 @@ public class PlayerSteamUtils : MonoBehaviour {
 
     private void OnPersonaStateChanged(PersonaStateChange_t callback)
     {
-        if (!MenuManager.instance.IsOpened("LobbiesList")) return;
+        if (MenuManager.instance != null && !MenuManager.instance.IsOpened("LobbiesList")) return;
         SteamLobby.instance.GetLobbiesList();
     }
 
