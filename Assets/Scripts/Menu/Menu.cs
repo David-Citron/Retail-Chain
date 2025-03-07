@@ -38,13 +38,16 @@ public class Menu : MonoBehaviour
 
     public void Open()
     {
+        MenuManager.instance.SetCurrentMenu(this);
         menuDisabledItems.ForEach(item => item.SetActive(false));
         onOpen?.Invoke();
         gameObject.SetActive(true);
         if (closeable && tabs.Count > 0) ChangeTab(0, true); //Always open home tab on first open when the menu is closeable.
     }
 
-    public void Close() {
+    public void Close()
+    {
+        MenuManager.instance.SetCurrentMenu(null);
         onClose?.Invoke();
         menuDisabledItems.ForEach(item => item.SetActive(true));
         gameObject.SetActive(false);

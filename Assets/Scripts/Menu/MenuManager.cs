@@ -61,6 +61,7 @@ public class MenuManager : MonoBehaviour
 
         bool isOpened = menu.IsOpened();
         if(background != null) background.SetActive(isOpened);
+
         return isOpened;
 ;    }
 
@@ -82,17 +83,9 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Closes currently opened UI.
+    /// Closes selected UI.
     /// </summary>
-    /// <returns>true if any menu was closed, otherwise false</returns>
-    public bool CloseCurrent()
-    {
-        if (current == null || !current.IsCloseable()) return false;
-        if (background != null) background.SetActive(false);
-        current.Close();
-        return true;
-    }
-
+    /// <param name="uiName">The UI name</param>
     public void Close(string uiName)
     {
         if (!menus.TryGetValue(uiName, out Menu menu))
@@ -104,6 +97,9 @@ public class MenuManager : MonoBehaviour
         menu.Close();
     }
 
+    /// <summary>
+    /// Closes all menus.
+    /// </summary>
     public void CloseAll()
     {
         foreach (Menu menu in menus.Values)
@@ -111,4 +107,18 @@ public class MenuManager : MonoBehaviour
             menu.Close();
         }
     }
+
+    /// <summary>
+    /// Closes currently opened UI.
+    /// </summary>
+    /// <returns>true if any menu was closed, otherwise false</returns>
+    public bool CloseCurrent()
+    {
+        if (current == null || !current.IsCloseable()) return false;
+        Close(current.GetName());
+        return true;
+    }
+
+    public bool IsAnyOpened() => current != null;
+    public void SetCurrentMenu(Menu menu) => current = menu;
 }
