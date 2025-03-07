@@ -64,7 +64,6 @@ public class CustomerManager : MonoBehaviour
         // Find queue points
         for (int i = 0; i < queuePointsTransforms.Count; i++)
         {
-            Debug.Log("ADDING CUSTOMER QUEUE POINT");
             CustomerPoint newPoint = new CustomerPoint(queuePointsTransforms[i]);
             queuePoints.Add(newPoint);
         }
@@ -107,31 +106,25 @@ public class CustomerManager : MonoBehaviour
         timers.Add(timer);
     }
 
-    public bool TryFindDisplaySlot(ItemType targetItemType, out DisplaySlot displaySlot, out Transform targetTransform)
+    public CustomerPoint TryFindDisplaySlot(ItemType targetItemType)
     {
-        targetTransform = null;
-        displaySlot = null;
         for (int i = 0; i < customerPoints.Count; i++)
         {
+            if (customerPoints[i].reserved)
+                continue;
             Item foundItem = customerPoints[i].displayTable.GetItemFromSlot(customerPoints[i].itemSlot);
             if (foundItem == null)
                 continue;
             ItemType itemType = foundItem.itemType;
-            if (targetItemType == itemType)
-            {
-                targetTransform = customerPoints[i].point;
-                displaySlot = customerPoints[i].displayTable;
-                return true;
-            }
+            if (targetItemType != itemType)
+                continue;
+            return customerPoints[i];
         }
-        return false;
+        return null;
     }
 
-    public bool TryFindRandomDisplaySlot(out DisplaySlot displaySlot, out Transform targetTransform)
+    public CustomerPoint TryFindRandomDisplaySlot()
     {
-        targetTransform = null;
-        displaySlot = null;
-
         List<CustomerPoint> availablePoints = new List<CustomerPoint>();
 
         for (int i = 0; i < customerPoints.Count; i++)
@@ -144,13 +137,11 @@ public class CustomerManager : MonoBehaviour
         if (availablePoints.Count == 0)
         {
             Debug.LogError("There are no available points!!!");
-            return false;
+            return null;
         }
 
         int randomNumber = Random.Range(0, availablePoints.Count);
-        targetTransform = availablePoints[randomNumber].point;
-        displaySlot = availablePoints[randomNumber].displayTable;
-        return true;
+        return customerPoints[customerPoints.IndexOf(availablePoints[randomNumber])];
     }
 
     public CustomerPoint FindAvailableQueuePoint(Customer customer)
@@ -161,7 +152,6 @@ public class CustomerManager : MonoBehaviour
         {
             if (queuePoints[i].reserved)
                 continue;
-            queuePoints[i].reserved = true;
             customerPoint = queuePoints[i];
             found = true;
             break;
@@ -169,8 +159,114 @@ public class CustomerManager : MonoBehaviour
         if (!found)
         {
             Debug.LogWarning("No available queue points found!");
-            return null; // TODO
+            return null;
         }
         return customerPoint;
+    }
+
+    public bool MakeReservation(CustomerPoint target, Customer customer)
+    {
+        int resultIndex = customerPoints.IndexOf(target);
+        if (resultIndex == -1)
+        {
+            resultIndex = queuePoints.IndexOf(target);
+            if (resultIndex == -1)
+            {
+                Debug.LogError("Target was NOT found!");
+                return false;
+            }
+            if (queuePoints[resultIndex] == null)
+            {
+                Debug.LogError("Target CustomerPoint was not found!");
+                return false;
+            }
+            if (queuePoints[resultIndex].reserved)
+            {
+                Debug.LogError("Point is already reserved!");
+                return false;
+            }
+            queuePoints[resultIndex].reserved = true;
+            queuePoints[resultIndex].reservedCustomer = customer;
+            return true;
+        }
+
+        if (customerPoints[resultIndex] == null)
+        {
+            Debug.LogError("Target CustomerPoint was not found!");
+            return false;
+        }
+        if (customerPoints[resultIndex].reserved)
+        {
+            Debug.LogError("Point is already reserved!");
+            return false;
+        }
+        customerPoints[resultIndex].reserved = true;
+        customerPoints[resultIndex].reservedCustomer = customer;
+        return true;
+    }
+
+    public bool CancelReservation(CustomerPoint target)
+    {
+        int resultIndex = customerPoints.IndexOf(target);
+        if (resultIndex == -1)
+        {
+            resultIndex = queuePoints.IndexOf(target);
+            if (resultIndex == -1)
+            {
+                Debug.LogError("Target was NOT found!");
+                return false;
+            }
+            if (queuePoints[resultIndex] == null)
+            {
+                Debug.LogError("Target CustomerPoint was not found!");
+                return false;
+            }
+            if (!queuePoints[resultIndex].reserved)
+            {
+                Debug.LogError("Point is NOT reserved by anyone!");
+                return false;
+            }
+            queuePoints[resultIndex].reserved = false;
+            queuePoints[resultIndex].reservedCustomer = null;
+            return true;
+        }
+
+        if (customerPoints[resultIndex] == null)
+        {
+            Debug.LogError("Target CustomerPoint was not found!");
+            return false;
+        }
+        if (!customerPoints[resultIndex].reserved)
+        {
+            Debug.LogError("Point is NOT reserved by anyone!");
+            return false;
+        }
+        customerPoints[resultIndex].reserved = false;
+        customerPoints[resultIndex].reservedCustomer = null;
+        return true;
+    }
+
+    public void UpdateQueue()
+    {
+        // FIX this later - must move the line, not override
+        customersActive.ForEach(customer => customer.QueueUpdate());
+    }
+
+    public Item GetItemFromSlot(CustomerPoint point)
+    {
+        int i = customerPoints.IndexOf(point);
+        if (customerPoints[i] == null)
+            return null;
+        GameObject itemSlot = customerPoints[i].itemSlot;
+        return customerPoints[i].displayTable.GetItemFromSlot(customerPoints[i].itemSlot);
+    }
+
+    public bool RemoveItemFromSlot(CustomerPoint point)
+    {
+        int i = customerPoints.IndexOf(point);
+        if (customerPoints[i] == null)
+            return false;
+        GameObject itemSlot = customerPoints[i].itemSlot;
+        return customerPoints[i].displayTable.RemoveItemFromSlot(customerPoints[i].itemSlot);
     }
 }

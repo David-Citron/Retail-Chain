@@ -1,21 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Customer : MonoBehaviour
 {
+    const int MAX_STEPS = 3;
+
     [SerializeField] private ItemType desiredItem = ItemType.None;
     [SerializeField] private NavMeshAgent agent = null;
-    private Transform currentTarget;
-    private DisplaySlot currentTargetSlot;
+
+    private CustomerPoint reservedPoint = null;
     private ItemType inventory;
 
     private int stepsCount = 0;
     private ActionTimer timer = null;
 
     [SerializeField] private bool wantsToLeave = false;
-    [SerializeField] private bool wantToPay = false;
+    [SerializeField] private bool wantsToPay = false;
 
     void Awake()
     {
@@ -32,6 +35,7 @@ public class Customer : MonoBehaviour
         inventory = ItemType.None;
         GenerateOffer();
         Debug.Log("New customer wants: " + desiredItem);
+        reservedPoint = null;
         FindTarget();
     }
 
@@ -59,50 +63,45 @@ public class Customer : MonoBehaviour
     {
         if (inventory == desiredItem)
         {
-            Debug.LogWarning("Going to cash register!!!");
             CustomerPoint point = CustomerManager.instance.FindAvailableQueuePoint(this);
             if (point == null)
             {
                 Debug.LogError("No available point found!!!");
                 return;
             }
-            currentTarget = point.point;
-            currentTargetSlot = point.displayTable;
-            wantToPay = true;
-            agent.SetDestination(currentTarget.position);
-            StartCoroutine(WaitForArrival());
+            wantsToPay = true;
+            Debug.Log("About to reserve: " + point.point.position);
+            ReservePoint(point);
+            GoToPoint();
             return;
         }
-        if (stepsCount >= 3)
+        if (stepsCount >= MAX_STEPS)
         {
             Leave();
             return;
         }
-        Transform previousTarget = currentTarget;
-        currentTarget = null;
-        currentTargetSlot = null;
-        Transform target = null;
-        DisplaySlot slot = null;
-        if (CustomerManager.instance.TryFindDisplaySlot(desiredItem, out slot, out target))
+        CustomerPoint previousPoint = null;
+        if (reservedPoint != null)
         {
-            currentTarget = target;
-            currentTargetSlot = slot;
+            previousPoint = reservedPoint;
+            CancelReservation();
         }
-        while (target == null && currentTarget == null)
+        CustomerPoint foundPoint = CustomerManager.instance.TryFindDisplaySlot(desiredItem);
+        if (foundPoint != null)
+            ReservePoint(foundPoint);
+        while (reservedPoint == null)
         {
-            Debug.LogWarning("SEARCHING FOR RANDOM");
-            if (!CustomerManager.instance.TryFindRandomDisplaySlot(out slot, out target))
+            CustomerPoint point = CustomerManager.instance.TryFindRandomDisplaySlot();
+            if (point == null)
             {
                 Debug.Log("No random target found!");
                 return;
             }
-            if (previousTarget == null) break;
-            if (previousTarget.position == target.position) target = null;
+            if (previousPoint != null && previousPoint == point) continue;
+            ReservePoint(point);
         }
-        currentTarget = target;
-        agent.SetDestination(target.position);
         stepsCount++;
-        StartCoroutine(WaitForArrival());
+        GoToPoint();
     }
 
     private IEnumerator WaitForArrival()
@@ -112,9 +111,10 @@ public class Customer : MonoBehaviour
             agent.remainingDistance <= agent.stoppingDistance &&
             agent.velocity.sqrMagnitude < 0.1f
         );
-        if (wantToPay)
+        if (wantsToPay)
         {
             Debug.Log("Waiting in queue");
+            StartCoroutine(LookAtTarget());
             yield break;
         }
         if (wantsToLeave)
@@ -124,43 +124,38 @@ public class Customer : MonoBehaviour
             Destroy(gameObject);
             yield break;
         }
-        ArrivedToDestination();
+        StartCoroutine(LookAtTarget());
         timer = new ActionTimer(() => 
         {
             TryTakeItem();
-            timer = new ActionTimer(() => FindTarget(), 2).Run();
-        }, 2).Run();
+            timer = new ActionTimer(() => FindTarget(), 1).Run();
+        }, 3).Run();
     }
 
     private void TryTakeItem()
     {
-        if (currentTargetSlot == null)
+        if (reservedPoint == null)
             return;
-        GameObject slot = currentTargetSlot.FindClosestItemSlot(transform.position);
-        if (slot != null && currentTargetSlot.GetItemFromSlot(slot).itemType == desiredItem)
-        {
-            currentTargetSlot.RemoveItemFromSlot(slot);
-            inventory = desiredItem;
+        Item item = CustomerManager.instance.GetItemFromSlot(reservedPoint);
+        if (item == null) return;
+        if (item.itemType != desiredItem) return;
+        // TODO: add validation
+        if (!CustomerManager.instance.RemoveItemFromSlot(reservedPoint))
             return;
-        }
+        inventory = item.itemType;
         return;
     }
 
-    private void ArrivedToDestination()
+    private IEnumerator LookAtTarget()
     {
-        if (currentTarget != null)
-        {
-            StartCoroutine(LookAtTarget(currentTarget));
-        }
-    }
+        if (reservedPoint == null)
+            yield break;
 
-    private IEnumerator LookAtTarget(Transform target)
-    {
         float duration = 0.5f;
         float elapsed = 0f;
         Quaternion startRotation = transform.rotation;
 
-        Vector3 direction = target.position - transform.position;
+        Vector3 direction = reservedPoint.point.position - transform.position;
         direction.y = 0;
 
         Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
@@ -178,13 +173,56 @@ public class Customer : MonoBehaviour
     public void Leave()
     {
         wantsToLeave = true;
+        CancelReservation();
         agent.SetDestination(CustomerManager.instance.customerSpawnPoint.position);
         StartCoroutine(WaitForArrival());
     }
 
+    private bool ReservePoint(CustomerPoint newPoint)
+    {
+        if (reservedPoint != null)
+            CancelReservation();
+
+        if (!CustomerManager.instance.MakeReservation(newPoint, this))
+        {
+            Debug.LogError("Couldn't reserve the point!");
+            return false;
+        }
+        reservedPoint = newPoint;
+        return true;
+    }
+
+    private bool CancelReservation()
+    {
+        if (!CustomerManager.instance.CancelReservation(reservedPoint))
+        {
+            Debug.LogError("Couldn't cancel the reservation!");
+            return false;
+        }
+        reservedPoint = null;
+        return true;
+    }
+
+    public void GoToPoint()
+    {
+        if (reservedPoint == null)
+        {
+            Debug.LogError("Can't go to unassigned point!");
+            return;
+        }
+        agent.SetDestination(reservedPoint.point.position);
+        StartCoroutine(WaitForArrival());
+    }
+
+    public void QueueUpdate()
+    {
+        // TODO
+    }
+
     public void Pay()
     {
-        wantToPay = false;
+        wantsToPay = false;
+        CustomerManager.instance.UpdateQueue();
         Leave();
     }
 
