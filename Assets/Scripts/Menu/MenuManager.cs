@@ -71,6 +71,8 @@ public class MenuManager : MonoBehaviour
     /// <param name="uiName">The UI name</param>
     public void Open(string uiName)
     {
+        if (current != null && !current.IsCloseable()) return; //If the current menu is not closeable then return.
+
         if (!menus.TryGetValue(uiName, out Menu menu))
         {
             Debug.LogWarning("Cannot find UI that you are trying to open.");
@@ -85,7 +87,18 @@ public class MenuManager : MonoBehaviour
     /// <summary>
     /// Closes selected UI.
     /// </summary>
-    /// <param name="uiName">The UI name</param>
+    /// <param name="menu">The menu</param>
+    public void Close(Menu menu)
+    {
+        if (background != null) background.SetActive(false);
+        menu.Close();
+    }
+
+
+    /// <summary>
+    /// Closes selected UI. (even uncloseable ones)
+    /// </summary>
+    /// <param name="menu">The ui name</param>
     public void Close(string uiName)
     {
         if (!menus.TryGetValue(uiName, out Menu menu))
@@ -94,28 +107,28 @@ public class MenuManager : MonoBehaviour
             return;
         }
 
-        menu.Close();
+        Close(menu);
     }
 
     /// <summary>
-    /// Closes all menus.
+    /// Closes all menus. (even uncloseable ones)
     /// </summary>
     public void CloseAll()
     {
         foreach (Menu menu in menus.Values)
         {
-            menu.Close();
+            Close(menu);
         }
     }
 
     /// <summary>
-    /// Closes currently opened UI.
+    /// Closes currently opened UI, however cannot close uncloseable menus.
     /// </summary>
     /// <returns>true if any menu was closed, otherwise false</returns>
     public bool CloseCurrent()
     {
         if (current == null || !current.IsCloseable()) return false;
-        Close(current.GetName());
+        Close(current);
         return true;
     }
 

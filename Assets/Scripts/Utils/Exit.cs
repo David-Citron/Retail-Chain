@@ -12,7 +12,9 @@ public class Exit : MonoBehaviour
     {
         Initialize();
         Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.OpenMenu, true), item => {
-            if (!MenuManager.instance.CloseCurrent()) MenuManager.instance.Open("Exit");
+            if (MenuManager.instance.CloseCurrent()) return;
+                
+            MenuManager.instance.Open("Exit");
         }));
 
        // Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.Help), item => { }));
