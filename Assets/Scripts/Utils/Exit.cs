@@ -17,7 +17,7 @@ public class Exit : MonoBehaviour
             GameLayoutManager.instance.ToggleUI(LayoutType.Exit);
         }));
 
-        Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.Help), item => { }));
+       // Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.Help), item => { }));
     }
 
     void Update() {}
