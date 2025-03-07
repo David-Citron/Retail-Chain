@@ -7,18 +7,20 @@ public class Menu : MonoBehaviour
 {
 
     [SerializeField] private UnityEvent onOpen; //Action that will be called on open.
+    [SerializeField] private UnityEvent onClose; //Action that will be called on open.
 
     [SerializeField] private List<GameObject> tabs;
     [SerializeField] private List<GameObject> pages;
+    [SerializeField] private List<GameObject> menuDisabledItems; //These gameobjects are disabled when a menu opens and reactivated when it closes.
 
-    [SerializeField] private GameObject panel;
     [SerializeField] private Button closeButton;
+    [SerializeField] private bool closeable; //If the menu can be closed with "ESC"
 
     void Start() {
         if (closeButton == null) return;
         closeButton.interactable = true;
         closeButton.onClick.RemoveAllListeners();
-        closeButton.onClick.AddListener(() => MenuManager.instance.ToggleUI(GetName()));
+        closeButton.onClick.AddListener(() => MenuManager.instance.ToggleUI(GetName(), false));
     }
 
     void Update() { }
@@ -27,23 +29,35 @@ public class Menu : MonoBehaviour
     {
         if(IsOpened())
         {
-            panel.SetActive(false);
+            Close();
             return;
         }
 
-        onOpen?.Invoke();
-        panel.SetActive(true);
-        if(tabs.Count > 0) ChangeTab(0); //Always open home tab on first open.
+        Open();
     }
 
-    public void Close() => panel.SetActive(false);
-    public bool IsOpened() => panel.activeSelf;
-    
+    public void Open()
+    {
+        menuDisabledItems.ForEach(item => item.SetActive(false));
+        onOpen?.Invoke();
+        gameObject.SetActive(true);
+        if (closeable && tabs.Count > 0) ChangeTab(0, true); //Always open home tab on first open when the menu is closeable.
+    }
 
-    public void ChangeTab(int index)
+    public void Close() {
+        onClose?.Invoke();
+        menuDisabledItems.ForEach(item => item.SetActive(true));
+        gameObject.SetActive(false);
+    }
+
+    public bool IsOpened() => gameObject.activeSelf;
+    
+    public void ChangeTab(GameObject page) => ChangeTab(pages.IndexOf(page));
+    public void ChangeTab(int index) => ChangeTab(index, false);
+    public void ChangeTab(int index, bool force)
     {
         int active = GetActiveIndex();
-        if (active == index) return;
+        if (!force && active == index) return;
 
         for (int i = 0; i < pages.Count; i++)
         {
@@ -56,6 +70,5 @@ public class Menu : MonoBehaviour
     }
 
     private int GetActiveIndex() => pages.FindIndex(page => page.activeSelf);
-
     public string GetName() => gameObject.name;
 }

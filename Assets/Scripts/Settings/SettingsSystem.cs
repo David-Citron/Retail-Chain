@@ -7,8 +7,6 @@ public class Settings : MonoBehaviour
     [SerializeField] private GameObject keybindPrefab;
     [SerializeField] private GameObject keybindPrefabContainer;
     [SerializeField] public static GameObject keybindChangeOverlay;
-    [SerializeField] private List<GameObject> tabs = new List<GameObject>();
-    [SerializeField] private List<GameObject> panels = new List<GameObject>();
 
     [SerializeField] List<KeybindData> keybindDataList = new List<KeybindData>();
 
@@ -27,7 +25,6 @@ public class Settings : MonoBehaviour
     void Awake()
     {
         keybindChangeOverlay = transform.GetChild(transform.childCount - 1).gameObject;
-        panels.ForEach(panel => panel.SetActive(false));
         if (keybindChangeOverlay != null) keybindChangeOverlay.SetActive(false);
     }
 
@@ -37,19 +34,9 @@ public class Settings : MonoBehaviour
         
     }
 
-    public void Open()
-    {
-        ChangeTab(0, true);
-    }
-
-    public void Close()
-    {
-        if (panels[1].activeInHierarchy) ApplyKeybindChanges();
-    }
-
     // Possibly add cloud sync
     // This method is called when reloading the keybind menu to load current keybind buttons in use
-    private void ReloadKeybindsMenu()
+    public void ReloadKeybindsMenu()
     {
         if (keybindPrefabs.Count > 0)
         {
@@ -175,45 +162,12 @@ public class Settings : MonoBehaviour
         windowModeDropdown.RefreshShownValue();
     }
 
-    public void ChangeTab(int index)
-    {
-        ChangeTab(index, false);
-    }
-
-    public void ChangeTab(int index, bool forceUpdate)
-    {
-        if (!forceUpdate && panels[index].activeInHierarchy) return;
-
-        currentTabIndex = index;
-
-        if (currentTabIndex == 0) ReloadGeneralMenu();
-
-        if (currentTabIndex == 1) ReloadKeybindsMenu();
-        else ApplyKeybindChanges();
-
-        for (int i = 0; i < panels.Count; i++)
-        {
-            panels[i].SetActive(i == index);
-
-            var customButton = tabs[i].GetComponent<CustomButton>();
-            customButton.ChangeColorGroup(i == index ? ButtonColor.Gray : ButtonColor.Pink);
-            customButton.ToggleDisabled(i == index);
-        }
-    }
-
-    public void ChangeTab(GameObject panel)
-    {
-        ChangeTab(panels.IndexOf(panel));
-    }
-
     public void SetResolution(int index)
     {
         Resolution res = resolutions[index];
         Screen.SetResolution(res.width, res.height, Screen.fullScreenMode);
     }
 
-    public void SetWindowMode(int index)
-    {
-        Screen.fullScreenMode = windowModes[index];
-    }
+    public void SetWindowMode(int index) => Screen.fullScreenMode = windowModes[index];
+    
 }

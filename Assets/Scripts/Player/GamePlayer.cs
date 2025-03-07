@@ -50,7 +50,8 @@ public class GamePlayer : NetworkBehaviour
 
         if (!isLocalPlayer) return;
 
-        LayoutManager.Instance().IfPresent(layoutManager => layoutManager.HideLoadingScreen());
+
+        LobbyHandler.instance.HideLoadingScreen();
 
         //If there is no second player, the PlayerRole is set to Shop, otherwise it depends on the role of the opposite player.
         PlayerManager.instance.GetOppositePlayer(this).IfPresentOrElse(secondPlayer =>
@@ -134,11 +135,9 @@ public class GamePlayer : NetworkBehaviour
         if(isReady) GetComponent<LobbyAnimator>().playReadyAnimation();
 
         if (!isLocalPlayer) return;
-        LayoutManager.Instance().IfPresent(layoutManager =>
-        {
-            layoutManager.readyButton.gameObject.SetActive(!isReady);
-            layoutManager.readyCancelButton.gameObject.SetActive(isReady);
-        });
+
+        LobbyHandler.instance.readyButton.gameObject.SetActive(!isReady);
+        LobbyHandler.instance.readyCancelButton.gameObject.SetActive(isReady);
     }
 
     public void StartGame()
@@ -199,26 +198,23 @@ public class GamePlayer : NetworkBehaviour
             });
         }
 
-        LayoutManager.Instance().IfPresent(layoutManager =>
+        var swapButton = LobbyHandler.instance.swapButton;
+        swapButton.gameObject.SetActive(isServer && !isLocalPlayer);
+        if (isServer && !isLocalPlayer)
         {
-            var swapButton = layoutManager.swapButton;
-            swapButton.gameObject.SetActive(isServer && !isLocalPlayer);
-            if (isServer && !isLocalPlayer)
+            swapButton.interactable = true;
+            swapButton.onClick.RemoveAllListeners();
+            swapButton.onClick.AddListener(() =>
             {
-                swapButton.interactable = true;
-                swapButton.onClick.RemoveAllListeners();
-                swapButton.onClick.AddListener(() =>
+                if (isReady || PlayerManager.instance.GetOppositePlayer(this).GetValueOrDefault().isReady)
                 {
-                    if (isReady || PlayerManager.instance.GetOppositePlayer(this).GetValueOrDefault().isReady)
-                    {
-                        LayoutManager.Instance().IfPresent(layoutManager => layoutManager.SendColoredNotification("One of the player is already ready!", Color.red, 3));
-                        return;
-                    }
+                    Hint.Create("One of the player is already ready!", 3);
+                    return;
+                }
 
-                    RpcShowUpdatedRoles();
-                });
-            }
-        });
+                RpcShowUpdatedRoles();
+            });
+        }
     }
 
     public ulong GetSteamId() => steamID;

@@ -54,7 +54,7 @@ public class SteamLobby : MonoBehaviour
     {
         SteamAPI.Init();
         steamIsInitialized = SteamManager.Initialized;
-        if (!steamIsInitialized) LayoutManager.Instance().GetValueOrDefault().ShowSteamNotInitializedNotification();
+        //if (!steamIsInitialized) LayoutManager.Instance().GetValueOrDefault().ShowSteamNotInitializedNotification(); //TODO FIXXX
         return steamIsInitialized;
     }
 
@@ -63,6 +63,7 @@ public class SteamLobby : MonoBehaviour
         Debug.Log("Started hosting a lobby");
         lobbyType = DEFAULT_LOBBY_TYPE;
         SteamMatchmaking.CreateLobby(lobbyType, networkManager.maxConnections);
+        LobbyHandler.instance.ShowLoadingScreen();
     }
 
     public void JoinLobby(CSteamID steamID) => SteamMatchmaking.JoinLobby(steamID);
@@ -103,12 +104,9 @@ public class SteamLobby : MonoBehaviour
         Debug.Log("Leaving lobby " + LobbyId);
         SteamMatchmaking.LeaveLobby(LobbyId);
 
-        if (SceneManager.GetActiveScene().buildIndex != 0)
-        {
-            SceneManager.LoadScene(0);
-        }
-
-        LayoutManager.Instance().IfPresent(layoutManager => layoutManager.ShowMainMenu());
+        if (SceneManager.GetActiveScene().buildIndex == 0) return;
+        
+        SceneManager.LoadScene(0);
     }
 
     public void GetLobbiesList()

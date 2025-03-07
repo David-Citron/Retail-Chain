@@ -21,12 +21,9 @@ public class CustomNetworkManager : NetworkManager
         base.OnClientConnect();
 
         PlayerManager.instance.Reset();
+        Hint.Create("Welcome to RetailChain.", 5);
 
-        LayoutManager.Instance().IfPresent(layoutManager =>
-        {
-            layoutManager.ShowLobby();
-            layoutManager.SendColoredNotification("Welcome to RetailChain.", Color.green, 5);
-        });
+        MenuManager.instance.ToggleUI("LobbyPanel");
     }
 
     public override void OnClientDisconnect()
@@ -38,7 +35,7 @@ public class CustomNetworkManager : NetworkManager
         PlayerManager.instance.Reset();
 
         SteamLobby.instance.LeaveLobby();
-        LayoutManager.Instance().IfPresent(layoutManager => layoutManager.HideLoadingScreen());
+        LobbyHandler.instance.HideLoadingScreen();
     }
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
@@ -49,9 +46,7 @@ public class CustomNetworkManager : NetworkManager
         if (PlayerManager.instance.gamePlayers.Count == 0) return;
 
         PlayerManager.instance.PlayerDisconnected(conn.connectionId); // Remove player from PlayerManager
-        LayoutManager.Instance().IfPresent(layoutManager => {
-            layoutManager.swapButton.gameObject.SetActive(false);
-        });
+        LobbyHandler.instance.swapButton.gameObject.SetActive(false);
 
         // Handle Lobby disconnect - Stop hosting once the host leaves
         if (PlayerManager.instance.gamePlayers.Count == 0 && SceneManager.GetActiveScene().buildIndex == 0)
@@ -97,6 +92,7 @@ public class CustomNetworkManager : NetworkManager
     public override void OnClientSceneChanged()
     {
         base.OnClientSceneChanged();
+        if (SceneManager.GetActiveScene().buildIndex == 0) MenuManager.instance.Open("MainMenu"); //Automatically enable MainMenu when loading to Scene 0 (lobby)
         if (Game.instance != null) Game.instance.InitializePlayers();
     }
 
@@ -112,4 +108,6 @@ public class CustomNetworkManager : NetworkManager
             }
         });
     }
+
+    public void ExitGame() => Application.Quit();
 }

@@ -79,12 +79,14 @@ public class HintSystem : MonoBehaviour
         textObject.transform.SetParent(transform);
         textObject.transform.localPosition = Vector3.zero;
         textObject.transform.localScale = Vector3.one;
+        textObject.transform.SetSiblingIndex(0);
 
         TMP_Text tmpText = textObject.AddComponent<TextMeshProUGUI>();
 
         tmpText.text = hint.value;
         tmpText.enableAutoSizing = true;
-        tmpText.fontSizeMin = 18;
+        tmpText.color = hint.color;
+        tmpText.fontSizeMin = 22;
         tmpText.fontSizeMax = 26;
         tmpText.fontStyle = FontStyles.Normal;
         tmpText.alignment = TextAlignmentOptions.Left;
@@ -104,6 +106,7 @@ public class HintSystem : MonoBehaviour
 public class Hint
 {
     public GameObject textObject { get; set; }
+    public Color color { get; set; }
     public string value { get; private set; }
     public float seconds { get; private set; }
     public Func<bool> predicate { get; set; }
@@ -111,19 +114,24 @@ public class Hint
     public bool isActive { get; set; }
 
 
-    public Hint(string value, float seconds, bool register, Func<bool> predicate = null)
+    public Hint(string value, Color color, float seconds, bool register, Func<bool> predicate = null)
     {
         this.value = value;
+        this.color = color;
         this.seconds = seconds;
         this.predicate = predicate;
 
         if(register) HintSystem.EnqueueHint(this);
     }
 
+    public Hint(string value, float seconds, bool register, Func<bool> predicate = null) : this(value, Color.white, seconds, register, predicate) { }
     public Hint(string value, float seconds, Func<bool> predicate = null) : this(value, seconds, true, predicate) { }
-    public Hint(string value, Func<bool> predicate = null) : this(value, 0, false, predicate) {}
+    public Hint(string value, Color color, float seconds, Func<bool> predicate = null) : this(value, color, seconds, true, predicate) { }
+    public Hint(string value, Func<bool> predicate = null) : this(value, 0, false, predicate) { }
+
     public static Hint Create(string value, float seconds) => new Hint(value, seconds);
-    
+    public static Hint Create(string value, Color color, float seconds) => new Hint(value, color, seconds);
+
 
     /// <summary>
     /// Hint stays while the condition is true.

@@ -40,16 +40,11 @@ public class PlayerManager : MonoBehaviour
     public void AddGamePlayer(GamePlayer gamePlayer)
     {
         gamePlayers.Add(gamePlayer);
+        Transform transform = lobbySpawnPoints[GetPlayerIndex(gamePlayer)];
+        gamePlayer.transform.position = transform.position;
+        gamePlayer.transform.rotation = transform.rotation;
 
-        LayoutManager.Instance().IfPresent(layoutManager =>
-        {
-            Transform transform = lobbySpawnPoints[GetPlayerIndex(gamePlayer)];
-            gamePlayer.transform.position = transform.position;
-            gamePlayer.transform.rotation = transform.rotation;
-
-            layoutManager.UpdatePlayer(new CSteamID(gamePlayer.GetSteamId()));
-            GetOppositePlayer(gamePlayer).IfPresent(lobbyLeader => layoutManager.UpdateInvitePlayerButton(lobbyLeader));
-        });
+        LobbyHandler.instance.UpdatePlayer(gamePlayer);
     }
 
     /// <summary>
@@ -68,7 +63,7 @@ public class PlayerManager : MonoBehaviour
             gamePlayers.Remove(gamePlayer);
         });
 
-        if(gamePlayers.Count != 0) LayoutManager.Instance().IfPresent(layoutManager => layoutManager.UpdateInvitePlayerButton(gamePlayers[0]));
+        if (gamePlayers.Count != 0) LobbyHandler.instance.UpdateInvitePlayerButton(gamePlayers[0]);
     }
 
     /// <summary>

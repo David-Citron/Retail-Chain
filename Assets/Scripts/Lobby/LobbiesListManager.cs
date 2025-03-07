@@ -18,9 +18,16 @@ public class LobbiesListManager : MonoBehaviour {
         if(instance == null) instance = this;
     }
 
-    public IEnumerator UpdateLobbyList()
+    public void ShowLobbies()
     {
-        if (!LayoutManager.Instance().GetValueOrDefault().lobbiesMenu.activeSelf) yield break; //If Lobbies List menu is disabled, then list should not be updated
+        DestroyLobbies();
+        StartCoroutine(UpdateLobbyList());
+        MenuManager.instance.ToggleUI("LobbiesList");
+    }
+
+    private IEnumerator UpdateLobbyList()
+    {
+        if (!MenuManager.instance.IsOpened("LobbiesList")) yield break; //If Lobbies List menu is disabled, then list should not be updated
 
         SteamLobby.instance.GetLobbiesList();
         yield return new WaitForSecondsRealtime(1.5f);

@@ -28,7 +28,7 @@ public class LobbyDataEntry : MonoBehaviour
         joinButton.onClick.RemoveAllListeners();
         joinButton.onClick.AddListener(() =>
         {
-            LayoutManager.Instance().IfPresent(layoutManager => layoutManager.ShowLoadingScreen());
+            LobbyHandler.instance.ShowLoadingScreen();
             SteamLobby.instance.JoinLobby(lobbyId);
         });
     }

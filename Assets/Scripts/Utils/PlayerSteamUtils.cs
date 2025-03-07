@@ -18,10 +18,8 @@ public class PlayerSteamUtils : MonoBehaviour {
 
     private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
     {
-        LayoutManager.Instance().IfPresent(layoutManager =>
-        {
-            if (layoutManager.mainMenu.activeSelf) layoutManager.UpdateMainMenuProfilePicture(callback.m_steamID);
-        });
+
+        LobbyHandler.instance.UpdateMainMenuProfilePicture(callback.m_steamID);
 
         PlayerManager.instance.gamePlayers.ForEach(gamePlayer => {
             Debug.Log("Updating " + callback.m_steamID.m_SteamID + " -- " + callback.m_iImage);
@@ -34,8 +32,7 @@ public class PlayerSteamUtils : MonoBehaviour {
 
     private void OnPersonaStateChanged(PersonaStateChange_t callback)
     {
-        if (LayoutManager.Instance().GetValueOrDefault() == null) return;
-        if (!LayoutManager.Instance().GetValueOrDefault().lobbiesMenu.activeSelf) return;
+        if (!MenuManager.instance.IsOpened("LobbiesList")) return;
         SteamLobby.instance.GetLobbiesList();
     }
 
