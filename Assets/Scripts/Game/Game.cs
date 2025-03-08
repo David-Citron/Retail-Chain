@@ -42,24 +42,12 @@ public class Game : MonoBehaviour
             }
         }
         Interactable.interactions = new List<Interaction>();
-        shopGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(false));
-        factoryGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(false));
     }
 
     void Start() {
-        if (PlayerManager.instance == null)
-        {
-            int numberOfPlayersFound = FindObjectsOfType<PlayerMovement>().Length;
-            if (numberOfPlayersFound == 1)
-            {
-                GameObject testPlayer = FindFirstObjectByType<PlayerMovement>().gameObject;
-                if (testPlayer != null) testPlayer.SetActive(true);
-            }
-
-            shopGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(true));
-            factoryGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(true));
-            return;
-        }
+        if (PlayerManager.instance == null) return;
+        shopGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(false));
+        factoryGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(false));
         PlayerMovement[] scripts = FindObjectsOfType<PlayerMovement>();
         for (int i = 0; i < FindObjectsOfType<PlayerMovement>().Length; i++)
         {

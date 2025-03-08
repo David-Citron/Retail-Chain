@@ -9,6 +9,7 @@ public class StorageRack : Interactable
 
     private Dictionary<ItemType, int> storedItems;
     [SerializeField] private List<GameObject> rackItems = new List<GameObject>();
+    [SerializeField] private List<ItemType> defaultItems = new List<ItemType>();
     private List<GameObject> contentItems;
 
     public GameObject itemPrefab;
@@ -22,6 +23,11 @@ public class StorageRack : Interactable
 
         storedItems = new Dictionary<ItemType, int>();
         contentItems = new List<GameObject>();
+
+        foreach (var item in defaultItems)
+        {
+            InsertItem(item, 1);
+        }
 
         GetComponent<Rigidbody>().isKinematic = true;
 
@@ -127,8 +133,8 @@ public class StorageRack : Interactable
             Hint.Create("THERE IS NOT ENOUGH ITEMS", 2);
             return;
         }
-
-        if(validate) {
+        
+        if (validate) {
             if (amount > 1) storedItems[itemType] = amount - 1;
             else storedItems.Remove(itemType);
         }

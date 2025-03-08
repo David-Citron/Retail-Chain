@@ -71,7 +71,6 @@ public class Customer : MonoBehaviour
                 return;
             }
             wantsToPay = true;
-            Debug.Log("About to reserve: " + point.point.position);
             ReservePoint(point);
             GoToPoint();
             return;
