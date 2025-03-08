@@ -53,6 +53,7 @@ public class PriceSystem : Interactable
         timer = new ActionTimer(() => {
             PlayerInputManager.isInteracting = false;
             customer.Pay();
+            timer = null;
             },
         () => {
             PlayerInputManager.isInteracting = false;

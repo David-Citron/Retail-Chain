@@ -10,6 +10,11 @@ public class PlayerManager : MonoBehaviour
     public List<GamePlayer> gamePlayers = new List<GamePlayer>();
     [SerializeField] private List<Transform> lobbySpawnPoints = new List<Transform>();
 
+    private void Awake()
+    {
+        gamePlayers = new List<GamePlayer>();
+    }
+
     void Start()
     {
         DontDestroyOnLoad(gameObject);

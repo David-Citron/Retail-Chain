@@ -55,9 +55,10 @@ public class ContractManager : NetworkBehaviour
         contracts = new List<Contract>();
         currentItemData = new List<ContractItemData>();
         if (PlayerManager.instance == null)
-            Destroy(instance);
-        if (PlayerManager.instance.gamePlayers.Count == 0)
-            Destroy(instance);
+        {
+            Destroy(gameObject);
+            return;
+        }
         PlayerManager.instance.gamePlayers.ForEach(player =>
         {
             Contract contract = player.GetComponent<Contract>();

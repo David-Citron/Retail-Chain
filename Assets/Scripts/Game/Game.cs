@@ -24,22 +24,31 @@ public class Game : MonoBehaviour
 
     void Awake()
     {
+        if (instance != null)
+        {
+            Debug.LogError("You can't create another instance!");
+            return;
+        }
         instance = this;
         timers = new List<ActionTimer>();
 
-        username.text = PlayerSteamUtils.GetSteamUsername(SteamUser.GetSteamID());
-        profilePicture.texture = PlayerSteamUtils.GetSteamProfilePicture(SteamUser.GetSteamID());
-
+        if (SteamAPI.Init())
+        {
+            CSteamID id = SteamUser.GetSteamID();
+            if (id != CSteamID.Nil)
+            {
+                username.text = PlayerSteamUtils.GetSteamUsername(id);
+                profilePicture.texture = PlayerSteamUtils.GetSteamProfilePicture(id);
+            }
+        }
         Interactable.interactions = new List<Interaction>();
-
-        shopGameObjects.ForEach(gameObject => gameObject.SetActive(false));
-        factoryGameObjects.ForEach(gameObject => gameObject.SetActive(false));
+        shopGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(false));
+        factoryGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(false));
     }
 
     void Start() {
         if (PlayerManager.instance == null)
         {
-            Debug.LogWarning("PlayerManager is null");
             int numberOfPlayersFound = FindObjectsOfType<PlayerMovement>().Length;
             if (numberOfPlayersFound == 1)
             {
@@ -47,8 +56,8 @@ public class Game : MonoBehaviour
                 if (testPlayer != null) testPlayer.SetActive(true);
             }
 
-            shopGameObjects.ForEach(gameObject => gameObject.SetActive(true));
-            factoryGameObjects.ForEach(gameObject => gameObject.SetActive(true));
+            shopGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(true));
+            factoryGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(true));
             return;
         }
         PlayerMovement[] scripts = FindObjectsOfType<PlayerMovement>();
@@ -62,8 +71,9 @@ public class Game : MonoBehaviour
         }
         GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
         if (localPlayer == null) return;
-        if(localPlayer.playerRole == PlayerRole.Shop) shopGameObjects.ForEach(gameObject => gameObject.SetActive(true));
-        else factoryGameObjects.ForEach (gameObject => gameObject.SetActive(true));
+        if(localPlayer.playerRole == PlayerRole.Shop) shopGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(true));
+        else factoryGameObjects.ForEach (currentGameObject => currentGameObject.SetActive(true));
+        
     }
 
     void Update() {}
@@ -102,8 +112,8 @@ public class Game : MonoBehaviour
 
             cameras.ForEach(camera => camera.SetActive(cameras.IndexOf(camera) == index));
 
-            if (gamePlayer.playerRole == PlayerRole.Shop) factoryGameObjects.ForEach(gameObject => Destroy(gameObject));
-            else shopGameObjects.ForEach(gameObject => Destroy(gameObject));
+            if (gamePlayer.playerRole == PlayerRole.Shop) factoryGameObjects.ForEach(currentGameObject => Destroy(currentGameObject));
+            else shopGameObjects.ForEach(currentGameObject => Destroy(currentGameObject));
         });
     }
 

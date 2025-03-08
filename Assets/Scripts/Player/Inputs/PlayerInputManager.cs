@@ -35,6 +35,7 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
 
+        if (Interactable.interactions == null) return;
         Interactable.interactions.ForEach(interaction => {
             if (!interaction.prediction.Invoke()) return;
             interaction.onInteract.Invoke(nearestItem);

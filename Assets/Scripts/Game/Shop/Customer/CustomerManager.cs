@@ -249,7 +249,18 @@ public class CustomerManager : MonoBehaviour
     public void UpdateQueue()
     {
         // FIX this later - must move the line, not override
-        customersActive.ForEach(customer => customer.QueueUpdate());
+        customersActive.ForEach(customer => {
+            if (customer.GetWantsToPay())
+            {
+                CustomerPoint point = customer.GetReservation();
+                if (point == null) return;
+                int i = queuePoints.IndexOf(point);
+                if (i == -1) return;
+                CustomerPoint newPoint = queuePoints[i - 1];
+                if (newPoint == null) return;
+                customer.RequestReservation(newPoint);
+            }
+        });
     }
 
     public Item GetItemFromSlot(CustomerPoint point)
@@ -270,5 +281,5 @@ public class CustomerManager : MonoBehaviour
         return customerPoints[i].displayTable.RemoveItemFromSlot(customerPoints[i].itemSlot);
     }
 
-    public Customer FirstCustomerInQueue() => queuePoints[0].reservedCustomer;
+    public Customer FirstCustomerInQueue() => queuePoints[0].reservedCustomer; 
 }

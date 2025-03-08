@@ -214,16 +214,17 @@ public class Customer : MonoBehaviour
         StartCoroutine(WaitForArrival());
     }
 
-    public void QueueUpdate()
+    public void RequestReservation(CustomerPoint point)
     {
-        // TODO
+        ReservePoint(point);
+        GoToPoint();
     }
 
     public void Pay()
     {
         wantsToPay = false;
-        CustomerManager.instance.UpdateQueue();
         Leave();
+        CustomerManager.instance.UpdateQueue();
     }
 
     private void OnDestroy()
@@ -234,4 +235,7 @@ public class Customer : MonoBehaviour
             timer = null;
         }
     }
+
+    public bool GetWantsToPay() => wantsToPay;
+    public CustomerPoint GetReservation() => reservedPoint;
 }
