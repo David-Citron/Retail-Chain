@@ -27,7 +27,7 @@ public class PriceSystem : Interactable
 
 
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && CustomerManager.instance.FirstCustomerInQueue() != null && isPlayerNear, i => ProcessPayment(),
-            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO TAKE MONEY", () => CustomerManager.instance.FirstCustomerInQueue() != null && isPlayerNear)));
+            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO PROCESS PAYMENT", () => CustomerManager.instance.FirstCustomerInQueue() != null && isPlayerNear)));
 
         closeButton.interactable = true;
         closeButton.onClick.RemoveAllListeners();
@@ -46,14 +46,19 @@ public class PriceSystem : Interactable
         var customer = CustomerManager.instance.FirstCustomerInQueue();
         if (customer == null) return;
 
-        timer = new ActionTimer(() =>
-        {
+        PlayerInputManager.isInteracting = true;
+
+        CircleTimer.Start(3);
+
+        timer = new ActionTimer(() => {
+            PlayerInputManager.isInteracting = false;
             customer.Pay();
-        },
-        () =>
-        {
+            },
+        () => {
+            PlayerInputManager.isInteracting = false;
+            CircleTimer.Stop();
             timer = null;
-        }, 3, 3).Run();
+        }, 3).Run();
     }
 
     public static void UpdatePrice(ItemType itemType, int newPrice)

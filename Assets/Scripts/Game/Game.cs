@@ -61,6 +61,7 @@ public class Game : MonoBehaviour
             }
         }
         GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
+        if (localPlayer == null) return;
         if(localPlayer.playerRole == PlayerRole.Shop) shopGameObjects.ForEach(gameObject => gameObject.SetActive(true));
         else factoryGameObjects.ForEach (gameObject => gameObject.SetActive(true));
     }
