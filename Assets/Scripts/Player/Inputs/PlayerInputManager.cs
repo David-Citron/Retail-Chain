@@ -56,6 +56,7 @@ public class PlayerInputManager : MonoBehaviour
 
         GetColliders().Remove(other.gameObject);
         UpdateInteractable(other.gameObject);
+        UpdateHints(other.gameObject, false);
     }
 
     private void UpdateHints(GameObject collidedObject, bool entry)

@@ -17,7 +17,7 @@ public class DisplayTable : Interactable
 
         BoxCollider collider = gameObject.AddComponent<BoxCollider>();
         collider.isTrigger = true;
-        collider.size = new Vector3(collider.size.x, 1.8f, collider.size.z);
+        collider.size = new Vector3(collider.size.x + 0.25f, 1.8f, collider.size.z + 0.25f);
     }
 
 
