@@ -14,6 +14,7 @@ public class PriceSystem : Interactable
     [SerializeField] private Button closeButton;
 
     private bool isPlayerNear;
+    private ActionTimer timer;
 
     void Start()
     {
@@ -25,8 +26,8 @@ public class PriceSystem : Interactable
             new Hint(Hint.GetHintButton(ActionType.PickUpItem) + " TO MANAGE PRICES", () => isPlayerNear)));
 
 
-        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, i => { },
-            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO TAKE MONEY", () => isPlayerNear)));
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && CustomerManager.instance.FirstCustomerInQueue() != null && isPlayerNear, i => ProcessPayment(),
+            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO TAKE MONEY", () => CustomerManager.instance.FirstCustomerInQueue() != null && isPlayerNear)));
 
         closeButton.interactable = true;
         closeButton.onClick.RemoveAllListeners();
@@ -38,6 +39,22 @@ public class PriceSystem : Interactable
     }
 
     void Update() {}
+
+    private void ProcessPayment()
+    {
+        if (timer != null) return;
+        var customer = CustomerManager.instance.FirstCustomerInQueue();
+        if (customer == null) return;
+
+        timer = new ActionTimer(() =>
+        {
+            customer.Pay();
+        },
+        () =>
+        {
+            timer = null;
+        }, 3, 3).Run();
+    }
 
     public static void UpdatePrice(ItemType itemType, int newPrice)
     {
