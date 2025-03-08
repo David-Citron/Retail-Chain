@@ -45,7 +45,32 @@ public class Game : MonoBehaviour
     }
 
     void Start() {
-        if (PlayerManager.instance == null) return;
+        if (PlayerManager.instance == null)
+        {
+            int numberOfPlayersFound = FindObjectsOfType<PlayerMovement>().Length;
+            if (numberOfPlayersFound == 1)
+            {
+                GameObject testPlayer = FindFirstObjectByType<PlayerMovement>().gameObject;
+                if (testPlayer != null) testPlayer.SetActive(true);
+                float distanceToFactory = Vector3.Distance(testPlayer.transform.position, new Vector3(-10, 0, 0));
+                float distanceToShop = Vector3.Distance(testPlayer.transform.position, new Vector3(10, 0, 0));
+                if (distanceToFactory < distanceToShop)
+                {
+                    shopGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(false));
+                    factoryGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(true));
+                    cameras[0].SetActive(false);
+                    cameras[1].SetActive(true); 
+                }
+                else
+                {
+                    shopGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(true));
+                    factoryGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(false));
+                    cameras[0].SetActive(true);
+                    cameras[1].SetActive(false);
+                }
+            }
+            return;
+        }
         shopGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(false));
         factoryGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(false));
         PlayerMovement[] scripts = FindObjectsOfType<PlayerMovement>();
