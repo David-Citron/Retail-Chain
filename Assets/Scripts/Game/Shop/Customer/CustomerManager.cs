@@ -282,4 +282,12 @@ public class CustomerManager : MonoBehaviour
     }
 
     public Customer FirstCustomerInQueue() => queuePoints[0].reservedCustomer; 
+    public Customer GetCustomerAtCashRegister()
+    {
+        if (queuePoints[0].reservedCustomer != null && !queuePoints[0].reservedCustomer.GetIsWalking())
+        {
+            return queuePoints[0].reservedCustomer;
+        }
+        return null;
+    }
 }

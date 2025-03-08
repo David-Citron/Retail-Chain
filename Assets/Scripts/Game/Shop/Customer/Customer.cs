@@ -19,6 +19,7 @@ public class Customer : MonoBehaviour
 
     [SerializeField] private bool wantsToLeave = false;
     [SerializeField] private bool wantsToPay = false;
+    [SerializeField] private bool isWalking = false;
 
     void Awake()
     {
@@ -111,6 +112,7 @@ public class Customer : MonoBehaviour
             agent.remainingDistance <= agent.stoppingDistance &&
             agent.velocity.sqrMagnitude < 0.1f
         );
+        isWalking = false;
         if (wantsToPay)
         {
             Debug.Log("Waiting in queue");
@@ -210,6 +212,7 @@ public class Customer : MonoBehaviour
             Debug.LogError("Can't go to unassigned point!");
             return;
         }
+        isWalking = true;
         agent.SetDestination(reservedPoint.point.position);
         StartCoroutine(WaitForArrival());
     }
@@ -237,5 +240,6 @@ public class Customer : MonoBehaviour
     }
 
     public bool GetWantsToPay() => wantsToPay;
+    public bool GetIsWalking() => isWalking;
     public CustomerPoint GetReservation() => reservedPoint;
 }
