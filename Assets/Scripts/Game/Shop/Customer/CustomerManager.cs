@@ -248,7 +248,6 @@ public class CustomerManager : MonoBehaviour
 
     public void UpdateQueue()
     {
-        // FIX this later - must move the line, not override
         customersActive.ForEach(customer => {
             if (customer.GetWantsToPay())
             {
