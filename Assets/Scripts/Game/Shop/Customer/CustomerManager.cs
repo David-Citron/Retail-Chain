@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class CustomerManager : MonoBehaviour
 {
+    const int MAX_CUSTOMERS = 4;
+    const float MIN_DELAY = 20f;
+    const float MAX_DELAY = 40f;
+
     public static CustomerManager instance = null;
 
     [SerializeField] private GameObject customerPrefab;
@@ -17,13 +21,12 @@ public class CustomerManager : MonoBehaviour
     private List<CustomerPoint> customerPoints;
     private List<CustomerPoint> queuePoints;
 
-    List<ActionTimer> timers;
+    ActionTimer timer = null;
 
     void Awake()
     {
         if (instance == null) instance = this;
         else Destroy(this);
-        timers = new List<ActionTimer>();
         customerPoints = new List<CustomerPoint>();
         queuePoints = new List<CustomerPoint>();
         CreateCustomerPoints();
@@ -32,7 +35,6 @@ public class CustomerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SpawnNewCustomer();
         CreateNewCustomerTimer();
     }
 
@@ -87,23 +89,22 @@ public class CustomerManager : MonoBehaviour
         customersActive.Add(customer);
     }
 
-    public void CustomerLeaving()
+    public void CustomerLeaving(Customer customer)
     {
-        Debug.Log("Callback for leaving called!");
-        CreateNewCustomerTimer();
+        customersActive.Remove(customer);
     }
 
     private void CreateNewCustomerTimer()
     {
-        float time = Random.Range(3.0f, 7.0f);
-        ActionTimer timer = null;
+        float time = Random.Range(MIN_DELAY, MAX_DELAY);
         timer = new ActionTimer(() =>
         {
-            SpawnNewCustomer();
+            if (customersActive.Count < MAX_CUSTOMERS)
+                SpawnNewCustomer();
             timer.Stop();
-            timers.Remove(timer);
+            timer = null;
+            CreateNewCustomerTimer();
         }, 5).Run();
-        timers.Add(timer);
     }
 
     public CustomerPoint TryFindDisplaySlot(ItemType targetItemType)

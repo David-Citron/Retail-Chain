@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UIElements;
 
 public class Settings : MonoBehaviour
 {
@@ -19,13 +20,18 @@ public class Settings : MonoBehaviour
     static List<string> windowModeLabels = new List<string> { "Fullscreen", "Borderless", "Maximized window", "Window" };
     static List<FullScreenMode> windowModes = new List<FullScreenMode> { FullScreenMode.ExclusiveFullScreen, FullScreenMode.FullScreenWindow, FullScreenMode.MaximizedWindow, FullScreenMode.Windowed };
 
-    private int currentTabIndex = 0;
+    [SerializeField] private Menu menu;
 
     // Start is called before the first frame update
     void Awake()
     {
         keybindChangeOverlay = transform.GetChild(transform.childCount - 1).gameObject;
         if (keybindChangeOverlay != null) keybindChangeOverlay.SetActive(false);
+        if (menu == null)
+        {
+            Menu newMenu = GetComponent<Menu>();
+            if (newMenu != null) menu = newMenu;
+        }
     }
 
     // Update is called once per frame
@@ -117,7 +123,7 @@ public class Settings : MonoBehaviour
     // Resets current tab to default settings
     public void ResetToDefault()
     {
-        if (currentTabIndex == 1)
+        if (menu.GetActiveIndex() == 1)
         {
             KeybindManager.instance.LoadDefaultsFromKeybindData();
             ReloadKeybindsMenu();

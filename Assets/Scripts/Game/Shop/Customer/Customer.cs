@@ -115,14 +115,12 @@ public class Customer : MonoBehaviour
         isWalking = false;
         if (wantsToPay)
         {
-            Debug.Log("Waiting in queue");
             StartCoroutine(LookAtTarget());
             yield break;
         }
         if (wantsToLeave)
         {
-            Debug.Log("Leaving!");
-            Optional<CustomerManager>.Of(CustomerManager.instance).IfPresent(manager => manager.CustomerLeaving());
+            Optional<CustomerManager>.Of(CustomerManager.instance).IfPresent(manager => manager.CustomerLeaving(this));
             Destroy(gameObject);
             yield break;
         }
@@ -142,6 +140,13 @@ public class Customer : MonoBehaviour
         if (item == null) return;
         if (item.itemType != desiredItem) return;
         // TODO: add validation
+        ItemData itemData = ItemManager.GetItemData(desiredItem);
+        // TODO: this throws an error:
+        // int maxPrice = TaxesManager.GetInflactionPrice(itemData.sellPrice);
+        //
+        // TODO: add check if the current price for this item type is > maxPrice = return;
+        if (CustomerManager.instance.FindAvailableQueuePoint(this) == null) return;
+        
         if (!CustomerManager.instance.RemoveItemFromSlot(reservedPoint))
             return;
         inventory = item.itemType;
