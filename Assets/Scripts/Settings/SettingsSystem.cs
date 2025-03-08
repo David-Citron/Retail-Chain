@@ -84,8 +84,15 @@ public class Settings : MonoBehaviour
         }
     }
 
+    private void DestroyKeybindPrefabs()
+    {
+        keybindPrefabs.ForEach(keybindPrefab => Destroy(keybindPrefab.gameObject));
+        keybindPrefabs.Clear();
+    }
+
     public void ApplyKeybindChanges()
     {
+        if (keybindPrefabs.Count == 0) return;
         keybindPrefabs.ForEach(keybind =>
         {
             if (keybind.keybindData.action == ActionType.None) return;
@@ -104,7 +111,7 @@ public class Settings : MonoBehaviour
                     break;
             }
         });
-        // TODO: apply other changes
+        DestroyKeybindPrefabs();
     }
 
     // Resets current tab to default settings
