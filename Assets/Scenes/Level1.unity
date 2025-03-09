@@ -4177,6 +4177,9 @@ MonoBehaviour:
   onClose:
     m_PersistentCalls:
       m_Calls: []
+  onTabChange:
+    m_PersistentCalls:
+      m_Calls: []
   tabs: []
   pages: []
   menuDisabledItems:
@@ -8210,6 +8213,9 @@ MonoBehaviour:
   onClose:
     m_PersistentCalls:
       m_Calls: []
+  onTabChange:
+    m_PersistentCalls:
+      m_Calls: []
   tabs: []
   pages: []
   menuDisabledItems:
@@ -11722,6 +11728,9 @@ MonoBehaviour:
   onClose:
     m_PersistentCalls:
       m_Calls: []
+  onTabChange:
+    m_PersistentCalls:
+      m_Calls: []
   tabs:
   - {fileID: 231823881}
   - {fileID: 427537133}
@@ -12205,6 +12214,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onClose:
+    m_PersistentCalls:
+      m_Calls: []
+  onTabChange:
     m_PersistentCalls:
       m_Calls: []
   tabs: []
@@ -19397,6 +19409,9 @@ MonoBehaviour:
   onClose:
     m_PersistentCalls:
       m_Calls: []
+  onTabChange:
+    m_PersistentCalls:
+      m_Calls: []
   tabs: []
   pages: []
   menuDisabledItems:
@@ -20177,6 +20192,9 @@ MonoBehaviour:
   onClose:
     m_PersistentCalls:
       m_Calls: []
+  onTabChange:
+    m_PersistentCalls:
+      m_Calls: []
   tabs:
   - {fileID: 606619514}
   - {fileID: 2035778337}
@@ -20918,6 +20936,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onClose:
+    m_PersistentCalls:
+      m_Calls: []
+  onTabChange:
     m_PersistentCalls:
       m_Calls: []
   tabs: []
@@ -30113,6 +30134,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onClose:
+    m_PersistentCalls:
+      m_Calls: []
+  onTabChange:
     m_PersistentCalls:
       m_Calls: []
   tabs: []
