@@ -127,7 +127,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   desiredItem: 0
   agent: {fileID: 153455415713415802}
-  leaving: 0
+  wantsToLeave: 0
+  wantsToPay: 0
+  isWalking: 0
 --- !u!1 &2488751772442128610
 GameObject:
   m_ObjectHideFlags: 0

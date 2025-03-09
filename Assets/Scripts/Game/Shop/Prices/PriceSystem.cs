@@ -5,7 +5,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(BoxCollider))]
 public class PriceSystem : Interactable
 {
-    private static PriceSystem instance;
+    public static PriceSystem instance;
 
     private List<GameObject> priceItems;
 

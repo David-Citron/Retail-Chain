@@ -114,6 +114,7 @@ public class Customer : MonoBehaviour
         isWalking = false;
         if (wantsToPay)
         {
+            PriceSystem.instance.UpdateHints();
             StartCoroutine(LookAtTarget());
             yield break;
         }
@@ -244,6 +245,18 @@ public class Customer : MonoBehaviour
             timer.Stop();
             timer = null;
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Doors")) return;
+        DoorsManager.instance.JoinRange();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Doors")) return;
+        DoorsManager.instance.LeaveRange();
     }
 
     public bool GetWantsToPay() => wantsToPay;
