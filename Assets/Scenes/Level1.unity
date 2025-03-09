@@ -594,6 +594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7727f2f15009b1a429a52c92158ace20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
   resultPlace: {fileID: 1000107771}
   inputPlaces:
   - {fileID: 1000107771}
@@ -3842,6 +3843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefb884a82af1f64bb99cecbbdfc1ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
 --- !u!1 &402933945
 GameObject:
   m_ObjectHideFlags: 0
@@ -4899,6 +4901,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83342a019fbdd374e8795f13a4f4037a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
   contentList: {fileID: 570969257}
   priceItemPrefab: {fileID: 4402857029530803453, guid: 1c12c15fcb5a14e9c8eb77dc98c3f92a,
     type: 3}
@@ -8957,6 +8960,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff2a5a23e24e9bb4f931c91a897cc36a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
   rackItems:
   - {fileID: 562426963}
   - {fileID: 1247372578}
@@ -11417,6 +11421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 387c55adca4118145b5fa6a53881b9a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
   inputSlots:
   - {fileID: 1859688985}
   - {fileID: 558594382}
@@ -11996,6 +12001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefb884a82af1f64bb99cecbbdfc1ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
 --- !u!1 &1214568146
 GameObject:
   m_ObjectHideFlags: 0
@@ -12088,6 +12094,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 387c55adca4118145b5fa6a53881b9a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
   inputSlots:
   - {fileID: 1656666714}
   - {fileID: 415576325}
@@ -12335,6 +12342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefb884a82af1f64bb99cecbbdfc1ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
 --- !u!1 &1247372578 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2217830378953333781, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
@@ -13050,6 +13058,7 @@ GameObject:
   - component: {fileID: 1305864649}
   - component: {fileID: 1305864648}
   - component: {fileID: 1305864650}
+  - component: {fileID: 1305864651}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -13117,6 +13126,20 @@ MonoBehaviour:
   backButton: {fileID: 3065504084407746796}
   settingsButton: {fileID: 9039676456486495466}
   exitButton: {fileID: 1371357943643367696}
+--- !u!114 &1305864651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305864647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4cba3764ede75f4a94dd58b24eadf00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteAsset: {fileID: 11400000, guid: c23012cc553d3ba4a9a2e40a98780745, type: 2}
+  hintContent: {fileID: 1963152733}
 --- !u!1 &1315413788
 GameObject:
   m_ObjectHideFlags: 0
@@ -13783,7 +13806,7 @@ PrefabInstance:
     - target: {fileID: 8794258009948409576, guid: abb816de441697f44b9470be00a24872,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.34
+      value: -12.01
       objectReference: {fileID: 0}
     - target: {fileID: 8794258009948409576, guid: abb816de441697f44b9470be00a24872,
         type: 3}
@@ -13793,7 +13816,7 @@ PrefabInstance:
     - target: {fileID: 8794258009948409576, guid: abb816de441697f44b9470be00a24872,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.98
+      value: 1.69
       objectReference: {fileID: 0}
     - target: {fileID: 8794258009948409576, guid: abb816de441697f44b9470be00a24872,
         type: 3}
@@ -14916,6 +14939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b9ee944edf747c38bde3640a4c9035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
   vehicle: {fileID: 697811953}
   garageDoor: {fileID: 1493450794}
   closeButton: {fileID: 1606727311}
@@ -15388,6 +15412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 387c55adca4118145b5fa6a53881b9a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
   inputSlots:
   - {fileID: 302496508}
   - {fileID: 2076607317}
@@ -16931,6 +16956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ef52146ed86a694593e9a78a1235d31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
   resultPlace: {fileID: 1604973652}
   inputPlaces:
   - {fileID: 1604973652}
@@ -16995,6 +17021,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37392642c5f732b478b43ddcc2707e9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
   resultPlace: {fileID: 1604973655}
   inputPlaces:
   - {fileID: 1604973655}
@@ -18357,6 +18384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de6be56134052dc488b0669ef7bf615e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
   resultPlace: {fileID: 0}
   inputPlaces: []
   glueAmount: 0
@@ -21808,6 +21836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff2a5a23e24e9bb4f931c91a897cc36a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
   rackItems:
   - {fileID: 1350584278}
   - {fileID: 1434818887}
@@ -22002,10 +22031,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1963152734}
-  - component: {fileID: 1963152735}
   - component: {fileID: 1963152736}
   m_Layer: 5
-  m_Name: HintSystem
+  m_Name: content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22030,19 +22058,6 @@ RectTransform:
   m_AnchoredPosition: {x: 30, y: 30}
   m_SizeDelta: {x: 350, y: 50}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1963152735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1963152733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4cba3764ede75f4a94dd58b24eadf00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteAsset: {fileID: 11400000, guid: c23012cc553d3ba4a9a2e40a98780745, type: 2}
 --- !u!114 &1963152736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22262,6 +22277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a28854d0d3b7ceb459c44b42eb99e064, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
   resultPlace: {fileID: 0}
   inputPlaces: []
   timeDisplay: {fileID: 560019260}
@@ -23133,6 +23149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefb884a82af1f64bb99cecbbdfc1ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
 --- !u!1001 &2032589806
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24818,6 +24835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefb884a82af1f64bb99cecbbdfc1ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayerNear: 0
 --- !u!1 &2127337308
 GameObject:
   m_ObjectHideFlags: 0

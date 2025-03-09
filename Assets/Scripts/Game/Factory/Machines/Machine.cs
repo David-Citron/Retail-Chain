@@ -18,8 +18,6 @@ public abstract class Machine : Interactable, IMachine
     [SerializeField] private GameObject resultPlace;
     [SerializeField] private List<GameObject> inputPlaces;
 
-    protected bool isPlayerNear;
-
     public Machine(MachineType machineType)
     {
         this.machineType = machineType;
@@ -260,9 +258,7 @@ public abstract class Machine : Interactable, IMachine
     public GameObject GetResultPlace() => resultPlace;
     public MachineType GetMachineType() => machineType;
     public MachineState GetMachineState() => machineState;
-    public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
     public virtual Vector3 GetColliderSize(BoxCollider collider) => new Vector3(collider.size.x, 1.5f, collider.size.z);
-    public override bool IsPlayerNear() => isPlayerNear;
     public abstract bool PlayAnimation();
 }
 

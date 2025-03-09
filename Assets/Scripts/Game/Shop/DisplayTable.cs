@@ -9,8 +9,6 @@ public class DisplayTable : Interactable
     [SerializeField] public List<Transform> customerPoints;
     private List<GameObject> currentItems;
 
-    private bool isPlayerNear;
-
     private void Awake()
     {
         GetComponent<Rigidbody>().isKinematic = true;
@@ -25,7 +23,7 @@ public class DisplayTable : Interactable
     {
         currentItems = new List<GameObject>();
 
-        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear && GetNearestSlot().isInValidDistance, gameObject => PutItem(PlayerPickUp.holdingItem), 
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && GetNearestSlot().isInValidDistance, gameObject => PutItem(PlayerPickUp.holdingItem), 
             new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO ADD ITEM", () => PlayerPickUp.IsHodlingItem() && GetNearestSlot().isInValidDistance)));
 
 
@@ -43,7 +41,7 @@ public class DisplayTable : Interactable
     private void PickUp()
     {
 
-        if (PlayerPickUp.holdingItem != null)
+        if (PlayerPickUp.IsHodlingItem())
         {
             Hint.Create("DROP CURRENT ITEM", 2);
             return;
@@ -155,6 +153,4 @@ public class DisplayTable : Interactable
     public List<GameObject> GetSlots() => inputSlots;
     public List<GameObject> GetCurrentItems() => currentItems;
     public override string GetTag() => "DisplaySlot";
-    public override bool IsPlayerNear() => isPlayerNear;
-    public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
 }

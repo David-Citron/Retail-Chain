@@ -14,6 +14,8 @@ public class HintSystem : MonoBehaviour
     public List<Hint> activeHints = new List<Hint>();
     public Queue<Hint> hints = new Queue<Hint>();
 
+    [SerializeField] private GameObject hintContent;
+
     private float passedTime;
 
     void Start()
@@ -44,13 +46,15 @@ public class HintSystem : MonoBehaviour
 
         if (hint.predicate != null)
         {
+
             while (hint.predicate.Invoke() && (hint.addiotionalPredicate?.Invoke() ?? true))
             {
                 if (!hint.isActive)
                 {
-                    ResetText(hint);
+                    DestroyHint(hint);
                     yield break;
                 }
+
                 yield return null;
             }
         }
@@ -60,7 +64,7 @@ public class HintSystem : MonoBehaviour
             {
                 if (!hint.isActive)
                 {
-                    ResetText(hint);
+                    DestroyHint(hint);
                     yield break;
                 }
                 yield return new WaitForSecondsRealtime(.1f);
@@ -68,7 +72,7 @@ public class HintSystem : MonoBehaviour
             }
         }
 
-        ResetText(hint);
+        DestroyHint(hint);
     }
 
     private void CreateText(Hint hint)
@@ -76,7 +80,7 @@ public class HintSystem : MonoBehaviour
         hint.isActive = true;
         GameObject textObject = new GameObject("text-" + hint.value);
 
-        textObject.transform.SetParent(transform);
+        textObject.transform.SetParent(hintContent.transform);
         textObject.transform.localPosition = Vector3.zero;
         textObject.transform.localScale = Vector3.one;
         textObject.transform.SetSiblingIndex(0);
@@ -95,7 +99,7 @@ public class HintSystem : MonoBehaviour
         hint.textObject = textObject;
     }
 
-    private void ResetText(Hint hint)
+    private void DestroyHint(Hint hint)
     {
         Destroy(hint.textObject);   
         activeHints.Remove(hint);

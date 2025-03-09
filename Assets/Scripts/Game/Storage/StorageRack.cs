@@ -16,7 +16,6 @@ public class StorageRack : Interactable
     public GameObject itemListContent;
 
     public Button closeButton;
-    private bool isPlayerNear;
 
     void Start() {
         instance = this;
@@ -181,6 +180,4 @@ public class StorageRack : Interactable
 
     private int GetStoredAmountOf(ItemType itemType) => storedItems.GetValueOrDefault(itemType, 0);
     public override string GetTag() => "StorageRack";
-    public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
-    public override bool IsPlayerNear() => isPlayerNear;
 }

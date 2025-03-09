@@ -21,7 +21,6 @@ public class GoodsDelivery : Interactable
 
     private float elapsedTime;
     private bool isMoving;
-    private bool isPlayerNear;
 
     private const int TIME_BEFORE_DELIVERY = 5; //Every 35 seconds.
 
@@ -154,8 +153,6 @@ public class GoodsDelivery : Interactable
 
     private bool IsActive() => deliveryOffers.Count > 0;
     public override string GetTag() => "GoodsDelivery";
-    public override bool IsPlayerNear() => isPlayerNear;
-    public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
 }
 
 public class DeliveryOffer

@@ -13,7 +13,7 @@ public class PriceSystem : Interactable
     [SerializeField] private GameObject priceItemPrefab;
     [SerializeField] private Button closeButton;
 
-    private bool isPlayerNear;
+
     private ActionTimer timer;
 
     void Start()
@@ -37,9 +37,7 @@ public class PriceSystem : Interactable
 
     }
 
-    void Update() {
-        Debug.Log(isPlayerNear);
-    }
+    void Update() {}
 
     private void ProcessPayment()
     {
@@ -89,6 +87,4 @@ public class PriceSystem : Interactable
     }
 
     public override string GetTag() => "CashierRegister";
-    public override bool IsPlayerNear() => isPlayerNear;
-    public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
 }

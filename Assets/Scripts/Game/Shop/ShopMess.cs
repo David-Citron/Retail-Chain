@@ -5,7 +5,6 @@ using UnityEngine;
 public class ShopMess : Interactable
 {
 
-    private bool isPlayerNear;
     private bool isCleaning;
 
     private long spawnedAt;//When player stop cleaning new time will be saved.
@@ -58,6 +57,4 @@ public class ShopMess : Interactable
     }
 
     public override string GetTag() => "ShopMess";
-    public override bool IsPlayerNear() => isPlayerNear;
-    public override void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
 }

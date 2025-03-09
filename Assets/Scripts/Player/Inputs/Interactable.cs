@@ -25,13 +25,13 @@ public abstract class Interactable : MonoBehaviour
 
     public List<Interaction> GetCurrentInteractions(string tag) => interactions.FindAll(interaction => interaction.tag != null && interaction.tag.Equals(GetTag()));
 
-    public abstract string GetTag();
-    public abstract bool IsPlayerNear();
-    public abstract void ToggleIsPlayerNear();
+    public bool isPlayerNear;
 
+    public void ToggleIsPlayerNear() => isPlayerNear = !isPlayerNear;
+    
     public void UpdateHints()
     {
-        if (!IsPlayerNear()) return;
+        if (!isPlayerNear) return;
         
         foreach (var interaction in GetCurrentInteractions(GetTag()))
         {
@@ -41,6 +41,7 @@ public abstract class Interactable : MonoBehaviour
             });
         }
     }
+    public abstract string GetTag();
 }
 
 public class Interaction
