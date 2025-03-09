@@ -44,14 +44,7 @@ public class Settings : MonoBehaviour
     // This method is called when reloading the keybind menu to load current keybind buttons in use
     public void ReloadKeybindsMenu()
     {
-        if (keybindPrefabs.Count > 0)
-        {
-            keybindPrefabs.ForEach(prefab =>
-            {
-                Destroy(prefab.gameObject);
-            });
-            keybindPrefabs.Clear();
-        }
+        DestroyKeybindPrefabs();
 
         if (keybindPrefab == null || keybindPrefabContainer == null)
         {
