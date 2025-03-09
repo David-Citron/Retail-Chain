@@ -10,6 +10,7 @@ public class DeliveryOfferItem : MonoBehaviour
     [SerializeField] private RawImage itemIcon;
     [SerializeField] private TMP_Text itemName;
     [SerializeField] private TMP_Text itemPrice;
+    [SerializeField] private TMP_Text priceTotal;
 
     [SerializeField] private TMP_InputField amountInput;
     [SerializeField] private Button increment;
@@ -30,7 +31,7 @@ public class DeliveryOfferItem : MonoBehaviour
 
         itemIcon.texture = deliveryOffer.item.icon;
         itemName.text = deliveryOffer.item.name;
-        itemPrice.text = "$" + TaxesManager.GetInflationPrice(deliveryOffer.price) + " / item";
+        itemPrice.text = "$" + TaxesManager.GetInflationPrice(deliveryOffer.price);
 
         increment.gameObject.SetActive(true);
         increment.onClick.RemoveAllListeners();
@@ -58,6 +59,8 @@ public class DeliveryOfferItem : MonoBehaviour
         amountToBuy = Mathf.Clamp(amountToBuy + by, 0, deliveryOffer.itemAmount);
         amountInput.placeholder.name = amountToBuy + "/" + deliveryOffer.itemAmount;
         amountInput.text = amountToBuy + "/" + deliveryOffer.itemAmount;
+
+        priceTotal.text = "$" + amountToBuy * TaxesManager.GetInflationPrice(deliveryOffer.price);
     }
 
     private void SetAmount(int amount)
@@ -101,7 +104,6 @@ public class DeliveryOfferItem : MonoBehaviour
         string result = parts[0];
         if (!int.TryParse(result, out int newAmount))
         {
-
             return;
         }
 
