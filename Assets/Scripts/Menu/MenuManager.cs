@@ -32,7 +32,7 @@ public class MenuManager : MonoBehaviour
     {
         if (!menus.TryGetValue(uiName, out Menu menu))
         {
-            Debug.LogWarning("Cannot find UI that you are trying to open.");
+            Debug.LogWarning($"Cannot find UI {uiName} that you are trying to open.");
             return false;
         }
 
