@@ -156,4 +156,6 @@ public class LobbyHandler : MonoBehaviour
             activeLoadingScreen = null;
         }
     }
+
+    public void ExitGame() => Application.Quit();
 }

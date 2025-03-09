@@ -107,6 +107,4 @@ public class CustomNetworkManager : NetworkManager
             }
         });
     }
-
-    public void ExitGame() => Application.Quit();
 }

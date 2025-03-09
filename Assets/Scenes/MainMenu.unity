@@ -1392,6 +1392,9 @@ MonoBehaviour:
   onClose:
     m_PersistentCalls:
       m_Calls: []
+  onTabChange:
+    m_PersistentCalls:
+      m_Calls: []
   tabs: []
   pages: []
   menuDisabledItems:
@@ -1891,6 +1894,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onClose:
+    m_PersistentCalls:
+      m_Calls: []
+  onTabChange:
     m_PersistentCalls:
       m_Calls: []
   tabs: []
@@ -3518,8 +3524,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: LayoutManager, Assembly-CSharp
+      - m_Target: {fileID: 1981203561}
+        m_TargetAssemblyTypeName: LobbyHandler, Assembly-CSharp
         m_MethodName: ExitGame
         m_Mode: 1
         m_Arguments:
@@ -4558,8 +4564,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9028935440016645518}
-        m_TargetAssemblyTypeName: CustomNetworkManager, Assembly-CSharp
+      - m_Target: {fileID: 1981203561}
+        m_TargetAssemblyTypeName: LobbyHandler, Assembly-CSharp
         m_MethodName: ExitGame
         m_Mode: 1
         m_Arguments:
@@ -5184,6 +5190,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6e20c7a5b04ab09479b4a19b0e61198c, type: 2}
   - {fileID: 11400000, guid: 25908c3efa1f87f4687636e454f25ffa, type: 2}
   - {fileID: 11400000, guid: 5dadadab4c9396e48851c2e49c4d4462, type: 2}
+  - {fileID: 11400000, guid: 4494f425c6bfe8f4492d4d68b55eecfb, type: 2}
 --- !u!4 &1331137822
 Transform:
   m_ObjectHideFlags: 0
@@ -5600,8 +5607,9 @@ GameObject:
   - component: {fileID: 1500746669}
   - component: {fileID: 1500746668}
   - component: {fileID: 1500746667}
+  - component: {fileID: 1500746670}
   m_Layer: 5
-  m_Name: SteamNotInitializedNotificationPanel
+  m_Name: SteamNotInitializedNotification
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5662,6 +5670,32 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1500746670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500746666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f9f40d1440812e4ca6fd38d33654aa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onOpen:
+    m_PersistentCalls:
+      m_Calls: []
+  onClose:
+    m_PersistentCalls:
+      m_Calls: []
+  onTabChange:
+    m_PersistentCalls:
+      m_Calls: []
+  tabs: []
+  pages: []
+  menuDisabledItems: []
+  closeButton: {fileID: 0}
+  closeable: 0
 --- !u!1 &1503157854
 GameObject:
   m_ObjectHideFlags: 0
@@ -7261,6 +7295,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onClose:
+    m_PersistentCalls:
+      m_Calls: []
+  onTabChange:
     m_PersistentCalls:
       m_Calls: []
   tabs: []

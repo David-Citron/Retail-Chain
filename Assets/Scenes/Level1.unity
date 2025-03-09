@@ -11951,7 +11951,7 @@ GameObject:
   - component: {fileID: 1157306704}
   - component: {fileID: 1157306706}
   m_Layer: 5
-  m_Name: TutorialShop
+  m_Name: ShopHelp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20551,7 +20551,7 @@ GameObject:
   - component: {fileID: 1859573342}
   - component: {fileID: 1859573345}
   m_Layer: 5
-  m_Name: TutorialFactory
+  m_Name: FactoryHelp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20605,10 +20605,14 @@ MonoBehaviour:
       m_Calls: []
   tabs:
   - {fileID: 606619514}
+  - {fileID: 2000634684}
   - {fileID: 2035778337}
+  - {fileID: 1861251584}
   pages:
   - {fileID: 118127837}
+  - {fileID: 2086341502}
   - {fileID: 1698224236}
+  - {fileID: 1555616992}
   menuDisabledItems:
   - {fileID: 1781850266}
   - {fileID: 597853091}

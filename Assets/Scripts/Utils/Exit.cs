@@ -17,7 +17,14 @@ public class Exit : MonoBehaviour
             MenuManager.instance.ToggleUI("Exit");
         }));
 
-       // Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.Help), item => { }));
+        Interactable.AddInteraction(new Interaction(() => Interactable.PressedKey(ActionType.Help), item =>
+        {
+            PlayerManager.instance.GetLocalGamePlayer().IfPresent(player =>
+            {
+                if (player.playerRole == PlayerRole.Factory) MenuManager.instance.ToggleUI("FactoryHelp");
+                else MenuManager.instance.ToggleUI("ShopHelp");
+            });
+        }));
     }
 
     void Update() {}
