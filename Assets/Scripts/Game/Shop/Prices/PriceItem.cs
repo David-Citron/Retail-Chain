@@ -12,7 +12,6 @@ public class PriceItem : MonoBehaviour
     void Start() {}
     void Update() {}
 
-
     public void Initialize(ItemData itemData)
     {
         itemIcon.texture = itemData.icon;
