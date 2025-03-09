@@ -16,7 +16,7 @@ public class PriceItem : MonoBehaviour
     {
         itemIcon.texture = itemData.icon;
         itemName.text = itemData.itemName;
-        priceInput.text = "$" + itemData.sellPrice;
+        priceInput.text = "$" + PriceSystem.GetPrice(itemData.itemType);
 
         priceInput.characterValidation = TMP_InputField.CharacterValidation.Integer;
         priceInput.onEndEdit.AddListener(newValue =>

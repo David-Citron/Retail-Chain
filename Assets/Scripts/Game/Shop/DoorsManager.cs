@@ -7,7 +7,8 @@ public class DoorsManager : MonoBehaviour
     public static DoorsManager instance;
 
     private byte inRange = 0;
-    [SerializeField] private Animator animator;
+    [SerializeField] private Animator door1Animator;
+    [SerializeField] private Animator door2Animator;
 
     private void Awake()
     {
@@ -41,6 +42,7 @@ public class DoorsManager : MonoBehaviour
 
     private void UpdateState()
     {
-        animator.SetBool(ANIMATOR_BOOL_NAME, inRange > 0);
+        door1Animator.SetBool(ANIMATOR_BOOL_NAME, inRange > 0);
+        door2Animator.SetBool(ANIMATOR_BOOL_NAME, inRange > 0);
     }
 }
