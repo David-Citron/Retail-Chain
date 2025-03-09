@@ -18,8 +18,7 @@ public class PriceItem : MonoBehaviour
         itemName.text = itemData.itemName;
         priceInput.text = "$" + PriceSystem.GetPrice(itemData.itemType);
 
-        int inflatedPrice = TaxesManager.GetInflationPrice(itemData.sellPrice);
-        recommendedPrice.text = "$" + (int) (inflatedPrice - (inflatedPrice * .05d));
+        recommendedPrice.text = "$" + PriceSystem.CalculateRecommendedPrice(itemData.sellPrice);
 
         priceInput.characterValidation = TMP_InputField.CharacterValidation.Integer;
         priceInput.onEndEdit.AddListener(newValue =>

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Org.BouncyCastle.Math.EC.Multiplier;
 
 [RequireComponent(typeof(BoxCollider))]
 public class PriceSystem : Interactable
@@ -89,6 +90,33 @@ public class PriceSystem : Interactable
             priceItems.Add(createdItem);
         }
     }
+
+    /// <summary>
+    /// Calculates the max price based on the inflation & shop rating.
+    /// Rating (max 5):
+    /// 1: -10%
+    /// 2: -5%
+    /// 3: 0%
+    /// 4: +5%
+    /// 5: +10%
+    /// </summary>
+    /// <param name="basePrice">The base price</param>
+    /// <returns>The max price</returns>
+    public static int CalculateMaxPrice(int basePrice)
+    {
+        float rating = ShopRating.GetRating();
+        int newPrice = TaxesManager.GetInflationPrice(basePrice);
+
+        newPrice = (int) (newPrice * (1 + (rating - 3) * 0.05f));
+        return newPrice;
+    }
+
+    /// <summary>
+    /// Recommended price will be shown to player and is lowered by 5%.
+    /// </summary>
+    /// <param name="basePrice">The base price</param>
+    /// <returns>The max price reduced by 5%</returns>
+    public static int CalculateRecommendedPrice(int basePrice) => (int) (CalculateMaxPrice(basePrice) * 0.95d);
 
     public override string GetTag() => "CashierRegister";
 }

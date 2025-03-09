@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements.Experimental;
 
 public class Customer : MonoBehaviour
 {
@@ -84,6 +85,7 @@ public class Customer : MonoBehaviour
         if (stepsCount >= MAX_STEPS)
         {
             Leave();
+            ShopRating.instance.DecreaseRating(0.1f); //Decrease rating because customer did not find their items.
             return;
         }
         CustomerPoint previousPoint = null;
@@ -150,10 +152,11 @@ public class Customer : MonoBehaviour
         if (item.itemType != desiredItem) return;
         // TODO: add validation
         ItemData itemData = ItemManager.GetItemData(desiredItem);
-        int maxPrice = TaxesManager.GetInflationPrice(itemData.sellPrice);
+        int maxPrice = PriceSystem.CalculateMaxPrice(itemData.sellPrice);
         int itemPrice = PriceSystem.GetPrice(itemData.itemType);
         if (itemPrice > maxPrice)
         {
+            ShopRating.instance.DecreaseRating(0.05f); //Decrease rating because the prices are too high.
             bubble.SetBubbleData(BubbleState.TooExpensive, "$" + maxPrice);
             new ActionTimer(() =>
             {
@@ -254,6 +257,17 @@ public class Customer : MonoBehaviour
         PlayerManager.instance.GetLocalGamePlayer().IfPresent(player => player.bankAccount.AddBalance(bill.price));
         Leave();
         CustomerManager.instance.UpdateQueue();
+
+        int messes = ShopMessManager.instance.GetActiveMesses();
+        bool cheaperThanRecommended = bill.price <= PriceSystem.CalculateRecommendedPrice(ItemManager.GetItemData(bill.itemType).sellPrice);
+
+        float rating = cheaperThanRecommended ? 0.3f : -0.15f;//If the price is cheaper than recommended increase rating.
+        rating -= messes / 10f; //Decrease rating based on number of messes
+        if(stepsCount >= 2) rating -= stepsCount * .01f; //If the steps count is >= 2 than decrease rating
+
+        Debug.Log(rating + " -" + messes / 10f + "[" + messes + "]" +  " -" + stepsCount * .05f + " [" + stepsCount + "]");
+
+        ShopRating.instance.IncreaseRating(rating);
     }
 
     private void OnDestroy()

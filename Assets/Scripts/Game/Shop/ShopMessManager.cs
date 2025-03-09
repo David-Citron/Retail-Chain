@@ -6,10 +6,13 @@ using Random = System.Random;
 public class ShopMessManager : MonoBehaviour
 {
 
+    public static ShopMessManager instance;
+
     [SerializeField] private List<GameObject> messes;
 
     void Start()
     {
+        instance = this;
         StartCoroutine(StartMessTimer());
     }
 
@@ -39,4 +42,5 @@ public class ShopMessManager : MonoBehaviour
     }
 
     private List<GameObject> GetAvailablePlaces() => messes.FindAll(place => !place.activeSelf);
+    public int GetActiveMesses() => messes.FindAll(place => place.activeSelf).Count;
 }

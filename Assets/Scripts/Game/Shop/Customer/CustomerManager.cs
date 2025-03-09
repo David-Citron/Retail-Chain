@@ -35,6 +35,7 @@ public class CustomerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SpawnNewCustomer(); //Spawn 1 customer automatically at the start of the game.
         CreateNewCustomerTimer();
     }
 
