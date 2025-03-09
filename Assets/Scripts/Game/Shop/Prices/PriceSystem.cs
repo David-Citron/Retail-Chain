@@ -9,10 +9,11 @@ public class PriceSystem : Interactable
 
     private List<GameObject> priceItems;
 
+    private Dictionary<ItemType, int> itemPrices;
+
     [SerializeField] private GameObject contentList;
     [SerializeField] private GameObject priceItemPrefab;
     [SerializeField] private Button closeButton;
-
 
     private ActionTimer timer;
 
@@ -20,7 +21,7 @@ public class PriceSystem : Interactable
     {
         instance = this;
         priceItems = new List<GameObject>();
-
+        itemPrices = new Dictionary<ItemType, int>();
 
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear, gameObject => UpdateContent(false),
             new Hint(() => Hint.GetHintButton(ActionType.PickUpItem) + " TO MANAGE PRICES", () => isPlayerNear)));
@@ -35,6 +36,8 @@ public class PriceSystem : Interactable
         BoxCollider collider = GetComponent<BoxCollider>();
         collider.isTrigger = true;
 
+
+        ItemManager.GetAllSellableItemData().ForEach(item => itemPrices.Add(item.itemType, item.sellPrice));
     }
 
     void Update() {}
@@ -62,9 +65,10 @@ public class PriceSystem : Interactable
         }, 3, 1).Run();
     }
 
+    public static int GetPrice(ItemType itemType) => instance.itemPrices[itemType];
     public static void UpdatePrice(ItemType itemType, int newPrice)
     {
-        ItemManager.GetItemData(itemType).sellPrice = newPrice;
+        instance.itemPrices[itemType] = newPrice;
         instance.UpdateContent(true);
     }
 

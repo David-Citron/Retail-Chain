@@ -19,7 +19,7 @@ public class PriceItem : MonoBehaviour
         priceInput.text = "$" + itemData.sellPrice;
 
         priceInput.characterValidation = TMP_InputField.CharacterValidation.Integer;
-        priceInput.onValueChanged.AddListener(newValue =>
+        priceInput.onEndEdit.AddListener(newValue =>
         {
             if (!int.TryParse(newValue, out int newPrice)) return;
             PriceSystem.UpdatePrice(itemData.itemType, newPrice);
