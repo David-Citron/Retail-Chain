@@ -12,7 +12,7 @@ public class DoorsManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null)
+        if (instance == null)
             instance = this;
     }
 

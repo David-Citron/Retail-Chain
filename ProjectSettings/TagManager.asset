@@ -22,6 +22,7 @@ TagManager:
   - ShopMess
   - DisplaySlot
   - CashierRegister
+  - Doors
   layers:
   - Default
   - TransparentFX
