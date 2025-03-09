@@ -23,7 +23,7 @@ public class PriceItem : MonoBehaviour
         {
             if (!int.TryParse(newValue, out int newPrice)) return;
             PriceSystem.UpdatePrice(itemData.itemType, newPrice);
-            priceInput.text = "$" + itemData.sellPrice;
+            priceInput.text = "$" + newPrice;
         });
     }
 }
