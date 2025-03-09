@@ -107,7 +107,7 @@ public class DisplayTable : Interactable
             Hint.ShowWhile("ITEM SLOT IS FULL", () => PlayerPickUp.GetHoldingType() != ItemType.None && GetNearestSlot().IsReadyToPickUp());
         }
 
-        return new InputInfo(nearestSlot, nearestItemDistance <= 1f, nearestSlot.transform.childCount != 0);
+        return new InputInfo(nearestSlot, nearestItemDistance <= 1.15f, nearestSlot.transform.childCount != 0);
     }
 
     public GameObject FindClosestItemSlot(Vector3 positionOrigin)

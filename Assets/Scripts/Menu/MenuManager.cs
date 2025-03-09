@@ -40,7 +40,7 @@ public class MenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Toggles UI based on the name and closes all active menus before open.
+    /// Toggles UI based on the name.
     /// </summary>
     /// <param name="uiName">The UI name</param>
     public bool ToggleUI(string uiName) => ToggleUI(uiName, false);
@@ -49,6 +49,7 @@ public class MenuManager : MonoBehaviour
     /// Toggles UI based on the name.
     /// </summary>
     /// <param name="uiName">The UI name</param>
+    /// <param name="closeAll">If true all active menus will close before open</param>
     public bool ToggleUI(string uiName, bool closeAll)
     {
         if (!closeAll && current != null && !current.IsCloseable()) return false; //If the current menu is not closeable then return.

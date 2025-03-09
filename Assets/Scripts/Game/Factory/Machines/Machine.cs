@@ -53,12 +53,12 @@ public abstract class Machine : Interactable, IMachine
 
     protected virtual void OnStart()
     {
-        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear, collider => PickUp(), 
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear, collider => PickUp(),
             new Hint(Hint.GetHintButton(ActionType.PickUpItem) + " TO PICK UP", () => !PlayerPickUp.IsHodlingItem() && machineState != MachineState.Working && GetNearestSlot().IsReadyToPickUp())
         ));
 
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, collider => StartInteraction(), new Hint[] {
-            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO INTERACT", () => machineState == MachineState.Ready && GetNearestSlot().isInValidDistance),
+            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO INTERACT", () => machineState == MachineState.Ready && GetNearestSlot().isInValidDistance  && !PlayerPickUp.IsHodlingItem()),
             new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO INSERT", () => IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling && GetNearestSlot().IsValid()),
             new Hint("INVALID ITEM", () => !IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling)
         }));
@@ -72,7 +72,7 @@ public abstract class Machine : Interactable, IMachine
             return;
         }
 
-        if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", 1)) return;
+        if (PlayerPickUp.IsHodlingItem() || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", 1)) return;
 
         StartTimer();
         ChangeMachineState(MachineState.Working);
@@ -149,6 +149,7 @@ public abstract class Machine : Interactable, IMachine
         if (machineState != MachineState.Working && PlayAnimation())
         {
             PlayerPickUp.Instance().IfPresent(pikUp => pikUp.animator.SetBool("working", false));
+            PlayerInputManager.isInteracting = false;
         }
 
         switch (machineState)
@@ -159,9 +160,9 @@ public abstract class Machine : Interactable, IMachine
                 break;
 
             case MachineState.Working:
-                PlayerInputManager.isInteracting = true;
-
                 if (!PlayAnimation()) break;
+
+                PlayerInputManager.isInteracting = true;
                 PlayerPickUp.Instance().IfPresent(pikUp => pikUp.animator.SetBool("working", true));
                 CircleTimer.Start(currentRecipe.time);
                 break;
@@ -171,8 +172,6 @@ public abstract class Machine : Interactable, IMachine
                 PlaceItem(resultPlace, resultItem);
                 GetCurrentGameObjects().ForEach(item => Destroy(item));
 
-
-                PlayerInputManager.isInteracting = false;
                 currentRecipe = null;
                 actionTimer = null;
                 currentItems.Clear();

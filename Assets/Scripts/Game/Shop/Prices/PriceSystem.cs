@@ -37,7 +37,9 @@ public class PriceSystem : Interactable
 
     }
 
-    void Update() {}
+    void Update() {
+        Debug.Log(isPlayerNear);
+    }
 
     private void ProcessPayment()
     {
@@ -49,7 +51,8 @@ public class PriceSystem : Interactable
 
         CircleTimer.Start(3);
 
-        timer = new ActionTimer(() => {
+        timer = new ActionTimer(() => HoldingKey(ActionType.Interaction), 
+            () => {
             PlayerInputManager.isInteracting = false;
             customer.Pay();
             timer = null;
@@ -58,7 +61,7 @@ public class PriceSystem : Interactable
             PlayerInputManager.isInteracting = false;
             CircleTimer.Stop();
             timer = null;
-        }, 3).Run();
+        }, 3, 1).Run();
     }
 
     public static void UpdatePrice(ItemType itemType, int newPrice)
