@@ -9,7 +9,7 @@ public class Settings : MonoBehaviour
     [SerializeField] private GameObject keybindPrefabContainer;
     [SerializeField] public static GameObject keybindChangeOverlay;
 
-    [SerializeField] List<KeybindData> keybindDataList = new List<KeybindData>();
+    private List<KeybindData> keybindDataList = new List<KeybindData>();
 
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private TMP_Dropdown windowModeDropdown;
@@ -32,6 +32,7 @@ public class Settings : MonoBehaviour
             Menu newMenu = GetComponent<Menu>();
             if (newMenu != null) menu = newMenu;
         }
+        KeybindManager.instance.keybindDataList.ForEach(keybind => keybindDataList.Add(keybind));
     }
 
     // Update is called once per frame
