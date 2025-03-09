@@ -12,7 +12,10 @@ public class ContractManager : NetworkBehaviour
     public Contract localContract = null;
     [SerializeField] private Contract serverContract = null;
 
+    private int contractsPassed = 0;
+
     private const int CONTRACT_TIME = 300; //TODO Edit
+    private const int CONTRACT_FIRST_TIME = 180;
     private const int NEGOTIATION_TIME = 120;
 
     [SerializeField] private List<ContractItem> initialContractItems = new List<ContractItem>() 
@@ -72,7 +75,7 @@ public class ContractManager : NetworkBehaviour
     [Server]
     public void InitializeFirstContract()
     {
-        RpcStartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
+        RpcStartNewContract(initialContractItems, CONTRACT_FIRST_TIME); // Start default contract at the beginning of the game
     }
 
     // Update is called once per frame
@@ -123,22 +126,25 @@ public class ContractManager : NetworkBehaviour
     private void StartNegotiation()
     {
         RpcShowNegotiationPanel();
+        if (negotiationTimer != null) return;
         negotiationTimer = new ActionTimer(() => RpcEndGame(), NEGOTIATION_TIME).Run();
     }
 
     [ClientRpc]
     private void RpcShowNegotiationPanel()
     {
-        ReloadNegotiationTime(0f);
-        localTimer = new ActionTimer(timer => 
-        {
-            ReloadNegotiationTime(timer.passedTime);
-        }, null, null, NEGOTIATION_TIME, 1).Run();
-
         MenuManager.instance.Open("Contract");
 
         negotiationState = OfferState.MakeOffer;
         ChangeNegotiationTab(negotiationState);
+
+        if (localTimer != null) return;
+
+        ReloadNegotiationTime(0f);
+        localTimer = new ActionTimer(timer =>
+        {
+            ReloadNegotiationTime(timer.passedTime);
+        }, null, null, NEGOTIATION_TIME, 1).Run();
     }
 
     [ClientRpc]
@@ -264,7 +270,10 @@ public class ContractManager : NetworkBehaviour
     public void AcceptContract()
     {
         EndNegotiation();
-        RpcStartNewContract(lastOfferContractItems, CONTRACT_TIME);
+        contractsPassed++;
+        int contractTime = CONTRACT_TIME;
+        if (contractsPassed < 3) contractTime = CONTRACT_FIRST_TIME;
+        RpcStartNewContract(lastOfferContractItems, contractTime);
     }
 
     [Command(requiresAuthority = false)]
@@ -276,6 +285,7 @@ public class ContractManager : NetworkBehaviour
     [Server]
     private void EndNegotiation()
     {
+        Debug.LogWarning("STOPPING TIMER!!!");
         negotiationTimer.Stop();
         RpcHideNegotiationPanel();
     }
