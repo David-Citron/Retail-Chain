@@ -4486,7 +4486,7 @@ MonoBehaviour:
   - {fileID: 597853091}
   - {fileID: 1193631299}
   closeButton: {fileID: 0}
-  closeable: 1
+  closeable: 0
 --- !u!1 &427537133
 GameObject:
   m_ObjectHideFlags: 0
