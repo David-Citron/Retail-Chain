@@ -13514,6 +13514,7 @@ MonoBehaviour:
   - {fileID: 1859255021}
   - {fileID: 1449722155}
   - {fileID: 1628250957}
+  forceOnForTestPlayer: []
 --- !u!4 &1305864649
 Transform:
   m_ObjectHideFlags: 0
@@ -25682,6 +25683,7 @@ MonoBehaviour:
   - {fileID: 8721197124674328142}
   - {fileID: 1859573345}
   - {fileID: 1033172546}
+  - {fileID: 1157306706}
   background: {fileID: 1353372503}
 --- !u!4 &2138193245
 Transform:
