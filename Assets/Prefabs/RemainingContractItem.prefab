@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 4273457110671677261}
   - component: {fileID: 3603674271370643265}
   - component: {fileID: 6781498234954804144}
+  - component: {fileID: 3302288893941181220}
   m_Layer: 5
   m_Name: RemainingContractItem
   m_TagString: Untagged
@@ -204,6 +205,33 @@ MonoBehaviour:
   textureSuccess: {fileID: 2800000, guid: 2ecd99d587646234eb5996cea9a7d764, type: 3}
   textureFailure: {fileID: 2800000, guid: 336e9bac1892ee740ac063570d9bbfff, type: 3}
   priceLabel: {fileID: 6244013387351172514}
+--- !u!114 &3302288893941181220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4510104403340959622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19215687, g: 0.21176471, b: 0.21960784, a: 0.9019608}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 0}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &4843642872423203023
 GameObject:
   m_ObjectHideFlags: 0

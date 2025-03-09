@@ -40,6 +40,7 @@ public class ContractManager : NetworkBehaviour
 
     public GameObject remainingContractItemsContainer;
     public GameObject remainingContractItemPrefab;
+    public GameObject remainingContractSummaryPrefab;
     public TMP_Text remainingContractItemsTimer;
 
     [SerializeField] private Image waitingTimeImage;

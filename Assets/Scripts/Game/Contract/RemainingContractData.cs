@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,17 +12,8 @@ public class RemainingContractData : MonoBehaviour
     [SerializeField] private Texture textureFailure;
     [SerializeField] private TMP_Text priceLabel;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void Start() { }
+    void Update() { }
 
     public void LoadData(ContractItem item, PlayerRole role)
     {

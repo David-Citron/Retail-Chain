@@ -147,6 +147,17 @@ public class Contract : NetworkBehaviour
 
     public void ReloadRemainingContractDataUI()
     {
+        if (ContractManager.instance.remainingContractItemPrefab == null) 
+        { 
+            Debug.LogError("Remaining Contract Item Prefab is null"); 
+            return; 
+        }
+        if (ContractManager.instance.remainingContractItemsContainer == null) 
+        { 
+            Debug.LogError("Remaining Contract Item Container is null"); 
+            return; 
+        }
+
         GameObject container = ContractManager.instance.remainingContractItemsContainer;
 
         // Clear current records
@@ -154,9 +165,6 @@ public class Contract : NetworkBehaviour
         {
             Destroy(container.transform.GetChild(i).gameObject);
         }
-
-        if (ContractManager.instance.remainingContractItemPrefab == null) return;
-        if (ContractManager.instance.remainingContractItemsContainer == null) return;
 
         currentContractItems.ForEach(item => 
         {
@@ -180,6 +188,27 @@ public class Contract : NetworkBehaviour
             }
             script.LoadData(item, PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault().playerRole);
         });
+
+        GameObject instance = Instantiate (ContractManager.instance.remainingContractSummaryPrefab, ContractManager.instance.remainingContractItemsContainer.transform);
+        RemainingContractSummary script = instance.GetComponent<RemainingContractSummary>();
+        if (script == null || PlayerManager.instance == null) return;
+        GamePlayer player = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
+        if (player == null) return;
+        int total = 0;
+        foreach (ContractItem item in currentContractItems) total += item.price * item.quantity;
+        switch (player.playerRole)
+        {
+        case PlayerRole.Shop:
+            script.LoadData("Total:", "<color=#FF5555>-" + total + "$");
+            break;
+        case PlayerRole.Factory:
+            script.LoadData("Total:", "<color=#55FF55>+" + total + "$");
+            break;
+        default:
+            Debug.Log("Player role is unassigned!");
+            break;
+        }
+        
     }
 
     public void OnContractUIClose()
