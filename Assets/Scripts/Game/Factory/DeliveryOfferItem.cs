@@ -30,7 +30,7 @@ public class DeliveryOfferItem : MonoBehaviour
 
         itemIcon.texture = deliveryOffer.item.icon;
         itemName.text = deliveryOffer.item.name;
-        itemPrice.text = "$" + deliveryOffer.price + " / item";
+        itemPrice.text = "$" + TaxesManager.GetInflationPrice(deliveryOffer.price) + " / item";
 
         increment.gameObject.SetActive(true);
         increment.onClick.RemoveAllListeners();
@@ -74,7 +74,7 @@ public class DeliveryOfferItem : MonoBehaviour
         GamePlayer gamePlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
         if (gamePlayer == null) return;
 
-        int price = amountToBuy * deliveryOffer.price;
+        int price = amountToBuy * TaxesManager.GetInflationPrice(deliveryOffer.price);
 
         PlayerBank bank = gamePlayer.bankAccount;
         if(bank.GetBalance() < price)
