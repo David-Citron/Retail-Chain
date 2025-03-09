@@ -4,8 +4,8 @@ using UnityEngine;
 public class CustomerManager : MonoBehaviour
 {
     const int MAX_CUSTOMERS = 4;
-    const float MIN_DELAY = 30f;
-    const float MAX_DELAY = 100f;
+    const float MIN_DELAY = 10f;
+    const float MAX_DELAY = 50f;
 
     public static CustomerManager instance = null;
 
