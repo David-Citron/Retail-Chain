@@ -72,5 +72,4 @@ public class LobbiesListManager : MonoBehaviour {
         listOfLobbies.Clear();
         noLobbiesToJoin.SetActive(true);
     }
-
 }

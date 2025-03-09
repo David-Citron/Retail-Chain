@@ -30,12 +30,7 @@ public class MenuManager : MonoBehaviour
 
     public bool IsOpened(string uiName)
     {
-        if (!menus.TryGetValue(uiName, out Menu menu))
-        {
-            Debug.LogWarning($"Cannot find UI {uiName} that you are trying to open.");
-            return false;
-        }
-
+        if (!menus.TryGetValue(uiName, out Menu menu)) return false;
         return menu.IsOpened();
     }
 
@@ -54,8 +49,9 @@ public class MenuManager : MonoBehaviour
     {
         if (!closeAll && current != null && !current.IsCloseable()) return false; //If the current menu is not closeable then return.
 
-        if (!menus.TryGetValue(uiName, out Menu menu)) {
-            Debug.LogWarning("Cannot find UI that you are trying to open.");
+        if (!menus.TryGetValue(uiName, out Menu menu))
+        {
+            Debug.LogWarning($"Cannot find UI {uiName} that you are trying to toggle.");
             return false;
         }
 
@@ -76,7 +72,7 @@ public class MenuManager : MonoBehaviour
     {
         if (!menus.TryGetValue(uiName, out Menu menu))
         {
-            Debug.LogWarning("Cannot find UI that you are trying to open.");
+            Debug.LogWarning($"Cannot find UI {uiName} that you are trying to open.");
             return;
         }
 
@@ -104,7 +100,7 @@ public class MenuManager : MonoBehaviour
     {
         if (!menus.TryGetValue(uiName, out Menu menu))
         {
-            Debug.LogWarning("Cannot find UI that you are trying to open.");
+            Debug.LogWarning($"Cannot find UI {uiName} that you are trying to close.");
             return;
         }
 
