@@ -4,8 +4,8 @@ using UnityEngine;
 public class CustomerManager : MonoBehaviour
 {
     const int MAX_CUSTOMERS = 4;
-    const float MIN_DELAY = 60f;
-    const float MAX_DELAY = 120f;
+    const float MIN_DELAY = 30f;
+    const float MAX_DELAY = 100f;
 
     public static CustomerManager instance = null;
 
@@ -97,14 +97,17 @@ public class CustomerManager : MonoBehaviour
     private void CreateNewCustomerTimer()
     {
         float time = Random.Range(MIN_DELAY, MAX_DELAY);
+        if (timer != null)
+        {
+            timer.Stop();
+            timer = null;
+        }
         timer = new ActionTimer(() =>
         {
             if (customersActive.Count < MAX_CUSTOMERS)
                 SpawnNewCustomer();
-            timer.Stop();
-            timer = null;
             CreateNewCustomerTimer();
-        }, 5).Run();
+        }, time).Run();
     }
 
     public CustomerPoint TryFindDisplaySlot(ItemType targetItemType)
