@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool walking;
 
-    public Vector3 lastWallNormal;
+    private Vector3 lastWallNormal;
 
     void Start()
     {
@@ -51,6 +51,9 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("walking", true);
             walking = true;
         }
+
+        if (Input.GetKey(KeyCode.LeftShift) && rb.drag != 15) rb.drag = 13;
+        else if(!Input.GetKey(KeyCode.LeftShift) && rb.drag != 20) rb.drag = 20;
 
         MovePlayer();
         RotatePlayer();
