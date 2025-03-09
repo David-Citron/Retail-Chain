@@ -2,16 +2,27 @@ Shader "Custom/ColorToTransparency"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {} // The input texture
-        _TargetColor ("Color to Remove", Color) = (0,1,0,1) // Default: Green
-        _Tolerance ("Tolerance", Range(0, 1)) = 0.1 // Allow slight variations
+        _MainTex ("Texture", 2D) = "white" {}
+        _TargetColor ("Color to Remove", Color) = (0,1,0,1)
+        _Tolerance ("Tolerance", Range(0, 1)) = 0.1
+
+        _StencilComp ("Stencil Comparison", Float) = 8
+        _Stencil ("Stencil ID", Float) = 0
+        _StencilOp ("Stencil Operation", Float) = 0
+        _StencilWriteMask ("Stencil Write Mask", Float) = 255
+        _StencilReadMask ("Stencil Read Mask", Float) = 255
+        _ColorMask ("Color Mask", Float) = 15
     }
     SubShader
     {
-        Tags {"Queue"="Transparent" "RenderType"="Transparent"}
+        Tags { "Queue"="Transparent" "RenderType"="Transparent" "IgnoreProjector"="True" }
+
         Pass
         {
-            Blend SrcAlpha OneMinusSrcAlpha // Enables transparency
+            Blend SrcAlpha OneMinusSrcAlpha // Enables proper transparency
+            ZWrite Off // Prevents depth writing, required for transparency
+            Cull Off // Ensures both sides render correctly
+            
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -44,13 +55,13 @@ Shader "Custom/ColorToTransparency"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
-
-                // Calculate color difference
                 float diff = distance(col.rgb, _TargetColor.rgb);
+
                 if (diff < _Tolerance)
                 {
-                    col.a = 0; // Make transparent
+                    col.a = 0; // Make the color fully transparent
                 }
+
                 return col;
             }
             ENDCG
