@@ -8,6 +8,7 @@ public class Menu : MonoBehaviour
 
     [SerializeField] private UnityEvent onOpen; //Action that will be called on open.
     [SerializeField] private UnityEvent onClose; //Action that will be called on open.
+    [SerializeField] private UnityEvent onTabChange; //Action that will be called on open.
 
     [SerializeField] private List<GameObject> tabs;
     [SerializeField] private List<GameObject> pages;
@@ -62,6 +63,7 @@ public class Menu : MonoBehaviour
         int active = GetActiveIndex();
         if (!force && active == index) return;
 
+        onTabChange?.Invoke();
         for (int i = 0; i < pages.Count; i++)
         {
             pages[i].SetActive(i == index);
