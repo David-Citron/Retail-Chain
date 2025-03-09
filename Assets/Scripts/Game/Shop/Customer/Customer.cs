@@ -21,6 +21,8 @@ public class Customer : MonoBehaviour
     [SerializeField] private bool wantsToPay = false;
     [SerializeField] private bool isWalking = false;
 
+    private CustomerBubble bubble = null;
+
     void Awake()
     {
         if (agent == null)
@@ -32,6 +34,10 @@ public class Customer : MonoBehaviour
                 return;
             }
         }
+        bubble = GetComponent<CustomerBubble>();
+        bubble.HideBubble();
+        if (bubble == null)
+            Debug.LogError("Bubble not found!");
         stepsCount = 0;
         bill.itemType = ItemType.None;
         bill.price = 0;
@@ -88,7 +94,10 @@ public class Customer : MonoBehaviour
         }
         CustomerPoint foundPoint = CustomerManager.instance.TryFindDisplaySlot(desiredItem);
         if (foundPoint != null)
+        {
+            bubble.HideBubble();
             ReservePoint(foundPoint);
+        }
         while (reservedPoint == null)
         {
             CustomerPoint point = CustomerManager.instance.TryFindRandomDisplaySlot();
@@ -143,7 +152,15 @@ public class Customer : MonoBehaviour
         ItemData itemData = ItemManager.GetItemData(desiredItem);
         int maxPrice = TaxesManager.GetInflationPrice(itemData.sellPrice);
         int itemPrice = PriceSystem.GetPrice(itemData.itemType);
-        if (itemPrice > maxPrice) return;
+        if (itemPrice > maxPrice)
+        {
+            bubble.SetBubbleData(BubbleState.TooExpensive, "$" + maxPrice);
+            new ActionTimer(() =>
+            {
+                bubble.HideBubble();
+            }, 1).Run();
+            return;
+        }
 
         if (CustomerManager.instance.FindAvailableQueuePoint(this) == null) return;
         
@@ -151,6 +168,7 @@ public class Customer : MonoBehaviour
             return;
         bill.itemType = item.itemType;
         bill.price = itemPrice;
+        bubble.HideBubble();
         return;
     }
 
@@ -251,6 +269,10 @@ public class Customer : MonoBehaviour
     {
         if (!other.CompareTag("Doors")) return;
         DoorsManager.instance.JoinRange();
+        ActionTimer timer = new ActionTimer(() =>
+        {
+            bubble.SetBubbleData(BubbleState.DesiredItem, null);
+        }, 1.3f).Run();
     }
 
     private void OnTriggerExit(Collider other)
@@ -261,6 +283,7 @@ public class Customer : MonoBehaviour
 
     public bool GetWantsToPay() => wantsToPay;
     public bool GetIsWalking() => isWalking;
+    public ItemType GetDesiredItem() => desiredItem;
     public CustomerPoint GetReservation() => reservedPoint;
 }
 
