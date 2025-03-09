@@ -84,8 +84,6 @@ public class Contract : NetworkBehaviour
                 Debug.LogError("Player role is not assigned correctly");
                 return;
         }
-        Debug.Log("Local contract checked successfully! Sending command to check contracts");
-        Debug.Log("Local contract status: " + status);
         ContractManager.instance.CmdCheckContracts();
     }
 

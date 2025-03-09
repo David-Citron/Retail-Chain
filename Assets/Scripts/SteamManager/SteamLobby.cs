@@ -60,7 +60,6 @@ public class SteamLobby : MonoBehaviour
 
     public void HostLobby()
     {
-        Debug.Log("Started hosting a lobby");
         lobbyType = DEFAULT_LOBBY_TYPE;
         SteamMatchmaking.CreateLobby(lobbyType, networkManager.maxConnections);
         LobbyHandler.instance.ShowLoadingScreen();
@@ -101,7 +100,6 @@ public class SteamLobby : MonoBehaviour
 
     public void LeaveLobby()
     {
-        Debug.Log("Leaving lobby " + LobbyId);
         SteamMatchmaking.LeaveLobby(LobbyId);
 
         if(MenuManager.instance != null) MenuManager.instance.Open("MainMenu");

@@ -72,7 +72,6 @@ public class ContractManager : NetworkBehaviour
     [Server]
     public void InitializeFirstContract()
     {
-        Debug.Log("Calling StartNewContract");
         RpcStartNewContract(initialContractItems, CONTRACT_TIME); // Start default contract at the beginning of the game
     }
 
@@ -104,19 +103,13 @@ public class ContractManager : NetworkBehaviour
             if (contract.status == ContractStatus.Unknown || contract.status == ContractStatus.Pending) contractNotFinished = true;
             if (contract.status != ContractStatus.Success) contractSuccess = false;
         });
-        if (contractNotFinished)
-        {
-            Debug.Log("Contract is not finished yet");
-            return;
-        }
+        if (contractNotFinished) return;
         if (contractSuccess)
         {
-            Debug.Log("Contract was finished successfully!");
             RpcFinishContract();
             StartNegotiation();
             return;
         }
-        Debug.LogWarning("Contract was NOT finished successfully!");
         RpcEndGame();
     }
 

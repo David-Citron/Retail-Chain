@@ -36,7 +36,6 @@ public class Customer : MonoBehaviour
         bill.itemType = ItemType.None;
         bill.price = 0;
         GenerateOffer();
-        Debug.Log("New customer wants: " + desiredItem);
         reservedPoint = null;
         FindTarget();
     }
