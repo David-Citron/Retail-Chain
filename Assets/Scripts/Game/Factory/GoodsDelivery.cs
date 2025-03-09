@@ -50,7 +50,7 @@ public class GoodsDelivery : Interactable
         PlayTruckAnimation(IsActive());
     }
 
-    private void ToggleOffersUI()
+    public void ToggleOffersUI()
     {
         if (!MenuManager.instance.ToggleUI("DeliveryOffers") || !IsActive()) return;
         UpdateOffers();
