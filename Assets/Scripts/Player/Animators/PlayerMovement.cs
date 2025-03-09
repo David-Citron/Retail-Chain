@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private float walkSpeed = 1.0f;
+    [SerializeField] private float sprintSpeed = 1.5f;
 
     public float speed = 4f;
     public float rotationSpeed = 8f;
@@ -52,8 +54,8 @@ public class PlayerMovement : MonoBehaviour
             walking = true;
         }
 
-        if (Input.GetKey(KeyCode.LeftShift) && rb.drag != 15) rb.drag = 13;
-        else if(!Input.GetKey(KeyCode.LeftShift) && rb.drag != 20) rb.drag = 20;
+        if (Input.GetKey(KeyCode.LeftShift)) speed = sprintSpeed;
+        else speed = walkSpeed;
 
         MovePlayer();
         RotatePlayer();
@@ -82,8 +84,8 @@ public class PlayerMovement : MonoBehaviour
             else inputDirection = projectedDirection;
         }
 
-        moveDirection = inputDirection * speed;
-        rb.AddForce(moveDirection.normalized, ForceMode.VelocityChange);
+        moveDirection = inputDirection;
+        rb.AddForce(moveDirection.normalized * speed, ForceMode.VelocityChange);
     }
 
     private void RotatePlayer()
