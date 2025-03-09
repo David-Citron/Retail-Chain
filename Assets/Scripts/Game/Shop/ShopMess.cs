@@ -31,7 +31,7 @@ public class ShopMess : Interactable
 
         CircleTimer.Start(cleaningTime);
 
-        new ActionTimer(() => Input.GetKey(KeyCode.Space),
+        new ActionTimer(() => HoldingKey(ActionType.Interaction),
             () => DestroyMess(),
             () => {
                 CircleTimer.Stop();
