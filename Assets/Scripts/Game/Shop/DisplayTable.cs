@@ -24,11 +24,11 @@ public class DisplayTable : Interactable
         currentItems = new List<GameObject>();
 
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && GetNearestSlot().isInValidDistance, gameObject => PutItem(PlayerPickUp.holdingItem), 
-            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO ADD ITEM", () => PlayerPickUp.IsHodlingItem() && GetNearestSlot().isInValidDistance)));
+            new Hint(() => Hint.GetHintButton(ActionType.Interaction) + " TO ADD ITEM", () => PlayerPickUp.IsHodlingItem() && GetNearestSlot().isInValidDistance)));
 
 
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear && GetNearestSlot().isInValidDistance, gameObject => PickUp(),
-            new Hint(Hint.GetHintButton(ActionType.PickUpItem) + " TO PICK UP", () => !PlayerPickUp.IsHodlingItem() && GetNearestSlot().IsReadyToPickUp())));
+            new Hint(() => Hint.GetHintButton(ActionType.PickUpItem) + " TO PICK UP", () => !PlayerPickUp.IsHodlingItem() && GetNearestSlot().IsReadyToPickUp())));
     }
 
     void Update()
@@ -102,7 +102,7 @@ public class DisplayTable : Interactable
 
         if (nearestSlot.transform.childCount != 0)
         {
-            Hint.ShowWhile("ITEM SLOT IS FULL", () => PlayerPickUp.GetHoldingType() != ItemType.None && GetNearestSlot().IsReadyToPickUp());
+            Hint.ShowWhile(() => "ITEM SLOT IS FULL", () => PlayerPickUp.GetHoldingType() != ItemType.None && GetNearestSlot().IsReadyToPickUp());
         }
 
         return new InputInfo(nearestSlot, nearestItemDistance <= 1.15f, nearestSlot.transform.childCount != 0);

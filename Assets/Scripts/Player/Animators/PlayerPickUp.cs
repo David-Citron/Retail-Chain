@@ -90,8 +90,8 @@ public class PlayerPickUp : MonoBehaviour
     public static ItemType GetHoldingType() => ItemManager.GetItemType(holdingItem).GetValueOrDefault();
     public static Optional<PlayerPickUp> Instance() => Optional<PlayerPickUp>.Of(instance);
     public static List<Interaction> GetInteractions() => new List<Interaction>() {
-        new Interaction(() => Interactable.PressedKey(ActionType.PickUpItem), gameObject => instance.PickUp(gameObject), new Hint(Hint.GetHintButton(ActionType.PickUpItem) + " TO PICK UP", () => holdingItem == null)),
-        new Interaction(() => Interactable.PressedKey(ActionType.DropItem), gameObject => instance.DropHoldingItem(), new Hint(Hint.GetHintButton(ActionType.DropItem) + " TO DROP", () => holdingItem != null))
+        new Interaction(() => Interactable.PressedKey(ActionType.PickUpItem), gameObject => instance.PickUp(gameObject), new Hint(() => Hint.GetHintButton(ActionType.PickUpItem) + " TO PICK UP", () => holdingItem == null)),
+        new Interaction(() => Interactable.PressedKey(ActionType.DropItem), gameObject => instance.DropHoldingItem(), new Hint(() => Hint.GetHintButton(ActionType.DropItem) + " TO DROP", () => holdingItem != null))
     };
     
 }

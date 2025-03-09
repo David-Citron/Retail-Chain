@@ -87,7 +87,7 @@ public class HintSystem : MonoBehaviour
 
         TMP_Text tmpText = textObject.AddComponent<TextMeshProUGUI>();
 
-        tmpText.text = hint.value;
+        tmpText.text = hint.value.Invoke();
         tmpText.enableAutoSizing = true;
         tmpText.color = hint.color;
         tmpText.fontSizeMin = 22;
@@ -110,15 +110,15 @@ public class HintSystem : MonoBehaviour
 public class Hint
 {
     public GameObject textObject { get; set; }
+    public Func<string> value { get; private set; }
     public Color color { get; set; }
-    public string value { get; private set; }
     public float seconds { get; private set; }
     public Func<bool> predicate { get; set; }
     public Func<bool> addiotionalPredicate {  get; set; }
     public bool isActive { get; set; }
 
 
-    public Hint(string value, Color color, float seconds, bool register, Func<bool> predicate = null)
+    public Hint(Func<string> value, Color color, float seconds, bool register, Func<bool> predicate = null)
     {
         this.value = value;
         this.color = color;
@@ -128,13 +128,14 @@ public class Hint
         if(register) HintSystem.EnqueueHint(this);
     }
 
-    public Hint(string value, float seconds, bool register, Func<bool> predicate = null) : this(value, Color.white, seconds, register, predicate) { }
-    public Hint(string value, float seconds, Func<bool> predicate = null) : this(value, seconds, true, predicate) { }
-    public Hint(string value, Color color, float seconds, Func<bool> predicate = null) : this(value, color, seconds, true, predicate) { }
-    public Hint(string value, Func<bool> predicate = null) : this(value, 0, false, predicate) { }
+    public Hint(Func<string> value, float seconds, bool register, Func<bool> predicate = null) : this(value, Color.white, seconds, register, predicate) { }
+    public Hint(Func<string> value, float seconds, Func<bool> predicate = null) : this(value, seconds, true, predicate) { }
+    public Hint(Func<string> value, Color color, float seconds, Func<bool> predicate = null) : this(value, color, seconds, true, predicate) { }
+    public Hint(Func<string> value, Func<bool> predicate = null) : this(value, 0, false, predicate) { }
+    public Hint(string value, Func<bool> predicate = null) : this(() => value, 0, false, predicate) { }
 
-    public static Hint Create(string value, float seconds) => new Hint(value, seconds);
-    public static Hint Create(string value, Color color, float seconds) => new Hint(value, color, seconds);
+    public static Hint Create(string value, float seconds) => new Hint(() => value, seconds);
+    public static Hint Create(string value, Color color, float seconds) => new Hint(() => value, color, seconds);
 
 
     /// <summary>
@@ -144,14 +145,6 @@ public class Hint
     /// <param name="value">The hint</param>
     /// <param name="predicate">The condition</param>
     /// <returns>Hint object</returns>
-    public static Hint ShowWhile(string value, Func<bool> predicate) => new Hint(value, 0, predicate);
-    public static string GetHintButton(ActionType actionType)
-    {
-        var positiveKey = KeybindManager.instance.keybinds[actionType].positiveKey;
-        var spriteId = KeybindManager.instance.spriteId[positiveKey];
-
-        Debug.LogError("Positive key: " + positiveKey + "; sprite Id: " + spriteId);
-
-        return $"<sprite={spriteId}>";
-    } 
+    public static Hint ShowWhile(Func<string> value, Func<bool> predicate) => new Hint(value, 0, predicate);
+    public static string GetHintButton(ActionType actionType) => $"<sprite={KeybindManager.instance.spriteId[KeybindManager.instance.keybinds[actionType].positiveKey]}>";
 }

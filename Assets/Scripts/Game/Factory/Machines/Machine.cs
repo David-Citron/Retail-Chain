@@ -52,12 +52,12 @@ public abstract class Machine : Interactable, IMachine
     protected virtual void OnStart()
     {
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear, collider => PickUp(),
-            new Hint(Hint.GetHintButton(ActionType.PickUpItem) + " TO PICK UP", () => !PlayerPickUp.IsHodlingItem() && machineState != MachineState.Working && GetNearestSlot().IsReadyToPickUp())
+            new Hint(() => Hint.GetHintButton(ActionType.PickUpItem) + " TO PICK UP", () => !PlayerPickUp.IsHodlingItem() && machineState != MachineState.Working && GetNearestSlot().IsReadyToPickUp())
         ));
 
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, collider => StartInteraction(), new Hint[] {
-            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO INTERACT", () => machineState == MachineState.Ready && GetNearestSlot().isInValidDistance  && !PlayerPickUp.IsHodlingItem()),
-            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO INSERT", () => IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling && GetNearestSlot().IsValid()),
+            new Hint(() => Hint.GetHintButton(ActionType.Interaction) + " TO INTERACT", () => machineState == MachineState.Ready && GetNearestSlot().isInValidDistance  && !PlayerPickUp.IsHodlingItem()),
+            new Hint(() => Hint.GetHintButton(ActionType.Interaction) + " TO INSERT", () => IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling && GetNearestSlot().IsValid()),
             new Hint("INVALID ITEM", () => !IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling)
         }));
     }
@@ -240,7 +240,7 @@ public abstract class Machine : Interactable, IMachine
             
         if (nearestSlot.transform.childCount != 0)
         {
-            Hint.ShowWhile("ITEM SLOT IS FULL", () => PlayerPickUp.GetHoldingType() != ItemType.None && machineState == MachineState.Idling && GetNearestSlot().IsReadyToPickUp());
+            Hint.ShowWhile(() => "ITEM SLOT IS FULL", () => PlayerPickUp.GetHoldingType() != ItemType.None && machineState == MachineState.Idling && GetNearestSlot().IsReadyToPickUp());
         }
 
         return new InputInfo(nearestSlot, nearestItemDistance <= 1.3f, nearestSlot.transform.childCount != 0);

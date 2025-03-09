@@ -23,10 +23,10 @@ public class PriceSystem : Interactable
 
 
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear, gameObject => UpdateContent(false),
-            new Hint(Hint.GetHintButton(ActionType.PickUpItem) + " TO MANAGE PRICES", () => isPlayerNear)));
+            new Hint(() => Hint.GetHintButton(ActionType.PickUpItem) + " TO MANAGE PRICES", () => isPlayerNear)));
 
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && CustomerManager.instance.GetCustomerAtCashRegister() != null && isPlayerNear, i => ProcessPayment(),
-            new Hint(Hint.GetHintButton(ActionType.Interaction) + " TO PROCESS PAYMENT", () => CustomerManager.instance.GetCustomerAtCashRegister() != null && isPlayerNear)));
+            new Hint(() => Hint.GetHintButton(ActionType.Interaction) + " TO PROCESS PAYMENT", () => CustomerManager.instance.GetCustomerAtCashRegister() != null && isPlayerNear)));
 
         closeButton.interactable = true;
         closeButton.onClick.RemoveAllListeners();
