@@ -46,14 +46,7 @@ public class Contract : NetworkBehaviour
 
     public void HookStatus(ContractStatus oldValue, ContractStatus newValue)
     {
-        if (newValue == ContractStatus.Failed || newValue == ContractStatus.Success) 
-        {
-            Debug.Log("Hook caught! Sending command to check contracts");
-            ContractManager.instance.CmdCheckContracts();
-        } else
-        {
-            Debug.Log("Hook caught but the ContractStatus is invalid!"); // This is expected at the beginning
-        }
+        if (newValue == ContractStatus.Failed || newValue == ContractStatus.Success) ContractManager.instance.CmdCheckContracts();
     }
 
     private void CheckContractStatus()
@@ -63,11 +56,8 @@ public class Contract : NetworkBehaviour
             case PlayerRole.Factory:
                 bool allItemsFulfilled = true;
                 currentContractItems.ForEach(item => {
-                    if (!item.fulfilled)
-                    {
-                        allItemsFulfilled = false;
-                        Debug.Log("Item not fulfilled! Item type: " + item.itemType + " - Remaining: " + item.quantityRemaining);
-                    }
+                    if (item.fulfilled) return;
+                    allItemsFulfilled = false;
                 });
                 if (allItemsFulfilled) status = ContractStatus.Success;
                 else status = ContractStatus.Failed;
