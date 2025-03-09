@@ -22,6 +22,7 @@ public class Game : MonoBehaviour
     [SerializeField] private List<GameObject> shopGameObjects; //All game objects that are related to Shop player -> for Factory player disable.
     [SerializeField] private List<GameObject> factoryGameObjects; //All game objects that are related to Factory player -> for Shop player disable.
 
+    [SerializeField] private List<GameObject> forceOnForTestPlayer;
     void Awake()
     {
         if (instance != null)
@@ -69,6 +70,7 @@ public class Game : MonoBehaviour
                     cameras[1].SetActive(false);
                 }
             }
+            forceOnForTestPlayer.ForEach(currentGameObject => currentGameObject.SetActive(true));
             return;
         }
         shopGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(false));
@@ -89,7 +91,7 @@ public class Game : MonoBehaviour
         
     }
 
-    void Update() {}
+    void Update() {  }
 
     public void EndGame()
     {

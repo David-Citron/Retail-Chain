@@ -1,4 +1,5 @@
 using Mirror;
+using Debug = UnityEngine.Debug;
 
 public class TaxesManager : NetworkBehaviour
 {
@@ -11,6 +12,7 @@ public class TaxesManager : NetworkBehaviour
 
     void Start()
     {
+        Debug.Log("Called method");
         instance = this;
         syncDirection = SyncDirection.ServerToClient;
         inflation = 1;

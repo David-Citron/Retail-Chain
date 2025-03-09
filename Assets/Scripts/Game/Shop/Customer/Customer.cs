@@ -12,7 +12,7 @@ public class Customer : MonoBehaviour
     [SerializeField] private NavMeshAgent agent = null;
 
     private CustomerPoint reservedPoint = null;
-    private ItemType inventory;
+    private Bill bill;
 
     private int stepsCount = 0;
     private ActionTimer timer = null;
@@ -33,7 +33,8 @@ public class Customer : MonoBehaviour
             }
         }
         stepsCount = 0;
-        inventory = ItemType.None;
+        bill.itemType = ItemType.None;
+        bill.price = 0;
         GenerateOffer();
         Debug.Log("New customer wants: " + desiredItem);
         reservedPoint = null;
@@ -62,7 +63,7 @@ public class Customer : MonoBehaviour
 
     private void FindTarget()
     {
-        if (inventory == desiredItem)
+        if (bill.itemType == desiredItem)
         {
             CustomerPoint point = CustomerManager.instance.FindAvailableQueuePoint(this);
             if (point == null)
@@ -140,15 +141,16 @@ public class Customer : MonoBehaviour
         if (item.itemType != desiredItem) return;
         // TODO: add validation
         ItemData itemData = ItemManager.GetItemData(desiredItem);
-        // TODO: this throws an error:
-        // int maxPrice = TaxesManager.GetInflactionPrice(itemData.sellPrice);
-        //
-        // TODO: add check if the current price for this item type is > maxPrice = return;
+        int maxPrice = TaxesManager.GetInflactionPrice(itemData.sellPrice);
+        int itemPrice = PriceSystem.GetPrice(itemData.itemType);
+        if (itemPrice > maxPrice) return;
+
         if (CustomerManager.instance.FindAvailableQueuePoint(this) == null) return;
         
         if (!CustomerManager.instance.RemoveItemFromSlot(reservedPoint))
             return;
-        inventory = item.itemType;
+        bill.itemType = item.itemType;
+        bill.price = itemPrice;
         return;
     }
 
@@ -230,6 +232,8 @@ public class Customer : MonoBehaviour
     public void Pay()
     {
         wantsToPay = false;
+        if (PlayerManager.instance == null) return;
+        PlayerManager.instance.GetLocalGamePlayer().IfPresent(player => player.bankAccount.AddBalance(bill.price));
         Leave();
         CustomerManager.instance.UpdateQueue();
     }
@@ -246,4 +250,10 @@ public class Customer : MonoBehaviour
     public bool GetWantsToPay() => wantsToPay;
     public bool GetIsWalking() => isWalking;
     public CustomerPoint GetReservation() => reservedPoint;
+}
+
+public struct Bill
+{
+    public ItemType itemType;
+    public int price;
 }
