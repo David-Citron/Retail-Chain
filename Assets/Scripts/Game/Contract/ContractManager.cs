@@ -12,7 +12,7 @@ public class ContractManager : NetworkBehaviour
     public Contract localContract = null;
     [SerializeField] private Contract serverContract = null;
 
-    private const int CONTRACT_TIME = 60;//TODO Edit
+    private const int CONTRACT_TIME = 300; //TODO Edit
     private const int NEGOTIATION_TIME = 120;
 
     [SerializeField] private List<ContractItem> initialContractItems = new List<ContractItem>() 
