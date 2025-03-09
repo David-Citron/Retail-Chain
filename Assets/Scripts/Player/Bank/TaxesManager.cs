@@ -1,11 +1,10 @@
 using Mirror;
-using Debug = UnityEngine.Debug;
 
 public class TaxesManager : NetworkBehaviour
 {
     public static TaxesManager instance;
 
-    public const int DEFAULT_RENT_TAXES = 150;
+    public const int DEFAULT_RENT_TAXES = 50;
 
     [SyncVar]
     public float inflation;
@@ -23,19 +22,19 @@ public class TaxesManager : NetworkBehaviour
     /// Increases inflation by given number
     /// </summary>
     /// <param name="increaseBy">Inflation will increase by that amount</param>
-    public static void IncraseInflaction(float increaseBy) => instance.inflation += increaseBy;
+    public static void IncraseInflation(float increaseBy) => instance.inflation += increaseBy;
 
     /// <summary>
     /// Calculates rent taxes. That includes electricity, gas & rent.
     /// There is default rate which is multiplied by inflation.
     /// </summary>
     /// <returns>The rent taxes</returns>
-    public static int GetRentTaxes() => GetInflactionPrice(DEFAULT_RENT_TAXES);
+    public static int GetRentTaxes() => GetInflationPrice(DEFAULT_RENT_TAXES);
 
     /// <summary>
     /// Returns price multiplied by current inflation.
     /// </summary>
     /// <param name="price">The price</param>
     /// <returns>The new price (inflation included)</returns>
-    public static int GetInflactionPrice(int price) => (int) (price * instance.inflation);
+    public static int GetInflationPrice(int price) => (int) (price * instance.inflation);
 }

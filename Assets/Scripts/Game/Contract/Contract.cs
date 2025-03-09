@@ -94,13 +94,16 @@ public class Contract : NetworkBehaviour
             Debug.LogError("PlayerManager is null!");
             return;
         }
+
         GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
         if (PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault() == null)
         {
             Debug.LogError("Local GamePlayer not found!");
             return;
         }
+
         int sum = 0;
+
         currentContractItems.ForEach(item => sum += item.price);
         switch (ownerRole)
         {
@@ -115,6 +118,10 @@ public class Contract : NetworkBehaviour
                 Debug.LogError("Player role is not assigned correctly!");
                 return;
         }
+
+        localPlayer.bankAccount.PayTaxes();
+
+        if (localPlayer.isServer) TaxesManager.IncraseInflation(0.2f);
     }
 
     public bool SubmitItem(ItemType itemType)

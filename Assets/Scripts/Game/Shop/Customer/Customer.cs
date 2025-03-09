@@ -140,7 +140,7 @@ public class Customer : MonoBehaviour
         if (item.itemType != desiredItem) return;
         // TODO: add validation
         ItemData itemData = ItemManager.GetItemData(desiredItem);
-        int maxPrice = TaxesManager.GetInflactionPrice(itemData.sellPrice);
+        int maxPrice = TaxesManager.GetInflationPrice(itemData.sellPrice);
         int itemPrice = PriceSystem.GetPrice(itemData.itemType);
         if (itemPrice > maxPrice) return;
 

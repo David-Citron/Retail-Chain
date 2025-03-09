@@ -122,7 +122,7 @@ public class GoodsDelivery : Interactable
         for (int i = 0; i < random.Next(2, 4); i++)
         {
             ItemData data = GetRandomType(random);
-            deliveryOffers.Add(new DeliveryOffer(data, random.Next(data.buyPrice, TaxesManager.GetInflactionPrice(data.buyPrice)), random.Next(1, data.maxOfferAmount)));
+            deliveryOffers.Add(new DeliveryOffer(data, random.Next(data.buyPrice, TaxesManager.GetInflationPrice(data.buyPrice)), random.Next(1, data.maxOfferAmount)));
         }
     }
 
