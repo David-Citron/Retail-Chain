@@ -261,7 +261,7 @@ public class Customer : MonoBehaviour
         int messes = ShopMessManager.instance.GetActiveMesses();
         bool cheaperThanRecommended = bill.price <= PriceSystem.CalculateRecommendedPrice(ItemManager.GetItemData(bill.itemType).sellPrice);
 
-        float rating = cheaperThanRecommended ? 0.05f : -0.2f;//If the price is cheaper than recommended increase rating.
+        float rating = cheaperThanRecommended ? 0.05f : -0.1f;//If the price is cheaper than recommended increase rating.
         rating -= messes / 10f; //Decrease rating based on number of messes
         if(stepsCount >= 2) rating -= stepsCount * .01f; //If the steps count is >= 2 than decrease rating
 
