@@ -12,10 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     private Vector3 movementInput;
 
-    private Vector3 moveDirection;
     private float horizontal, vertical;
-
-    private bool walking;
 
     private Vector3 lastWallNormal;
 
@@ -42,20 +39,21 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (walking && horizontal == 0 && vertical == 0)
+
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+
+        if (horizontal == 0 && vertical == 0)
         {
             animator.SetBool("walking", false);
-            walking = false;
+            animator.SetBool("sprinting", false);
             return;
         }
-        else if (!walking && (horizontal != 0 || vertical != 0))
+        else if ((horizontal != 0 || vertical != 0))
         {
-            animator.SetBool("walking", true);
-            walking = true;
+            animator.SetBool(isSprinting ? "sprinting" : "walking", true);
         }
 
-        if (Input.GetKey(KeyCode.LeftShift)) speed = sprintSpeed;
-        else speed = walkSpeed;
+        speed = isSprinting ? sprintSpeed : walkSpeed;
 
         MovePlayer();
         RotatePlayer();
@@ -84,8 +82,7 @@ public class PlayerMovement : MonoBehaviour
             else inputDirection = projectedDirection;
         }
 
-        moveDirection = inputDirection;
-        rb.AddForce(moveDirection.normalized * speed, ForceMode.VelocityChange);
+        rb.AddForce(inputDirection.normalized * speed, ForceMode.VelocityChange);
     }
 
     private void RotatePlayer()

@@ -17,25 +17,33 @@ public class PlayerBank : MonoBehaviour
     /// Adds balance to player's bank.
     /// </summary>
     /// <param name="amount">Amount to be added</param>
-    public void AddBalance(int amount)
+    /// <param name="text">Text that will show to the player as a reason</param>
+    public void AddBalance(int amount, string text)
     {
         balance += amount;
         income += amount;
         UpdateMenu();
+        ShowInfo(amount, text);
     }
+
+    public void AddBalance(int amount) => AddBalance(amount, null);
 
     /// <summary>
     /// Removes balance from player's bank.
     /// </summary>
     /// <param name="amount">Amount to be removed</param>
+    /// <param name="text">Text that will show to the player as a reason</param>
     /// <returns>true if it was successful, otherwise false</returns>
-    public bool RemoveBalance(int amount)
+    public bool RemoveBalance(int amount, string text)
     {
         if (balance < amount) return false;
         balance -= amount;
         UpdateMenu();
+        ShowInfo(amount, text);
         return true;
     }
+
+    public bool RemoveBalance(int amount) => RemoveBalance(amount, null);
 
     /// <summary>
     /// This method pays all player's taxes.
@@ -54,9 +62,10 @@ public class PlayerBank : MonoBehaviour
     /// <param name="amount">The tax charge</param>
     private void PayTax(int amount)
     {
-        if (RemoveBalance(amount)) return;
+        if (RemoveBalance(amount, "Taxes")) return;
 
         //End game
+        Game.instance.EndGame();
     }
 
     /// <summary>
@@ -69,5 +78,19 @@ public class PlayerBank : MonoBehaviour
     {
         if (Game.instance == null) return;
         Game.instance.UpdateBalance(GetBalance());
+    }
+
+    /// <summary>
+    /// Text is displayed below the money balance to inform the player of their income and costs.
+    /// </summary>
+    public void ShowInfo(int amount, string text)
+    {
+        if (Game.instance == null) return;
+
+        string displayText = (amount > 0 ? "+" : "-") + "$" + amount;
+        if(text != null) displayText += " [" + text + "]";
+
+        Game.instance.ShowBalanceInfo(displayText, amount < 0 ? Color.red : Color.green);
+        Debug.Log(displayText);
     }
 }

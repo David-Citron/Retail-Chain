@@ -2,8 +2,11 @@ using Steamworks;
 using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
+using FontStyles = TMPro.FontStyles;
 
 public class Game : MonoBehaviour
 {
@@ -15,6 +18,7 @@ public class Game : MonoBehaviour
     [SerializeField] private TMP_Text username;
     [SerializeField] private RawImage profilePicture;
     [SerializeField] private TMP_Text balance;
+    [SerializeField] private GameObject balanceInfo;
 
     [SerializeField] private List<GameObject> cameras;
     [SerializeField] private List<GameObject> spawnLocations; //Spawn locations for players
@@ -134,4 +138,28 @@ public class Game : MonoBehaviour
 
     public void UpdateBalance(int amount) => balance.text = "$" + amount.ToString("N0", CultureInfo.InvariantCulture);
     public void UpdateBalance() => UpdateBalance(PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault().bankAccount.GetBalance());
+
+    public void ShowBalanceInfo(string text, Color color)
+    {
+        GameObject textObject = new GameObject("text-" + text);
+
+        textObject.transform.SetParent(balanceInfo.transform);
+        textObject.transform.localPosition = Vector3.zero;
+        textObject.transform.localScale = Vector3.one;
+        textObject.transform.SetSiblingIndex(0);
+
+        TMP_Text tmpText = textObject.AddComponent<TextMeshProUGUI>();
+
+        tmpText.text = text;
+        tmpText.enableAutoSizing = true;
+        tmpText.color = color;
+        tmpText.fontSizeMin = 22;
+        tmpText.fontSizeMax = 26;
+        tmpText.fontStyle = FontStyles.Normal;
+        tmpText.alignment = TextAlignmentOptions.Left;
+
+        new ActionTimer(() => Destroy(textObject), 3);
+
+        Debug.Log("Spawned " + text);
+    }
 }

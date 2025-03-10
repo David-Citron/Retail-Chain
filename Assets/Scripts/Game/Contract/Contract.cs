@@ -108,10 +108,10 @@ public class Contract : NetworkBehaviour
         switch (ownerRole)
         {
             case PlayerRole.Factory:
-                localPlayer.bankAccount.AddBalance(sum);
+                localPlayer.bankAccount.AddBalance(sum, "Contract");
                 break;
             case PlayerRole.Shop:
-                localPlayer.bankAccount.RemoveBalance(sum);
+                localPlayer.bankAccount.RemoveBalance(sum, "Contract");
                 ContractDelivery.instance.DeliverItems(currentContractItems);
                 break;
             default:

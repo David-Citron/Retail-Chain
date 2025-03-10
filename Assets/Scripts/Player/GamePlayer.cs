@@ -162,8 +162,6 @@ public class GamePlayer : NetworkBehaviour
         {
             player.gameObject.SetActive(false);
         }
-
-        Debug.Log("GAME STARTED WOHO");
     }
 
     private void UpdateRoleData()
