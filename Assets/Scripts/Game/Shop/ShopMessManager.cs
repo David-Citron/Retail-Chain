@@ -42,5 +42,9 @@ public class ShopMessManager : MonoBehaviour
     }
 
     private List<GameObject> GetAvailablePlaces() => messes.FindAll(place => !place.activeSelf);
-    public int GetActiveMesses() => messes.FindAll(place => place.activeSelf).Count;
+    public int GetActiveMesses() => messes.FindAll(place => {
+        ShopMess shopMess = place.GetComponent<ShopMess>();
+
+        return shopMess.IsSpawnedForWhile() && place.activeSelf;
+    }).Count;
 }

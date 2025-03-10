@@ -98,8 +98,8 @@ public class PriceSystem : Interactable
     /// 1: -10%
     /// 2: -5%
     /// 3: 0%
-    /// 4: +5%
-    /// 5: +10%
+    /// 4: +2%
+    /// 5: +5%
     /// </summary>
     /// <param name="basePrice">The base price</param>
     /// <returns>The max price</returns>
@@ -108,7 +108,17 @@ public class PriceSystem : Interactable
         float rating = ShopRating.GetRating();
         int newPrice = TaxesManager.GetInflationPrice(basePrice);
 
-        newPrice = (int) (newPrice * (1 + (rating - 3) * 0.05f));
+        float modifier = rating switch
+        {
+            1 => -0.10f,
+            2 => -0.05f,
+            3 => 0.00f,
+            4 => 0.02f,
+            5 => 0.05f,
+            _ => 0.00f // Default case (shouldn't happen, but ensures safety)
+        };
+
+        newPrice = (int) (newPrice * (1 + modifier));
         return newPrice;
     }
 

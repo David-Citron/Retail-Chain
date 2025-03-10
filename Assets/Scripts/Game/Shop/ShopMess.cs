@@ -56,5 +56,11 @@ public class ShopMess : Interactable
         PlayerInputManager.isInteracting = false;
     }
 
+    /// <summary>
+    /// Checks if the mess is spawned more than 10 seconds.
+    /// </summary>
+    /// <returns>True if the shop is spawned for 10 seconds or more, otherwise false</returns>
+    public bool IsSpawnedForWhile() => ((DateTimeOffset.Now.ToUnixTimeMilliseconds() - spawnedAt) / 1000f) >= 10;
+
     public override string GetTag() => "ShopMess";
 }
