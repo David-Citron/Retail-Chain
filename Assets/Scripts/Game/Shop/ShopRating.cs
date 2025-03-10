@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class ShopRating : MonoBehaviour
@@ -5,6 +6,7 @@ public class ShopRating : MonoBehaviour
 
     public static ShopRating instance;
 
+    [SerializeField] private TMP_Text text;
     public float rating;
 
     /// <summary>
@@ -15,6 +17,7 @@ public class ShopRating : MonoBehaviour
     void Start() { 
         instance = this;
         rating = 3f;
+        VerifyRating();
     }
 
     void Update() {}
@@ -36,6 +39,6 @@ public class ShopRating : MonoBehaviour
     private void VerifyRating()
     {
         rating = Mathf.Clamp(rating, 1, 5);
-        Hint.Create("RATING CHANGED!", Color.green, 3);
+        text.text = rating.ToString();
     }
 }

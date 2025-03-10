@@ -19,6 +19,7 @@ public class Game : MonoBehaviour
     [SerializeField] private RawImage profilePicture;
     [SerializeField] private TMP_Text balance;
     [SerializeField] private GameObject balanceInfo;
+    [SerializeField] private TMP_FontAsset fontAsset;
 
     [SerializeField] private List<GameObject> cameras;
     [SerializeField] private List<GameObject> spawnLocations; //Spawn locations for players
@@ -151,14 +152,14 @@ public class Game : MonoBehaviour
         TMP_Text tmpText = textObject.AddComponent<TextMeshProUGUI>();
 
         tmpText.text = text;
-        tmpText.enableAutoSizing = true;
         tmpText.color = color;
-        tmpText.fontSizeMin = 22;
-        tmpText.fontSizeMax = 26;
+        tmpText.fontSize = 26;
         tmpText.fontStyle = FontStyles.Normal;
-        tmpText.alignment = TextAlignmentOptions.Left;
+        tmpText.alignment = TextAlignmentOptions.Right;
+        tmpText.font = fontAsset;
 
-        new ActionTimer(() => Destroy(textObject), 3);
+
+        new ActionTimer(() => Destroy(textObject), 3).Run();
 
         Debug.Log("Spawned " + text);
     }

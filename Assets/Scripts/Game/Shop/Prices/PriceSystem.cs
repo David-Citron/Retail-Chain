@@ -57,6 +57,7 @@ public class PriceSystem : Interactable
             () => {
             PlayerInputManager.isInteracting = false;
             customer.Pay();
+                PlayerPickUp.Instance().IfPresent(pickUp => pickUp.animator.SetTrigger("customer_wave"));
             timer = null;
             },
         () => {

@@ -22,7 +22,6 @@ public class PlayerSteamUtils : MonoBehaviour {
         LobbyHandler.instance.UpdateMainMenuProfilePicture(callback.m_steamID);
 
         PlayerManager.instance.gamePlayers.ForEach(gamePlayer => {
-            Debug.Log("Updating " + callback.m_steamID.m_SteamID + " -- " + callback.m_iImage);
             if (gamePlayer.GetSteamId() != callback.m_steamID.m_SteamID) return;
             gamePlayer.UpdateUserInfo(callback.m_steamID);
         });

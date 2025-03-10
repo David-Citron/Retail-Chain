@@ -89,6 +89,16 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    public void UpdateCurrentHints()
+    {
+        foreach (var item in collidersInRange)
+        {
+            Interactable interactable = item.GetComponent<Interactable>();
+            if(interactable == null) continue;
+            interactable.UpdateHints();
+        }
+    }
+
     private void UpdateInteractable(GameObject collider)
     {
        Interactable interactable = collider.GetComponent<Interactable>();

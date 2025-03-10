@@ -51,6 +51,8 @@ public class PlayerPickUp : MonoBehaviour
         UpdateRigidbody(holdingItem, false);
 
         holdingItem = null;
+
+        PlayerInputManager.instance.UpdateCurrentHints();
     }
 
     private void UpdateRigidbody(GameObject item, bool pickedUp)
