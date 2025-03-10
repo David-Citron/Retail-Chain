@@ -75,19 +75,21 @@ public class DeliveryOfferItem : MonoBehaviour
     private void BuyItems()
     {
         GamePlayer gamePlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
-        if (gamePlayer == null) return;
-
-        int price = amountToBuy * TaxesManager.GetInflationPrice(deliveryOffer.price);
-
-        PlayerBank bank = gamePlayer.bankAccount;
-        if(bank.GetBalance() < price)
+        if (gamePlayer != null)
         {
-            GoodsDelivery.instance.ToggleOffersUI();
-            Hint.Create("Not enough money", Color.red, 3);
-            return;
+            int price = amountToBuy * TaxesManager.GetInflationPrice(deliveryOffer.price);
+
+            PlayerBank bank = gamePlayer.bankAccount;
+            if (bank.GetBalance() < price)
+            {
+                GoodsDelivery.instance.ToggleOffersUI();
+                Hint.Create("Not enough money", Color.red, 3);
+                return;
+            }
+
+            bank.RemoveBalance(price);
         }
 
-        bank.RemoveBalance(price);
         deliveryOffer.itemAmount = deliveryOffer.itemAmount - amountToBuy;
         StorageRack.instance.InsertItem(deliveryOffer.item.itemType, amountToBuy);
 
