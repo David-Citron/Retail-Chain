@@ -32,7 +32,10 @@ public class Settings : MonoBehaviour
             Menu newMenu = GetComponent<Menu>();
             if (newMenu != null) menu = newMenu;
         }
-        KeybindManager.instance.keybindDataList.ForEach(keybind => keybindDataList.Add(keybind));
+        foreach (KeybindData data in KeybindManager.instance.keybindDataList)
+        {
+            keybindDataList.Add(data);
+        }
     }
 
     // Update is called once per frame
