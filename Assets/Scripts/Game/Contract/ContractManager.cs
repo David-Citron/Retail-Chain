@@ -10,7 +10,6 @@ public class ContractManager : NetworkBehaviour
 
     [SerializeField] private List<Contract> contracts;
     public Contract localContract = null;
-    [SerializeField] private Contract serverContract = null;
 
     private int contractsPassed = 0;
 
@@ -27,6 +26,7 @@ public class ContractManager : NetworkBehaviour
     [SerializeField] private GameObject negotiationTab;
     [SerializeField] private List<GameObject> factoryButtons;
     [SerializeField] private List<GameObject> shopButtons;
+    [SerializeField] private TMP_Text moneyText;
 
     private List<ContractItem> lastOfferContractItems;
     private ActionTimer negotiationTimer = null;
@@ -72,7 +72,6 @@ public class ContractManager : NetworkBehaviour
             contracts.Add(contract);
             if (!player.isLocalPlayer) return;
             localContract = contract;
-            if (player.isServer) serverContract = contract;
         });
     }
 
@@ -139,6 +138,8 @@ public class ContractManager : NetworkBehaviour
     private void RpcShowNegotiationPanel()
     {
         MenuManager.instance.Open("Contract");
+        if (PlayerManager.instance != null && moneyText != null)
+            moneyText.text = "$" + PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault().bankAccount.GetBalance();
 
         negotiationState = OfferState.MakeOffer;
         ChangeNegotiationTab(negotiationState);
