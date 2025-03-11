@@ -59,7 +59,7 @@ public class ContractDelivery : MonoBehaviour
         elapsedTime += Time.fixedDeltaTime;
         float t = elapsedTime / 50f;
 
-        float newX = Mathf.Lerp(vehicle.transform.localPosition.x, inAnimation ? 5.85f : 7.75f, t);
+        float newX = Mathf.Lerp(vehicle.transform.localPosition.x, inAnimation ? 5.85f : 9f, t);
         vehicle.transform.localPosition = new Vector3(newX, vehicle.transform.localPosition.y, vehicle.transform.localPosition.z);
     }
 }
