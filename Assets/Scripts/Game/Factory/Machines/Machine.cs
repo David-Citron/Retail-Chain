@@ -70,8 +70,7 @@ public abstract class Machine : Interactable, IMachine
             return;
         }
 
-        Debug.Log("isHolding: " + PlayerPickUp.IsHodlingItem() + " --- resultItem " + (resultItem != null) + " ---  isNotReady: " + (machineState != MachineState.Ready));
-        if (PlayerPickUp.IsHodlingItem() || resultItem != null || machineState != MachineState.Ready) return;
+        if (PlayerPickUp.IsHodlingItem() || machineState != MachineState.Ready) return;
 
         StartTimer();
         ChangeMachineState(MachineState.Working);
@@ -118,6 +117,12 @@ public abstract class Machine : Interactable, IMachine
 
     protected void PutItem(GameObject item)
     {
+        if(resultItem != null)
+        {
+            Hint.Create("TAKE THE FINISHED PRODUCT", 2);
+            return;
+        }
+
         InputInfo input = GetNearestSlot();
         if (inputPlaces.Count != 0 && resultPlace != null && (input == null || !input.IsValid())) return;
 

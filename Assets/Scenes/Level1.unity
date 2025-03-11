@@ -14447,6 +14447,7 @@ MonoBehaviour:
   - {fileID: 895081012}
   - {fileID: 847885019}
   - {fileID: 1523210142}
+  - {fileID: 793445370}
   factoryGameObjects:
   - {fileID: 1859255021}
   - {fileID: 1449722155}

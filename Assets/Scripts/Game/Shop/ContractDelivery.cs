@@ -27,7 +27,6 @@ public class ContractDelivery : MonoBehaviour
         isActive = true;
         isMoving = true;
 
-        elapsedTime = 0f;
 
         Hint.Create("UNLOADING GOODS..", 2);
         foreach (var item in items)
@@ -39,6 +38,7 @@ public class ContractDelivery : MonoBehaviour
         new ActionTimer(() =>
         {
             isActive = false;
+            elapsedTime = 0f;
             isMoving = true;
         }, 8).Run();
     }
