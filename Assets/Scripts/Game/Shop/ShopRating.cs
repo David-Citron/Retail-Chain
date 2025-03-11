@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopRating : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class ShopRating : MonoBehaviour
 
     [SerializeField] private TMP_Text text;
     public float rating;
+
+    [SerializeField] private Image starsImage; // Stars image whose fill needs to be changed dynamically
 
     /// <summary>
     /// Rating is value between 1 & 5
@@ -39,6 +42,12 @@ public class ShopRating : MonoBehaviour
     private void VerifyRating()
     {
         rating = Mathf.Clamp(rating, 1, 5);
-        text.text = rating.ToString();
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        if (text != null) text.text = rating.ToString();
+        if (starsImage != null) starsImage.fillAmount = rating / 5;
     }
 }
