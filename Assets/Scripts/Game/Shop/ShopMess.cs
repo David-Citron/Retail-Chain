@@ -60,7 +60,7 @@ public class ShopMess : Interactable
             decreased++;
             ShopRating.instance.DecreaseRating(decreased * 0.05f);
             StartRatingDecreaseTimer();
-        }, 10).Run();
+        }, 15).Run();
     }
 
     private void DestroyMess()

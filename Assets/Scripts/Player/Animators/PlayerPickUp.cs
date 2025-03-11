@@ -44,15 +44,15 @@ public class PlayerPickUp : MonoBehaviour
     public void DropHoldingItem()
     {
         if (holdingItem == null) return;
+        var heldItem = holdingItem;
 
         animator.SetBool("holding", false);
-
-        holdingItem.transform.SetParent(null);
-        UpdateRigidbody(holdingItem, false);
-
         holdingItem = null;
 
         PlayerInputManager.instance.UpdateCurrentHints();
+
+        heldItem.transform.SetParent(null);
+        UpdateRigidbody(heldItem, false);
     }
 
     private void UpdateRigidbody(GameObject item, bool pickedUp)

@@ -88,14 +88,14 @@ public abstract class Machine : Interactable, IMachine
 
     protected virtual void PickUp()
     {
+        InputInfo nearestInput = GetNearestSlot();
+        if(inputPlaces.Count != 0 && resultPlace != null && (nearestInput == null || !nearestInput.IsReadyToPickUp())) return;
+
         if (PlayerPickUp.IsHodlingItem())
         {
             Hint.Create("DROP CURRENT ITEM", 1);
             return;
         }
-
-        InputInfo nearestInput = GetNearestSlot();
-        if(inputPlaces.Count != 0 && resultPlace != null && (nearestInput == null || !nearestInput.IsReadyToPickUp())) return;
 
         if (machineState == MachineState.Done && resultItem != null)
         {

@@ -39,7 +39,7 @@ public class PlayerBank : MonoBehaviour
         if (balance < amount) return false;
         balance -= amount;
         UpdateMenu();
-        ShowInfo(amount, text);
+        ShowInfo(-amount, text);
         return true;
     }
 
@@ -91,6 +91,5 @@ public class PlayerBank : MonoBehaviour
         if(text != null) displayText += " [" + text + "]";
 
         Game.instance.ShowBalanceInfo(displayText, amount < 0 ? Color.red : Color.green);
-        Debug.Log(displayText);
     }
 }

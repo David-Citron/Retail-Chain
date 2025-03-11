@@ -160,7 +160,5 @@ public class Game : MonoBehaviour
 
 
         new ActionTimer(() => Destroy(textObject), 3).Run();
-
-        Debug.Log("Spawned " + text);
     }
 }

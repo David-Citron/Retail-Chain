@@ -15,9 +15,9 @@ public class GlueDispenser : Machine
     protected override void OnStart()
     {
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, i => StartInteraction(), new Hint[] {
-            new Hint(() => Hint.GetHintButton(ActionType.Interaction) + " TO GET CANISTER", () => !PlayerPickUp.IsHodlingItem() && machineState == MachineState.Ready),
-            new Hint(() => Hint.GetHintButton(ActionType.Interaction) + " TO FILL GLUE DISPENSER", () => PlayerPickUp.IsHodlingItem()),
-            new Hint("INVALID ITEM", () => PlayerPickUp.GetHoldingType() != ItemType.None && PlayerPickUp.GetHoldingType() != ItemType.GlueBarrel && machineState == MachineState.Idling)
+            new Hint(() => Hint.GetHintButton(ActionType.Interaction) + " TO GET CANISTER", () => !PlayerPickUp.IsHodlingItem() && glueAmount >= GLUE_CANISTER),
+            new Hint(() => Hint.GetHintButton(ActionType.Interaction) + " TO FILL GLUE DISPENSER", () => PlayerPickUp.GetHoldingType() == ItemType.GlueBarrel),
+            new Hint("INVALID ITEM", () => PlayerPickUp.GetHoldingType() != ItemType.GlueBarrel && machineState == MachineState.Idling)
         }));
         UpdateGlueLiquid();
     }
