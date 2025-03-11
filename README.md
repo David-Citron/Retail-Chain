@@ -5,7 +5,7 @@
 Retail Chain je 3D online videohra pro dva hráče. Jeden z hráčů se ujme obchodu a druhý továrny. Hráči musí vzájemně spolupracovat, neboť cílem hry je to, aby ani jeden z nich nezkrachoval. Hru lze hrát teoreticky do nekonečna, avšak obtížnost je čím dál těžší. Většinu hry si plní každý hráč své úkoly. Například hráč v obchodě musí uklízet a obsluhovat zákazníky. Na druhou stranu hráč v továrně musí vyrábět zboží. Důležitou součástí hry je také smlouva mezi hráči. Po uplynutí časového limitu od spuštění smlouvy se musí hráči opět domluvit na nových podmínkách, podle kterých se budou řídit, dokud bude tato smlouva platná.
 
 ## Jak spustit hru?
-Nejnovější verze: https://github.com/David-Citron/Retail-Chain/releases/tag/Retail-Chain-alpha
+Nejnovější verze: https://github.com/David-Citron/Retail-Chain/releases/tag/Retail-Chain-alpha<br>
 Po stažení souborů hry postupuj podle těchto kroků:
 
 1️⃣ Rozbal stažené soubory do libovolné složky.<br>
