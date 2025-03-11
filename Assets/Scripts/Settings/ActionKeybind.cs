@@ -29,27 +29,15 @@ public class ActionKeybind
     
     public float CalculateAxis()
     {
-        float current = 0;
-
         bool positivePress = KeyPressed(positiveKey, positiveAltKey);
         bool negativePress = KeyPressed(negativeKey, negativeAltKey);
 
         if (positivePress && negativePress)
         {
-            if (axis < 0)
-            {
-                current = axis + sensitivity * Time.deltaTime;
-                axis = current;
-                axis = Mathf.Clamp(axis, 0, 1);
-            }
-            else if (axis > 0)
-            {
-                current = axis - sensitivity * Time.deltaTime;
-                axis = current;
-                axis = Mathf.Clamp(axis, -1, 0);
-            }
-            return axis;
+            return 0;
         }
+
+        float current = 0;
 
         if (positivePress)
         {
