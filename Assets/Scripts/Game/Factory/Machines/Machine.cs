@@ -70,7 +70,8 @@ public abstract class Machine : Interactable, IMachine
             return;
         }
 
-        if (PlayerPickUp.IsHodlingItem() || resultItem != null || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", .5f)) return;
+        Debug.Log("isHolding: " + PlayerPickUp.IsHodlingItem() + " --- resultItem " + (resultItem != null) + " ---  isNotReady: " + (machineState != MachineState.Ready));
+        if (PlayerPickUp.IsHodlingItem() || resultItem != null || machineState != MachineState.Ready) return;
 
         StartTimer();
         ChangeMachineState(MachineState.Working);
@@ -105,7 +106,7 @@ public abstract class Machine : Interactable, IMachine
             return;
         }
 
-        if (machineState == MachineState.Working || currentItems.Count <= 0 || CooldownHandler.IsUnderCreateIfNot(machineType + "_pickUp", 1)) return;
+        if (machineState == MachineState.Working || currentItems.Count <= 0) return;
 
         var item = nearestInput.inputPlace.gameObject.transform.GetChild(0).gameObject;
         if (item == null) return;
@@ -117,7 +118,6 @@ public abstract class Machine : Interactable, IMachine
 
     protected void PutItem(GameObject item)
     {
-        if (CooldownHandler.IsUnderCreateIfNot(machineType + "_putItem", 1)) return;
         InputInfo input = GetNearestSlot();
         if (inputPlaces.Count != 0 && resultPlace != null && (input == null || !input.IsValid())) return;
 

@@ -25,7 +25,7 @@ public class GlueDispenser : Machine
     protected override void StartInteraction()
     {
         UpdateRecipe();
-        if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", 1)) return;
+        if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready) return;
 
         ChangeMachineState(MachineState.Working);
         if (currentRecipe.output == ItemType.None) FillDispenser();

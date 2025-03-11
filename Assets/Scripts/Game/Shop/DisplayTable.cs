@@ -51,7 +51,7 @@ public class DisplayTable : Interactable
         if (nearestInput == null || !nearestInput.IsReadyToPickUp()) return;
 
 
-        if (currentItems.Count <= 0 || CooldownHandler.IsUnderCreateIfNot("displaySlot_pickUp", 1)) return;
+        if (currentItems.Count <= 0) return;
         var item = nearestInput.inputPlace.gameObject.transform.GetChild(0).gameObject;
         if (item == null) return;
         PlayerPickUp.Instance().IfPresent(handler => handler.PickUp(item));

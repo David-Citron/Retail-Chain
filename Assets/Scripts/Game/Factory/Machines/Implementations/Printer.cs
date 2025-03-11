@@ -68,7 +68,7 @@ public class Printer : Machine
     protected override void StartInteraction()
     {
         if (machineState != MachineState.Ready) PutItem(PlayerPickUp.holdingItem);
-        if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", 1)) return;
+        if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready) return;
 
         StartTimer();
         ChangeMachineState(MachineState.Working);
