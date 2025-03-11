@@ -89,6 +89,8 @@ public class Contract : NetworkBehaviour
 
     public void FinalizeContract()
     {
+        if (!isLocalPlayer) return;
+
         if (PlayerManager.instance == null)
         {
             Debug.LogError("PlayerManager is null!");
@@ -102,8 +104,6 @@ public class Contract : NetworkBehaviour
             return;
         }
         
-        if (!isLocalPlayer) return;
-
         int sum = 0;
 
         currentContractItems.ForEach(item => sum += item.price);

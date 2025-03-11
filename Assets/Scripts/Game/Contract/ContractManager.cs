@@ -46,6 +46,8 @@ public class ContractManager : NetworkBehaviour
     [SerializeField] private Image waitingTimeImage;
     [SerializeField] private TMP_Text waitingTimeText;
 
+    private bool negotiating = false;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -56,6 +58,7 @@ public class ContractManager : NetworkBehaviour
         instance = this;
         syncDirection = SyncDirection.ServerToClient;
         negotiationState = OfferState.None;
+        negotiating = false;
         contracts = new List<Contract>();
         currentItemData = new List<ContractItemData>();
         if (PlayerManager.instance == null)
@@ -100,6 +103,7 @@ public class ContractManager : NetworkBehaviour
     [Command (requiresAuthority = false)]
     public void CmdCheckContracts()
     {
+        if (negotiating) return;
         bool contractNotFinished = false;
         bool contractSuccess = true;
         contracts.ForEach(contract =>
@@ -110,6 +114,7 @@ public class ContractManager : NetworkBehaviour
         if (contractNotFinished) return;
         if (contractSuccess)
         {
+            negotiating = true;
             RpcFinishContract();
             StartNegotiation();
             return;
@@ -286,7 +291,7 @@ public class ContractManager : NetworkBehaviour
     [Server]
     private void EndNegotiation()
     {
-        Debug.LogWarning("STOPPING TIMER!!!");
+        negotiating = false;
         negotiationTimer.Stop();
         RpcHideNegotiationPanel();
     }
