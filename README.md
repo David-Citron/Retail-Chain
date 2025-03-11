@@ -1,4 +1,4 @@
-<img src="Assets/Textures/Logo-var2.png" alt="Retail-Chain logo" style="width: 100px; height: auto;">
+<img src="Repo/Images/background.png" alt="Retail-Chain logo" style="width: 100px; height: auto;">
 
 # Retail Chain
 
@@ -42,18 +42,16 @@ Mezi uživateli se synchronizují jen data nezbytně potřebná. Například poz
 Hudba bude taktéž obsahovat prvky futurismu, aby podpořila herní identitu. Žádná skladba však ještě není zcela hotová a implementována do hry.
 
 ## Rozdělení práce
-David:
+David Žižlavský:
 - 3D modely
 - Hudba a zvukové efekty
-- Smlouva
-- Zákazníci
-- Herní nastavení
-- Optimalizace
+- Programování (smlouva, zákazníci, herní nastavení)
 
-Michal:
+Michal Hlúch:
 - 2D grafika
 - Programování (kromě smlouvy)
 - Animace
+
 ## Použité nástroje
 - [Unity](https://unity.com) - Herní engine
 - [Blender](https://www.blender.org) - 3D modely
