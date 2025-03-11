@@ -108,15 +108,29 @@ public class PriceSystem : Interactable
         float rating = ShopRating.GetRating();
         int newPrice = TaxesManager.GetInflationPrice(basePrice);
 
-        float modifier = rating switch
+        float modifier = 0;
+
+        switch (rating)
         {
-            1 => -0.10f,
-            2 => -0.05f,
-            3 => 0.00f,
-            4 => 0.02f,
-            5 => 0.05f,
-            _ => 0.00f // Default case (shouldn't happen, but ensures safety)
-        };
+            case 1:
+                modifier = -0.10f;
+                break;
+            case 2:
+                modifier = -0.05f;
+                break;
+            case 3:
+                modifier =  0.00f;
+                break;
+            case 4:
+                modifier =  0.02f;
+                break;
+            case 5:
+                modifier =  0.05f;
+                break;
+            default:
+                modifier = 0.00f;
+                break;
+        }
 
         newPrice = (int) (newPrice * (1 + modifier));
         return newPrice;
