@@ -41,7 +41,7 @@ public class ShopRating : MonoBehaviour
 
     private void VerifyRating()
     {
-        rating = Mathf.Clamp(rating, 1, 5);
+        rating = Mathf.Clamp(rating, 0, 5);
         UpdateUI();
     }
 

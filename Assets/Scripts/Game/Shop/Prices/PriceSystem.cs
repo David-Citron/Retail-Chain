@@ -112,6 +112,9 @@ public class PriceSystem : Interactable
 
         switch (rating)
         {
+            case 0:
+                modifier = -0.15f;
+                break;
             case 1:
                 modifier = -0.10f;
                 break;
@@ -119,7 +122,7 @@ public class PriceSystem : Interactable
                 modifier = -0.05f;
                 break;
             case 3:
-                modifier =  0.00f;
+                modifier =  0;
                 break;
             case 4:
                 modifier =  0.02f;
@@ -128,7 +131,7 @@ public class PriceSystem : Interactable
                 modifier =  0.05f;
                 break;
             default:
-                modifier = 0.00f;
+                modifier = 0;
                 break;
         }
 

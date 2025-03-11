@@ -5,9 +5,12 @@ using UnityEngine;
 public class ShopMess : Interactable
 {
 
-    private bool isCleaning;
+    private ActionTimer ratingDecrease;
 
+    private bool isCleaning;
     private long spawnedAt;//When player stop cleaning new time will be saved.
+
+    private int decreased;
 
     void Start()
     {
@@ -46,21 +49,29 @@ public class ShopMess : Interactable
         if (gameObject.activeSelf) return;
         gameObject.SetActive(true);
         spawnedAt = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
+        StartRatingDecreaseTimer();
+    }
+
+    private void StartRatingDecreaseTimer()
+    {
+        ratingDecrease = new ActionTimer(() =>
+        {
+            decreased++;
+            ShopRating.instance.DecreaseRating(decreased * 0.05f);
+            StartRatingDecreaseTimer();
+        }, 10).Run();
     }
 
     private void DestroyMess()
     {
         ToggleIsPlayerNear();//When turning mess, the script is not on so that means we have to run this manually.
+        if(ratingDecrease != null) ratingDecrease.Stop();
         gameObject.SetActive(false);
         isCleaning = false;
         PlayerInputManager.isInteracting = false;
+        decreased = 0;
     }
-
-    /// <summary>
-    /// Checks if the mess is spawned more than 10 seconds.
-    /// </summary>
-    /// <returns>True if the shop is spawned for 10 seconds or more, otherwise false</returns>
-    public bool IsSpawnedForWhile() => ((DateTimeOffset.Now.ToUnixTimeMilliseconds() - spawnedAt) / 1000f) >= 10;
 
     public override string GetTag() => "ShopMess";
 }
