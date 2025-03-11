@@ -6,14 +6,15 @@ Retail Chain je 3D online videohra pro dva hráče. Jeden z hráčů se ujme obc
 
 ## Jak spustit hru?
 Nejnovější verze: https://github.com/David-Citron/Retail-Chain/releases/tag/Retail-Chain-alpha<br>
-Po stažení souborů hry postupuj podle těchto kroků:
 
-1️⃣ Rozbal stažené soubory do libovolné složky.<br>
-2️⃣ Otevři složku s hrou a najdi soubor RetailChain.exe.<br>
-3️⃣ Ujisti se, že máš zapnutý Steam.<br>
-4️⃣ Dvojklikem spusť RetailChain.exe a užij si hru!<br>
+Po stažení souborů hry postupujte podle těchto kroků:
 
-Pokud hra nejde spustit, zkontroluj, že máš nainstalovaný Steam a všechny soubory hry jsou správně rozbalené.
+1️⃣ Rozbalte stažené soubory do libovolné složky.<br>
+2️⃣ Otevřete složku s hrou a najdite soubor RetailChain.exe.<br>
+3️⃣ Ujistite se, že máte zapnutý Steam.<br>
+4️⃣ Dvojklikem spusťte RetailChain.exe a užijte si hru!<br>
+
+Pokud hra nejde spustit, zkontroluj, že máte nainstalovaný Steam a všechny soubory hry jsou správně rozbalené.
 
 ## Ukázka hry
 ![MainMenu](Repo/Images/2025-03-11/MainMenu.png)
@@ -21,7 +22,6 @@ Pokud hra nejde spustit, zkontroluj, že máš nainstalovaný Steam a všechny s
 ![LobbyList](Repo/Images/2025-03-11/LobbyList.png)
 ![Player in factory](Repo/Images/2025-03-11/Factory.png)
 ![Player in shop](Repo/Images/2025-03-11/Shop.png)
-Každý hráč má jiné úkoly. V továrně hráč musí vyrábět výrobky. V obchodě musí hráč vystavovat zboží a obsluhovat příchozí zákazníky.
 
 ## Konec hry
 ![GameOver screen](Repo/Images/2025-02-25%20GameOver.png)
@@ -72,3 +72,7 @@ Steam API wrapper pro C#. Vhodný pro Unity. Je velmi podobný originální C++ 
 FizzySteamworks propojuje Mirror API a Steamworks.NET wrapper. Poskytuje totiž transport pro přenost dat, který používá knihovna Mirror. Tento transport je napojen na přímo na Steam API.
 ### TMP
 TextMeshPro je knihovna Unity, která se již běžně používá. Umožňuje renderovat text ve vysokém rozlišení. Tím se liší od původního systému, který měl velmi omezující vlastnosti.
+### [Input Prompts Icon](https://juliocacko.gumroad.com/l/free-input-pack)
+Jedná se o knihovnu ikonek tlačítek, které využíváme pro více intuitivní grafické znázornění potřebných kláves pro dané akce.
+### [Font - Ethnocentric](https://www.dafont.com/ethnocentric.font#null)
+V projektu využíváme font Ethnocentric.
