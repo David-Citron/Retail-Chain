@@ -1,10 +1,21 @@
-<img src="Repo/Images/background.png" alt="Retail-Chain logo" style="width: 100px; height: auto;">
+<div align="center"><img src="Repo/Images/retailchain-logo.png" alt="Retail-Chain logo" style="width: auto; height: 100px;"></div>
 
 # Retail Chain
 
 Retail Chain je 3D online videohra pro dva hráče. Jeden z hráčů se ujme obchodu a druhý továrny. Hráči musí vzájemně spolupracovat, neboť cílem hry je to, aby ani jeden z nich nezkrachoval. Hru lze hrát teoreticky do nekonečna, avšak obtížnost je čím dál těžší. Většinu hry si plní každý hráč své úkoly. Například hráč v obchodě musí uklízet a obsluhovat zákazníky. Na druhou stranu hráč v továrně musí vyrábět zboží. Důležitou součástí hry je také smlouva mezi hráči. Po uplynutí časového limitu od spuštění smlouvy se musí hráči opět domluvit na nových podmínkách, podle kterých se budou řídit, dokud bude tato smlouva platná.
 
-## Návod pro spuštění hry
+## Jak spustit hru?
+Po stažení souborů hry postupuj podle těchto kroků:
+
+1️⃣ Rozbal stažené soubory do libovolné složky.<br>
+2️⃣ Otevři složku s hrou a najdi soubor RetailChain.exe.<br>
+3️⃣ Ujisti se, že máš zapnutý Steam.<br>
+4️⃣ Dvojklikem spusť RetailChain.exe a užij si hru!<br>
+
+Pokud hra nejde spustit, zkontroluj, že máš nainstalovaný Steam a všechny soubory hry jsou správně rozbalené.
+
+
+## Návod pro zapnutí hry
 
 Pro spuštění hry je potřeba, aby jeden z hráčů založil lobby. To lze vytvořit pomocí tlačítka "create" na horní liště v hlavním menu.
 ![MainMenu showcase](Repo/Images/2025-02-25%20MainMenu.png)
