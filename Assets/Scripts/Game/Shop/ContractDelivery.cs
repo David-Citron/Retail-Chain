@@ -38,7 +38,7 @@ public class ContractDelivery : MonoBehaviour
         {
             isActive = false;
             isMoving = true;
-        }, 3).Run();
+        }, 8).Run();
     }
 
     private void PlayTruckAnimation(bool inAnimation)

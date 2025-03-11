@@ -119,6 +119,9 @@ public class GoodsDelivery : Interactable
 
         System.Random random = new System.Random();
 
+        ItemData package = ItemManager.GetItemData(ItemType.Package);
+        deliveryOffers.Add(new DeliveryOffer(package, random.Next(package.buyPrice, TaxesManager.GetInflationPrice(package.buyPrice)), random.Next(1, package.maxOfferAmount)));
+
         for (int i = 0; i < random.Next(2, 4); i++)
         {
             ItemData data = GetRandomType(random);
@@ -146,6 +149,7 @@ public class GoodsDelivery : Interactable
     private ItemData GetRandomType(System.Random random)
     {
         List<ItemData> values = ItemManager.GetBuyableItemData();
+        values.Remove(ItemManager.GetItemData(ItemType.Package)); //Remove package from possible items because it is guaranteed.
         var value = values[random.Next(values.Count)];
         while (deliveryOffers.Any(item => item.item == value)) value = values[random.Next(values.Count)];
         return value;
