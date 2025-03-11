@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 public class CooldownHandler
 {
 
@@ -26,6 +25,6 @@ public class CooldownHandler
     {
         bool result = IsUnderCooldown(data);
         if (!result) CreateFor(data, seconds);
-        return result;
+        return false;
     }
 }

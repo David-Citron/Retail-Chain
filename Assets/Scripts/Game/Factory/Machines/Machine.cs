@@ -70,7 +70,7 @@ public abstract class Machine : Interactable, IMachine
             return;
         }
 
-        if (PlayerPickUp.IsHodlingItem() || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", 1)) return;
+        if (PlayerPickUp.IsHodlingItem() || resultItem != null || machineState != MachineState.Ready || CooldownHandler.IsUnderCreateIfNot(machineType + "_working", .5f)) return;
 
         StartTimer();
         ChangeMachineState(MachineState.Working);

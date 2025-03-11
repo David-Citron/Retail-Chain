@@ -19,7 +19,7 @@ public class CraftingManager : MonoBehaviour
 
         foreach (var item in ItemManager.GetAllSellableItemData())
         {
-            recipes.Add(new CraftingRecipe(MachineType.PackagingTable, new List<ItemType>() { ItemType.Package, item.itemType }, ItemType.Package, 3));
+            recipes.Add(new CraftingRecipe(MachineType.PackagingTable, new List<ItemType>() { ItemType.Package, item.itemType }, ItemType.Package, 1));
         }
     }
 
