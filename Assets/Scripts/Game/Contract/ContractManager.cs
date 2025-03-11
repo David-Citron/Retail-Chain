@@ -115,7 +115,6 @@ public class ContractManager : NetworkBehaviour
         if (contractSuccess)
         {
             negotiating = true;
-            RpcFinishContract();
             StartNegotiation();
             return;
         }
@@ -276,6 +275,7 @@ public class ContractManager : NetworkBehaviour
     public void AcceptContract()
     {
         EndNegotiation();
+        RpcFinishContract();
         contractsPassed++;
         int contractTime = CONTRACT_TIME;
         if (contractsPassed < 3) contractTime = CONTRACT_FIRST_TIME;
