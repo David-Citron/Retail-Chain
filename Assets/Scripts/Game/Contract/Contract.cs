@@ -101,6 +101,8 @@ public class Contract : NetworkBehaviour
             Debug.LogError("Local GamePlayer not found!");
             return;
         }
+        
+        if (!isLocalPlayer) return;
 
         int sum = 0;
 
@@ -169,9 +171,9 @@ public class Contract : NetworkBehaviour
         currentContractItems.ForEach(item => 
         {
             if (item.quantity == 0) return;
-            GameObject instance = Instantiate(ContractManager.instance.remainingContractItemPrefab, ContractManager.instance.remainingContractItemsContainer.transform);
-            RemainingContractData script = instance.GetComponent<RemainingContractData>();
-            if (script == null)
+            GameObject newInstance = Instantiate(ContractManager.instance.remainingContractItemPrefab, ContractManager.instance.remainingContractItemsContainer.transform);
+            RemainingContractData remainingContractData = newInstance.GetComponent<RemainingContractData>();
+            if (remainingContractData == null)
             {
                 Debug.LogError("Script was not found in the instance!");
                 return;
@@ -186,7 +188,7 @@ public class Contract : NetworkBehaviour
                 Debug.LogError("Local player is null!");
                 return;
             }
-            script.LoadData(item, PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault().playerRole);
+            remainingContractData.LoadData(item, PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault().playerRole);
         });
 
         GameObject instance = Instantiate (ContractManager.instance.remainingContractSummaryPrefab, ContractManager.instance.remainingContractItemsContainer.transform);
