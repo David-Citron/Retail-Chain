@@ -153,7 +153,7 @@ public class Game : MonoBehaviour
 
         tmpText.text = text;
         tmpText.color = color;
-        tmpText.fontSize = 26;
+        tmpText.fontSize = 23;
         tmpText.fontStyle = FontStyles.Normal;
         tmpText.alignment = TextAlignmentOptions.Right;
         tmpText.font = fontAsset;

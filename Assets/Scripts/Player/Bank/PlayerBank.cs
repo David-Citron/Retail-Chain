@@ -87,7 +87,7 @@ public class PlayerBank : MonoBehaviour
     {
         if (Game.instance == null) return;
 
-        string displayText = (amount > 0 ? "+" : "-") + amount + "$";
+        string displayText = (amount > 0 ? "+" : "") + amount + "$";
         if(text != null) displayText += " [" + text + "]";
 
         Game.instance.ShowBalanceInfo(displayText, amount < 0 ? Color.red : Color.green);
