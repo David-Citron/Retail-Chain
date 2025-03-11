@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System.Linq;
+using TMPro;
 
 public class GoodsDelivery : Interactable
 {
@@ -15,6 +16,7 @@ public class GoodsDelivery : Interactable
 
     [SerializeField] private Button closeButton;
     [SerializeField] private Button departureButton;
+    [SerializeField] private TMP_Text balance;
 
     public GameObject itemPrefab;
     public GameObject itemListContent;
@@ -58,6 +60,9 @@ public class GoodsDelivery : Interactable
 
     public void UpdateOffers()
     {
+        PlayerManager.instance.GetLocalGamePlayer().IfPresent(player => {
+            balance.text = "$" + player.bankAccount.GetBalance();
+        });
         foreach (var item in deliveryOffers)
         {
             if(item.contentItem != null) Destroy(item.contentItem);

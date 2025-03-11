@@ -36,7 +36,7 @@ public class HintSystem : MonoBehaviour
 
     public static void EnqueueHint(Hint hint)
     {
-        if(instance.hints.Any(el => el.value.Equals(hint.value)) || instance.activeHints.Any(el => el.value.Equals(hint.value))) return; //Protection of possible duplicate hint.
+        if(instance.hints.Any(el => el.GetValue().Equals(hint.GetValue())) || instance.activeHints.Any(el => el.GetValue().Equals(hint.GetValue()))) return; //Protection of possible duplicate hint.
         instance.hints.Enqueue(hint);
     }
 
@@ -87,7 +87,7 @@ public class HintSystem : MonoBehaviour
 
         TMP_Text tmpText = textObject.AddComponent<TextMeshProUGUI>();
 
-        tmpText.text = hint.value.Invoke();
+        tmpText.text = hint.GetValue();
         tmpText.enableAutoSizing = true;
         tmpText.color = hint.color;
         tmpText.fontSizeMin = 22;
@@ -136,6 +136,9 @@ public class Hint
 
     public static Hint Create(string value, float seconds) => new Hint(() => value, seconds);
     public static Hint Create(string value, Color color, float seconds) => new Hint(() => value, color, seconds);
+
+
+    public string GetValue() => value.Invoke();
 
 
     /// <summary>
