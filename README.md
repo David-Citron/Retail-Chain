@@ -15,20 +15,12 @@ Po stažení souborů hry postupuj podle těchto kroků:
 
 Pokud hra nejde spustit, zkontroluj, že máš nainstalovaný Steam a všechny soubory hry jsou správně rozbalené.
 
-
-## Návod pro zapnutí hry
-
-Pro spuštění hry je potřeba, aby jeden z hráčů založil lobby. To lze vytvořit pomocí tlačítka "create" na horní liště v hlavním menu.
-![MainMenu showcase](Repo/Images/2025-02-25%20MainMenu.png)
-Pokud se chcete k hráči připojit, je potřeba v horní liště zmáčknout tlačítko "join". To vás přesměruje na seznam lobbíček, ke kterým se můžete připojit. Pro připojení stačí jen zmáčknout červené tlačítko join u vašeho kamaráda.
-![List of joinable lobbies](Repo/Images/2025-02-25%20Lobbies.png)
-Herní lobby z pohledu tvůrce by mělo vypadat takto:
-![Lobby with 2 players](Repo/Images/2025-02-25%20Lobby.png)
-Nyní se stačí dohodnout na tom, kdo použije jakou roli. Jakmile oba hráči budou připraveni, hra začne.
-
 ## Ukázka hry
-![Player in factory](Repo/Images/2025-02-25%20PickUp.png)
-![Player in shop](Repo/Images/2025-02-25%20Shop.png)
+![MainMenu](Repo/Images/2025-03-11/MainMenu.png)
+![Lobby](Repo/Images/2025-03-11/Lobby.png)
+![LobbyList](Repo/Images/2025-03-11/LobbyList.png)
+![Player in factory](Repo/Images/2025-03-11/Factory.png)
+![Player in shop](Repo/Images/2025-03-11/Shop.png)
 Každý hráč má jiné úkoly. V továrně hráč musí vyrábět výrobky. V obchodě musí hráč vystavovat zboží a obsluhovat příchozí zákazníky.
 
 ## Konec hry
