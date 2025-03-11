@@ -33,8 +33,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        horizontal = KeybindManager.instance.keybinds[ActionType.HorizontalInput].CalculateAxis();
-        vertical = KeybindManager.instance.keybinds[ActionType.VerticalInput].CalculateAxis();
+        horizontal = KeybindManager.instance.keybinds[ActionType.HorizontalInput].CalculateAxis(Time.fixedDeltaTime);
+        vertical = KeybindManager.instance.keybinds[ActionType.VerticalInput].CalculateAxis(Time.fixedDeltaTime);
     }
 
     void FixedUpdate()

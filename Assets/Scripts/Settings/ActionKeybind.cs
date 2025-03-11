@@ -27,7 +27,7 @@ public class ActionKeybind
         axis = 0;
     }
     
-    public float CalculateAxis()
+    public float CalculateAxis(float deltaTime)
     {
         bool positivePress = KeyPressed(positiveKey, positiveAltKey);
         bool negativePress = KeyPressed(negativeKey, negativeAltKey);
@@ -42,12 +42,12 @@ public class ActionKeybind
         if (positivePress)
         {
             axis = Mathf.Clamp(axis, 0, 1);
-            current = axis + sensitivity * Time.deltaTime;
+            current = axis + sensitivity * deltaTime;
         }
         else if (negativePress)
         {
             axis = Mathf.Clamp(axis, -1, 0);
-            current = axis - sensitivity * Time.deltaTime;
+            current = axis - sensitivity * deltaTime;
         }
         current = Mathf.Clamp(current, -1, 1);
         axis = current;
