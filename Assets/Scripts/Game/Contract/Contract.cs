@@ -106,7 +106,8 @@ public class Contract : NetworkBehaviour
         
         int sum = 0;
 
-        currentContractItems.ForEach(item => sum += item.price);
+        currentContractItems.ForEach(item => sum += item.price * item.quantity);
+
         switch (ownerRole)
         {
             case PlayerRole.Factory:
@@ -123,7 +124,7 @@ public class Contract : NetworkBehaviour
 
         localPlayer.bankAccount.PayTaxes();
 
-        if (localPlayer.isServer) TaxesManager.IncraseInflation(0.2f);
+        if (localPlayer.isServer) TaxesManager.IncraseInflation(0.15f);
     }
 
     public bool SubmitItem(ItemType itemType)

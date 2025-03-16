@@ -334,6 +334,8 @@ public class ContractManager : NetworkBehaviour
             waitingTimeText.text = $"{(remainingDuration / 60):00}:{(remainingDuration % 60):00}";
         }
     }
+
+    public int GetContractedPassed() => contractsPassed;
 }
 
 enum OfferState

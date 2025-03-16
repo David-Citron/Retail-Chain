@@ -102,13 +102,6 @@ public class Game : MonoBehaviour
     {
         EndTimers();
         MenuManager.instance.Open("GameOver");
-
-        /*
-         
-        When the game ends show player his game statistics and at the bottom of it "BACK TO LOBBY"
-         
-         
-         */
     }
 
     public void EndTimers() => timers.ForEach(timer => timer.Stop());

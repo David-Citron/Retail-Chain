@@ -19,5 +19,4 @@ MonoBehaviour:
     type: 3}
   maxOfferAmount: 0
   buyPrice: 0
-  sellPrice: 60
-  sellable: 1
+  sellPrice: 55

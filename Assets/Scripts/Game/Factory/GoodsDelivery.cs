@@ -125,12 +125,12 @@ public class GoodsDelivery : Interactable
         System.Random random = new System.Random();
 
         ItemData package = ItemManager.GetItemData(ItemType.Package);
-        deliveryOffers.Add(new DeliveryOffer(package, random.Next(package.buyPrice, TaxesManager.GetInflationPrice(package.buyPrice)), random.Next(1, package.maxOfferAmount)));
+        deliveryOffers.Add(new DeliveryOffer(package, random.Next(package.buyPrice, TaxesManager.GetGoodsInflationPrice(package.buyPrice)), random.Next(1, package.maxOfferAmount)));
 
-        for (int i = 0; i < random.Next(2, 4); i++)
+        for (int i = 0; i < random.Next(2, 5); i++)
         {
             ItemData data = GetRandomType(random);
-            deliveryOffers.Add(new DeliveryOffer(data, random.Next(data.buyPrice, TaxesManager.GetInflationPrice(data.buyPrice)), random.Next(1, data.maxOfferAmount)));
+            deliveryOffers.Add(new DeliveryOffer(data, random.Next(data.buyPrice, TaxesManager.GetGoodsInflationPrice(data.buyPrice)), random.Next(1, data.maxOfferAmount)));
         }
     }
 

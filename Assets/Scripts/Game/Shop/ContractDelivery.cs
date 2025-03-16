@@ -45,7 +45,7 @@ public class ContractDelivery : MonoBehaviour
 
     private void PlayTruckAnimation(bool inAnimation)
     {
-        if (vehicle == null || elapsedTime >= 5f)
+        if (vehicle == null || elapsedTime >= 3.5f)
         {
             isMoving = false;
             garageDoor.gameObject.SetActive(!inAnimation);

@@ -1,4 +1,5 @@
 using Mirror;
+using UnityEngine;
 
 public class TaxesManager : NetworkBehaviour
 {
@@ -37,4 +38,13 @@ public class TaxesManager : NetworkBehaviour
     /// <param name="price">The price</param>
     /// <returns>The new price (inflation included)</returns>
     public static int GetInflationPrice(int price) => (int) (price * instance.inflation);
+
+
+    /// <summary>
+    /// Returns price multiplied by current inflation that is decreased by some number.
+    /// This is primarily for goods tha
+    /// </summary>
+    /// <param name="price">The price</param>
+    /// <returns>The new price (inflation included)</returns>
+    public static int GetGoodsInflationPrice(int price) => (int)(price * Mathf.Clamp((instance.inflation * 0.75f), 1, instance.inflation));
 }
