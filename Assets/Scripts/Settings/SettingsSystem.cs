@@ -23,7 +23,7 @@ public class Settings : MonoBehaviour
     [SerializeField] private Menu menu;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         keybindChangeOverlay = transform.GetChild(transform.childCount - 1).gameObject;
         if (keybindChangeOverlay != null) keybindChangeOverlay.SetActive(false);

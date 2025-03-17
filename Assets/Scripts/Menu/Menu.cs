@@ -17,6 +17,9 @@ public class Menu : MonoBehaviour
     [SerializeField] private Button closeButton;
     [SerializeField] private bool closeable; //If the menu can be closed with "ESC"
 
+    public ButtonColor activeTabButtonColor = ButtonColor.Pink;
+    public ButtonColor anotherTabButtonColor = ButtonColor.Gray;
+
     void Start() {
         if (closeButton == null) return;
         closeButton.interactable = true;
@@ -69,7 +72,7 @@ public class Menu : MonoBehaviour
             pages[i].SetActive(i == index);
 
             CustomButton customButton = tabs[i].GetComponent<CustomButton>();
-            customButton.ChangeColorGroup(i == index ? ButtonColor.Pink : ButtonColor.Gray);
+            customButton.ChangeColorGroup(i == index ? activeTabButtonColor : anotherTabButtonColor);
             customButton.ToggleDisabled(i == index);
         }
     }
