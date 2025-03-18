@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager instance;
+    public static AudioManager instance = null;
 
     public List<AudioData> audioData = new List<AudioData>();
 
@@ -11,7 +11,11 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null) return;
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
         instance = this;
         DontDestroyOnLoad(gameObject);
         Initialize();
@@ -49,14 +53,14 @@ public class AudioManager : MonoBehaviour
     {
         foreach (AudioData data in audioData)
         {
-            if (!data.source.isPlaying) continue;
+            if (!data.source.isPlaying || data.type != AudioType.Music) continue;
             ResetMusicTimer();
             return;
         }
         List<AudioData> musicData = new List<AudioData>();
         foreach (AudioData data in audioData)
         {
-            if (data.type != AudioType.Music) return;
+            if (data.type != AudioType.Music) continue;
             musicData.Add(data);
         }
         int randomIndex = Random.Range(0, musicData.Count);

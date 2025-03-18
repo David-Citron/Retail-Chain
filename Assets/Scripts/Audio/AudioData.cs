@@ -15,6 +15,7 @@ public class AudioData
         source = sourceInstance;
         source.outputAudioMixerGroup = group;
         source.clip = clip;
+        source.playOnAwake = false;
     }
 }
 
