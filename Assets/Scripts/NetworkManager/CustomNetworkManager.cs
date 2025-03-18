@@ -103,16 +103,16 @@ public class CustomNetworkManager : NetworkManager
     public override void OnServerReady(NetworkConnectionToClient conn)
     {
         base.OnServerReady(conn);
+        if (SceneManager.GetActiveScene().buildIndex == 0) return;
+        Debug.Log(conn.connectionId);
         clientsReadyCount++;
         if (clientsReadyCount == 1 && conn.connectionId != 0) Debug.LogError("Host not loaded first!!!");
+        Debug.Log("Clients ready: " + clientsReadyCount + " / " + maxConnections);
         if (clientsReadyCount < maxConnections) return;
         PlayerManager.instance.GetLocalGamePlayer().IfPresent(player =>
         {
-            if (conn != player.connectionToClient)
-            {
-                if (ContractManager.instance == null) return;
-                ContractManager.instance.InitializeFirstContract();
-            }
+            if (ContractManager.instance == null) return;
+            ContractManager.instance.InitializeFirstContract();
         });
     }
 }
