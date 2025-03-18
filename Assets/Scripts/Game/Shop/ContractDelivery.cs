@@ -16,8 +16,9 @@ public class ContractDelivery : MonoBehaviour
     {
         instance = this;
     }
-
-    void Update() {
+    void Update() {}
+    void FixedUpdate()
+    {
         if (!isMoving) return;
         PlayTruckAnimation(isActive);
     }
@@ -26,7 +27,6 @@ public class ContractDelivery : MonoBehaviour
     {
         isActive = true;
         isMoving = true;
-
 
         Hint.Create("UNLOADING GOODS..", 2);
         foreach (var item in items)
@@ -43,9 +43,16 @@ public class ContractDelivery : MonoBehaviour
         }, 8).Run();
     }
 
+    public void ActiveTruck(bool inAnimation)
+    {
+        isMoving = true;
+        elapsedTime = 0f;
+        isActive = inAnimation;
+    }
+
     private void PlayTruckAnimation(bool inAnimation)
     {
-        if (vehicle == null || elapsedTime >= 3.5f)
+        if (vehicle == null || elapsedTime >= 3f)
         {
             isMoving = false;
             garageDoor.gameObject.SetActive(!inAnimation);
@@ -59,7 +66,7 @@ public class ContractDelivery : MonoBehaviour
         elapsedTime += Time.fixedDeltaTime;
         float t = elapsedTime / 50f;
 
-        float newX = Mathf.Lerp(vehicle.transform.localPosition.x, inAnimation ? 5.85f : 9f, t);
+        float newX = Mathf.Lerp(vehicle.transform.localPosition.x, inAnimation ? 5.85f : 11f, t);
         vehicle.transform.localPosition = new Vector3(newX, vehicle.transform.localPosition.y, vehicle.transform.localPosition.z);
     }
 }

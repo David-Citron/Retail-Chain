@@ -178,6 +178,6 @@ public class StorageRack : Interactable
     }
 
 
-    private int GetStoredAmountOf(ItemType itemType) => storedItems.GetValueOrDefault(itemType, 0);
+    public int GetStoredAmountOf(ItemType itemType) => storedItems.GetValueOrDefault(itemType, 0);
     public override string GetTag() => "StorageRack";
 }

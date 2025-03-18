@@ -14,8 +14,8 @@ public class ShopMess : Interactable
 
     void Start()
     {
-        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear && isActiveAndEnabled, gameObject => StartCleaning(),
-            new Hint(() => Hint.GetHintButton(ActionType.Interaction) + " TO CLEAN", () => isPlayerNear && !isCleaning)));
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && !PlayerPickUp.IsHodlingItem() && isPlayerNear && isActiveAndEnabled, gameObject => StartCleaning(),
+            new Hint(() => Hint.GetHintButton(ActionType.Interaction) + " TO CLEAN", () => !PlayerPickUp.IsHodlingItem() && isPlayerNear && !isCleaning)));
 
         BoxCollider boxCollider = GetComponent<BoxCollider>();
         boxCollider.enabled = true;

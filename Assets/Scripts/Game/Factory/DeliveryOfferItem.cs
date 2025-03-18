@@ -9,6 +9,7 @@ public class DeliveryOfferItem : MonoBehaviour
 
     [SerializeField] private RawImage itemIcon;
     [SerializeField] private TMP_Text itemName;
+    [SerializeField] private TMP_Text amountInStorage;
     [SerializeField] private TMP_Text itemPrice;
     [SerializeField] private TMP_Text priceTotal;
 
@@ -32,6 +33,8 @@ public class DeliveryOfferItem : MonoBehaviour
         itemIcon.texture = deliveryOffer.item.icon;
         itemName.text = deliveryOffer.item.name;
         itemPrice.text = "$" + TaxesManager.GetInflationPrice(deliveryOffer.price);
+
+        amountInStorage.text = StorageRack.instance.GetStoredAmountOf(deliveryOffer.item.itemType) + "x";
 
         increment.gameObject.SetActive(true);
         increment.onClick.RemoveAllListeners();
