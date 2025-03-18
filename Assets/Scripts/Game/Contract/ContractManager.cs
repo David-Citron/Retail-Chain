@@ -209,6 +209,8 @@ public class ContractManager : NetworkBehaviour
             case OfferState.MakeOffer:
                 if (localPlayer.playerRole == PlayerRole.Factory)
                 {
+                    infoNegotiationTab.SetActive(true);
+                    infoRequiredTab.SetActive(false);
                     MenuManager.instance.Close("Contract");
                 }
                 else if (localPlayer.playerRole == PlayerRole.Shop)
@@ -222,6 +224,8 @@ public class ContractManager : NetworkBehaviour
             case OfferState.ShowOffer:
                 if (localPlayer.playerRole == PlayerRole.Shop)
                 {
+                    infoNegotiationTab.SetActive(true);
+                    infoRequiredTab.SetActive(false);
                     MenuManager.instance.Close("Contract");
                 }
                 else if (localPlayer.playerRole == PlayerRole.Factory)
