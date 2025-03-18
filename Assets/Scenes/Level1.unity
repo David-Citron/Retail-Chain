@@ -6531,6 +6531,7 @@ MonoBehaviour:
   negotiationTab: {fileID: 1329673340}
   infoRequiredTab: {fileID: 367066597}
   infoNegotiationTab: {fileID: 2044651304}
+  infoNegotiationLabel: {fileID: 1687767086}
   factoryButtons:
   - {fileID: 1688353921}
   - {fileID: 878599500}

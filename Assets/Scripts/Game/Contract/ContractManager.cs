@@ -26,6 +26,7 @@ public class ContractManager : NetworkBehaviour
     [SerializeField] private GameObject negotiationTab;
     [SerializeField] private GameObject infoRequiredTab;
     [SerializeField] private GameObject infoNegotiationTab;
+    [SerializeField] private TMP_Text infoNegotiationLabel;
     [SerializeField] private List<GameObject> factoryButtons;
     [SerializeField] private List<GameObject> shopButtons;
     [SerializeField] private TMP_Text moneyText;
@@ -342,6 +343,11 @@ public class ContractManager : NetworkBehaviour
 
     private void ReloadNegotiationTime(float passedTime)
     {
+        if (infoNegotiationLabel != null)
+        {
+            int remainingDuration = (NEGOTIATION_TIME - (int)passedTime);
+            infoNegotiationLabel.text = $"{(remainingDuration / 60):00}:{(remainingDuration % 60):00}";
+        }
         if (waitingTimeImage != null)
             waitingTimeImage.fillAmount = 1 - (float)(passedTime / NEGOTIATION_TIME);
         if (waitingTimeText != null)
