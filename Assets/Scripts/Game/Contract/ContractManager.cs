@@ -203,9 +203,11 @@ public class ContractManager : NetworkBehaviour
                 {
                     negotiationTab.SetActive(false);
                     waitingTab.SetActive(true);
+                    MenuManager.instance.Close("Contract");
                 }
                 else if (localPlayer.playerRole == PlayerRole.Shop)
                 {
+                    MenuManager.instance.Open("Contract");
                     InitializeEmptyNegotiation();
                     negotiationTab.SetActive(true);
                     waitingTab.SetActive(false);
@@ -216,12 +218,14 @@ public class ContractManager : NetworkBehaviour
                 {
                     negotiationTab.SetActive(false);
                     waitingTab.SetActive(true);
+                    MenuManager.instance.Close("Contract");
                 }
                 else if (localPlayer.playerRole == PlayerRole.Factory)
                 {
                     negotiationTab.SetActive(true);
                     InitializeFilledNegotiation();
                     waitingTab.SetActive(false);
+                    MenuManager.instance.Open("Contract");
                 }
             return;
             default:
