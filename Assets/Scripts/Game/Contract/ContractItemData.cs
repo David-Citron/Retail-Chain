@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,6 +8,7 @@ public class ContractItemData : MonoBehaviour
     [SerializeField] private ItemType type;
     [SerializeField] private TMP_InputField amountInput;
     [SerializeField] private TMP_InputField priceInput;
+    [SerializeField] private TMP_Text recommendedPrice;
     [SerializeField] private RawImage iconImage;
     [SerializeField] private TMP_Text itemText;
     [SerializeField] private List<GameObject> extraButtons;
@@ -49,6 +49,7 @@ public class ContractItemData : MonoBehaviour
         itemText.text = ItemManager.GetNameOf(contractItem.itemType);
         iconImage.texture = ItemManager.GetIcon(contractItem.itemType);
         extraButtons.ForEach(button => button.SetActive(false));
+        recommendedPrice.text = PriceSystem.CalculateRecommendedPrice(price) + "$";
     }
 
     // This method is for initializing list without values - only icon and name
@@ -66,6 +67,7 @@ public class ContractItemData : MonoBehaviour
         itemText.text = ItemManager.GetNameOf(itemType);
         iconImage.texture = ItemManager.GetIcon(itemType);
         extraButtons.ForEach(button => button.SetActive(true));
+        recommendedPrice.text = PriceSystem.CalculateRecommendedPrice(price) + "$";
     }
 
     // Retrieve data from UI
