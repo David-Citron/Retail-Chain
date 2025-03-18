@@ -31,8 +31,10 @@ public class AudioManager : MonoBehaviour
         });
     }
 
-    public void Play(AudioData data)
+    public void Play(int index)
     {
+        AudioData data = audioData[index];
+        if (data == null) return;
         if (data.type == AudioType.Music)
         { 
             audioData.ForEach(a => {

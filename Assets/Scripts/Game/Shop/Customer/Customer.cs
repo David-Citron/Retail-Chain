@@ -264,6 +264,9 @@ public class Customer : MonoBehaviour
         if(stepsCount >= 2) rating -= stepsCount * .05f; //If the steps count is >= 2 than decrease rating
 
         ShopRating.instance.IncreaseRating(rating);
+
+        if (AudioManager.instance != null)
+            AudioManager.instance.Play(1);
     }
 
     private void OnDestroy()
