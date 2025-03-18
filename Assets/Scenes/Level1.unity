@@ -4857,6 +4857,8 @@ MonoBehaviour:
   - {fileID: 1193631299}
   closeButton: {fileID: 0}
   closeable: 0
+  activeTabButtonColor: 1
+  anotherTabButtonColor: 0
 --- !u!1 &427537133
 GameObject:
   m_ObjectHideFlags: 0
@@ -9304,6 +9306,8 @@ MonoBehaviour:
   - {fileID: 1193631299}
   closeButton: {fileID: 556819884}
   closeable: 1
+  activeTabButtonColor: 1
+  anotherTabButtonColor: 0
 --- !u!1 &878599500
 GameObject:
   m_ObjectHideFlags: 0
@@ -13193,6 +13197,8 @@ MonoBehaviour:
   - {fileID: 1193631299}
   closeButton: {fileID: 602424317}
   closeable: 1
+  activeTabButtonColor: 1
+  anotherTabButtonColor: 0
 --- !u!65 &1158239074
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13811,6 +13817,8 @@ MonoBehaviour:
   - {fileID: 1193631299}
   closeButton: {fileID: 1606727311}
   closeable: 1
+  activeTabButtonColor: 1
+  anotherTabButtonColor: 0
 --- !u!1 &1234786004
 GameObject:
   m_ObjectHideFlags: 0
@@ -21845,6 +21853,8 @@ MonoBehaviour:
   - {fileID: 1193631299}
   closeButton: {fileID: 1568653286}
   closeable: 1
+  activeTabButtonColor: 1
+  anotherTabButtonColor: 0
 --- !u!1 &1781850266
 GameObject:
   m_ObjectHideFlags: 0
@@ -22664,6 +22674,8 @@ MonoBehaviour:
   - {fileID: 1193631299}
   closeButton: {fileID: 691131096}
   closeable: 1
+  activeTabButtonColor: 1
+  anotherTabButtonColor: 0
 --- !u!1 &1859688985 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5474745982736468959, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
@@ -23403,6 +23415,8 @@ MonoBehaviour:
   menuDisabledItems: []
   closeButton: {fileID: 0}
   closeable: 0
+  activeTabButtonColor: 1
+  anotherTabButtonColor: 0
 --- !u!1 &1911148001
 GameObject:
   m_ObjectHideFlags: 0
@@ -26831,7 +26845,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2078910978}
   - component: {fileID: 2078910977}
-  - component: {fileID: 2078910976}
   - component: {fileID: 2078910975}
   m_Layer: 0
   m_Name: Main Camera Shop
@@ -26884,14 +26897,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!81 &2078910976
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2078910974}
-  m_Enabled: 0
 --- !u!20 &2078910977
 Camera:
   m_ObjectHideFlags: 0
@@ -27374,7 +27379,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2116014312}
   - component: {fileID: 2116014311}
-  - component: {fileID: 2116014310}
   - component: {fileID: 2116014313}
   m_Layer: 0
   m_Name: Main Camera Factory
@@ -27383,14 +27387,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!81 &2116014310
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2116014309}
-  m_Enabled: 1
 --- !u!20 &2116014311
 Camera:
   m_ObjectHideFlags: 0
@@ -32797,6 +32793,8 @@ MonoBehaviour:
   - {fileID: 1193631299}
   closeButton: {fileID: 3065504084407746796}
   closeable: 1
+  activeTabButtonColor: 1
+  anotherTabButtonColor: 0
 --- !u!33 &8783746349345715746
 MeshFilter:
   m_ObjectHideFlags: 0
