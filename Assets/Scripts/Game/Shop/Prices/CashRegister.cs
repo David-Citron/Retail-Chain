@@ -11,7 +11,6 @@ public class CashRegister : Interactable
 
     [SerializeField] private GameObject contentList;
     [SerializeField] private GameObject priceItemPrefab;
-    [SerializeField] private Button closeButton;
 
     private ActionTimer timer;
 
@@ -25,10 +24,6 @@ public class CashRegister : Interactable
 
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && CustomerManager.instance.GetCustomerAtCashRegister() != null && isPlayerNear, i => ProcessPayment(),
             new Hint(() => Hint.GetHintButton(ActionType.Interaction) + " TO PROCESS PAYMENT", () => CustomerManager.instance.GetCustomerAtCashRegister() != null && isPlayerNear)));
-
-        closeButton.interactable = true;
-        closeButton.onClick.RemoveAllListeners();
-        closeButton.onClick.AddListener(() => UpdateContent(false));
 
         BoxCollider collider = GetComponent<BoxCollider>();
         collider.isTrigger = true;

@@ -37,7 +37,7 @@ public class ShopRating : MonoBehaviour
         VerifyRating();
     }
 
-    public static float GetRating() => instance.rating;
+    public static float GetRating() => instance == null ? 3 : instance.rating;
 
     private void VerifyRating()
     {

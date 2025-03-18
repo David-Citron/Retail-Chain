@@ -9,7 +9,7 @@ public class PriceSystem : MonoBehaviour
     {
         itemPrices = new Dictionary<ItemType, int>();
 
-        ItemManager.GetAllSellableItemData().ForEach(item => itemPrices.Add(item.itemType, item.sellPrice));
+        ItemManager.GetAllSellableItemData().ForEach(item => itemPrices.Add(item.itemType, CalculateRecommendedPrice(item.sellPrice)));
     }
 
     void Update() {}
