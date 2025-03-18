@@ -14,8 +14,8 @@ public class ContractManager : NetworkBehaviour
     private int contractsPassed = 0;
 
     private const int CONTRACT_TIME = 300; //TODO Edit
-    private const int CONTRACT_FIRST_TIME = 180;
-    private const int NEGOTIATION_TIME = 120;
+    private const int CONTRACT_FIRST_TIME = 30; // default: 180
+    private const int NEGOTIATION_TIME = 12; // default: 120
 
     [SerializeField] private List<ContractItem> initialContractItems = new List<ContractItem>() 
     {
@@ -299,6 +299,7 @@ public class ContractManager : NetworkBehaviour
     {
         negotiating = false;
         negotiationTimer.Stop();
+        negotiationTimer = null;
         RpcHideNegotiationPanel();
     }
 
@@ -324,7 +325,10 @@ public class ContractManager : NetworkBehaviour
     {
         Debug.Log("RpcEndGame called!");
         if (negotiationTimer != null)
+        {
             negotiationTimer.Stop();
+            negotiationTimer = null;
+        }
         if (Game.instance == null) return;
         Game.instance.EndGame();
     }
