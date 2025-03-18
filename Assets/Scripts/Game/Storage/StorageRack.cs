@@ -110,8 +110,6 @@ public class StorageRack : Interactable
             Destroy(gameObject);
         });
 
-        Debug.Log("Inserting " + itemType);
-
         if(data != null && data.contentType != ItemType.None)
         {
             Contract localContract = ContractManager.instance.localContract;

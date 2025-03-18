@@ -127,7 +127,12 @@ public class GamePlayer : NetworkBehaviour
         if (oppositePlayer == null || !oppositePlayer.isReady) return;
 
         NetworkManager.singleton.ServerChangeScene("Level1");
+        LobbyHandler.instance.ShowLoadingScreen();
+        RpcShowLoadingScreen();
     }
+
+    [ClientRpc]
+    private void RpcShowLoadingScreen() => LobbyHandler.instance.ShowLoadingScreen();
 
     private void UpdateReadyIcon()
     {
