@@ -8,6 +8,8 @@ public class CustomNetworkManager : NetworkManager
     public static CustomNetworkManager instance;
     int stopHost = -1;
 
+    int clientsReadyCount = 0;
+
     public override void Start()
     {
         if (instance != null) return;
@@ -48,6 +50,8 @@ public class CustomNetworkManager : NetworkManager
         PlayerManager.instance.PlayerDisconnected(conn.connectionId); // Remove player from PlayerManager
         if(LobbyHandler.instance != null) LobbyHandler.instance.swapButton.gameObject.SetActive(false);
 
+        clientsReadyCount = 0;
+
         // Handle Lobby disconnect - Stop hosting once the host leaves
         if (PlayerManager.instance.gamePlayers.Count == 0 && SceneManager.GetActiveScene().buildIndex == 0)
         {
@@ -85,7 +89,8 @@ public class CustomNetworkManager : NetworkManager
     public override void OnServerSceneChanged(string sceneName)
     {
         base.OnServerSceneChanged(sceneName);
-        if (ContractManager.instance != null) ContractManager.instance.InitializeFirstContract();
+        clientsReadyCount = 0;
+        //if (ContractManager.instance != null) ContractManager.instance.InitializeFirstContract();
     }
 
     public override void OnClientSceneChanged()
@@ -98,6 +103,9 @@ public class CustomNetworkManager : NetworkManager
     public override void OnServerReady(NetworkConnectionToClient conn)
     {
         base.OnServerReady(conn);
+        clientsReadyCount++;
+        if (clientsReadyCount == 1 && conn.connectionId != 0) Debug.LogError("Host not loaded first!!!");
+        if (clientsReadyCount < maxConnections) return;
         PlayerManager.instance.GetLocalGamePlayer().IfPresent(player =>
         {
             if (conn != player.connectionToClient)

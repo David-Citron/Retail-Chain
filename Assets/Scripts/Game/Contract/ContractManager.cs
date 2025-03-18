@@ -55,6 +55,11 @@ public class ContractManager : NetworkBehaviour
         // Server + client:
         //
 
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
         instance = this;
         syncDirection = SyncDirection.ServerToClient;
         negotiationState = OfferState.None;
