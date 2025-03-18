@@ -125,7 +125,7 @@ public class Customer : MonoBehaviour
         isWalking = false;
         if (wantsToPay)
         {
-            PriceSystem.instance.UpdateHints();
+            CashRegister.instance.UpdateHints();
             StartCoroutine(LookAtTarget());
             yield break;
         }
