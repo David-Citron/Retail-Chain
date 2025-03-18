@@ -110,16 +110,20 @@ public class StorageRack : Interactable
             Destroy(gameObject);
         });
 
-        bool insertItem = true;
+        Debug.Log("Inserting " + itemType);
+
         if(data != null && data.contentType != ItemType.None)
         {
             Contract localContract = ContractManager.instance.localContract;
-            if (localContract == null) return;
-            if (!localContract.SubmitItem(data.contentType)) return;
-            insertItem = false;
+            if (localContract == null || !localContract.SubmitItem(data.contentType))
+            {
+                InsertItem(ItemType.Package, 1);
+                InsertItem(data.contentType, 1);
+                return;
+            }
+            return;
         }
 
-        if (!insertItem) return;
         InsertItem(itemType, 1);
     }
 

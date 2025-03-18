@@ -97,6 +97,7 @@ public class DeliveryOfferItem : MonoBehaviour
         StorageRack.instance.InsertItem(deliveryOffer.item.itemType, amountToBuy);
 
         SetAmount(0); //To set 0 to buy
+        amountInStorage.text = StorageRack.instance.GetStoredAmountOf(deliveryOffer.item.itemType) + "x";
 
         if (deliveryOffer.itemAmount > 0) return;
         GoodsDelivery.instance.UpdateOffers();

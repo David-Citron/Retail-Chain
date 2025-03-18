@@ -63,6 +63,7 @@ public class GoodsDelivery : Interactable
         PlayerManager.instance.GetLocalGamePlayer().IfPresent(player => {
             balance.text = "$" + player.bankAccount.GetBalance();
         });
+
         foreach (var item in deliveryOffers)
         {
             if(item.contentItem != null) Destroy(item.contentItem);
