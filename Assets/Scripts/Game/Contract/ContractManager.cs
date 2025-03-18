@@ -24,6 +24,8 @@ public class ContractManager : NetworkBehaviour
 
     [SerializeField] private GameObject waitingTab;
     [SerializeField] private GameObject negotiationTab;
+    [SerializeField] private GameObject infoRequiredTab;
+    [SerializeField] private GameObject infoNegotiationTab;
     [SerializeField] private List<GameObject> factoryButtons;
     [SerializeField] private List<GameObject> shopButtons;
     [SerializeField] private TMP_Text moneyText;
@@ -101,6 +103,8 @@ public class ContractManager : NetworkBehaviour
             Debug.LogError("Local contract is null"); 
             return;
         }
+        infoNegotiationTab.SetActive(false);
+        infoRequiredTab.SetActive(true);
         localContract.StartNewContract(contractItems, time);
     }
 
@@ -185,6 +189,9 @@ public class ContractManager : NetworkBehaviour
     // Changes the tabs depending on the contract state
     private void ChangeNegotiationTab(OfferState state)
     {
+        negotiationTab.SetActive(true);
+        waitingTab.SetActive(false);
+
         GamePlayer localPlayer = PlayerManager.instance.GetLocalGamePlayer().GetValueOrDefault();
         if (localPlayer == null)
         {
@@ -201,31 +208,27 @@ public class ContractManager : NetworkBehaviour
             case OfferState.MakeOffer:
                 if (localPlayer.playerRole == PlayerRole.Factory)
                 {
-                    negotiationTab.SetActive(false);
-                    waitingTab.SetActive(true);
                     MenuManager.instance.Close("Contract");
                 }
                 else if (localPlayer.playerRole == PlayerRole.Shop)
                 {
+                    infoNegotiationTab.SetActive(true);
+                    infoRequiredTab.SetActive(false);
                     MenuManager.instance.Open("Contract");
                     InitializeEmptyNegotiation();
-                    negotiationTab.SetActive(true);
-                    waitingTab.SetActive(false);
                 }
             return;
             case OfferState.ShowOffer:
                 if (localPlayer.playerRole == PlayerRole.Shop)
                 {
-                    negotiationTab.SetActive(false);
-                    waitingTab.SetActive(true);
                     MenuManager.instance.Close("Contract");
                 }
                 else if (localPlayer.playerRole == PlayerRole.Factory)
                 {
-                    negotiationTab.SetActive(true);
-                    InitializeFilledNegotiation();
-                    waitingTab.SetActive(false);
+                    infoNegotiationTab.SetActive(true);
+                    infoRequiredTab.SetActive(false);
                     MenuManager.instance.Open("Contract");
+                    InitializeFilledNegotiation();
                 }
             return;
             default:
