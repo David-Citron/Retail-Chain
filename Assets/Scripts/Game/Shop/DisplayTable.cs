@@ -113,7 +113,7 @@ public class DisplayTable : Interactable
         GameObject result = null;
         if (inputSlots.Count == 0)
         {
-            Debug.LogWarning("There are no input slots in the DisplaySlot!");
+            Debug.LogWarning("There are no input slots in the DisplayTable!");
             return result;
         }
 

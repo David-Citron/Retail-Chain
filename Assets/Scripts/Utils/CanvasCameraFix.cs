@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CanvasCamerFix : MonoBehaviour
+public class CanvasCameraFix : MonoBehaviour
 {
 
     private void Awake()

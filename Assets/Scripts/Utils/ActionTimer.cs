@@ -17,7 +17,7 @@ public class ActionTimer
     private readonly Action onComplete;
     private bool ended;
 
-    public ActionTimer(bool unregisterOnLoad, Func<bool> predicate, Action<ActionTimer> onUpdate, Action onComplete, Action onFail, float totalTime, float howOften)
+    public ActionTimer(Func<bool> predicate, Action<ActionTimer> onUpdate, Action onComplete, Action onFail, float totalTime, float howOften)
     {
         this.predicate = predicate;
         this.totalTime = totalTime;
@@ -25,27 +25,26 @@ public class ActionTimer
         this.onUpdate = onUpdate;
         this.onComplete = onComplete;
         this.onFail = onFail;
-
-        if (!unregisterOnLoad || Game.timers == null) return;
-        Game.timers.Add(this);
     }
 
-    public ActionTimer(Action<ActionTimer> onUpdate, Action onComplete, Action onFail, float totalTime, float howOften) : this(true, null, onUpdate, onComplete, onFail, totalTime, howOften) { }
-    public ActionTimer(Action onComplete, Action onFail, float totalTime, float howOften) : this(true, null, null, onComplete, onFail, totalTime, howOften) { }
-    public ActionTimer(Action onComplete, Action onFail, float totalTime) : this(true, null, null, onComplete, onFail, totalTime, totalTime) { }
-    public ActionTimer(bool unregisterOnLoad, Action onComplete, float totalTime, float howOften) : this(unregisterOnLoad, null, null, onComplete, null, totalTime, howOften) { }
+    public ActionTimer(Action<ActionTimer> onUpdate, Action onComplete, Action onFail, float totalTime, float howOften) : this(null, onUpdate, onComplete, onFail, totalTime, howOften) { }
+    public ActionTimer(Action onComplete, Action onFail, float totalTime, float howOften) : this(null, null, onComplete, onFail, totalTime, howOften) { }
+    public ActionTimer(Action onComplete, Action onFail, float totalTime) : this(null, null, onComplete, onFail, totalTime, totalTime) { }
     public ActionTimer(Action onComplete, float totalTime, float howOften) : this(null, onComplete, totalTime, howOften) { }
     public ActionTimer(Action onComplete, float totalTime) : this(null, onComplete, totalTime, totalTime) { }
-    public ActionTimer(bool unregisterOnLoad, Action onComplete, float totalTime) : this(unregisterOnLoad, onComplete, totalTime, totalTime) { }
-    public ActionTimer(Func<bool> predicate, Action onComplete, float totalTime, float howOften) : this(true, predicate, null, onComplete, null, totalTime, howOften) { }
-    public ActionTimer(Func<bool> predicate, Action onComplete, Action onFail, float totalTime, float howOften) : this(true, predicate, null, onComplete, onFail, totalTime, howOften) { }
+    public ActionTimer(Func<bool> predicate, Action onComplete, float totalTime, float howOften) : this(predicate, null, onComplete, null, totalTime, howOften) { }
+    public ActionTimer(Func<bool> predicate, Action onComplete, Action onFail, float totalTime, float howOften) : this(predicate, null, onComplete, onFail, totalTime, howOften) { }
 
-    public ActionTimer Run()
+    public ActionTimer Run(bool unregisterOnLoad)
     {
+        if (unregisterOnLoad && Game.timers != null) Game.timers.Add(this);
+
         if (predicate != null) PlayerManager.instance.StartCoroutine(CheckFailPrediction());
         PlayerManager.instance.StartCoroutine(RunAction());
         return this;
     }
+
+    public ActionTimer Run() => Run(true);
 
     public void Stop() => ended = true;
     
