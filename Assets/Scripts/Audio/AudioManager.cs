@@ -70,7 +70,7 @@ public class AudioManager : MonoBehaviour
 
     private void ResetMusicTimer()
     {
-        musicTimer = new ActionTimer(() => MusicCycle(), Random.Range(20, 60));
+        musicTimer = new ActionTimer(false, () => MusicCycle(), Random.Range(20, 60));
         musicTimer.Run();
     }
 }
