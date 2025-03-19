@@ -39,7 +39,7 @@ public class SteamLobby : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
         networkManager = GetComponent<NetworkManager>();
-
+        ∑
         if (!SteamIsInitialized()) return;
 
         lobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
