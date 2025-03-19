@@ -104,10 +104,9 @@ public class CustomNetworkManager : NetworkManager
     {
         base.OnServerReady(conn);
         if (SceneManager.GetActiveScene().buildIndex == 0) return;
-        Debug.Log(conn.connectionId);
+
         clientsReadyCount++;
-        if (clientsReadyCount == 1 && conn.connectionId != 0) Debug.LogError("Host not loaded first!!!");
-        Debug.Log("Clients ready: " + clientsReadyCount + " / " + maxConnections);
+
         if (clientsReadyCount < maxConnections) return;
         PlayerManager.instance.GetLocalGamePlayer().IfPresent(player =>
         {

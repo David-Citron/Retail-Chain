@@ -47,7 +47,7 @@ public class MenuManager : MonoBehaviour
     /// <param name="closeAll">If true all active menus will close before open</param>
     public bool ToggleUI(string uiName, bool closeAll)
     {
-        if (!closeAll && current != null && !current.IsCloseable()) return false; //If the current menu is not closeable then return.
+        if (!closeAll && current != null && !current.IsCloseable()) return false;
 
         if (!menus.TryGetValue(uiName, out Menu menu))
         {
