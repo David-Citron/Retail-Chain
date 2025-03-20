@@ -27,7 +27,7 @@ public class DisplayTable : Interactable
             new Hint(() => Hint.GetHintButton(ActionType.Interaction) + " TO ADD ITEM", () => PlayerPickUp.IsHodlingItem() && GetNearestSlot().isInValidDistance)));
 
 
-        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear && GetNearestSlot().isInValidDistance, gameObject => PickUp(),
+        AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.PickUpItem) && isPlayerNear && GetNearestSlot().IsReadyToPickUp(), gameObject => PickUp(),
             new Hint(() => Hint.GetHintButton(ActionType.PickUpItem) + " TO PICK UP", () => !PlayerPickUp.IsHodlingItem() && GetNearestSlot().IsReadyToPickUp())));
     }
 
@@ -41,6 +41,8 @@ public class DisplayTable : Interactable
     private void PickUp()
     {
 
+        if (currentItems.Count <= 0) return;
+
         if (PlayerPickUp.IsHodlingItem())
         {
             Hint.Create("DROP CURRENT ITEM", 2);
@@ -51,11 +53,13 @@ public class DisplayTable : Interactable
         if (nearestInput == null || !nearestInput.IsReadyToPickUp()) return;
 
 
-        if (currentItems.Count <= 0) return;
         var item = nearestInput.inputPlace.gameObject.transform.GetChild(0).gameObject;
         if (item == null) return;
+
+        if(!currentItems.Remove(item)) return;
+
         PlayerPickUp.Instance().IfPresent(handler => handler.PickUp(item));
-        currentItems.Remove(item);
+
     }
 
     private void PutItem(GameObject item)

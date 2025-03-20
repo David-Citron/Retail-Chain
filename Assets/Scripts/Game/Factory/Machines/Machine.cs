@@ -110,8 +110,9 @@ public abstract class Machine : Interactable, IMachine
         var item = nearestInput.inputPlace.gameObject.transform.GetChild(0).gameObject;
         if (item == null) return;
 
+        if (!currentItems.Remove(item)) return;
+
         PlayerPickUp.Instance().IfPresent(handler => handler.PickUp(item));
-        currentItems.Remove(item);
         ChangeMachineState(MachineState.Idling);
     }
 
