@@ -103,6 +103,7 @@ public class GoodsDelivery : Interactable
             isMoving = false;
             garageDoor.gameObject.SetActive(!inAnimation);
             if (!inAnimation) vehicle.SetActive(false);
+            if (inAnimation && AudioManager.instance != null) AudioManager.instance.Play(2);
             return;
         }
 

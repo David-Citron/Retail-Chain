@@ -46,7 +46,8 @@ public class TaxesManager : NetworkBehaviour
     /// </summary>
     /// <param name="price">The price</param>
     /// <returns>The new price (inflation included)</returns>
-    public static int GetGoodsInflationPrice(int price) => (int)(price * Mathf.Clamp((GetInflation() * 0.75f), 1, GetInflation()));
+    public static int GetGoodsInflationPrice(int price) =>
+        (int)(price * Mathf.Clamp((GetInflation() * 0.75f), 1, GetInflation()));
 
 
     public static float GetInflation() => instance == null ? 1 : instance.inflation;
