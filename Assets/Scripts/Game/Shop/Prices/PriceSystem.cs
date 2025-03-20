@@ -77,4 +77,5 @@ public class PriceSystem : MonoBehaviour
     /// <param name="basePrice">The base price</param>
     /// <returns>The max price reduced by 5%</returns>
     public static int CalculateRecommendedPrice(int basePrice) => (int)(CalculateMaxPrice(basePrice) * 0.95d);
+    public static int CalculateRecommendedPrice(ItemType itemType) => CalculateRecommendedPrice(ItemManager.GetItemData(itemType).sellPrice);
 }
