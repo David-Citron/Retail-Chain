@@ -26,12 +26,7 @@ public class PriceSystem : MonoBehaviour
 
     /// <summary>
     /// Calculates the max price based on the inflation & shop rating.
-    /// Rating (max 5):
-    /// 1: -10%
-    /// 2: -5%
-    /// 3: 0%
-    /// 4: +2%
-    /// 5: +5%
+    /// Linearly interpolates the value based on the rating.
     /// </summary>
     /// <param name="basePrice">The base price</param>
     /// <returns>The max price</returns>
@@ -40,34 +35,21 @@ public class PriceSystem : MonoBehaviour
         float rating = ShopRating.GetRating();
         int newPrice = TaxesManager.GetInflationPrice(basePrice);
 
-        float modifier = 0;
+        float[] ratingLevels = { 0, 1, 2, 3, 4, 5 };
+        float[] modifiers = { -0.15f, -0.10f, -0.05f, 0.0f, 0.02f, 0.05f }; //Price modifiers based on the rating level
 
-        switch (rating)
-        {
-            case 0:
-                modifier = -0.15f;
-                break;
-            case 1:
-                modifier = -0.10f;
-                break;
-            case 2:
-                modifier = -0.05f;
-                break;
-            case 3:
-                modifier = 0;
-                break;
-            case 4:
-                modifier = 0.02f;
-                break;
-            case 5:
-                modifier = 0.05f;
-                break;
-            default:
-                modifier = 0;
-                break;
-        }
+        int lowerIndex = Mathf.FloorToInt(rating);
+        int upperIndex = Mathf.CeilToInt(rating);
 
-        newPrice = (int)(newPrice * (1 + modifier));
+        lowerIndex = Mathf.Clamp(lowerIndex, 0, ratingLevels.Length - 1); //That assures that the index is <= 5 & >= 0
+        upperIndex = Mathf.Clamp(upperIndex, 0, ratingLevels.Length - 1);
+
+        float lowerModifier = modifiers[lowerIndex];
+        float upperModifier = modifiers[upperIndex];
+
+        float modifier = Mathf.Lerp(lowerModifier, upperModifier, rating - lowerIndex); //Linearly interpolate the value
+
+        newPrice = (int) (newPrice * (1 + modifier));
         return newPrice;
     }
 

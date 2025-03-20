@@ -258,8 +258,8 @@ public class Customer : MonoBehaviour
         Leave();
         CustomerManager.instance.UpdateQueue();
 
-        int basePrice = ItemManager.GetItemData(bill.itemType).sellPrice<
-        bool cheaperThanRecommended = bill.price <= PriceSystem.CalculateRecommendedPrice();
+        int basePrice = ItemManager.GetItemData(bill.itemType).sellPrice;
+        bool cheaperThanRecommended = bill.price <= basePrice;
 
         float rating = cheaperThanRecommended ? 0.15f : -0.1f;    //If the price is cheaper than recommended increase rating.
         if(stepsCount >= 2) rating -= stepsCount * .05f;          //If the steps count is >= 2 than decrease rating
