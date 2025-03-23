@@ -58,7 +58,7 @@ public abstract class Machine : Interactable, IMachine
         AddInteraction(new Interaction(GetTag(), () => PressedKey(ActionType.Interaction) && isPlayerNear, collider => StartInteraction(), new Hint[] {
             new Hint(() => Hint.GetHintButton(ActionType.Interaction) + " TO INTERACT", () => machineState == MachineState.Ready && GetNearestSlot().isInValidDistance  && !PlayerPickUp.IsHodlingItem()),
             new Hint(() => Hint.GetHintButton(ActionType.Interaction) + " TO INSERT", () => IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling && GetNearestSlot().IsValid()),
-            new Hint("INVALID ITEM", () => !IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling)
+            new Hint("INVALID ITEM", () => PlayerPickUp.IsHodlingItem() && !IsValid(PlayerPickUp.holdingItem) && machineState == MachineState.Idling)
         }));
     }
 
