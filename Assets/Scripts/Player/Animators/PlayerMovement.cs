@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
 
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        bool isSprinting = Interactable.HoldingKey(ActionType.Sprint);
 
         if (horizontal == 0 && vertical == 0)
         {
