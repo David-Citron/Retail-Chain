@@ -76,5 +76,6 @@ public enum ActionType
     DropItem,
     OpenMenu,
     Interaction,
-    Help
+    Help,
+    Sprint
 }

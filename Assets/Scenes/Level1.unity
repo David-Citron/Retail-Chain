@@ -13221,6 +13221,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 25908c3efa1f87f4687636e454f25ffa, type: 2}
   - {fileID: 11400000, guid: 5dadadab4c9396e48851c2e49c4d4462, type: 2}
   - {fileID: 11400000, guid: 4494f425c6bfe8f4492d4d68b55eecfb, type: 2}
+  - {fileID: 11400000, guid: 0d0e69ee65884274389ed7670e5f314d, type: 2}
 --- !u!4 &1124035545
 Transform:
   m_ObjectHideFlags: 0
@@ -24481,7 +24482,10 @@ PrefabInstance:
       propertyPath: timeDisplay
       value: 
       objectReference: {fileID: 560019260}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3857218769546542834, guid: 3fde234a8ceaad842bc878192529e753, type: 3}
+    - {fileID: 1510122893326627385, guid: 3fde234a8ceaad842bc878192529e753, type: 3}
+    - {fileID: 5859448839767664794, guid: 3fde234a8ceaad842bc878192529e753, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -26127,6 +26131,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: -7269229648158454011, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -6769976776493425521, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
         type: 3}
       propertyPath: m_Layer
@@ -26301,6 +26310,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5909313231081832339, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6100014687351428289, guid: 7c8fb1e3a69ad1a4d9a7444965c96719,
         type: 3}

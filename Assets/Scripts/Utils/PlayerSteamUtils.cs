@@ -19,7 +19,7 @@ public class PlayerSteamUtils : MonoBehaviour {
     private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
     {
 
-        LobbyHandler.instance.UpdateMainMenuProfilePicture(callback.m_steamID);
+        if(SteamUser.GetSteamID().m_SteamID == callback.m_steamID.m_SteamID) LobbyHandler.instance.UpdateMainMenuProfilePicture(callback.m_steamID);
 
         PlayerManager.instance.gamePlayers.ForEach(gamePlayer => {
             if (gamePlayer.GetSteamId() != callback.m_steamID.m_SteamID) return;

@@ -145,6 +145,8 @@ public class KeybindManager : MonoBehaviour
             { KeyCode.Tab, 99 },
             { KeyCode.LeftArrow, 100 },
             { KeyCode.RightArrow, 101 },
+            { KeyCode.LeftShift, 79 },
+            { KeyCode.LeftControl, 89 },
         };
     }
 }
