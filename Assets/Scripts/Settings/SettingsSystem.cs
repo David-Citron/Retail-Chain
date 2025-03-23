@@ -13,6 +13,7 @@ public class Settings : MonoBehaviour
 
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private TMP_Dropdown windowModeDropdown;
+    [SerializeField] private TMP_Dropdown qualityLevelDropdown;
 
     private List<Resolution> resolutions = new List<Resolution>();
     private List<KeybindPrefab> keybindPrefabs = new List<KeybindPrefab>();
@@ -170,6 +171,20 @@ public class Settings : MonoBehaviour
         windowModeDropdown.AddOptions(windowModeLabels);
         windowModeDropdown.value = currentFullscreenMode;
         windowModeDropdown.RefreshShownValue();
+
+        // Quality Level
+        string[] qualityLevels = QualitySettings.names;
+        List<string> availableQualityLevels = new List<string>();
+
+        for (int i = 0;i < qualityLevels.Length;i++) 
+        {
+            availableQualityLevels.Add(qualityLevels[i]);
+        }
+
+        qualityLevelDropdown.ClearOptions();
+        qualityLevelDropdown.AddOptions(availableQualityLevels);
+        qualityLevelDropdown.value = QualitySettings.GetQualityLevel();
+        qualityLevelDropdown.RefreshShownValue();
     }
 
     public void SetResolution(int index)
@@ -180,4 +195,5 @@ public class Settings : MonoBehaviour
 
     public void SetWindowMode(int index) => Screen.fullScreenMode = windowModes[index];
     
+    public void SetQualityLevel(int index) => QualitySettings.SetQualityLevel(index);
 }
