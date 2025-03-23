@@ -1945,6 +1945,10 @@ MonoBehaviour:
     group: {fileID: -2108266408024719945, guid: 818b10f7441f4d848b9989bce13d50f2,
       type: 2}
     type: 2
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: db7e7cd4a4363964daa2c261feb43852, type: 3}
+    group: {fileID: 8985247162181640306, guid: 818b10f7441f4d848b9989bce13d50f2, type: 2}
+    type: 2
 --- !u!4 &492289872
 Transform:
   m_ObjectHideFlags: 0
