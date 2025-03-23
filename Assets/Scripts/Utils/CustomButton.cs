@@ -104,6 +104,7 @@ public class CustomButton : MonoBehaviour,
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
 
+        AudioManager.instance.Play(3);
         isPointerDown = true;
         DoStateTransition(currentSelectionState);
     }
