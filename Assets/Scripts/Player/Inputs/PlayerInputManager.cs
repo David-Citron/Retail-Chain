@@ -48,8 +48,6 @@ public class PlayerInputManager : MonoBehaviour
         GetColliders().Add(other.gameObject);
         UpdateInteractable(other.gameObject);
         UpdateHints(other.gameObject, true);
-
-            Debug.LogError("added: " + other.gameObject);
         
     }
 
@@ -60,8 +58,6 @@ public class PlayerInputManager : MonoBehaviour
         GetColliders().Remove(other.gameObject);
         UpdateInteractable(other.gameObject);
         //UpdateHints(other.gameObject, false);
-
-            Debug.LogError("removed: " + other.gameObject);
     }
 
     private void UpdateHints(GameObject collidedObject, bool entry)
