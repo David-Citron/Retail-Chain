@@ -139,6 +139,8 @@ public class ContractManager : NetworkBehaviour
     [Server]
     private void StartNegotiation()
     {
+        TaxesManager.IncraseInflation(0.15f);
+
         RpcShowNegotiationPanel();
         if (negotiationTimer != null) return;
         negotiationTimer = new ActionTimer(() => RpcEndGame(), NEGOTIATION_TIME).Run();

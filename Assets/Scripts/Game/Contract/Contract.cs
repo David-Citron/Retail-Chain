@@ -123,8 +123,6 @@ public class Contract : NetworkBehaviour
         }
 
         localPlayer.bankAccount.PayTaxes();
-
-        if (localPlayer.isServer) TaxesManager.IncraseInflation(0.15f);
     }
 
     public bool SubmitItem(ItemType itemType)

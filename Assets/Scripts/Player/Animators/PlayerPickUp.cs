@@ -25,7 +25,7 @@ public class PlayerPickUp : MonoBehaviour
     {
         if (itemGameObject == null || holdingItem != null || itemGameObject.tag == null || !itemGameObject.tag.StartsWith("Item"))
         {
-            Hint.Create("Cannot pick up " + (itemGameObject == null) + " -- " + (holdingItem != null) + " -- " + (itemGameObject.tag == null) + " -- " + !itemGameObject.tag.StartsWith("Item"), Color.red, 1f);
+            Hint.Create("Cannot pick up " + (itemGameObject == null) + " -- " + (holdingItem != null) + " -- " + (itemGameObject.tag == null) + " -- " + !itemGameObject.tag.StartsWith("Item") + " -- " + itemGameObject.tag, Color.red, 1f);
             return;
         }
 
