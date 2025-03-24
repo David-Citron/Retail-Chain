@@ -23,11 +23,8 @@ public class PlayerPickUp : MonoBehaviour
 
     public void PickUp(GameObject itemGameObject)
     {
-        if (itemGameObject == null || holdingItem != null || itemGameObject.tag == null || !itemGameObject.tag.StartsWith("Item"))
-        {
-            Hint.Create("Cannot pick up " + (itemGameObject == null) + " -- " + (holdingItem != null) + " -- " + (itemGameObject.tag == null) + " -- " + !itemGameObject.tag.StartsWith("Item") + " -- " + itemGameObject.tag, Color.red, 1f);
-            return;
-        }
+        if (itemGameObject == null || holdingItem != null) return;
+        if (itemGameObject.GetComponent<Item>() == null) return;
 
         holdingItem = itemGameObject;
         UpdateHandsPosition();

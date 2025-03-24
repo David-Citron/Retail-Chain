@@ -5,7 +5,7 @@ public class TaxesManager : NetworkBehaviour
 {
     public static TaxesManager instance;
 
-    public const int DEFAULT_RENT_TAXES = 50;
+    public const int DEFAULT_RENT_TAXES = 10;
 
     [SyncVar]
     public float inflation;
