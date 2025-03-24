@@ -2524,7 +2524,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -20532,7 +20532,7 @@ MonoBehaviour:
     increase due to a better reputation.\n<color=yellow>1\u20132 stars</color> \u2013
     prices decrease due to poor reputation.\n\nThe rating changes over time based
     on the player's actions:\n\n<color=green>Rating increases </color>when the prices
-    are balanced, shop is cleaned and customers can find they desired goods.\n<color=red>Rating
+    are balanced, shop is cleaned and customers can find their desired goods.\n<color=red>Rating
     decreases</color> if the shop is messy or the prices are too high.\n\nMaintaining
     good rating is neccessary for this role."
   m_isRightToLeft: 0
