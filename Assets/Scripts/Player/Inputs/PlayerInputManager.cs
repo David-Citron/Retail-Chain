@@ -6,7 +6,7 @@ public class PlayerInputManager : MonoBehaviour
     public static PlayerInputManager instance;
     public static bool isInteracting;
 
-    private List<GameObject> collidersInRange;
+    public List<GameObject> collidersInRange;
 
     private void Start() {
         instance = this;
