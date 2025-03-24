@@ -65,7 +65,7 @@ public class ShopMess : Interactable
 
     private void DestroyMess()
     {
-        ToggleIsPlayerNear();//When turning mess, the script is not on so that means we have to run this manually.
+        ToggleIsPlayerNear();//When turning mess, the script is not enabled so that means we have to run this manually.
         if(ratingDecrease != null) ratingDecrease.Stop();
         gameObject.SetActive(false);
         isCleaning = false;

@@ -25,8 +25,7 @@ public class ContractDelivery : MonoBehaviour
 
     public void DeliverItems(List<ContractItem> items)
     {
-        isActive = true;
-        isMoving = true;
+        ActiveTruck(true);
 
         Hint.Create("UNLOADING GOODS..", 2);
         foreach (var item in items)
@@ -35,12 +34,7 @@ public class ContractDelivery : MonoBehaviour
             StorageRack.instance.InsertItem(item.itemType, item.quantity);
         }
 
-        new ActionTimer(() =>
-        {
-            isActive = false;
-            elapsedTime = 0f;
-            isMoving = true;
-        }, 8).Run();
+        new ActionTimer(() => ActiveTruck(false), 8).Run();
     }
 
     public void ActiveTruck(bool inAnimation)

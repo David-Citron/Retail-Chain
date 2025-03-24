@@ -47,7 +47,7 @@ public class PlayerInputManager : MonoBehaviour
         if (other.gameObject.Equals(PlayerPickUp.holdingItem)) return; //Ensure that the holding item is not in collider.
         GetColliders().Add(other.gameObject);
         UpdateInteractable(other.gameObject);
-        UpdateHints(other.gameObject, true);
+        UpdateHints(other.gameObject);
         
     }
 
@@ -57,15 +57,13 @@ public class PlayerInputManager : MonoBehaviour
 
         GetColliders().Remove(other.gameObject);
         UpdateInteractable(other.gameObject);
-        //UpdateHints(other.gameObject, false);
     }
 
-    private void UpdateHints(GameObject collidedObject, bool entry)
+    private void UpdateHints(GameObject collidedObject)
     {
         Interactable interactable = collidedObject.GetComponent<Interactable>();
         if (interactable == null)
         {
-            if (!entry) return;
             if (IsItem(collidedObject)) CustomInteractionHints(PlayerPickUp.GetInteractions(), collidedObject);
             return;
         }
