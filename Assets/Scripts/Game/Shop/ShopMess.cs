@@ -68,13 +68,13 @@ public class ShopMess : Interactable
     private void DestroyMess()
     {
         ToggleIsPlayerNear();//When turning mess, the script is not enabled so that means we have to run this manually.
-        PlayerInputManager.instance.GetColliders().Remove(gameObject);
         if(ratingDecrease != null) ratingDecrease.Stop();
         gameObject.SetActive(false);
         isCleaning = false;
         PlayerInputManager.isInteracting = false;
         decreased = 0;
         PlayerPickUp.Instance().IfPresent(pikUp => pikUp.animator.SetBool("working", false));
+        PlayerInputManager.instance.RemoveCollider(gameObject);
     }
 
     public override string GetTag() => "ShopMess";
