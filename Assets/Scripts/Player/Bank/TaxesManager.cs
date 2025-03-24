@@ -5,8 +5,6 @@ public class TaxesManager : NetworkBehaviour
 {
     public static TaxesManager instance;
 
-    public const int DEFAULT_RENT_TAXES = 10;
-
     [SyncVar]
     public float inflation;
 
@@ -24,13 +22,6 @@ public class TaxesManager : NetworkBehaviour
     /// </summary>
     /// <param name="increaseBy">Inflation will increase by that amount</param>
     public static void IncraseInflation(float increaseBy) => instance.inflation += increaseBy;
-
-    /// <summary>
-    /// Calculates rent taxes. That includes electricity, gas & rent.
-    /// There is default rate which is multiplied by inflation.
-    /// </summary>
-    /// <returns>The rent taxes</returns>
-    public static int GetRentTaxes() => GetInflationPrice(DEFAULT_RENT_TAXES);
 
     /// <summary>
     /// Returns price multiplied by current inflation.

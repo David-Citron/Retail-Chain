@@ -20,6 +20,8 @@ public class ContractManager : NetworkBehaviour
     [SerializeField] private List<ContractItem> initialContractItems = new List<ContractItem>() 
     {
         new ContractItem(ItemType.Book, 1, 50),
+        new ContractItem(ItemType.Paper, 1, 20),
+        new ContractItem(ItemType.GlueCanister, 1, 20),
     };
 
     [SerializeField] private GameObject waitingTab;

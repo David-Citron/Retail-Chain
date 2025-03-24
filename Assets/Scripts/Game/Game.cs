@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
 using Unity.Burst.CompilerServices;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
@@ -28,6 +29,10 @@ public class Game : MonoBehaviour
     [SerializeField] private List<GameObject> factoryGameObjects; //All game objects that are related to Factory player -> for Shop player disable.
 
     [SerializeField] private List<GameObject> forceOnForTestPlayer;
+
+    [SerializeField] private GameObject help;
+    [SerializeField] private TMP_Text helpText;
+
     void Awake()
     {
         if (instance != null)
@@ -93,7 +98,6 @@ public class Game : MonoBehaviour
         if (localPlayer == null) return;
         if(localPlayer.playerRole == PlayerRole.Shop) shopGameObjects.ForEach(currentGameObject => currentGameObject.SetActive(true));
         else factoryGameObjects.ForEach (currentGameObject => currentGameObject.SetActive(true));
-        
     }
 
     void Update() {  }

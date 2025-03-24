@@ -51,7 +51,7 @@ public class PlayerBank : MonoBehaviour
     public void PayTaxes()
     {
         PayTax((int) (income * 0.1m)); //Income tax
-        PayTax(TaxesManager.GetRentTaxes()); //Rent taxes (electricity, gas, rent)
+        PayTax(TaxesManager.GetInflationPrice(10)); //Rent taxes (electricity, gas, rent)
 
         income = 0;
     }
