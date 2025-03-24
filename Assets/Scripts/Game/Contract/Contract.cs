@@ -114,7 +114,12 @@ public class Contract : NetworkBehaviour
                 localPlayer.bankAccount.AddBalance(sum, "Contract");
                 break;
             case PlayerRole.Shop:
-                localPlayer.bankAccount.RemoveBalance(sum, "Contract");
+                if(!localPlayer.bankAccount.RemoveBalance(sum, "Contract"))
+                {
+                    Game.instance.EndGame();
+                    return;
+                }
+
                 ContractDelivery.instance.DeliverItems(currentContractItems);
                 break;
             default:
