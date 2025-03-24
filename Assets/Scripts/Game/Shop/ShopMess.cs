@@ -32,6 +32,7 @@ public class ShopMess : Interactable
         float cleaningTime = (DateTimeOffset.Now.ToUnixTimeMilliseconds() - spawnedAt) / 2000f;
         cleaningTime = (int) Mathf.Clamp(cleaningTime, 1, 5);
 
+        PlayerPickUp.Instance().IfPresent(pikUp => pikUp.animator.SetBool("working", true));
         CircleTimer.Start(cleaningTime);
 
         new ActionTimer(() => HoldingKey(ActionType.Interaction),
@@ -41,6 +42,7 @@ public class ShopMess : Interactable
                 isCleaning = false;
                 PlayerInputManager.isInteracting = false;
                 UpdateHints();
+                PlayerPickUp.Instance().IfPresent(pikUp => pikUp.animator.SetBool("working", false));
             }, cleaningTime, 1).Run();
     }
 
@@ -71,6 +73,7 @@ public class ShopMess : Interactable
         isCleaning = false;
         PlayerInputManager.isInteracting = false;
         decreased = 0;
+        PlayerPickUp.Instance().IfPresent(pikUp => pikUp.animator.SetBool("working", false));
     }
 
     public override string GetTag() => "ShopMess";
