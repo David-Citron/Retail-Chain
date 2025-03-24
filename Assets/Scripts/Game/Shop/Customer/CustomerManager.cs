@@ -294,4 +294,6 @@ public class CustomerManager : MonoBehaviour
         }
         return null;
     }
+
+    public List<Customer> GetActiveCustomers() => customersActive;
 }

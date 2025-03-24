@@ -64,6 +64,11 @@ public class Customer : MonoBehaviour
         List<ItemType> validItemTypes = new List<ItemType>();
         ItemManager.GetAllSellableItemData().ForEach(data => validItemTypes.Add(data.itemType));
         int generatedIndex = Random.Range(0, validItemTypes.Count);
+        List<Customer> customers = CustomerManager.instance.GetActiveCustomers();
+        if (customers.Count > 0)
+        {
+            validItemTypes.Remove(customers[customers.Count - 1].desiredItem);
+        }
         desiredItem = validItemTypes[generatedIndex];
     }
 
@@ -150,7 +155,6 @@ public class Customer : MonoBehaviour
         Item item = CustomerManager.instance.GetItemFromSlot(reservedPoint);
         if (item == null) return;
         if (item.itemType != desiredItem) return;
-        // TODO: add validation
         ItemData itemData = ItemManager.GetItemData(desiredItem);
         int maxPrice = PriceSystem.CalculateMaxPrice(itemData.sellPrice);
         int itemPrice = PriceSystem.GetPrice(itemData.itemType);
