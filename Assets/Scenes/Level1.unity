@@ -7721,6 +7721,16 @@ MonoBehaviour:
     quantityRemaining: 1
     fulfilled: 0
     price: 50
+  - itemType: 4
+    quantity: 1
+    quantityRemaining: 1
+    fulfilled: 0
+    price: 30
+  - itemType: 2
+    quantity: 1
+    quantityRemaining: 1
+    fulfilled: 0
+    price: 27
   waitingTab: {fileID: 819799588}
   negotiationTab: {fileID: 1329673340}
   infoRequiredTab: {fileID: 367066597}
