@@ -146,7 +146,6 @@ public class StorageRack : Interactable
             if (item == null) return;
 
             if (validate) ToggleUI();
-            else TestingUtils.instance.testerUI.SetActive(false);
 
             pickUp.PickUp(item);
             UpdateHints();
