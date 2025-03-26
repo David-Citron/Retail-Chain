@@ -63,13 +63,14 @@ public class Customer : MonoBehaviour
     {
         List<ItemType> validItemTypes = new List<ItemType>();
         ItemManager.GetAllSellableItemData().ForEach(data => validItemTypes.Add(data.itemType));
-        List<Customer> customers = CustomerManager.instance.GetActiveCustomers();
-        if (customers.Count > 0)
+        ItemType lastItem = CustomerManager.instance.GetLastItem();
+        if (validItemTypes.Contains(lastItem))
         {
-            validItemTypes.Remove(customers[customers.Count - 1].desiredItem);
+            validItemTypes.Remove(lastItem);
         }
         int generatedIndex = Random.Range(0, validItemTypes.Count);
         desiredItem = validItemTypes[generatedIndex];
+        CustomerManager.instance.SetLastItem(desiredItem);
     }
 
     private void FindTarget()

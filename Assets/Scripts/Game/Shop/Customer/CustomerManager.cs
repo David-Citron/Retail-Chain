@@ -23,6 +23,8 @@ public class CustomerManager : MonoBehaviour
 
     ActionTimer timer = null;
 
+    private ItemType lastItem = ItemType.None;
+
     void Awake()
     {
         if (instance == null) instance = this;
@@ -295,5 +297,6 @@ public class CustomerManager : MonoBehaviour
         return null;
     }
 
-    public List<Customer> GetActiveCustomers() => customersActive;
+    public void SetLastItem(ItemType type) => lastItem = type;
+    public ItemType GetLastItem() => lastItem;
 }
