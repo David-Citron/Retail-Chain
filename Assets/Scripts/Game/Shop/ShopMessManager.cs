@@ -38,7 +38,7 @@ public class ShopMessManager : MonoBehaviour
             if (gameObject == null) return;
             SpawnMess();
             StartCoroutine(StartMessTimer());
-        }, random.Next(25, 80)).Run();
+        }, random.Next(20, 60)).Run();
     }
 
     private List<GameObject> GetAvailablePlaces() => messes.FindAll(place => !place.activeSelf);

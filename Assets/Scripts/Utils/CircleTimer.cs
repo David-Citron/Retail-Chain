@@ -67,7 +67,7 @@ public class CircleTimer : MonoBehaviour
         fill.fillAmount = 0;
         doneMarker.SetActive(true);
         text.gameObject.SetActive(false);
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.5f);
         if(remainingDuration == 0) circleTimer.SetActive(false);
     }
 

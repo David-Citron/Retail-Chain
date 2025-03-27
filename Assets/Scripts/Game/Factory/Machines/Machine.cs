@@ -172,7 +172,6 @@ public abstract class Machine : Interactable, IMachine
                 break;
 
             case MachineState.Done:
-                if (PlayAnimation()) CircleTimer.Stop();
                 resultItem = ItemManager.CreateItem(currentRecipe.output);
                 PlaceItem(resultPlace, resultItem);
                 GetCurrentGameObjects().ForEach(item => Destroy(item));
