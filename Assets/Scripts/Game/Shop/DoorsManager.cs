@@ -10,10 +10,13 @@ public class DoorsManager : MonoBehaviour
     [SerializeField] private Animator door1Animator;
     [SerializeField] private Animator door2Animator;
 
+    public bool state { get; private set; } = false;
+
     private void Awake()
     {
         if (instance == null)
             instance = this;
+        state = false;
     }
 
     // Start is called before the first frame update
@@ -43,6 +46,7 @@ public class DoorsManager : MonoBehaviour
     private void UpdateState()
     {
         if (inRange > 1) return;
+        if ((state && inRange > 0) || (!state && inRange == 0)) return;
         door1Animator.SetBool(ANIMATOR_BOOL_NAME, inRange > 0);
         door2Animator.SetBool(ANIMATOR_BOOL_NAME, inRange > 0);
         if(AudioManager.instance != null) AudioManager.instance.Play(4);
