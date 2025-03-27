@@ -11,7 +11,7 @@ public class ContractManager : NetworkBehaviour
     [SerializeField] private List<Contract> contracts;
     public Contract localContract = null;
 
-    private int contractsPassed = 0;
+    public int contractsPassed { get; private set; } = 0;
 
     private const int CONTRACT_TIME = 300; //TODO Edit
     private const int CONTRACT_FIRST_TIME = 180; // default: 180
