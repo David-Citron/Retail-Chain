@@ -5,7 +5,6 @@ public class TaxesManager : NetworkBehaviour
 {
     public static TaxesManager instance;
 
-    [SyncVar]
     public float inflation;
 
     void Start()
@@ -21,7 +20,11 @@ public class TaxesManager : NetworkBehaviour
     /// Increases inflation by given number
     /// </summary>
     /// <param name="increaseBy">Inflation will increase by that amount</param>
-    public static void IncraseInflation(float increaseBy) => instance.inflation += increaseBy;
+    public void IncraseInflation(float increaseBy) => RpcLoadInflation(inflation + increaseBy);
+
+    [ClientRpc]
+    public void RpcLoadInflation(float newInflation) => inflation = newInflation;
+    
 
     /// <summary>
     /// Returns price multiplied by current inflation.
