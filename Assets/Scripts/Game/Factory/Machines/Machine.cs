@@ -166,9 +166,9 @@ public abstract class Machine : Interactable, IMachine
             case MachineState.Working:
                 if (!PlayAnimation()) break;
 
+                CircleTimer.Start(currentRecipe.time);
                 PlayerInputManager.isInteracting = true;
                 PlayerPickUp.Instance().IfPresent(pikUp => pikUp.animator.SetBool("working", true));
-                CircleTimer.Start(currentRecipe.time);
                 break;
 
             case MachineState.Done:
@@ -176,6 +176,7 @@ public abstract class Machine : Interactable, IMachine
                 PlaceItem(resultPlace, resultItem);
                 GetCurrentGameObjects().ForEach(item => Destroy(item));
 
+                CircleTimer.Stop();
                 currentRecipe = null;
                 actionTimer = null;
                 currentItems.Clear();
