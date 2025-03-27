@@ -53,11 +53,14 @@ public class PriceSystem : MonoBehaviour
         return newPrice;
     }
 
+    public static int CalculateMaxContractPrice(ItemType itemType) => (int) (TaxesManager.GetInflationPrice(ItemManager.GetItemData(itemType).sellPrice) * .95d);
+    
+
     /// <summary>
     /// Recommended price will be shown to player and is lowered by 5%.
     /// </summary>
     /// <param name="basePrice">The base price</param>
     /// <returns>The max price reduced by 5%</returns>
-    public static int CalculateRecommendedPrice(int basePrice) => (int)(CalculateMaxPrice(basePrice) * 0.95d);
+    public static int CalculateRecommendedPrice(int basePrice) => (int)(CalculateMaxPrice(basePrice) * .95d);
     public static int CalculateRecommendedPrice(ItemType itemType) => CalculateRecommendedPrice(ItemManager.GetItemData(itemType).sellPrice);
 }

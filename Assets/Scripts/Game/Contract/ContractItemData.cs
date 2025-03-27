@@ -49,7 +49,7 @@ public class ContractItemData : MonoBehaviour
         itemText.text = ItemManager.GetNameOf(contractItem.itemType);
         iconImage.texture = ItemManager.GetIcon(contractItem.itemType);
         extraButtons.ForEach(button => button.SetActive(false));
-        recommendedPrice.text = PriceSystem.CalculateRecommendedPrice(type) + "$";
+        recommendedPrice.text = PriceSystem.CalculateMaxContractPrice(type) + "$";
     }
 
     // This method is for initializing list without values - only icon and name
@@ -67,7 +67,7 @@ public class ContractItemData : MonoBehaviour
         itemText.text = ItemManager.GetNameOf(itemType);
         iconImage.texture = ItemManager.GetIcon(itemType);
         extraButtons.ForEach(button => button.SetActive(true));
-        recommendedPrice.text = PriceSystem.CalculateRecommendedPrice(type) + "$";
+        recommendedPrice.text = PriceSystem.CalculateMaxContractPrice(type) + "$";
     }
 
     // Retrieve data from UI
