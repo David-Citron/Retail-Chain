@@ -47,6 +47,7 @@ public class DoorsManager : MonoBehaviour
     {
         if (inRange > 1) return;
         if ((state && inRange > 0) || (!state && inRange == 0)) return;
+        state = !state;
         door1Animator.SetBool(ANIMATOR_BOOL_NAME, inRange > 0);
         door2Animator.SetBool(ANIMATOR_BOOL_NAME, inRange > 0);
         if(AudioManager.instance != null) AudioManager.instance.Play(4);
