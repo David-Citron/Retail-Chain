@@ -27,9 +27,9 @@ public class GlueDispenser : Machine
         UpdateRecipe();
         if (currentRecipe == null || actionTimer != null || machineState != MachineState.Ready) return;
 
-        ChangeMachineState(MachineState.Working);
         if (currentRecipe.output == ItemType.None) FillDispenser();
         else CreateCanister();
+        ChangeMachineState(MachineState.Working);
     }
 
 
@@ -102,6 +102,8 @@ public class GlueDispenser : Machine
         currentRecipe = possibleRecipes.Find(recipe => recipe.machineType == machineType && CraftingManager.ContainsAllItems(recipe, new List<ItemType>() { holdingType }));
 
         if (currentRecipe == null) return;
+
+        CircleTimer.Stop();
 
         if (holdingType == ItemType.None && glueAmount < GLUE_CANISTER) Hint.Create("NOT ENOUGH GLUE", 1);
         else if (holdingType == ItemType.GlueBarrel && glueAmount >= MAX_GLUE_AMOUNT) Hint.Create("GLUE DISPENSER IS FULL", 1);

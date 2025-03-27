@@ -121,5 +121,5 @@ public class ContractItemData : MonoBehaviour
     public void UpdatePriceField() => priceInput.text = "" + price;
 
     public void CalculateSum() => sum = price * (int)amount;
-    public void UpdateSum() => sumText.text = "" + sum;
+    public void UpdateSum() => sumText.text = "$" + sum;
 }

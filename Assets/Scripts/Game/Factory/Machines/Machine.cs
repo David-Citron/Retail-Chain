@@ -172,16 +172,15 @@ public abstract class Machine : Interactable, IMachine
                 break;
 
             case MachineState.Done:
+                if (PlayAnimation()) CircleTimer.Stop();
                 resultItem = ItemManager.CreateItem(currentRecipe.output);
                 PlaceItem(resultPlace, resultItem);
                 GetCurrentGameObjects().ForEach(item => Destroy(item));
 
-                CircleTimer.Stop();
                 currentRecipe = null;
-                actionTimer = null;
                 currentItems.Clear();
 
-                //Stop animation, there should be also some sparkles as a finish effect?
+                actionTimer = null;
                 break;
         }
         UpdateHints();
