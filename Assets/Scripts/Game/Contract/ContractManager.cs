@@ -300,7 +300,7 @@ public class ContractManager : NetworkBehaviour
         RpcFinishContract();
         contractsPassed++;
         int contractTime = CONTRACT_TIME;
-        if (contractsPassed < 3) contractTime = CONTRACT_FIRST_TIME;
+        if (contractsPassed < 1) contractTime = CONTRACT_FIRST_TIME;
         RpcStartNewContract(lastOfferContractItems, contractTime);
     }
 
