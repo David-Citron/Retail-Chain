@@ -101,20 +101,17 @@ public class CustomerManager : MonoBehaviour
     private void CreateNewCustomerTimer()
     {
         float time = Random.Range(MIN_DELAY, MAX_DELAY);
-        if (ContractManager.instance.contractsPassed >= 2)
+        if (ContractManager.instance != null && ContractManager.instance.contractsPassed >= 2)
         {
             int chance = Random.Range(0, 5);
             if (chance == 0) time = 0.5f;
         }
-        if (timer != null)
-        {
-            timer.Stop();
-            timer = null;
-        }
+
+        if (timer != null) timer.Stop();
+        
         timer = new ActionTimer(() =>
         {
-            if (customersActive.Count < MAX_CUSTOMERS)
-                SpawnNewCustomer();
+            if (customersActive.Count < MAX_CUSTOMERS) SpawnNewCustomer();
             CreateNewCustomerTimer();
         }, time).Run();
     }
